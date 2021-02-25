@@ -1,0 +1,28 @@
+.footer-widget-area.ast-footer-divider-element {
+  position: relative;
+  align-items: center;
+}
+
+.ast-builder-footer-grid-columns .ast-fb-divider-layout-horizontal {
+  -js-display: inline-flex;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.ast-hb-divider-layout-horizontal .ast-divider-layout-horizontal {
+  width: 100%;
+}
+
+.ast-fb-divider-layout-vertical .ast-divider-layout-vertical,
+.ast-fb-divider-layout-vertical .ast-divider-layout-horizontal {
+  position: absolute;
+}
+
+.site-footer-section,
+.ast-fb-divider-layout-vertical.ast-footer-divider-element {
+  height: 100%;
+}
+
+.footer-widget-area .ast-divider-wrapper {
+  display: inline-block;
+}
