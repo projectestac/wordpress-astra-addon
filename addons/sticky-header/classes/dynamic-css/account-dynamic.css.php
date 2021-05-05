@@ -16,6 +16,10 @@ add_filter( 'astra_dynamic_css', 'astra_sticky_header_account_dynamic_css' );
  */
 function astra_sticky_header_account_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 
+	if ( ! Astra_Addon_Builder_Helper::is_component_loaded( 'account', 'header' ) ) {
+		return $dynamic_css;
+	}
+
 	$selector = '.ast-header-sticked .ast-header-account-wrap';
 
 	// Menu colors.

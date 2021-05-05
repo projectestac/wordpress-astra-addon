@@ -16,7 +16,8 @@ add_filter( 'astra_dynamic_css', 'astra_sticky_header_social_dynamic_css' );
  */
 function astra_sticky_header_social_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 
-	for ( $index = 1; $index <= Astra_Addon_Builder_Helper::$num_of_header_social_icons; $index++ ) {
+	$num_of_header_social_icons = astra_addon_builder_helper()->num_of_header_social_icons;
+	for ( $index = 1; $index <= $num_of_header_social_icons; $index++ ) {
 
 		if ( ! Astra_Addon_Builder_Helper::is_component_loaded( 'social-icons-' . $index, 'header' ) ) {
 			continue;
@@ -53,16 +54,18 @@ function astra_sticky_header_social_dynamic_css( $dynamic_css, $dynamic_css_filt
 
 		if ( 'custom' === $color_type ) {
 
-			$css_output_desktop[ $selector . ' .ast-builder-social-element' ]['color']      = $social_icons_color_desktop;
-			$css_output_desktop[ $selector . ' .ast-builder-social-element svg' ]['fill']   = $social_icons_color_desktop;
-			$css_output_desktop[ $selector . ' .ast-builder-social-element' ]['background'] = $social_icons_bg_color_desktop;
+			$css_output_desktop[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element' ]['color']                          = $social_icons_color_desktop;
+			$css_output_desktop[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element .social-item-label' ]['color']       = $social_icons_color_desktop;
+			$css_output_desktop[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element:hover .social-item-label' ]['color'] = $social_icons_h_color_desktop;
+			$css_output_desktop[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element svg' ]['fill']                       = $social_icons_color_desktop;
+			$css_output_desktop[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element' ]['background']                     = $social_icons_bg_color_desktop;
 
-			$css_output_desktop[ $selector . ' .ast-builder-social-element:hover' ]     = array(
+			$css_output_desktop[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element:hover' ]     = array(
 				// Hover.
 				'color'      => $social_icons_h_color_desktop,
 				'background' => $social_icons_h_bg_color_desktop,
 			);
-			$css_output_desktop[ $selector . ' .ast-builder-social-element:hover svg' ] = array(
+			$css_output_desktop[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element:hover svg' ] = array(
 				'fill' => $social_icons_h_color_desktop,
 			);
 		}
@@ -73,16 +76,18 @@ function astra_sticky_header_social_dynamic_css( $dynamic_css, $dynamic_css_filt
 		$css_output_tablet = array();
 
 		if ( 'custom' === $color_type ) {
-			$css_output_tablet[ $selector . ' .ast-builder-social-element' ]['color']      = $social_icons_color_tablet;
-			$css_output_tablet[ $selector . ' .ast-builder-social-element svg' ]['fill']   = $social_icons_color_tablet;
-			$css_output_tablet[ $selector . ' .ast-builder-social-element' ]['background'] = $social_icons_bg_color_tablet;
+			$css_output_tablet[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element' ]['color']                          = $social_icons_color_tablet;
+			$css_output_tablet[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element svg' ]['fill']                       = $social_icons_color_tablet;
+			$css_output_tablet[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element .social-item-label' ]['color']       = $social_icons_color_tablet;
+			$css_output_tablet[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element:hover .social-item-label' ]['color'] = $social_icons_h_color_tablet;
+			$css_output_tablet[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element' ]['background']                     = $social_icons_bg_color_tablet;
 
-			$css_output_tablet[ $selector . ' .ast-builder-social-element:hover' ]     = array(
+			$css_output_tablet[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element:hover' ]     = array(
 				// Hover.
 				'color'      => $social_icons_h_color_tablet,
 				'background' => $social_icons_h_bg_color_tablet,
 			);
-			$css_output_tablet[ $selector . ' .ast-builder-social-element:hover svg' ] = array(
+			$css_output_tablet[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element:hover svg' ] = array(
 				'fill' => $social_icons_h_color_tablet,
 			);
 		}
@@ -93,16 +98,18 @@ function astra_sticky_header_social_dynamic_css( $dynamic_css, $dynamic_css_filt
 		$css_output_mobile = array();
 
 		if ( 'custom' === $color_type ) {
-			$css_output_mobile[ $selector . ' .ast-builder-social-element' ]['color']      = $social_icons_color_mobile;
-			$css_output_mobile[ $selector . ' .ast-builder-social-element svg' ]['fill']   = $social_icons_color_mobile;
-			$css_output_mobile[ $selector . ' .ast-builder-social-element' ]['background'] = $social_icons_bg_color_mobile;
+			$css_output_mobile[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element' ]['color']                          = $social_icons_color_mobile;
+			$css_output_mobile[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element svg' ]['fill']                       = $social_icons_color_mobile;
+			$css_output_mobile[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element .social-item-label' ]['color']       = $social_icons_color_mobile;
+			$css_output_mobile[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element:hover .social-item-label' ]['color'] = $social_icons_h_color_mobile;
+			$css_output_mobile[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element' ]['background']                     = $social_icons_bg_color_mobile;
 
-			$css_output_mobile[ $selector . ' .ast-builder-social-element:hover' ]     = array(
+			$css_output_mobile[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element:hover' ]     = array(
 				// Hover.
 				'color'      => $social_icons_h_color_mobile,
 				'background' => $social_icons_h_bg_color_mobile,
 			);
-			$css_output_mobile[ $selector . ' .ast-builder-social-element:hover svg' ] = array(
+			$css_output_mobile[ $selector . ' .ast-social-color-type-custom .ast-builder-social-element:hover svg' ] = array(
 				'fill' => $social_icons_h_color_mobile,
 			);
 		}

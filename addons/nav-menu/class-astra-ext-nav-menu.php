@@ -46,7 +46,7 @@ if ( ! class_exists( 'Astra_Ext_Nav_Menu' ) ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_astra_target_rules_js' ), 10 );
 
 			if ( ! is_admin() ) {
-				if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+				if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 					require_once ASTRA_EXT_NAV_MENU_DIR . 'classes/builder-dynamic.css.php';
 				} else {
 					require_once ASTRA_EXT_NAV_MENU_DIR . 'classes/dynamic.css.php';

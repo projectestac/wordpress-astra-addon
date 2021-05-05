@@ -39,7 +39,7 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Loader' ) ) {
 
 			add_filter( 'astra_theme_defaults', array( $this, 'theme_defaults' ) );
 
-			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 				add_action( 'customize_preview_init', array( $this, 'preview_scripts' ) );
 			}
@@ -104,7 +104,6 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Loader' ) ) {
 			 */
 			require_once ASTRA_EXT_BLOG_PRO_DIR . 'classes/sections/class-astra-customizer-blog-pro-configs.php';
 			require_once ASTRA_EXT_BLOG_PRO_DIR . 'classes/sections/class-astra-customizer-blog-pro-single-configs.php';
-
 		}
 		/**
 		 * Customizer Preview

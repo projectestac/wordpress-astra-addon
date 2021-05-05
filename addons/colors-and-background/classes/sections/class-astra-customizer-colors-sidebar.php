@@ -43,22 +43,6 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Sidebar' ) ) {
 
 			$_configs = array(
 
-				/**
-				 * Option: SideBar Color & Background Section heading
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[sidebar-color-background-heading-divider]',
-					'type'     => 'control',
-					'control'  => 'ast-heading',
-					'section'  => 'section-sidebars',
-					'title'    => __( 'Colors & Background', 'astra-addon' ),
-					'priority' => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-					1 : 23,
-					'settings' => array(),
-					'context'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
-				),
-
 				// Option: Sidebar Background.
 				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[sidebar-bg-obj]',
@@ -68,100 +52,110 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Sidebar' ) ) {
 					'section'   => 'section-sidebars',
 					'transport' => 'postMessage',
 					'default'   => astra_get_option( 'sidebar-bg-obj' ),
-					'label'     => __( 'Background', 'astra-addon' ),
 					'title'     => __( 'Background', 'astra-addon' ),
-					'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+					'context'   => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+					astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 
 				/**
 				 * Option: SideBar Content Group
 				 */
 				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[sidebar-content-group]',
+					'name'      => ASTRA_THEME_SETTINGS . '[sidebar-content-link-group]',
 					'default'   => astra_get_option( 'sidebar-content-group' ),
 					'type'      => 'control',
-					'control'   => 'ast-settings-group',
-					'title'     => __( 'Content', 'astra-addon' ),
+					'control'   => Astra_Theme_Extension::$group_control,
+					'title'     => __( 'Content Link', 'astra-addon' ),
 					'section'   => 'section-sidebars',
 					'transport' => 'postMessage',
-					'priority'  => 23,
-					'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+					'priority'  => 24,
+					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+					'context'   => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 
 				// Option: Widget Title Color.
 				array(
-					'type'      => 'sub-control',
-					'tab'       => __( 'Normal', 'astra-addon' ),
-					'priority'  => 8,
-					'parent'    => ASTRA_THEME_SETTINGS . '[sidebar-content-group]',
-					'section'   => 'section-sidebars',
-					'control'   => 'ast-color',
-					'default'   => '',
-					'transport' => 'postMessage',
-					'name'      => 'sidebar-widget-title-color',
-					'title'     => __( 'Title Color', 'astra-addon' ),
+					'type'              => 'control',
+					'priority'          => 23,
+					'section'           => 'section-sidebars',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'default'           => astra_get_option( 'sidebar-widget-title-color' ),
+					'transport'         => 'postMessage',
+					'name'              => ASTRA_THEME_SETTINGS . '[sidebar-widget-title-color]',
+					'title'             => __( 'Content Title', 'astra-addon' ),
+					'context'           => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 
 				// Option: Text Color.
 				array(
-					'type'      => 'sub-control',
-					'tab'       => __( 'Normal', 'astra-addon' ),
-					'priority'  => 9,
-					'parent'    => ASTRA_THEME_SETTINGS . '[sidebar-content-group]',
-					'section'   => 'section-sidebars',
-					'control'   => 'ast-color',
-					'default'   => '',
-					'transport' => 'postMessage',
-					'name'      => 'sidebar-text-color',
-					'title'     => __( 'Text Color', 'astra-addon' ),
+					'type'              => 'control',
+					'priority'          => 23,
+					'section'           => 'section-sidebars',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'default'           => astra_get_option( 'sidebar-text-color' ),
+					'transport'         => 'postMessage',
+					'name'              => ASTRA_THEME_SETTINGS . '[sidebar-text-color]',
+					'title'             => __( 'Content Text', 'astra-addon' ),
+					'context'           => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 
 				// Option: Link Color.
 				array(
 					'type'     => 'sub-control',
-					'tab'      => __( 'Normal', 'astra-addon' ),
 					'priority' => 10,
-					'parent'   => ASTRA_THEME_SETTINGS . '[sidebar-content-group]',
+					'parent'   => ASTRA_THEME_SETTINGS . '[sidebar-content-link-group]',
 					'section'  => 'section-sidebars',
 					'control'  => 'ast-color',
-					'default'  => '',
+					'default'  => astra_get_option( 'sidebar-link-color' ),
 					'name'     => 'sidebar-link-color',
-					'title'    => __( 'Link Color', 'astra-addon' ),
+					'title'    => __( 'Normal', 'astra-addon' ),
+					'tab'      => __( 'Normal', 'astra-addon' ),
 				),
 
 				// Option: Link Hover Color.
 				array(
-					'type'      => 'sub-control',
-					'tab'       => __( 'Hover', 'astra-addon' ),
-					'priority'  => 11,
-					'parent'    => ASTRA_THEME_SETTINGS . '[sidebar-content-group]',
-					'section'   => 'section-sidebars',
-					'control'   => 'ast-color',
-					'default'   => '',
-					'transport' => 'postMessage',
-					'name'      => 'sidebar-link-h-color',
-					'title'     => __( 'Link Color', 'astra-addon' ),
+					'type'              => 'sub-control',
+					'priority'          => 11,
+					'parent'            => ASTRA_THEME_SETTINGS . '[sidebar-content-link-group]',
+					'section'           => 'section-sidebars',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'default'           => astra_get_option( 'sidebar-link-h-color' ),
+					'transport'         => 'postMessage',
+					'name'              => 'sidebar-link-h-color',
+					'title'             => __( 'Hover', 'astra-addon' ),
+					'tab'               => __( 'Hover', 'astra-addon' ),
 				),
 
 			);
 
-			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
-				array_push(
-					$_configs,
-					/**
-					 * Option: Sidebar Tabs
-					 */
-					array(
-						'name'        => 'section-sidebars-ast-context-tabs',
-						'section'     => 'section-sidebars',
-						'type'        => 'control',
-						'control'     => 'ast-builder-header-control',
-						'priority'    => 0,
-						'description' => '',
-					)
+				$_configs[] = array(
+					'name'        => 'section-sidebars-ast-context-tabs',
+					'section'     => 'section-sidebars',
+					'type'        => 'control',
+					'control'     => 'ast-builder-header-control',
+					'priority'    => 0,
+					'description' => '',
+				);
+			} else {
+
+				$_configs[] = array(
+					'name'     => ASTRA_THEME_SETTINGS . '[sidebar-color-background-heading-divider]',
+					'type'     => 'control',
+					'control'  => 'ast-heading',
+					'section'  => 'section-sidebars',
+					'title'    => __( 'Colors & Background', 'astra-addon' ),
+					'priority' => 23,
+					'settings' => array(),
+					'context'  => astra_addon_builder_helper()->general_tab,
 				);
 			}
 

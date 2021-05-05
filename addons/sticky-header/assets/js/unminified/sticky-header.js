@@ -99,7 +99,7 @@
 			// Decrese the top of primary / below as we decrease the min-height of all sticked headers by 20.
 			if ( ( selector.hasClass( 'ast-stick-primary-below-wrapper' ) || ( selector.hasClass( 'ast-primary-header' ) ) ) && 1 == astraAddon.header_above_stick && gutter > 0  ) {
 
-				gutter = gutter - 20;
+				gutter = gutter - 10;
 			}
 		}
 
@@ -124,11 +124,17 @@
 				if ( header_builder_active ) {
 
 					var mobile_parent = selector.closest( '.ast-mobile-header-wrap' );
+					var desktop_parent = selector.closest( '#ast-desktop-header' );
 
 					mobile_parent = ( 0 === mobile_parent.length ) ? selector.find( '.ast-mobile-header-wrap' ) : mobile_parent;
 
+					desktop_parent = ( 0 === desktop_parent.length ) ? selector.find( '#ast-desktop-header' ) : desktop_parent;
+
 					mobile_parent.find( '.ast-mobile-header-content' ).css( 'top', selector.outerHeight() + gutter );
 					mobile_parent.find( '.ast-mobile-header-content' ).css( 'width', max_width );
+
+					desktop_parent.find( '.ast-desktop-header-content' ).css( 'top', selector.outerHeight() + gutter );
+					desktop_parent.find( '.ast-desktop-header-content' ).css( 'width', max_width );
 				}
 
 				if ( '1' === self.options.hide_on_scroll ) {
@@ -521,33 +527,8 @@
 		$("head").append( output );
 	}
 
-	function is_customizer_preview() {
-		var in_customizer = false;
-
-		// check for wp.customize return boolean
-		if ( typeof wp !== 'undefined' ) {
-			in_customizer =  typeof wp.customize !== 'undefined' ? true : false;
-		}
-
-		return in_customizer;
-	}
-
-	function stickHeaderToTop() {
-
-		if( ! is_customizer_preview() ) {
-			return ;
-		}
-
-		stick_upto_scroll = 0;
-		jQuery( window ).scrollTop( 0 );
-	}
-
 	// Any stick header is enabled?
 	if ( stick_main || stick_above || stick_below ) {
-
-		if ( header_builder_active ) {
-			stickHeaderToTop();
-		}
 
 		// Add Respective class to the body dependent on which sticky header is activated.
 		$( document ).on( "addStickyClass", function() {
@@ -592,11 +573,9 @@
 			if( 'astLayoutWidthChanged' === e.type ) {
 
 				// return if sticky not enabled.
-				if (!(stick_main || stick_below || stick_above)) {
+				if (!(parseInt( stick_main ) || parseInt( stick_below ) || parseInt( stick_above ))) {
 					return;
 				}
-
-				stickHeaderToTop();
 
 				// Unwrapping sticky to reapply again.
 				jQuery('div.ast-stick-primary-below-wrapper').children().unwrap();

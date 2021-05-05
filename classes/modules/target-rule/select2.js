@@ -21,7 +21,7 @@
     } else if (typeof module === 'object' && module.exports) {
         // Node/CommonJS
         module.exports = function (root, jQuery) {
-        
+
             if (jQuery === undefined) {
                 // require('jQuery') returns a factory that requires window to
                 // build a jQuery instance, we normalize how we use modules
@@ -34,9 +34,9 @@
                   jQuery = require('jquery')(root);
                 }
             }
-            
+
             factory(jQuery);
-            
+
             return jQuery;
         };
     } else {
@@ -772,6 +772,7 @@ S2.define('select2/utils',[
       return markup;
     }
 
+		// Regex to replace special characters with string.
     return String(markup).replace(/[&<>"'\/\\]/g, function (match) {
       return replaceMap[match];
     });
@@ -3503,7 +3504,7 @@ S2.define('select2/data/ajax',[
 
         if (self.options.get('debug') && window.console && console.error) {
           // Check to make sure that the response included a `results` key.
-          if (!results || !results.results || !$.isArray(results.results)) {
+          if (!results || !results.results || !Array.isArray(results.results)) {
             console.error(
               'Select2: The AJAX results did not return an array in the ' +
               '`results` key of the response.'
@@ -3561,7 +3562,7 @@ S2.define('select2/data/tags',[
 
     decorated.call(this, $element, options);
 
-    if ($.isArray(tags)) {
+    if (Array.isArray(tags)) {
       for (var t = 0; t < tags.length; t++) {
         var tag = tags[t];
         var item = this._normalizeItem(tag);
@@ -4802,7 +4803,7 @@ S2.define('select2/defaults',[
       }
     }
 
-    if ($.isArray(options.language)) {
+    if (Array.isArray(options.language)) {
       var languages = new Translation();
       options.language.push('en');
 
@@ -4860,6 +4861,7 @@ S2.define('select2/defaults',[
         return DIACRITICS[a] || a;
       }
 
+		// Regex to replace unicode range with match.
       return text.replace(/[^\u0000-\u007E]/g, match);
     }
 
@@ -5176,6 +5178,7 @@ S2.define('select2/core',[
       id = Utils.generateChars(4);
     }
 
+		// Regex to replace special characters with empty string.
     id = id.replace(/(:|\.|\[|\]|,)/g, '');
     id = 'select2-' + id;
 
@@ -5225,6 +5228,7 @@ S2.define('select2/core',[
       var attrs = style.split(';');
 
       for (var i = 0, l = attrs.length; i < l; i = i + 1) {
+				// Regex to replace whitespace character with empty string.
         var attr = attrs[i].replace(/\s/g, '');
         var matches = attr.match(WIDTH);
 
@@ -5617,7 +5621,7 @@ S2.define('select2/core',[
 
     var newVal = args[0];
 
-    if ($.isArray(newVal)) {
+    if (Array.isArray(newVal)) {
       newVal = $.map(newVal, function (obj) {
         return obj.toString();
       });

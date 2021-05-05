@@ -208,7 +208,7 @@ if ( ! class_exists( 'Astra_Ext_LifterLMS_Loader' ) ) {
 					'attribute' => 'adv-header-id-meta',
 					'id'        => 'adv-header-id-meta',
 					'label'     => esc_html__( 'Page Header ', 'astra-addon' ),
-					'type'      => 'select',
+					'type'      => 'ast-select',
 					'options'   => $page_headers,
 				);
 			}
@@ -218,7 +218,7 @@ if ( ! class_exists( 'Astra_Ext_LifterLMS_Loader' ) ) {
 					'attribute' => 'stick-header-meta',
 					'id'        => 'stick-header-meta',
 					'label'     => esc_html__( 'Sticky Header ', 'astra-addon' ),
-					'type'      => 'select',
+					'type'      => 'ast-select',
 					'options'   => array(
 						'default'  => esc_html__( 'Customizer Setting', 'astra-addon' ),
 						'enabled'  => esc_html__( 'Enabled', 'astra-addon' ),
@@ -232,7 +232,7 @@ if ( ! class_exists( 'Astra_Ext_LifterLMS_Loader' ) ) {
 					'attribute' => 'theme-transparent-header-meta',
 					'id'        => 'theme-transparent-header-meta',
 					'label'     => esc_html__( 'Transparent Header ', 'astra-addon' ),
-					'type'      => 'select',
+					'type'      => 'ast-select',
 					'options'   => array(
 						'default'  => esc_html__( 'Customizer Setting', 'astra-addon' ),
 						'enabled'  => esc_html__( 'Enabled', 'astra-addon' ),

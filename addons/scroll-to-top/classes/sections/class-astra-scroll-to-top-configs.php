@@ -42,36 +42,42 @@ if ( ! class_exists( 'Astra_Scroll_To_Top_Configs' ) ) {
 				 * Option: Scroll to Top Display On
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[scroll-to-top-on-devices]',
-					'default'  => astra_get_option( 'scroll-to-top-on-devices' ),
-					'type'     => 'control',
-					'control'  => 'select',
-					'section'  => 'section-scroll-to-top',
-					'priority' => 10,
-					'title'    => __( 'Display On', 'astra-addon' ),
-					'choices'  => array(
+					'name'       => ASTRA_THEME_SETTINGS . '[scroll-to-top-on-devices]',
+					'default'    => astra_get_option( 'scroll-to-top-on-devices' ),
+					'type'       => 'control',
+					'control'    => Astra_Theme_Extension::$selector_control,
+					'section'    => 'section-scroll-to-top',
+					'priority'   => 10,
+					'title'      => __( 'Display On', 'astra-addon' ),
+					'choices'    => array(
 						'desktop' => __( 'Desktop', 'astra-addon' ),
 						'mobile'  => __( 'Mobile', 'astra-addon' ),
 						'both'    => __( 'Desktop + Mobile', 'astra-addon' ),
 					),
+					'renderAs'   => 'text',
+					'responsive' => false,
+					'divider'    => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
 				 * Option: Scroll to Top Position
 				 */
 				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[scroll-to-top-icon-position]',
-					'default'   => astra_get_option( 'scroll-to-top-icon-position' ),
-					'type'      => 'control',
-					'control'   => 'select',
-					'transport' => 'postMessage',
-					'section'   => 'section-scroll-to-top',
-					'title'     => __( 'Position', 'astra-addon' ),
-					'choices'   => array(
-						'right' => __( 'Right', 'astra-addon' ),
+					'name'       => ASTRA_THEME_SETTINGS . '[scroll-to-top-icon-position]',
+					'default'    => astra_get_option( 'scroll-to-top-icon-position' ),
+					'type'       => 'control',
+					'control'    => Astra_Theme_Extension::$selector_control,
+					'transport'  => 'postMessage',
+					'section'    => 'section-scroll-to-top',
+					'title'      => __( 'Position', 'astra-addon' ),
+					'choices'    => array(
 						'left'  => __( 'Left', 'astra-addon' ),
+						'right' => __( 'Right', 'astra-addon' ),
 					),
-					'priority'  => 11,
+					'priority'   => 11,
+					'responsive' => false,
+					'renderAs'   => 'text',
+					'divider'    => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
@@ -81,10 +87,11 @@ if ( ! class_exists( 'Astra_Scroll_To_Top_Configs' ) ) {
 					'name'      => ASTRA_THEME_SETTINGS . '[scroll-to-top-icon-size]',
 					'default'   => astra_get_option( 'scroll-to-top-icon-size' ),
 					'type'      => 'control',
-					'control'   => 'number',
+					'control'   => 'ast-slider',
 					'transport' => 'postMessage',
 					'section'   => 'section-scroll-to-top',
 					'title'     => __( 'Icon Size', 'astra-addon' ),
+					'suffix'    => 'px',
 					'priority'  => 12,
 				),
 
@@ -99,36 +106,54 @@ if ( ! class_exists( 'Astra_Scroll_To_Top_Configs' ) ) {
 					'transport' => 'postMessage',
 					'section'   => 'section-scroll-to-top',
 					'title'     => __( 'Border Radius', 'astra-addon' ),
-					'priority'  => 13,
+					'suffix'    => 'px',
+					'priority'  => 1,
+					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+					'context'   => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 
 				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[scroll-on-top-color-group]',
 					'default'   => astra_get_option( 'scroll-on-top-color-group' ),
 					'type'      => 'control',
-					'control'   => 'ast-settings-group',
-					'title'     => __( 'Colors', 'astra-addon' ),
+					'control'   => Astra_Theme_Extension::$group_control,
+					'title'     => __( 'Icon Color', 'astra-addon' ),
 					'section'   => 'section-scroll-to-top',
 					'transport' => 'postMessage',
-					'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+					'context'   => astra_addon_builder_helper()->is_header_footer_builder_active ?
+						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 					'priority'  => 15,
+					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+				),
+
+				array(
+					'name'      => ASTRA_THEME_SETTINGS . '[scroll-on-top-bg-color-group]',
+					'default'   => astra_get_option( 'scroll-on-top-bg-color-group' ),
+					'type'      => 'control',
+					'control'   => Astra_Theme_Extension::$group_control,
+					'title'     => __( 'Background Color', 'astra-addon' ),
+					'section'   => 'section-scroll-to-top',
+					'transport' => 'postMessage',
+					'context'   => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
+					'priority'  => 16,
 				),
 
 				/**
 				 * Option: Icon Color
 				 */
 				array(
-					'name'      => 'scroll-to-top-icon-color',
-					'default'   => '',
-					'type'      => 'sub-control',
-					'priority'  => 1,
-					'parent'    => ASTRA_THEME_SETTINGS . '[scroll-on-top-color-group]',
-					'section'   => 'section-scroll-to-top',
-					'tab'       => __( 'Normal', 'astra-addon' ),
-					'control'   => 'ast-color',
-					'transport' => 'postMessage',
-					'title'     => __( 'Icon Color', 'astra-addon' ),
+					'name'              => 'scroll-to-top-icon-color',
+					'default'           => astra_get_option( 'scroll-to-top-icon-color' ),
+					'type'              => 'sub-control',
+					'priority'          => 1,
+					'parent'            => ASTRA_THEME_SETTINGS . '[scroll-on-top-color-group]',
+					'section'           => 'section-scroll-to-top',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'title'             => __( 'Color', 'astra-addon' ),
 				),
 
 				// Check Astra_Control_Color is exist in the theme.
@@ -136,32 +161,32 @@ if ( ! class_exists( 'Astra_Scroll_To_Top_Configs' ) ) {
 				 * Option: Icon Background Color
 				 */
 				array(
-					'name'      => 'scroll-to-top-icon-bg-color',
-					'default'   => '',
-					'type'      => 'sub-control',
-					'priority'  => 1,
-					'parent'    => ASTRA_THEME_SETTINGS . '[scroll-on-top-color-group]',
-					'section'   => 'section-scroll-to-top',
-					'tab'       => __( 'Normal', 'astra-addon' ),
-					'transport' => 'postMessage',
-					'control'   => 'ast-color',
-					'title'     => __( 'Background Color', 'astra-addon' ),
+					'name'              => 'scroll-to-top-icon-bg-color',
+					'default'           => astra_get_option( 'scroll-to-top-icon-bg-color' ),
+					'type'              => 'sub-control',
+					'priority'          => 1,
+					'parent'            => ASTRA_THEME_SETTINGS . '[scroll-on-top-bg-color-group]',
+					'section'           => 'section-scroll-to-top',
+					'transport'         => 'postMessage',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'title'             => __( 'Color', 'astra-addon' ),
 				),
 
 				/**
 				 * Option: Icon Hover Color
 				 */
 				array(
-					'name'      => 'scroll-to-top-icon-h-color',
-					'default'   => '',
-					'type'      => 'sub-control',
-					'priority'  => 1,
-					'parent'    => ASTRA_THEME_SETTINGS . '[scroll-on-top-color-group]',
-					'section'   => 'section-scroll-to-top',
-					'tab'       => __( 'Hover', 'astra-addon' ),
-					'control'   => 'ast-color',
-					'transport' => 'postMessage',
-					'title'     => __( 'Icon Color', 'astra-addon' ),
+					'name'              => 'scroll-to-top-icon-h-color',
+					'default'           => astra_get_option( 'scroll-to-top-icon-h-color' ),
+					'type'              => 'sub-control',
+					'priority'          => 1,
+					'parent'            => ASTRA_THEME_SETTINGS . '[scroll-on-top-color-group]',
+					'section'           => 'section-scroll-to-top',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'title'             => __( 'Hover Color', 'astra-addon' ),
 				),
 
 				// Check Astra_Control_Color is exist in the theme.
@@ -170,36 +195,29 @@ if ( ! class_exists( 'Astra_Scroll_To_Top_Configs' ) ) {
 				 */
 
 				array(
-					'name'      => 'scroll-to-top-icon-h-bg-color',
-					'default'   => '',
-					'type'      => 'sub-control',
-					'priority'  => 1,
-					'parent'    => ASTRA_THEME_SETTINGS . '[scroll-on-top-color-group]',
-					'section'   => 'section-scroll-to-top',
-					'tab'       => __( 'Hover', 'astra-addon' ),
-					'control'   => 'ast-color',
-					'transport' => 'postMessage',
-					'title'     => __( 'Background Color', 'astra-addon' ),
+					'name'              => 'scroll-to-top-icon-h-bg-color',
+					'default'           => astra_get_option( 'scroll-to-top-icon-h-bg-color' ),
+					'type'              => 'sub-control',
+					'priority'          => 1,
+					'parent'            => ASTRA_THEME_SETTINGS . '[scroll-on-top-bg-color-group]',
+					'section'           => 'section-scroll-to-top',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'title'             => __( 'Hover Color', 'astra-addon' ),
 				),
 
 			);
 
-			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
-				array_push(
-					$_configs,
-					/**
-					 * Option: Scroll To Top Tabs
-					 */
-					array(
-						'name'        => 'section-scroll-to-top-ast-context-tabs',
-						'section'     => 'section-scroll-to-top',
-						'type'        => 'control',
-						'control'     => 'ast-builder-header-control',
-						'priority'    => 0,
-						'description' => '',
-
-					)
+				$_configs[] = array(
+					'name'        => 'section-scroll-to-top-ast-context-tabs',
+					'section'     => 'section-scroll-to-top',
+					'type'        => 'control',
+					'control'     => 'ast-builder-header-control',
+					'priority'    => 0,
+					'description' => '',
 				);
 			}
 

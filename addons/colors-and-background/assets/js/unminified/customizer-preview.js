@@ -1,13 +1,13 @@
 /**
  * This file adds some LIVE to the Customizer live preview. To leverage
  * this, set your custom settings to 'postMessage' and then add your handling
- * here. Your javascript should grab settings from customizer controls, and 
+ * here. Your javascript should grab settings from customizer controls, and
  * then make any necessary changes to the page using jQuery.
  *
  * Use function astra_css() to generate dynamic CSS
  *
  * E.g. astra_css( CONTROL, CSS_PROPERTY, SELECTOR, UNIT )
- * 
+ *
  * @package Astra Addon
  * @since  1.0.0
  */
@@ -82,7 +82,7 @@
 	astra_color_responsive_css( 'colors-background', 'astra-settings[primary-menu-a-color-responsive]', 		'color',				'.main-header-menu .current-menu-item > .menu-link, .main-header-menu .current-menu-ancestor > .menu-link,.ast-header-sections-navigation .menu-item.current-menu-item > .menu-link, .ast-above-header-menu-items .menu-item.current-menu-item > .menu-link,.ast-header-sections-navigation .menu-item.current-menu-ancestor > .menu-link, .ast-above-header-menu-items .menu-item.current-menu-ancestor > .menu-link' );
 
 	astra_color_responsive_css( 'colors-background', 'astra-settings[primary-menu-a-bg-color-responsive]', 	'background-color', 	'.main-header-menu .current-menu-item > .menu-link, .main-header-menu .current-menu-ancestor > .menu-link,.ast-header-sections-navigation .menu-item.current-menu-item > .menu-link, .ast-above-header-menu-items .menu-item.current-menu-item > .menu-link,.ast-header-sections-navigation .menu-item.current-menu-ancestor > .menu-link, .ast-above-header-menu-items .menu-item.current-menu-ancestor > .menu-link, .ast-fullscreen-menu-overlay .main-header-menu .menu-item.current-menu-item > .menu-link, .ast-fullscreen-menu-overlay .main-header-menu .menu-item.current-menu-ancestor > .menu-link' );
-	
+
 	/**
 	 * Primary Submenu
 	 */
@@ -103,13 +103,13 @@
 	 * Content background color
 	 */
 	if( jQuery( 'body' ).hasClass( 'ast-separate-container' ) && jQuery( 'body' ).hasClass( 'ast-two-container' )){
-		var dynamicSelector   = '.ast-separate-container .ast-article-single, .ast-separate-container .comment-respond,.ast-separate-container .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .ast-author-meta, .ast-separate-container .related-posts, .ast-separate-container .comments-area, .ast-separate-container .comments-count-wrapper, .ast-separate-container.ast-two-container #secondary .widget';
+		var dynamicSelector   = '.ast-separate-container .ast-article-single:not(.ast-related-post), .ast-separate-container .comment-respond,.ast-separate-container .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .ast-author-meta, .ast-separate-container .related-posts, .ast-separate-container .comments-area, .ast-separate-container .comments-count-wrapper, .ast-separate-container.ast-two-container #secondary .widget';
 		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'desktop' );
 		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'tablet' );
 		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'mobile' );
 	}
 	else if ( jQuery( 'body' ).hasClass( 'ast-separate-container' ) ) {
-		var dynamicSelector   = '.ast-separate-container .ast-article-single, .ast-separate-container .comment-respond,.ast-separate-container .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .ast-author-meta, .ast-separate-container .related-posts, .ast-separate-container .comments-area, .ast-separate-container .comments-count-wrapper';
+		var dynamicSelector   = '.ast-separate-container .ast-article-single:not(.ast-related-post), .ast-separate-container .comment-respond,.ast-separate-container .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .ast-author-meta, .ast-separate-container .related-posts, .ast-separate-container .comments-area, .ast-separate-container .comments-count-wrapper';
 		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'desktop' );
 		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'tablet' );
 		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'mobile' );
@@ -184,13 +184,13 @@
 	 * Primary Menu
 	 */
 	/**
-	 * Primary Menu Bg colors & image 
+	 * Primary Menu Bg colors & image
 	 */
 
 	var headersectionSelector = '';
-	
+
 	var primaryMenuBgStyle = '.main-header-menu, .ast-header-break-point .main-header-menu, .ast-header-break-point .ast-header-custom-item, .ast-header-break-point .ast-header-sections-navigation';
-	
+
 	if ( jQuery('body').hasClass('ast-primary-menu-disabled') ) {
 		headersectionSelector = ', .ast-above-header-menu-items, .ast-below-header-menu-items';
 		primaryMenuBgStyle += headersectionSelector;
@@ -201,7 +201,7 @@
 	astra_apply_responsive_background_css( 'astra-settings[primary-menu-bg-obj-responsive]', primaryMenuBgStyle, 'mobile' );
 	astra_color_responsive_css( 'colors-background', 'astra-settings[primary-menu-h-bg-color-responsive]', 	'background-color', 	'.main-header-menu .menu-link:hover, .main-header-menu .menu-item:hover > .menu-link, .main-header-menu .menu-item.focus > .menu-link, .ast-header-sections-navigation li.hover > a,.ast-header-sections-navigation .menu-item.focus > .menu-link' );
 	astra_color_responsive_css( 'colors-background', 'astra-settings[primary-menu-h-color-responsive]', 		'color', 				'.main-header-menu .menu-link:hover, .main-header-menu .menu-item:hover > .menu-link, .main-header-menu .menu-item.focus > .menu-link,  .main-header-menu .menu-item:hover > .ast-menu-toggle, .main-header-menu .menu-item.focus > .ast-menu-toggle, .main-header-menu .ast-masthead-custom-menu-items a:hover, .ast-header-sections-navigation .menu-item.current-menu-item > .menu-link' );
-	
+
 	/**
 	 * Single Post / Page Title Color
 	 */
@@ -247,16 +247,16 @@
 	 astra_css(
         'astra-settings[footer-copyright-link-color]',
         'color',
-        '.ast-footer-copyright .ast-footer-html-inner a'
+        '.ast-footer-copyright a'
 	);
-	
+
 	// Link Hover color.
 	astra_css(
         'astra-settings[footer-copyright-link-h-color]',
         'color',
-        '.ast-footer-copyright .ast-footer-html-inner a:hover'
+        '.ast-footer-copyright a:hover'
 	);
-	
+
 	/**
 	 * Header - Account - Colors.
 	 */
@@ -311,7 +311,7 @@
 		'background',
 		account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item.current-menu-item > .menu-link, ' + account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active .menu-link, ' + account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item.current-menu-item > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active .menu-link'
 	);
-	
+
 	astra_css(
 		'astra-settings[header-account-popup-label-color]',
 		'color',
@@ -352,10 +352,16 @@
 	 * Header - Menu - Colors.
 	 */
 
-	for ( var index = 1; index <= astColors.header_menu_count; index++ ) {
+	for ( var index = 1; index <= astColors.component_limit; index++ ) {
 
 		var prefix = 'menu' + index;
-		var selector = '.astra-hfb-header .ast-builder-menu-' + index + '.ast-builder-menu .main-header-menu';
+
+		var selector = '.ast-hfb-header .ast-builder-menu-' + index + '.ast-builder-menu .main-header-menu';
+
+		if ( astColors.astra_not_updated ) {
+
+			selector = '.astra-hfb-header .ast-builder-menu-' + index + '.ast-builder-menu .main-header-menu';
+		}
 
 		/**
 		 * Sub-Menu - Colors
@@ -413,19 +419,20 @@
 			/**
 			 * Mega Menu - Colors
 			 */
+			var ast_class = ( astColors.astra_not_updated ) ? '.astra-hfb-header' : '.ast-hfb-header';
 
 			// Mega-Menu - Normal Color
 			astra_css(
 				'astra-settings[header-' + prefix + '-header-megamenu-heading-color]',
 				'color',
-				'.astra-hfb-header.ast-desktop .ast-builder-menu-' + index + ' .main-header-menu .menu-item.menu-item-heading > .menu-link'
+				ast_class + '.ast-desktop .ast-builder-menu-' + index + ' .main-header-menu .menu-item.menu-item-heading > .menu-link'
 			);
 
 			// Mega-Menu - Hover Color
 			astra_css(
 				'astra-settings[header-' + prefix + '-header-megamenu-heading-h-color]',
 				'color',
-				'.astra-hfb-header.ast-desktop .ast-builder-menu-' + index + ' .main-header-menu .astra-megamenu-li .menu-item.menu-item-heading > .menu-link:hover, .astra-hfb-header.ast-desktop .ast-builder-menu-' + index + ' .main-header-menu .astra-megamenu-li .menu-item.menu-item-heading:hover > .menu-link'
+				ast_class + '.ast-desktop .ast-builder-menu-' + index + ' .main-header-menu .astra-megamenu-li .menu-item.menu-item-heading > .menu-link:hover, ' + ast_class + '.ast-desktop .ast-builder-menu-' + index + ' .main-header-menu .astra-megamenu-li .menu-item.menu-item-heading:hover > .menu-link'
 			);
 		}
 
@@ -434,8 +441,12 @@
 	 * Mobile menu CSS
 	 */
 
-	var selector = '.astra-hfb-header .ast-builder-menu-mobile .main-header-menu';
+	var selector = '.ast-hfb-header .ast-builder-menu-mobile .main-header-menu';
 
+	if ( astColors.astra_not_updated ) {
+
+		selector = '.astra-hfb-header .ast-builder-menu-mobile .main-header-menu';
+	}
 	/**
 	 * Sub-Menu - Colors
 	 */
@@ -494,12 +505,57 @@
 
 	var search_selector = '.ast-header-search .ast-search-menu-icon';
 
+	 // Search Box icon hover color.
+	 astra_color_responsive_css(
+		'astra-builder',
+        'astra-settings[header-search-icon-h-color]',
+        'color',
+        '.ast-header-search .astra-search-icon:hover'
+	);
+
+	 // Search Box icon hover color.
+	 astra_color_responsive_css(
+		'astra-builder',
+        'astra-settings[header-search-text-placeholder-color]',
+        'color',
+        '.ast-header-search .ast-search-menu-icon .search-field, .ast-header-search .ast-search-menu-icon .search-field::placeholder'
+	);
+
 	 // Search Box Background color.
 	 astra_css(
         'astra-settings[header-search-box-background-color]',
         'background-color',
-        '.ast-header-search .ast-search-menu-icon .search-field, .ast-header-search .ast-search-menu-icon .search-form, .ast-header-search .ast-search-menu-icon .search-submit'
+        '.ast-header-search .ast-search-menu-icon .search-field, .ast-header-search .ast-search-menu-icon .search-form, .ast-header-search .ast-search-menu-icon .search-submit, .ast-header-break-point .ast-header-search .ast-search-menu-icon.slide-search:hover .search-field, .ast-header-break-point .ast-header-search .ast-search-menu-icon.slide-search:hover .search-form, .ast-header-break-point .ast-header-search .ast-search-menu-icon.slide-search:hover .search-submit, .ast-header-break-point .ast-header-search .ast-search-menu-icon.slide-search:focus .search-field, .ast-header-break-point .ast-header-search .ast-search-menu-icon.slide-search:focus .search-form, .ast-header-break-point .ast-header-search .ast-search-menu-icon.slide-search:focus .search-submit'
 	);
+
+	 // Search Box Background hover color.
+	 astra_css(
+        'astra-settings[header-search-box-background-h-color]',
+        'background-color',
+        '.ast-header-search .ast-search-menu-icon:hover .search-field, .ast-header-search .ast-search-menu-icon:hover .search-form, .ast-header-search .ast-search-menu-icon:hover .search-submit, .ast-header-search .ast-search-menu-icon:focus .search-field, .ast-header-search .ast-search-menu-icon:focus .search-form, .ast-header-search .ast-search-menu-icon:focus .search-submit'
+	);
+
+	/**
+	 * search height
+	 */
+	wp.customize( 'astra-settings[header-search-height]', function( setting ) {
+		setting.bind( function( height ) {
+		if ( height['desktop'] != '' || height['tablet'] != '' || height['mobile'] != '' ) {
+				var dynamicStyle = '.ast-header-search .ast-search-menu-icon form.search-form .search-field {';
+					dynamicStyle += 'height:'  + height['desktop'] + 'px;';
+					dynamicStyle += '} ';
+					dynamicStyle += '@media( max-width: 768px ) {';
+					dynamicStyle += '.ast-header-search .ast-search-menu-icon form.search-form .search-field {';
+					dynamicStyle += 'height:'  + height['tablet'] + 'px;';
+					dynamicStyle += '} }';
+					dynamicStyle += '@media( max-width: 544px ) {';
+					dynamicStyle += '.ast-header-search .ast-search-menu-icon form.search-form .search-field {';
+					dynamicStyle += 'height:'  + height['mobile'] + 'px;';
+					dynamicStyle += '} }';
+				astra_add_dynamic_css( 'astra-settings[header-search-height]', dynamicStyle );
+			}
+		});
+	});
 
 	// Search Box Border Size.
 	wp.customize( 'astra-settings[header-search-border-size]', function( setting ) {
@@ -546,7 +602,7 @@
 	// Seach Full Screen / Header Cover Overlay Text Color.
 	wp.customize( 'astra-settings[header-search-overlay-text-color]', function( setting ) {
 		setting.bind( function( color ) {
-			
+
 			var dynamicStyle = '.ast-search-box.header-cover #close, .ast-search-box.full-screen #close, .ast-search-box.full-screen .ast-search-wrapper .large-search-text, .ast-search-box.header-cover .search-submit, .ast-search-box.full-screen .search-submit, .ast-search-box.header-cover .search-field, .ast-search-box.full-screen .search-field, .ast-search-box.header-cover .search-field::-webkit-input-placeholder, .ast-search-box.full-screen .search-field::-webkit-input-placeholder {';
 				dynamicStyle += 'color:'  + color;
 				dynamicStyle += '} ';
@@ -555,6 +611,42 @@
 				dynamicStyle += '} ';
 
 			astra_add_dynamic_css( 'astra-settings[header-search-overlay-text-color]', dynamicStyle );
+		} );
+	} );
+
+	/**
+	 * Header - language switcher - Colors.
+	 */
+	var lswitcher_section = 'section-hb-language-switcher';
+	wp.customize( 'astra-settings[' + lswitcher_section + '-color]', function( value ) {
+		value.bind( function( color ) {
+
+			if( ! color ) {
+				color = 'inherit';
+			}
+
+			var dynamicStyle =  '.ast-lswitcher-item-header {';
+			dynamicStyle += 'color: ' + color + ';';
+			dynamicStyle += '} ';
+			astra_add_dynamic_css( lswitcher_section + '-color', dynamicStyle );
+		} );
+	} );
+
+	/**
+	 * footer - language switcher - Colors.
+	 */
+	var lswitcher_fb_section = 'section-fb-language-switcher';
+	wp.customize( 'astra-settings[' + lswitcher_fb_section + '-color]', function( value ) {
+		value.bind( function( color ) {
+
+			if( ! color ) {
+				color = 'inherit';
+			}
+
+			var dynamicStyle = '.ast-lswitcher-item-footer {';
+			dynamicStyle += 'color: ' + color + ';';
+			dynamicStyle += '} ';
+			astra_add_dynamic_css( lswitcher_fb_section + '-color', dynamicStyle );
 		} );
 	} );
 

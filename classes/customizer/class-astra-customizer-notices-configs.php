@@ -44,7 +44,7 @@ if ( ! class_exists( 'Astra_Customizer_Notices_Configs' ) ) :
 
 				if ( $this->is_custom_layout_header() ) {
 
-					if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+					if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 						$_configs = array(
 
@@ -52,7 +52,7 @@ if ( ! class_exists( 'Astra_Customizer_Notices_Configs' ) ) :
 							 * Notice for custom layout.
 							 */
 							array(
-								'name'     => ASTRA_THEME_SETTINGS . '[ahfb-notice-custom-layout]',
+								'name'     => ASTRA_THEME_SETTINGS . '[ast-callback-notice-custom-layout]',
 								'type'     => 'control',
 								'control'  => 'ast-description',
 								'section'  => 'section-header-builder-layout',

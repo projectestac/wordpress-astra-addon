@@ -1,3 +1,71 @@
+v3.4.1
+- Fix: Fatal error `Uncaught Error: Class 'Astra_Builder_Helper'` not found when footer build with custom layout.
+
+v3.4.0
+- New: 'Start Time' and 'End Time' rules for Custom Layouts. (https://wpastra.com/docs/custom-layouts-pro/)
+- New: 'Responsive Visibility' rules for Custom Layouts. (https://wpastra.com/docs/custom-layouts-pro/)
+- Fix: Remove unnecessary gap between the Mobile Header & Dropdown.
+- Fix: Search element margin not working.
+- Fix: Breadcrumb in the page headers show warnings on structure testing tool.
+- Fix: Gutenberg Editor - Unable to edit content in editor when background styles applied to Content and Site Layout is Max-Width.
+- Fix: Builder - Menu – After partial refresh megamenu's width & left position removes in customizer.
+- Fix: Enable Code Editor button misaligned in Gutenberg editor when Starter Templates plugin is active.
+- Fix: Sticky Header - Below header menu hover color issue when the mega menu is enabled.
+- Fix: Search Box Styling not working.
+
+v3.3.2
+- Fix: Previous & Next navigation icons not appearing on WooCommerce single product page.
+- Fix: Close icon not appearing for WooCommerce Quick View on Shop Page.
+
+v3.3.1
+- Fix: Builder - Illegal offset warning for footer divider with invalid vertical size.
+- Fix: Icons not appearing for WooCommerce Off-Canvas filter on Shop Page.
+
+v3.3.0
+- New: Builder - Introduced new element Toggle for Desktop. (https://wpastra.com/docs/toggle-button-for-desktop/)
+- New: SVG Icons support ( deprecating astra.woff font file ). (https://wpastra.com/docs/ast-font-icons-to-svg/)
+- Improvement: Redesigned the image resize control UI in customizer for better user experience.
+- Improvement: Builder - Menu - Added box shadow option for submenu container.
+- Improvement: Code quality improvements for better performance.
+- Improvement: WordPress 5.7 compatibility.
+- Improvement: Frontend optimization - WooCommerce - Shop Page, Single Product Page. (https://wpastra.com/docs/optimize-css-html-before-3-3/)
+- Improvement: Frontend optimization - EDD - Shop Page, Single Product Page.
+- Improvement: Frontend optimization - LifterLMS - All Courses Page.
+- Improvement: Frontend optimization - LearnDash - All Courses Page, Single Course Page.
+- Fix: Builder - Account Element - Added better notices for user understanding when Profile Action is set to Menu.
+- Fix: Above Header and Below Header compatibility in Page Header.
+- Fix: Menu container width not caculated properly when Mega Menu Width is set to Menu Container Width.
+- Fix: Vertical Alignment for Above, Below, and Primary footer not working when the addon is active.
+- Fix: Divider being invisible in some cases due to invalid width/height references.
+- Deprecated: Footer Divider - Deprecated the vertical layout size in percentage and added it in px.
+- Deprecated: Header Divider - Deprecated the horizontal layout size in percentage and added it in px.
+
+v3.2.0
+- New: Introduced Inside Post/Page content option in Custom Layouts.
+
+v3.1.0
+- New: Ability to clone and delete elements from Header/Footer Builder. ( https://wpastra.com/docs/new-features-clone-delete/ )
+- New: Added new color options for Add to Cart Tray.
+- New: Language Switcher element for Header & Footer Builder.
+- Improvement: Redesigned the entire customizer UI for better user experience. ( https://wpastra.com/docs/revamped-astra-customizer/ )
+- Improvement: Added design options for Builder - Toggle Menu in Sticky header.
+- Improvement: Builder - Search - Placeholder text and color options.
+- Improvement: Builder - Search - Box height, Icon color and Background color options.
+- Improvement: Builder - Button - Added button size options.
+- Fix: Builder - Social Icons - Added ability to show the social icons in vertical layout for mobile devices.
+- Fix: Builder - Sticky Header - Social icon, label custom color & official color not working.
+- Fix: Corrected position of 'Last Menu Item' typography controls inside 'Primary Menu' section.
+- Fix: Builder - Menu - Megamenu container get hides when hover in between Top Offset spacing.
+- Fix: Sticky Header - Page scrolls to top in customizer when user switch to responsive mode.
+- Fix: Submenu colors are not working in the frontend.
+- Fix: Menu font size not working with old Header.
+- Fix: Sticky Header - Menu link, background and hover colors not working for old header.
+- Fix: Sticky Header -  Site title and tagline color not working.
+- Fix: White Label - Not able to white label the theme author and theme name in footer builder.
+- Fix: Added missing widget title font family option.
+- Fix: Product count value in cart element not aligned.
+- Fix: Custom Layouts - Removed unwanted blank CSS while using spacing option.
+
 v3.0.1
 - Fix: Mobile Header - Flyout Menu does not work for Sticky Header.
 - Fix: Hide label description option not working in Mega Menu.

@@ -44,19 +44,6 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Typo_Configs' ) ) {
 			$_configs = array(
 
 				/**
-				 * Option: Learndash Typography Divider
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[learndash-typography-divider]',
-					'type'     => 'control',
-					'control'  => 'ast-heading',
-					'section'  => 'section-learndash',
-					'title'    => __( 'Typography', 'astra-addon' ),
-					'settings' => array(),
-					'priority' => 42,
-				),
-
-				/**
 				 * Group: Learndash Header Typography Group
 				 */
 				array(
@@ -64,10 +51,11 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Typo_Configs' ) ) {
 					'default'   => astra_get_option( 'learndash-header-typography-group' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
-					'title'     => __( 'Header', 'astra-addon' ),
+					'title'     => __( 'Header Font', 'astra-addon' ),
 					'section'   => 'section-learndash',
 					'transport' => 'postMessage',
 					'priority'  => 43,
+					'divider'   => array( 'ast_class' => 'ast-top-divider' ),
 				),
 
 				/**
@@ -78,10 +66,11 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Typo_Configs' ) ) {
 					'default'   => astra_get_option( 'learndash-content-typography-group' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
-					'title'     => __( 'Content', 'astra-addon' ),
+					'title'     => __( 'Content Font', 'astra-addon' ),
 					'section'   => 'section-learndash',
 					'transport' => 'postMessage',
 					'priority'  => 43,
+					'divider'   => array( 'ast_class' => 'ast-top-divider' ),
 				),
 
 				/**
@@ -154,7 +143,7 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Typo_Configs' ) ) {
 						'px' => 'px',
 						'em' => 'em',
 					),
-					'priority'    => 30,
+					'priority'    => 16,
 				),
 
 				/**
@@ -227,7 +216,7 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Typo_Configs' ) ) {
 						'px' => 'px',
 						'em' => 'em',
 					),
-					'priority'    => 55,
+					'priority'    => 41,
 				),
 			);
 

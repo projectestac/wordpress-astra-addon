@@ -156,7 +156,7 @@ if ( ! class_exists( 'Addon_Gutenberg_Editor_CSS' ) ) {
 			);
 			$parse_css .= astra_parse_css( $typography_css_output );
 
-			return $dynamic_css .= $parse_css;
+			return $dynamic_css . $parse_css;
 		}
 
 		/**
@@ -212,15 +212,6 @@ if ( ! class_exists( 'Addon_Gutenberg_Editor_CSS' ) ) {
 
 			$parse_css .= astra_parse_css( $colors_and_background_output );
 
-			$container_layout = get_post_meta( get_the_id(), 'site-content-layout', true );
-			if ( 'default' === $container_layout || '' === $container_layout ) {
-				$container_layout = astra_get_option( 'single-' . get_post_type() . '-content-layout' );
-
-				if ( 'default' === $container_layout ) {
-					$container_layout = astra_get_option( 'site-content-layout' );
-				}
-			}
-
 			$boxed_container        = array();
 			$boxed_container_tablet = array();
 			$boxed_container_mobile = array();
@@ -237,14 +228,25 @@ if ( ! class_exists( 'Addon_Gutenberg_Editor_CSS' ) ) {
 			if ( isset( $container_layout ) ) {
 				$content_bg_obj = astra_get_option( 'content-bg-obj-responsive' );
 
+				// Setting up "Full-Width / Stretched" layout transparent but not for "Full-Width / Contained" in case of Max-Width site layout.
+				// Because we showcase container with "Full-Width / Contained" layout, so it should be visible as it looks on frontend with their content background styles.
 				$boxed_container        = array(
-					'.ast-separate-container .block-editor-writing-flow ' => astra_get_responsive_background_obj( $content_bg_obj, 'desktop' ),
+					'.ast-separate-container .block-editor-writing-flow, .ast-max-width-layout.ast-plain-container .edit-post-visual-editor .block-editor-writing-flow' => astra_get_responsive_background_obj( $content_bg_obj, 'desktop' ),
+					'.ast-max-width-layout.ast-plain-container .edit-post-visual-editor .block-editor-writing-flow' => array(
+						'padding' => '20px',
+					),
 				);
 				$boxed_container_tablet = array(
-					'.ast-separate-container .block-editor-writing-flow' => astra_get_responsive_background_obj( $content_bg_obj, 'tablet' ),
+					'.ast-separate-container .block-editor-writing-flow, .ast-max-width-layout.ast-plain-container .edit-post-visual-editor .block-editor-writing-flow' => astra_get_responsive_background_obj( $content_bg_obj, 'tablet' ),
+					'.ast-max-width-layout.ast-plain-container .edit-post-visual-editor .block-editor-writing-flow' => array(
+						'padding' => '20px',
+					),
 				);
 				$boxed_container_mobile = array(
-					'.ast-separate-container .block-editor-writing-flow' => astra_get_responsive_background_obj( $content_bg_obj, 'mobile' ),
+					'.ast-separate-container .block-editor-writing-flow, .ast-max-width-layout.ast-plain-container .edit-post-visual-editor .block-editor-writing-flow' => astra_get_responsive_background_obj( $content_bg_obj, 'mobile' ),
+					'.ast-max-width-layout.ast-plain-container .edit-post-visual-editor .block-editor-writing-flow' => array(
+						'padding' => '20px',
+					),
 				);
 			}
 
@@ -252,7 +254,7 @@ if ( ! class_exists( 'Addon_Gutenberg_Editor_CSS' ) ) {
 			$parse_css .= astra_parse_css( $boxed_container_tablet, '', astra_addon_get_tablet_breakpoint() );
 			$parse_css .= astra_parse_css( $boxed_container_mobile, '', astra_addon_get_mobile_breakpoint() );
 
-			return $dynamic_css .= $parse_css;
+			return $dynamic_css . $parse_css;
 		}
 
 		/**
@@ -324,7 +326,7 @@ if ( ! class_exists( 'Addon_Gutenberg_Editor_CSS' ) ) {
 
 			$parse_css = astra_parse_css( $boxed_container );
 
-			return $dynamic_css .= $parse_css;
+			return $dynamic_css . $parse_css;
 		}
 
 		/**
@@ -453,7 +455,7 @@ if ( ! class_exists( 'Addon_Gutenberg_Editor_CSS' ) ) {
 
 			$css_output .= astra_parse_css( $mobile_css, '', astra_addon_get_mobile_breakpoint() );
 
-			return $dynamic_css .= $css_output;
+			return $dynamic_css . $css_output;
 		}
 
 	}

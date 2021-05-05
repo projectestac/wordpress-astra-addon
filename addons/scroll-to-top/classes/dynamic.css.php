@@ -17,7 +17,7 @@ add_filter( 'astra_dynamic_css', 'astra_ext_scroll_to_top_dynamic_css' );
 function astra_ext_scroll_to_top_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 
 	$link_color                    = astra_get_option( 'link-color' );
-	$scroll_to_top_icon_size       = astra_get_option( 'scroll-to-top-icon-size', '15' );
+	$scroll_to_top_icon_size       = astra_get_option( 'scroll-to-top-icon-size', 15 );
 	$scroll_to_top_icon_radius     = astra_get_option( 'scroll-to-top-icon-radius' );
 	$scroll_to_top_icon_color      = astra_get_option( 'scroll-to-top-icon-color' );
 	$scroll_to_top_icon_h_color    = astra_get_option( 'scroll-to-top-icon-h-color' );
@@ -42,7 +42,24 @@ function astra_ext_scroll_to_top_dynamic_css( $dynamic_css, $dynamic_css_filtere
 			'background-color' => $scroll_to_top_icon_h_bg_color,
 		),
 	);
-	$scroll_css    = astra_parse_css( $scroll_to_top );
+
+	$scroll_css = astra_parse_css( $scroll_to_top );
+
+	if ( false === Astra_Icons::is_svg_icons() ) {
+		$scroll_to_top_icon = array(
+			'.ast-scroll-top-icon::before' => array(
+				'content'         => '"\e900"',
+				'font-family'     => 'Astra',
+				'text-decoration' => 'inherit',
+			),
+			'.ast-scroll-top-icon'         => array(
+				'transform' => 'rotate(180deg)',
+			),
+
+		);
+
+		$scroll_css .= astra_parse_css( $scroll_to_top_icon );
+	}
 
 	// Only if Padded layout is selected from Site Layout Addon.
 	if ( Astra_Ext_Extension::is_active( 'site-layouts' ) && 'ast-padded-layout' === $site_layout_padding ) {

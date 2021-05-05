@@ -523,5 +523,35 @@ function astra_ext_mega_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered = 
 		$css .= astra_parse_css( $border );
 	}
 
+	if ( false === Astra_Icons::is_svg_icons() ) {
+		$astra_font = array(
+			'.ast-desktop .ast-mega-menu-enabled.main-header-menu > .menu-item-has-children > .menu-link .sub-arrow:after, .ast-desktop .ast-mega-menu-enabled.ast-below-header-menu > .menu-item-has-children > .menu-link .sub-arrow:after, .ast-desktop .ast-mega-menu-enabled.ast-above-header-menu > .menu-item-has-children > .menu-link .sub-arrow:after' => array(
+				'content'                 => '"\e900"',
+				'display'                 => 'inline-block',
+				'font-family'             => 'Astra',
+				'font-size'               => '9px',
+				'font-size'               => '.6rem',
+				'font-weight'             => 'bold',
+				'text-rendering'          => 'auto',
+				'-webkit-font-smoothing'  => 'antialiased',
+				'-moz-osx-font-smoothing' => 'grayscale',
+				'margin-left'             => '10px',
+				'line-height'             => 'normal',
+			),
+		);
+	} else {
+		$astra_font = array(
+			'.ast-header-break-point .menu-text + .icon-arrow, .ast-header-break-point .menu-link .icon-arrow:first-child, .ast-desktop .menu-link > .icon-arrow:first-child' => array(
+				'display' => 'none',
+			),
+			'.ast-header-break-point .sub-menu .menu-link > .icon-arrow:first-child' => array(
+				'display' => 'inline-block',
+			),
+		);
+	}
+
+	/* Parse CSS from array() */
+	$css .= astra_parse_css( $astra_font );
+
 	return $dynamic_css . $css;
 }

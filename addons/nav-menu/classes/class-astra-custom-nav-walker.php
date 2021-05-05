@@ -46,11 +46,12 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 		 * @param array  $args   An array of arguments. @see wp_nav_menu().
 		 */
 		public function start_lvl( &$output, $depth = 0, $args = array() ) {
+
 			$indent = str_repeat( "\t", $depth );
 
 			$style = '';
 
-			if ( 0 === $depth && '' != $this->megamenu ) {
+			if ( 0 === $depth && '' != $this->megamenu && 'ast-hf-mobile-menu' !== $args->menu_id ) {
 
 				$style = array(
 					'.ast-desktop .menu-item-' . $this->menu_megamenu_item_id . ' .menu-item > .menu-link, .menu-item-' . $this->menu_megamenu_item_id . ' .menu-item .sub-menu > .menu-link, .ast-desktop .ast-container .menu-item-' . $this->menu_megamenu_item_id . ' .menu-item:hover' => array(
@@ -96,9 +97,8 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 					$megamenu_custom_width = ( isset( $megamenu_custom_width ) && ! empty( $megamenu_custom_width ) ) ? $megamenu_custom_width : 1200;
 
 					$style[ '.ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-mega-menu-width-custom:before' ] = array(
-						'content'    => '"' . $megamenu_custom_width . '"',
-						'opacity'    => 0,
-						'visibility' => 'hidden',
+						'content' => '"' . $megamenu_custom_width . '"',
+						'opacity' => 0,
 					);
 				}
 
@@ -221,7 +221,7 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 			}
 
 			// Mega menu and Hide headings.
-			if ( 0 === $depth && $this->has_children && '' != $this->megamenu ) {
+			if ( 0 === $depth && $this->has_children && '' != $this->megamenu && 'ast-hf-mobile-menu' !== $args->menu_id ) {
 				$classes[] = 'astra-megamenu-li ' . $this->megamenu_width . '-width-mega';
 			}
 
@@ -278,11 +278,26 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 			$atts['href']   = ! empty( $item->url ) ? $item->url : '';
 
 			/**
-			 * Removing previously triggered theme's filter.
+			 * Passing Attr Classes to the filter in order to not override the existing CSS classes using the filter 'nav_menu_link_attributes' added from theme.
 			 *
-			 * @since 2.6.2
+			 * This resolves the cloning Menu CSS for menu added after Primary Menu issue + 'MegaMenu Hide Menu Label / Description?' option not working issue.
+			 *
+			 * @since 3.1.0
 			 */
-			remove_filter( 'nav_menu_link_attributes', 'astra_menu_anchor_class_for_nav_menus', 11 );
+			$item_output  = $args->before;
+			$link_classes = array();
+
+			if ( 'disable-link' === $item->megamenu_disable_link ) {
+				$link_classes[] = 'ast-disable-link';
+			}
+
+			if ( 'disable-title' === $item->megamenu_disable_title ) {
+				$link_classes[] = 'ast-hide-menu-item';
+			}
+
+			$link_classes_str = join( ' ', $link_classes );
+
+			$atts['class'] = ! empty( $link_classes_str ) ? $link_classes_str : '';
 
 			/**
 			 * Filters the HTML attributes applied to a menu item's anchor element.
@@ -302,8 +317,7 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 			 * @param stdClass $args  An object of wp_nav_menu() arguments.
 			 * @param int      $depth Depth of menu item. Used for padding.
 			 */
-			$atts = apply_filters( 'nav_menu_link_attributes', $atts, $item, $args, $depth );
-
+			$atts       = apply_filters( 'nav_menu_link_attributes', $atts, $item, $args, $depth );
 			$attributes = '';
 			foreach ( $atts as $attr => $value ) {
 				if ( ! empty( $value ) ) {
@@ -312,8 +326,9 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 					if ( 'href' === $attr && 'disable-link' === $item->megamenu_disable_link ) {
 						$value = 'javascript:void(0)';
 					}
-
-					$attributes .= ' ' . $attr . '="' . $value . '"';
+					if ( 'class' !== $attr ) {
+						$attributes .= ' ' . $attr . '="' . $value . '"';
+					}
 				}
 			}
 
@@ -334,19 +349,8 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 
 			// Wrap menu text in a span tag.
 			$title = '<span class="menu-text">' . $title . '</span>';
-			// Output.
-			$item_output  = $args->before;
-			$link_classes = array();
 
-			if ( 'disable-link' === $item->megamenu_disable_link ) {
-				$link_classes[] = 'ast-disable-link';
-			}
-
-			if ( 'disable-title' === $item->megamenu_disable_title ) {
-				$link_classes[] = 'ast-hide-menu-item';
-			}
-
-			$item_output .= '<a' . $attributes . ' class="menu-link ' . implode( ' ', $link_classes ) . '">';
+			$item_output .= '<a' . $attributes . ' class="' . $atts['class'] . '">';
 
 			if ( isset( $item->megamenu_highlight_label ) && '' != $item->megamenu_highlight_label ) {
 
@@ -362,9 +366,15 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 				$title .= '<span class="astra-mm-highlight-label">' . esc_html( $item->megamenu_highlight_label ) . '</span>';
 			}
 
+			$item_output .= Astra_Icons::get_icons( 'arrow' );
+
 			$item_output .= $args->link_before . $title . $args->link_after;
 
-			if ( 0 == $depth ) {
+			if ( $args->walker->has_children ) {
+				$item_output .= Astra_Icons::get_icons( 'arrow' );
+			}
+
+			if ( 0 == $depth && 'ast-hf-mobile-menu' !== $args->menu_id ) {
 				$item_output .= '<span class="sub-arrow"></span>';
 			}
 

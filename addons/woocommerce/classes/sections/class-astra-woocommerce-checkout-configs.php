@@ -45,7 +45,7 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 					'name'      => ASTRA_THEME_SETTINGS . '[checkout-content-width]',
 					'default'   => astra_get_option( 'checkout-content-width' ),
 					'type'      => 'control',
-					'control'   => 'select',
+					'control'   => 'ast-select',
 					'priority'  => 5,
 					'section'   => 'woocommerce_checkout',
 					'transport' => 'postMessage',
@@ -54,6 +54,7 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 						'default' => __( 'Default', 'astra-addon' ),
 						'custom'  => __( 'Custom', 'astra-addon' ),
 					),
+					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
@@ -61,12 +62,12 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 				 */
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[checkout-content-max-width]',
-					'default'     => 1200,
+					'default'     => astra_get_option( 'checkout-content-max-width' ),
 					'type'        => 'control',
 					'transport'   => 'postMessage',
 					'control'     => 'ast-slider',
 					'context'     => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[checkout-content-width]',
 							'operator' => '==',
@@ -75,13 +76,14 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 					),
 					'section'     => 'woocommerce_checkout',
 					'title'       => __( 'Custom Width', 'astra-addon' ),
-					'suffix'      => '',
+					'suffix'      => 'px',
 					'priority'    => 5,
 					'input_attrs' => array(
 						'min'  => 768,
 						'step' => 1,
 						'max'  => 1920,
 					),
+					'divider'     => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
@@ -93,7 +95,8 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 					'type'    => 'control',
 					'section' => 'woocommerce_checkout',
 					'title'   => __( 'Two Step Checkout', 'astra-addon' ),
-					'control' => 'checkbox',
+					'control' => Astra_Theme_Extension::$switch_control,
+					'divider' => array( 'ast_class' => 'ast-bottom-divider ast-top-divider' ),
 				),
 
 				/**
@@ -105,7 +108,8 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 					'type'    => 'control',
 					'section' => 'woocommerce_checkout',
 					'title'   => __( 'Display Order Note', 'astra-addon' ),
-					'control' => 'checkbox',
+					'control' => Astra_Theme_Extension::$switch_control,
+					'divider' => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
@@ -117,7 +121,8 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 					'type'    => 'control',
 					'section' => 'woocommerce_checkout',
 					'title'   => __( 'Display Apply Coupon Field', 'astra-addon' ),
-					'control' => 'checkbox',
+					'control' => Astra_Theme_Extension::$switch_control,
+					'divider' => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/*
@@ -129,7 +134,8 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 					'type'    => 'control',
 					'section' => 'woocommerce_checkout',
 					'title'   => __( 'Distraction Free Checkout', 'astra-addon' ),
-					'control' => 'checkbox',
+					'control' => Astra_Theme_Extension::$switch_control,
+					'divider' => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/*
@@ -141,7 +147,8 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 					'type'    => 'control',
 					'section' => 'woocommerce_checkout',
 					'title'   => __( 'Use Labels as Placeholders', 'astra-addon' ),
-					'control' => 'checkbox',
+					'control' => Astra_Theme_Extension::$switch_control,
+					'divider' => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/*
@@ -154,7 +161,7 @@ if ( ! class_exists( 'Astra_Woocommerce_Checkout_Configs' ) ) {
 					'section'     => 'woocommerce_checkout',
 					'title'       => __( 'Persistent Checkout Form Data', 'astra-addon' ),
 					'description' => __( 'Retain the Checkout form fields even if the visitor accidentally reloads the checkout page.', 'astra-addon' ),
-					'control'     => 'checkbox',
+					'control'     => Astra_Theme_Extension::$switch_control,
 				),
 
 			);

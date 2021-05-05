@@ -37,7 +37,6 @@ class Astra_Customizer_Adv_Search_Configs extends Astra_Customizer_Config_Base {
 	public function register_configuration( $configurations, $wp_customize ) {
 
 		$_section = 'section-header-search';
-		$defaults = Astra_Theme_Options::defaults();
 
 		/**
 		 * Option: Pro Search Bar Configs.
@@ -46,25 +45,46 @@ class Astra_Customizer_Adv_Search_Configs extends Astra_Customizer_Config_Base {
 			// Option: Header Search Style.
 			array(
 				'name'      => ASTRA_THEME_SETTINGS . '[header-search-box-type]',
-				'default'   => $defaults['header-search-box-type'],
+				'default'   => astra_get_option( 'header-search-box-type' ),
 				'section'   => $_section,
 				'priority'  => 1,
 				'title'     => __( 'Search Style', 'astra-addon' ),
 				'type'      => 'control',
-				'control'   => 'select',
+				'control'   => 'ast-select',
 				'choices'   => array(
 					'slide-search' => __( 'Slide Search', 'astra-addon' ),
 					'full-screen'  => __( 'Full Screen Search', 'astra-addon' ),
 					'header-cover' => __( 'Header Cover Search', 'astra-addon' ),
 					'search-box'   => __( 'Search Box', 'astra-addon' ),
 				),
-				'context'   => Astra_Addon_Builder_Helper::$general_tab,
+				'context'   => astra_addon_builder_helper()->general_tab,
 				'transport' => 'postMessage',
 				'partial'   => array(
 					'selector'            => '.ast-header-search',
 					'container_inclusive' => false,
 					'render_callback'     => array( Astra_Ext_Adv_Search_Markup::get_instance(), 'get_search_markup' ),
 				),
+				'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+			),
+
+			/**
+			 * Option: search placeholder text.
+			 */
+			array(
+				'name'      => ASTRA_THEME_SETTINGS . '[header-search-box-placeholder]',
+				'default'   => astra_get_option( 'header-search-box-placeholder' ),
+				'section'   => $_section,
+				'priority'  => 2,
+				'title'     => __( 'Placeholder Text', 'astra-addon' ),
+				'type'      => 'control',
+				'control'   => 'text',
+				'transport' => 'postMessage',
+				'partial'   => array(
+					'selector'            => '.ast-header-search',
+					'container_inclusive' => false,
+					'render_callback'     => array( Astra_Ext_Adv_Search_Markup::get_instance(), 'get_search_markup' ),
+				),
+				'context'   => astra_addon_builder_helper()->general_tab,
 			),
 		);
 

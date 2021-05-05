@@ -210,7 +210,7 @@ if ( ! class_exists( 'Astra_Ext_Edd_Loader' ) ) {
 			}
 
 			wp_enqueue_script( 'ast-edd-customizer-preview', ASTRA_EXT_EDD_URI . $js_path, array( 'customize-preview', 'astra-customizer-preview-js' ), ASTRA_EXT_VER, true );
-			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 				wp_localize_script(
 					'ast-edd-customizer-preview',

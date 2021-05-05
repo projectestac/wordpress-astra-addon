@@ -366,7 +366,7 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 					'general',
 					'default',                   // Settings page slug.
 					array(
-						'type'           => 'checkbox',
+						'type'           => Astra_Theme_Extension::$switch_control,
 						'title'          => $author,
 						'name'           => $key . '_analytics_optin',
 						'label_for'      => $key . '-analytics-optin',

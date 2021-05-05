@@ -153,23 +153,6 @@
   opacity: 1;
 }
 
-.ast-fullscreen-above-menu-enable.ast-header-break-point .ast-above-header-navigation-wrap .close:after {
-  content: "\e5cd";
-  display: inline-block;
-  font-family: 'Astra';
-  font-size: 22px;
-  font-size: 2rem;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: normal;
-  line-height: 40px;
-  height: 40px;
-  width: 40px;
-  text-align: center;
-  margin: 0;
-}
-
 .ast-fullscreen-above-menu-enable.ast-header-break-point .ast-above-header-navigation-wrap .widget_shopping_cart .woocommerce-mini-cart__buttons a,
 .ast-fullscreen-above-menu-enable.ast-header-break-point .ast-above-header-navigation-wrap .widget_price_filter .price_slider_amount .button {
   padding: 10px 15px;

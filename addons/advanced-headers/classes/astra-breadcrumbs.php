@@ -69,7 +69,7 @@ if ( ! function_exists( 'astra_breadcrumb' ) ) {
 		$show_on_front = get_option( 'show_on_front' );
 		/* Link to front page. */
 		if ( ! is_front_page() ) {
-			$item[] = '<span class="ast-breadcrumbs-link-wrap" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" rel="v:url" property="v:title" href="' . esc_url( home_url( '/' ) ) . '">' . $args['home'] . '</a></span>';
+			$item[] = '<span class="ast-breadcrumbs-link-wrap" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" rel="v:url" property="v:title" href="' . esc_url( home_url( '/' ) ) . '"><span itemprop="name">' . $args['home'] . '</span><meta itemprop="position" content="${content}"/></a></span>';
 		}
 
 		/* If woocommerce is installed and we're on a woocommerce page. */
@@ -145,6 +145,12 @@ if ( ! function_exists( 'astra_breadcrumb' ) ) {
 			// If viewing a 404 error page.
 		} elseif ( is_404() ) {
 			$item['last'] = '<span itemprop="name">' . $args['404-title'] . '</span>';
+		}
+
+		$keys      = array_keys( $item );
+		$index_max = count( $item );
+		for ( $index = 0;  $index < $index_max; $index++ ) {
+			$item[ $keys[ $index ] ] = str_replace( '${content}', $index + 1, $item[ $keys[ $index ] ] );
 		}
 
 		return apply_filters( 'astra_breadcrumb_items', $item );
@@ -229,7 +235,7 @@ if ( ! function_exists( 'astra_breadcrumb' ) ) {
 		}
 		while ( $post_id ) {
 			$page      = get_page( $post_id );
-			$parents[] = '<span class="ast-breadcrumbs-link-wrap" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" rel="v:url" property="v:title" href="' . esc_url( get_permalink( $post_id ) ) . '" title="' . esc_attr( get_the_title( $post_id ) ) . '"><span itemprop="name">' . get_the_title( $post_id ) . '</span></a></span>';
+			$parents[] = '<span class="ast-breadcrumbs-link-wrap" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" rel="v:url" property="v:title" href="' . esc_url( get_permalink( $post_id ) ) . '" title="' . esc_attr( get_the_title( $post_id ) ) . '"><span itemprop="name">' . get_the_title( $post_id ) . '</span>  <meta itemprop="position" content="${content}"/> </a></span>';
 			$post_id   = $page->post_parent;
 		}
 		if ( $parents ) {

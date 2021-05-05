@@ -564,6 +564,54 @@ if ( ! class_exists( 'Astra_Ext_Spacing_Loader' ) ) {
 				'mobile-unit'  => 'px',
 			);
 
+			$defaults['section-hb-language-switcher-item-spacing'] = array(
+				'desktop'      => array(
+					'top'    => '10',
+					'right'  => '10',
+					'bottom' => '10',
+					'left'   => '10',
+				),
+				'tablet'       => array(
+					'top'    => '',
+					'right'  => '',
+					'bottom' => '',
+					'left'   => '',
+				),
+				'mobile'       => array(
+					'top'    => '',
+					'right'  => '',
+					'bottom' => '',
+					'left'   => '',
+				),
+				'desktop-unit' => 'px',
+				'tablet-unit'  => 'px',
+				'mobile-unit'  => 'px',
+			);
+
+			$defaults['section-fb-language-switcher-item-spacing'] = array(
+				'desktop'      => array(
+					'top'    => '10',
+					'right'  => '10',
+					'bottom' => '10',
+					'left'   => '10',
+				),
+				'tablet'       => array(
+					'top'    => '',
+					'right'  => '',
+					'bottom' => '',
+					'left'   => '',
+				),
+				'mobile'       => array(
+					'top'    => '',
+					'right'  => '',
+					'bottom' => '',
+					'left'   => '',
+				),
+				'desktop-unit' => 'px',
+				'tablet-unit'  => 'px',
+				'mobile-unit'  => 'px',
+			);
+
 			return $defaults;
 		}
 
@@ -603,13 +651,11 @@ if ( ! class_exists( 'Astra_Ext_Spacing_Loader' ) ) {
 			}
 
 			$localize_array = array(
-				'blog_pro_enabled'    => Astra_Ext_Extension::is_active( 'blog-pro' ),
-				'tablet_break_point'  => astra_addon_get_tablet_breakpoint(),
-				'mobile_break_point'  => astra_addon_get_mobile_breakpoint(),
-				'header_html_count'   => Astra_Addon_Builder_Helper::$num_of_header_html,
-				'header_menu_count'   => Astra_Addon_Builder_Helper::$num_of_header_menu,
-				'header_button_count' => Astra_Addon_Builder_Helper::$num_of_header_button,
-				'header_html_count'   => Astra_Addon_Builder_Helper::$num_of_footer_html,
+				'blog_pro_enabled'   => Astra_Ext_Extension::is_active( 'blog-pro' ),
+				'tablet_break_point' => astra_get_tablet_breakpoint(),
+				'mobile_break_point' => astra_get_mobile_breakpoint(),
+				'component_limit'    => astra_addon_builder_helper()->component_limit,
+				'astra_not_updated'  => version_compare( ASTRA_THEME_VERSION, '3.2.0', '<' ),
 			);
 			wp_localize_script( 'astra-ext-spacing-customize-preview-js', 'ast_preview', $localize_array );
 

@@ -82,7 +82,7 @@ function astra_ext_sticky_header_with_site_layouts_dynamic_css( $dynamic_css, $d
 		$parse_css .= astra_parse_css( $tablet_padded_layout_spacing, '', astra_addon_get_tablet_breakpoint() );
 		$parse_css .= astra_parse_css( $mobile_padded_layout_spacing, '', astra_addon_get_mobile_breakpoint() );
 	}
-	$css       .= '.ast-above-header > div, .main-header-bar > div, .ast-below-header > div {';
+	$css       .= '.ast-above-header, .main-header-bar, .ast-below-header {';
 	$css       .= '-webkit-transition: all 0.2s linear;';
 	$css       .= 'transition: all 0.2s linear;';
 	$css       .= '}';
@@ -91,6 +91,6 @@ function astra_ext_sticky_header_with_site_layouts_dynamic_css( $dynamic_css, $d
 	$css       .= '}';
 	$parse_css .= $css;
 
-	return $dynamic_css .= $parse_css;
+	return $dynamic_css . $parse_css;
 
 }

@@ -43,6 +43,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Headers' ) ) {
 			require_once ASTRA_EXT_ADVANCED_HEADERS_DIR . 'classes/class-astra-ext-advanced-headers-markup.php';
 			require_once ASTRA_EXT_ADVANCED_HEADERS_DIR . 'classes/class-astra-ext-advanced-headers-meta.php';
 			require_once ASTRA_EXT_ADVANCED_HEADERS_DIR . 'compatibility/class-astra-advanced-headers-subtitles.php';
+			require_once ASTRA_EXT_ADVANCED_HEADERS_DIR . 'classes/class-astra-ext-header-sections-markup-compatibility.php';
 
 			// Include front end files.
 			if ( ! is_admin() ) {

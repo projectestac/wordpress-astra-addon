@@ -42,14 +42,15 @@ if ( ! class_exists( 'Astra_Woocommerce_General_Colors_Configs' ) ) {
 				 * Single Product Rating Color
 				 */
 				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[single-product-rating-color]',
-					'default'   => '',
-					'type'      => 'control',
-					'control'   => 'ast-color',
-					'transport' => 'postMessage',
-					'title'     => __( 'Product Rating Color', 'astra-addon' ),
-					'section'   => 'section-woo-general',
-					'priority'  => 58,
+					'name'              => ASTRA_THEME_SETTINGS . '[single-product-rating-color]',
+					'default'           => astra_get_option( 'single-product-rating-color' ),
+					'type'              => 'control',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'title'             => __( 'Product Rating Color', 'astra-addon' ),
+					'section'           => 'section-woo-general',
+					'priority'          => 58,
 				),
 
 			);

@@ -39,50 +39,41 @@ if ( ! class_exists( 'Astra_Existing_Nav_Menu_Primary_Header_Colors' ) ) {
 			$_configs = array(
 
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[primary-menu-colors-divider]',
-					'section'  => 'section-primary-menu',
-					'type'     => 'control',
-					'control'  => 'ast-heading',
-					'title'    => __( 'Colors', 'astra-addon' ),
-					'priority' => 69,
-					'settings' => array(),
-				),
-
-				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[primary-mega-menu-col-color-group]',
 					'default'   => astra_get_option( 'primary-mega-menu-col-color-group' ),
 					'type'      => 'control',
-					'control'   => 'ast-settings-group',
-					'title'     => __( 'Mega Menu Column Heading', 'astra-addon' ),
+					'control'   => Astra_Theme_Extension::$group_control,
+					'title'     => __( 'Mega Menu Heading', 'astra-addon' ),
 					'section'   => 'section-primary-menu',
 					'transport' => 'postMessage',
 					'priority'  => 70,
+					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				// Option: Megamenu Heading Color.
 				array(
-					'type'      => 'sub-control',
-					'control'   => 'ast-color',
-					'section'   => 'section-primary-menu',
-					'transport' => 'postMessage',
-					'name'      => 'primary-header-megamenu-heading-color',
-					'parent'    => ASTRA_THEME_SETTINGS . '[primary-mega-menu-col-color-group]',
-					'default'   => astra_get_option( 'primary-header-megamenu-heading-color' ),
-					'title'     => __( 'Color', 'astra-addon' ),
-					'tab'       => __( 'Normal', 'astra-addon' ),
+					'type'              => 'sub-control',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'section'           => 'section-primary-menu',
+					'transport'         => 'postMessage',
+					'name'              => 'primary-header-megamenu-heading-color',
+					'parent'            => ASTRA_THEME_SETTINGS . '[primary-mega-menu-col-color-group]',
+					'default'           => astra_get_option( 'primary-header-megamenu-heading-color' ),
+					'title'             => __( 'Normal', 'astra-addon' ),
 				),
 
 				// Option: Megamenu Heading Hover Color.
 				array(
-					'type'      => 'sub-control',
-					'control'   => 'ast-color',
-					'section'   => 'section-primary-menu',
-					'transport' => 'postMessage',
-					'name'      => 'primary-header-megamenu-heading-h-color',
-					'parent'    => ASTRA_THEME_SETTINGS . '[primary-mega-menu-col-color-group]',
-					'default'   => astra_get_option( 'primary-header-megamenu-heading-h-color' ),
-					'title'     => __( 'Color', 'astra-addon' ),
-					'tab'       => __( 'Hover', 'astra-addon' ),
+					'type'              => 'sub-control',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'section'           => 'section-primary-menu',
+					'transport'         => 'postMessage',
+					'name'              => 'primary-header-megamenu-heading-h-color',
+					'parent'            => ASTRA_THEME_SETTINGS . '[primary-mega-menu-col-color-group]',
+					'default'           => astra_get_option( 'primary-header-megamenu-heading-h-color' ),
+					'title'             => __( 'Hover', 'astra-addon' ),
 				),
 			);
 

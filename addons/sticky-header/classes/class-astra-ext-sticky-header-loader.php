@@ -83,11 +83,13 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Loader' ) ) {
 				'tablet'  => '',
 				'mobile'  => '',
 			);
-			$defaults['sticky-header-builder-site-title-color']    = '';
-			$defaults['sticky-header-builder-site-title-h-color']  = '';
-			$defaults['sticky-header-builder-site-tagline-color']  = '';
 
-			for ( $index = 1; $index <= Astra_Addon_Builder_Helper::$num_of_header_menu; $index++ ) {
+			$defaults['sticky-header-builder-site-title-color']   = '';
+			$defaults['sticky-header-builder-site-title-h-color'] = '';
+			$defaults['sticky-header-builder-site-tagline-color'] = '';
+
+			$component_limit = astra_addon_builder_helper()->component_limit;
+			for ( $index = 1; $index <= $component_limit; $index++ ) {
 
 				/**
 				* Sticky Header > Menu color configs.
@@ -361,6 +363,8 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Loader' ) ) {
 				'mobile'  => '',
 			);
 
+			$defaults['sticky-header-language-switcher-color'] = '';
+
 			return $defaults;
 		}
 
@@ -393,7 +397,7 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Loader' ) ) {
 				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-below-header-colors-bg-configs.php';
 			}
 
-			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 				// Button Sticky Configs.
 				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-button-configs.php';
@@ -413,8 +417,14 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Loader' ) ) {
 				// Divider Sticky Configs.
 				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-divider-configs.php';
 
+				// Language-switcher Sticky Configs.
+				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-language-switcher-configs.php';
+
 				// Account Sticky Configs.
 				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-account-configs.php';
+
+				// Menu Toggle Sticky Configs.
+				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-toggle-configs.php';
 			}
 		}
 
@@ -428,14 +438,10 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Loader' ) ) {
 			$sticky_hide_on_scroll = astra_get_option( 'sticky-hide-on-scroll' );
 
 			$localize_array = array(
-				'stickyHeaderStyle'    => $sticky_header_style,
-				'stickyHideOnScroll'   => $sticky_hide_on_scroll,
-				'header_button_count'  => Astra_Addon_Builder_Helper::$num_of_header_button,
-				'header_menu_count'    => Astra_Addon_Builder_Helper::$num_of_header_menu,
-				'header_html_count'    => Astra_Addon_Builder_Helper::$num_of_header_html,
-				'header_social_count'  => Astra_Addon_Builder_Helper::$num_of_header_social_icons,
-				'widget_count'         => Astra_Addon_Builder_Helper::$num_of_header_widgets,
-				'header_divider_count' => Astra_Addon_Builder_Helper::$num_of_header_divider,
+				'stickyHeaderStyle'  => $sticky_header_style,
+				'stickyHideOnScroll' => $sticky_hide_on_scroll,
+				'component_limit'    => astra_addon_builder_helper()->component_limit,
+				'is_flex_based_css'  => Astra_Addon_Builder_Helper::apply_flex_based_css(),
 			);
 
 			wp_localize_script( 'astra-sticky-header-customizer-preview-js', 'astSticky', $localize_array );

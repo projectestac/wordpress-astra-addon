@@ -43,17 +43,15 @@ if ( ! class_exists( 'Astra_Addon_Builder_Loader' ) ) {
 		public function __construct() {
 
 			// @codingStandardsIgnoreStart WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
-			/**
-			 * Builder Core Files.
-			 */
-			require_once ASTRA_EXT_DIR . 'classes/builder/class-astra-addon-builder-helper.php';
+
+			require_once ASTRA_EXT_DIR . 'classes/class-astra-addon-builder-loader.php';
 
 			/**
 			 * Builder - Header & Footer Markup.
 			 */
 			require_once ASTRA_EXT_DIR . 'classes/builder/markup/class-astra-addon-builder-header.php';
 
-			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 				require_once ASTRA_EXT_DIR . 'classes/builder/markup/class-astra-addon-builder-footer.php';
 

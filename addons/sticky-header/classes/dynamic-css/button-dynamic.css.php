@@ -20,7 +20,12 @@ function astra_sticky_header_button_dynamic_css( $dynamic_css, $dynamic_css_filt
 	 * Button Style - Theme Button / Custom Button.
 	 */
 
-	for ( $index = 1; $index <= Astra_Addon_Builder_Helper::$num_of_header_button; $index++ ) {
+	$num_of_header_button = astra_addon_builder_helper()->num_of_header_button;
+	for ( $index = 1; $index <= $num_of_header_button; $index++ ) {
+
+		if ( ! Astra_Addon_Builder_Helper::is_component_loaded( 'button-' . $index, 'header' ) ) {
+			continue;
+		}
 
 		$_prefix  = 'button' . $index;
 		$_section = 'section-hb-button-' . $index;
@@ -82,14 +87,12 @@ function astra_sticky_header_button_dynamic_css( $dynamic_css, $dynamic_css_filt
 				'border-left-width'   => $button_border_width_left,
 				'border-right-width'  => $button_border_width_right,
 				'border-radius'       => astra_get_css_value( $button_border_radius, 'px' ),
-
 				// Padding.
 				'padding-top'         => astra_responsive_spacing( $padding, 'top', 'desktop' ),
 				'padding-bottom'      => astra_responsive_spacing( $padding, 'bottom', 'desktop' ),
 				'padding-left'        => astra_responsive_spacing( $padding, 'left', 'desktop' ),
 				'padding-right'       => astra_responsive_spacing( $padding, 'right', 'desktop' ),
 			),
-
 			// Hover Options.
 			$selector . ' .ast-builder-button-wrap:hover .ast-custom-button' => array(
 				'color'        => $button_h_color_desktop,
@@ -111,7 +114,6 @@ function astra_sticky_header_button_dynamic_css( $dynamic_css, $dynamic_css_filt
 				'color'          => $button_color_tablet,
 				'background'     => $button_bg_color_tablet,
 				'border-color'   => $button_border_color_tablet,
-
 				// Padding.
 				'padding-top'    => astra_responsive_spacing( $padding, 'top', 'tablet' ),
 				'padding-bottom' => astra_responsive_spacing( $padding, 'bottom', 'tablet' ),
@@ -139,7 +141,6 @@ function astra_sticky_header_button_dynamic_css( $dynamic_css, $dynamic_css_filt
 				'color'          => $button_color_mobile,
 				'background'     => $button_bg_color_mobile,
 				'border-color'   => $button_border_color_mobile,
-
 				// Padding.
 				'padding-top'    => astra_responsive_spacing( $padding, 'top', 'mobile' ),
 				'padding-bottom' => astra_responsive_spacing( $padding, 'bottom', 'mobile' ),

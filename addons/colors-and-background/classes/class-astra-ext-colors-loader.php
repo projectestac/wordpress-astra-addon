@@ -323,6 +323,8 @@ if ( ! class_exists( 'Astra_Ext_Colors_Loader' ) ) {
 			$defaults['header-account-popup-button-bg-color']    = '';
 			$defaults['header-account-popup-input-border-color'] = '';
 			$defaults['header-account-popup-bg-color']           = '';
+			$defaults['section-hb-language-switcher-color']      = '';
+			$defaults['section-fb-language-switcher-color']      = '';
 
 			return $defaults;
 		}
@@ -365,13 +367,12 @@ if ( ! class_exists( 'Astra_Ext_Colors_Loader' ) ) {
 			wp_enqueue_script( 'astra-ext-colors-customize-preview-js', ASTRA_EXT_COLORS_URI . $js_path, array( 'customize-preview', 'astra-customizer-preview-js', 'astra-addon-customizer-preview-js' ), ASTRA_EXT_VER, true );
 
 			$localize_array = array(
-				'tablet_break_point'  => astra_addon_get_tablet_breakpoint(),
-				'mobile_break_point'  => astra_addon_get_mobile_breakpoint(),
-				'header_html_count'   => Astra_Addon_Builder_Helper::$num_of_header_html,
-				'header_menu_count'   => Astra_Addon_Builder_Helper::$num_of_header_menu,
-				'header_button_count' => Astra_Addon_Builder_Helper::$num_of_header_button,
-				'header_html_count'   => Astra_Addon_Builder_Helper::$num_of_footer_html,
+				'tablet_break_point' => astra_get_tablet_breakpoint(),
+				'mobile_break_point' => astra_get_mobile_breakpoint(),
+				'component_limit'    => astra_addon_builder_helper()->component_limit,
+				'astra_not_updated'  => version_compare( ASTRA_THEME_VERSION, '3.2.0', '<' ),
 			);
+
 			wp_localize_script( 'astra-ext-colors-customize-preview-js', 'astColors', $localize_array );
 
 		}

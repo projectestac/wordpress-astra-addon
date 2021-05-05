@@ -9,7 +9,12 @@
  */
 ( function( $ ) {
 
-	astra_css_font_size( 'astra-settings[scroll-to-top-icon-size]', '#ast-scroll-top' );
+	astra_css(
+		'astra-settings[scroll-to-top-icon-size]',
+		'font-size',
+		'#ast-scroll-top',
+		'px'
+	);
 	astra_css( 'astra-settings[scroll-to-top-icon-radius]', 'border-radius', '#ast-scroll-top', 'px' );
 	astra_css( 'astra-settings[scroll-to-top-icon-color]', 'color', '#ast-scroll-top' );
 	astra_css( 'astra-settings[scroll-to-top-icon-bg-color]', 'background-color', '#ast-scroll-top' );

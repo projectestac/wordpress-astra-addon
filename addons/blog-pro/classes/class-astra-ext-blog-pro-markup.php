@@ -45,6 +45,7 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 			add_action( 'wp_head', array( $this, 'blog_customization' ) );
 			add_action( 'astra_pagination_infinite', array( $this, 'blog_customization' ) );
 			add_filter( 'astra_blog_post_featured_image_after', array( $this, 'date_box' ), 10, 1 );
+			add_filter( 'astra_related_post_featured_image_after', array( $this, 'date_box' ), 10, 1 );
 			add_action( 'astra_entry_after', array( $this, 'author_info_markup' ) );
 			add_action( 'astra_entry_after', array( $this, 'single_post_navigation_markup' ), 9 );
 
@@ -216,10 +217,14 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 		public function date_box( $output ) {
 
 			$enable_date_box = astra_get_option( 'blog-date-box' );
+			$date_box_style  = astra_get_option( 'blog-date-box-style' );
+
+			if ( 'astra_related_post_featured_image_after' === current_filter() ) {
+				$enable_date_box = apply_filters( 'astra_related_post_enable_date_box', $enable_date_box );
+				$date_box_style  = apply_filters( 'astra_related_post_date_box_style', $date_box_style );
+			}
 
 			if ( $enable_date_box ) :
-
-				$date_box_style = astra_get_option( 'blog-date-box-style' );
 
 				$time_string = '<time class="entry-date published updated" datetime="%1$s"><span class="date-month">%2$s</span> <span class="date-day">%3$s</span> <span class="date-year">%4$s</span></time>';
 				if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
@@ -374,16 +379,16 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 
 						// Feature Post.
 						if ( 3 == $blog_grid ) {
-							$classes[] = 'ast-col-md-8';
+							$classes[] = Astra_Addon_Builder_Helper::apply_flex_based_css() ? 'ast-width-md-66' : 'ast-col-md-8';
 						} elseif ( 4 == $blog_grid ) {
-							$classes[] = 'ast-col-md-6';
+							$classes[] = Astra_Addon_Builder_Helper::apply_flex_based_css() ? 'ast-width-50' : 'ast-col-md-6';
 						} else {
-							$classes[] = 'ast-col-md-12';
+							$classes[] = Astra_Addon_Builder_Helper::apply_flex_based_css() ? 'ast-grid-common-col' : 'ast-col-md-12';
 						}
 
 						$classes[] = 'ast-featured-post';
 					} else {
-						$classes[] = 'ast-col-md-' . ( 12 / $blog_grid );
+						$classes[] = Astra_Addon_Builder_Helper::apply_flex_based_css() ? 'ast-width-md-' . ( 12 / $blog_grid ) : 'ast-col-md-' . ( 12 / $blog_grid );
 					}
 				} else {
 
@@ -392,10 +397,10 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 						$classes[] = 'ast-col-md-12';
 						$classes[] = 'ast-featured-post';
 					} else {
-						$classes[] = 'ast-col-md-' . ( 12 / $blog_grid_layout );
+						$classes[] = Astra_Addon_Builder_Helper::apply_flex_based_css() ? 'ast-width-md-' . ( 12 / $blog_grid_layout ) : 'ast-col-md-' . ( 12 / $blog_grid_layout );
 					}
 				}
-				if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+				if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 					$classes[] = 'ast-archive-post';
 				}
 				if ( $blog_space_bet_posts ) {
@@ -422,10 +427,9 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 		 */
 		public function astra_ext_blog_pro_body_classes( $classes ) {
 
-			global $wp_query;
-
 			if ( is_archive() || is_home() || is_search() ) {
 
+				global $wp_query;
 				$blog_layout      = astra_get_option( 'blog-layout' );
 				$blog_masonry     = astra_get_option( 'blog-masonry' );
 				$blog_grid        = astra_get_option( 'blog-grid' );
@@ -467,7 +471,9 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 		 */
 		public function add_styles() {
 
-			$author_info = astra_get_option( 'ast-author-info' );
+			$author_info          = astra_get_option( 'ast-author-info' );
+			$enable_related_posts = astra_get_option( 'enable-related-posts' );
+
 			/*** Start Path Logic */
 
 			/* Define Variables */
@@ -506,8 +512,15 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 				Astra_Minify::add_css( $gen_path . 'post-author' . $file_prefix . '.css' );
 			}
 
+			if ( $enable_related_posts ) {
+				Astra_Minify::add_css( $gen_path . 'related-posts' . $file_prefix . '.css' );
+			}
+
 			/* Blog Layouts */
 			$blog_layout = astra_get_option( 'blog-layout' );
+			if ( true === Astra_Addon_Builder_Helper::apply_flex_based_css() && ( 'blog-layout-2' == $blog_layout || 'blog-layout-3' == $blog_layout ) ) {
+				$blog_layout = $blog_layout . '-flex';
+			}
 			Astra_Minify::add_css( $gen_path . $blog_layout . $file_prefix . '.css' );
 		}
 

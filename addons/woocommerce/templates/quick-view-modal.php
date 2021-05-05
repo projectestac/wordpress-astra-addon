@@ -12,7 +12,7 @@
 	--><div class="ast-content-main">
 			<div class="ast-lightbox-content">
 				<div class="ast-content-main-head">
-					<a href="#" id="ast-quick-view-close" class="ast-quick-view-close-btn"></a>
+					<a href="#" id="ast-quick-view-close" class="ast-quick-view-close-btn"> <?php Astra_Icons::get_icons( 'close', true ); ?> </a>
 				</div>
 				<div id="ast-quick-view-content" class="woocommerce single-product"></div>
 			</div>

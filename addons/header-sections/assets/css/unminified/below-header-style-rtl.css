@@ -29,20 +29,6 @@
   display: flex;
 }
 
-.ast-below-header .menu-item-has-children > .menu-link:after {
-  content: "\e900";
-  display: inline-block;
-  font-family: 'Astra';
-  font-size: 9px;
-  font-size: .6rem;
-  font-weight: bold;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  margin-right: 10px;
-  line-height: normal;
-}
-
 .ast-below-header .user-select {
   position: relative;
 }
@@ -375,7 +361,7 @@
   word-wrap: break-word;
 }
 
-.ast-below-header-menu .sub-menu .menu-item.menu-item-has-children > .menu-link:after {
+.ast-below-header-menu .sub-menu .menu-item.menu-item-has-children > .menu-link .icon-arrow svg {
   position: absolute;
   left: 1em;
   top: 50%;
@@ -422,16 +408,6 @@
   padding-right: 30px;
 }
 
-.ast-header-break-point .ast-below-header-actual-nav ul .menu-item .menu-link:before {
-  content: "\e900";
-  font-family: 'Astra';
-  font-size: .65em;
-  text-decoration: inherit;
-  display: inline-block;
-  transform: translate(0, -2px) rotateZ(-270deg);
-  margin-left: 5px;
-}
-
 .ast-header-break-point .ast-below-header-actual-nav ul > .menu-item:first-child {
   border-top: 0;
 }
@@ -472,13 +448,6 @@
   font-size: inherit;
   font-weight: normal;
   line-height: inherit;
-}
-
-.ast-header-break-point .ast-below-header-actual-nav .menu-item-has-children > .ast-menu-toggle::before {
-  content: "\e900";
-  font-family: 'Astra';
-  text-decoration: inherit;
-  display: inline-block;
 }
 
 .ast-header-break-point .ast-below-header-actual-nav .ast-submenu-expanded > .ast-menu-toggle::before {

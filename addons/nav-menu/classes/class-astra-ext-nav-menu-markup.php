@@ -525,7 +525,7 @@ if ( ! class_exists( 'Astra_Ext_Nav_Menu_Markup' ) ) {
 						<div class="astra-option-input-container">
 						<?php
 							$url = admin_url( 'customize.php?autofocus[control]=' . ASTRA_THEME_SETTINGS . '[primary-header-megamenu-heading-color]' );
-						if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+						if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 							$url = admin_url( 'customize.php?autofocus[control]=' . ASTRA_THEME_SETTINGS . '[header-menu1-mega-menu-col-color-group]&context=design' );
 						}
 

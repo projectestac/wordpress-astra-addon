@@ -45,9 +45,10 @@ if ( ! class_exists( 'Astra_Site_Layout_Configuration' ) ) {
 					'name'     => ASTRA_THEME_SETTINGS . '[site-layout]',
 					'default'  => astra_get_option( 'site-layout' ),
 					'type'     => 'control',
-					'control'  => 'select',
+					'control'  => 'ast-select',
 					'section'  => 'section-container-layout',
 					'priority' => 5,
+					'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
 					'title'    => __( 'Site Layout', 'astra-addon' ),
 					'choices'  => array(
 						'ast-full-width-layout'  => __( 'Full Width', 'astra-addon' ),
@@ -62,7 +63,7 @@ if ( ! class_exists( 'Astra_Site_Layout_Configuration' ) ) {
 				 */
 				array(
 					'name'              => ASTRA_THEME_SETTINGS . '[site-layout-padded-width]',
-					'default'           => 1200,
+					'default'           => astra_get_option( 'site-layout-padded-width' ),
 					'type'              => 'control',
 					'control'           => 'ast-slider',
 					'transport'         => 'postMessage',
@@ -70,14 +71,14 @@ if ( ! class_exists( 'Astra_Site_Layout_Configuration' ) ) {
 					'priority'          => 15,
 					'title'             => __( 'Width', 'astra-addon' ),
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_number_n_blank' ),
-					'suffix'            => '',
+					'suffix'            => 'px',
 					'input_attrs'       => array(
 						'min'  => 768,
 						'step' => 1,
 						'max'  => 1920,
 					),
 					'context'           => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[site-layout]',
 							'operator' => '==',
@@ -91,16 +92,16 @@ if ( ! class_exists( 'Astra_Site_Layout_Configuration' ) ) {
 				 */
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[site-layout-box-width]',
-					'default'     => 1200,
+					'default'     => astra_get_option( 'site-layout-box-width' ),
 					'type'        => 'control',
 					'transport'   => 'postMessage',
 					'control'     => 'ast-slider',
 					'section'     => 'section-container-layout',
 					'priority'    => 25,
 					'title'       => __( 'Max Width', 'astra-addon' ),
-					'suffix'      => '',
+					'suffix'      => 'px',
 					'context'     => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[site-layout]',
 							'operator' => '==',
@@ -118,25 +119,27 @@ if ( ! class_exists( 'Astra_Site_Layout_Configuration' ) ) {
 				 * Option: Padded Layout Custom Width
 				 */
 				array(
-					'name'           => ASTRA_THEME_SETTINGS . '[site-layout-padded-pad]',
-					'default'        => astra_get_option( 'site-layout-padded-pad' ),
-					'type'           => 'control',
-					'transport'      => 'postMessage',
-					'control'        => 'ast-responsive-spacing',
-					'section'        => 'section-container-layout',
-					'priority'       => 20,
-					'title'          => __( 'Space Outside Body', 'astra-addon' ),
-					'context'        => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+					'name'              => ASTRA_THEME_SETTINGS . '[site-layout-padded-pad]',
+					'default'           => astra_get_option( 'site-layout-padded-pad' ),
+					'type'              => 'control',
+					'transport'         => 'postMessage',
+					'control'           => 'ast-responsive-spacing',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+					'section'           => 'section-container-layout',
+					'priority'          => 20,
+					'title'             => __( 'Space Outside Body', 'astra-addon' ),
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider ast-top-divider' ),
+					'context'           => array(
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[site-layout]',
 							'operator' => '==',
 							'value'    => 'ast-padded-layout',
 						),
 					),
-					'linked_choices' => true,
-					'unit_choices'   => array( 'px', 'em', '%' ),
-					'choices'        => array(
+					'linked_choices'    => true,
+					'unit_choices'      => array( 'px', 'em', '%' ),
+					'choices'           => array(
 						'top'    => __( 'Top', 'astra-addon' ),
 						'right'  => __( 'Right', 'astra-addon' ),
 						'bottom' => __( 'Bottom', 'astra-addon' ),
@@ -149,24 +152,23 @@ if ( ! class_exists( 'Astra_Site_Layout_Configuration' ) ) {
 				 */
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[site-layout-box-tb-margin]',
-					'default'     => 0,
+					'default'     => astra_get_option( 'site-layout-box-tb-margin' ),
 					'type'        => 'control',
 					'transport'   => 'postMessage',
 					'control'     => 'ast-slider',
 					'section'     => 'section-container-layout',
 					'priority'    => 30,
+					'divider'     => array( 'ast_class' => 'ast-bottom-divider ast-top-divider' ),
 					'title'       => __( 'Top & Bottom Margin', 'astra-addon' ),
-
 					'context'     => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[site-layout]',
 							'operator' => '==',
 							'value'    => 'ast-box-layout',
 						),
 					),
-
-					'suffix'      => '',
+					'suffix'      => 'px',
 					'input_attrs' => array(
 						'min'  => 0,
 						'step' => 1,
@@ -183,23 +185,23 @@ if ( ! class_exists( 'Astra_Site_Layout_Configuration' ) ) {
 				 */
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[site-layout-fluid-lr-padding]',
-					'default'     => 25,
+					'default'     => astra_get_option( 'site-layout-fluid-lr-padding' ),
 					'type'        => 'control',
 					'transport'   => 'postMessage',
 					'control'     => 'ast-slider',
 					'section'     => 'section-container-layout',
+					'divider'     => array( 'ast_class' => 'ast-bottom-divider' ),
 					'priority'    => 35,
 					'title'       => __( 'Left & Right Padding', 'astra-addon' ),
 					'context'     => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[site-layout]',
 							'operator' => '==',
 							'value'    => 'ast-fluid-width-layout',
 						),
 					),
-
-					'suffix'      => '',
+					'suffix'      => 'px',
 					'input_attrs' => array(
 						'min'  => 1,
 						'step' => 1,

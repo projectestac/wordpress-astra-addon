@@ -43,35 +43,43 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Single' ) ) {
 
 			$_configs = array(
 
-				/**
-				 * Option: Divider
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[divider-section-entry-color]',
-					'type'     => 'control',
-					'control'  => 'ast-heading',
-					'section'  => 'section-blog-single',
-					'priority' => 11,
-					'title'    => __( 'Color', 'astra-addon' ),
-					'context'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
-				),
-
 				// Option: Single Post / Page Title Color.
 				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[entry-title-color]',
 					'type'      => 'control',
 					'control'   => 'ast-color',
-					'default'   => '',
+					'default'   => astra_get_option( 'entry-title-color' ),
 					'transport' => 'postMessage',
-					'title'     => __( 'Post/Page Title Color', 'astra-addon' ),
+					'title'     => __( 'Post / Page Title Color', 'astra-addon' ),
 					'section'   => 'section-blog-single',
-					'priority'  => 12,
-					'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+					'priority'  => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+					12 : 19,
+					'context'   => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 
 			);
+
+			if ( false === astra_addon_builder_helper()->is_header_footer_builder_active ) {
+
+				$_new_config = array(
+					/**
+					 * Option: Divider
+					 */
+					array(
+						'name'     => ASTRA_THEME_SETTINGS . '[divider-section-entry-color]',
+						'type'     => 'control',
+						'control'  => 'ast-heading',
+						'section'  => 'section-blog-single',
+						'priority' => 18,
+						'title'    => __( 'Color', 'astra-addon' ),
+						'context'  => astra_addon_builder_helper()->general_tab,
+					),
+				);
+
+				$_configs = array_merge( $_configs, $_new_config );
+			}
 
 			return array_merge( $configurations, $_configs );
 		}

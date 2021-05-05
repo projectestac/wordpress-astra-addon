@@ -63,13 +63,13 @@ if ( ! class_exists( 'Astra_Ext_Header_Sections_Markup' ) ) {
 			add_action( 'init', array( $this, 'register_menu_locations_widgets' ) );
 
 			/* Add HTML Markup Above Header */
-			if ( ! Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( false === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 				add_action( 'astra_masthead', array( $this, 'above_header_html_markup_loader' ), 9 );
 			}
 			add_action( 'astra_above_header_toggle_buttons', array( $this, 'above_header_toggle_button' ), 10 );
 
 			/* Add HTML Markup Below Header */
-			if ( ! Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( false === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 				add_action( 'astra_masthead', array( $this, 'below_header_html_markup_loader' ), 11 );
 			}
 			add_action( 'astra_below_header_toggle_buttons', array( $this, 'below_header_toggle_button' ), 11 );
@@ -1072,7 +1072,8 @@ if ( ! class_exists( 'Astra_Ext_Header_Sections_Markup' ) ) {
 				?>
 				<div class="ast-button-wrap">
 					<span class="screen-reader-text"><?php esc_html_e( 'Below Header', 'astra-addon' ); ?></span>
-					<button class="menu-toggle menu-below-header-toggle <?php echo esc_attr( implode( ' ', $below_header_toggle_class ) ); ?>" ><span class="<?php echo esc_attr( apply_filters( 'astra_below_header_menu_toggle_icon', 'menu-toggle-icon' ) ); ?>"></span>
+					<button class="menu-toggle menu-below-header-toggle <?php echo esc_attr( implode( ' ', $below_header_toggle_class ) ); ?>" >
+					<?php Astra_Icons::get_icons( 'menu-bars', true, true, 'below_header' ); ?>
 					<?php if ( '' !== $below_menu_title ) { ?>
 						<span class="mobile-menu-wrap"><span class="mobile-menu"><?php echo esc_html( $below_menu_title ); ?></span></span>
 					<?php } ?>
@@ -1116,8 +1117,9 @@ if ( ! class_exists( 'Astra_Ext_Header_Sections_Markup' ) ) {
 				$above_menu_title = astra_get_option( 'above-header-menu-label' );
 				?>
 				<div class="ast-button-wrap">
+					<button class="menu-toggle menu-above-header-toggle <?php echo esc_attr( implode( ' ', $above_header_toggle_class ) ); ?>" >
 					<span class="screen-reader-text"><?php esc_html_e( 'Above Header', 'astra-addon' ); ?></span>
-					<button class="menu-toggle menu-above-header-toggle <?php echo esc_attr( implode( ' ', $above_header_toggle_class ) ); ?>" ><span class="<?php echo esc_attr( apply_filters( 'astra_above_header_menu_toggle_icon', 'menu-toggle-icon' ) ); ?>"></span>
+					<?php Astra_Icons::get_icons( 'menu-bars', true, true, 'above_header' ); ?>
 					<?php if ( '' !== $above_menu_title ) { ?>
 						<span class="mobile-menu-wrap"><span class="mobile-menu"><?php echo esc_html( $above_menu_title ); ?></span></span>
 					<?php } ?>

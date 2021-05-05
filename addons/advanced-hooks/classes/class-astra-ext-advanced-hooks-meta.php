@@ -70,6 +70,9 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Meta' ) ) {
 				'hooks'    => array(
 					'title' => __( 'Hooks', 'astra-addon' ),
 				),
+				'content'  => array(
+					'title' => __( 'Inside Post/Page Content', 'astra-addon' ),
+				),
 			);
 
 			/**
@@ -708,7 +711,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Meta' ) ) {
 				);
 			}
 
-			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 				unset( $hooks['header']['hooks']['astra_main_header_bar_top'] );
 				unset( $hooks['header']['hooks']['astra_masthead_content'] );
@@ -1033,7 +1036,22 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Meta' ) ) {
 						'default'  => array(),
 						'sanitize' => 'FILTER_DEFAULT',
 					),
-
+					'ast-advanced-hook-content'   => array(
+						'default'  => array(),
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'ast-advanced-display-device' => array(
+						'default'  => array( 'desktop', 'tablet', 'mobile' ),
+						'sanitize' => 'FILTER_DEFAULT',
+					),
+					'ast-advanced-time-duration'  => array(
+						'default'  => array(
+							'enabled'  => '',
+							'start-dt' => '',
+							'end-dt'   => '',
+						),
+						'sanitize' => 'FILTER_DEFAULT',
+					),
 				)
 			);
 
@@ -1414,7 +1432,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Meta' ) ) {
 			wp_nonce_field( basename( __FILE__ ), ASTRA_ADVANCED_HOOKS_POST_TYPE );
 			$stored = get_post_meta( $post->ID );
 
-			$advanced_hooks_meta = array( 'ast-advanced-hook-location', 'ast-advanced-hook-exclusion', 'ast-advanced-hook-users', 'ast-advanced-hook-padding', 'ast-advanced-hook-header', 'ast-advanced-hook-footer', 'ast-404-page' );
+			$advanced_hooks_meta = array( 'ast-advanced-time-duration', 'ast-advanced-display-device', 'ast-advanced-hook-location', 'ast-advanced-hook-exclusion', 'ast-advanced-hook-users', 'ast-advanced-hook-padding', 'ast-advanced-hook-header', 'ast-advanced-hook-footer', 'ast-404-page', 'ast-advanced-hook-content' );
 
 			// Set stored and override defaults.
 			foreach ( $stored as $key => $value ) {
@@ -1440,8 +1458,10 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Meta' ) ) {
 			$padding           = ( isset( $meta['ast-advanced-hook-padding']['default'] ) ) ? $meta['ast-advanced-hook-padding']['default'] : array();
 			$header            = ( isset( $meta['ast-advanced-hook-header']['default'] ) ) ? $meta['ast-advanced-hook-header']['default'] : array();
 			$footer            = ( isset( $meta['ast-advanced-hook-footer']['default'] ) ) ? $meta['ast-advanced-hook-footer']['default'] : array();
-			$footer            = ( isset( $meta['ast-advanced-hook-footer']['default'] ) ) ? $meta['ast-advanced-hook-footer']['default'] : array();
 			$layout_404        = ( isset( $meta['ast-404-page']['default'] ) ) ? $meta['ast-404-page']['default'] : array();
+			$content           = ( isset( $meta['ast-advanced-hook-content']['default'] ) ) ? $meta['ast-advanced-hook-content']['default'] : array();
+			$display_devices   = ( isset( $meta['ast-advanced-display-device']['default'] ) ) ? $meta['ast-advanced-display-device']['default'] : array();
+			$time_duration     = ( isset( $meta['ast-advanced-time-duration']['default'] ) ) ? $meta['ast-advanced-time-duration']['default'] : array();
 
 			$ast_advanced_hooks = array(
 				'include-locations' => $display_locations,
@@ -1454,6 +1474,9 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Meta' ) ) {
 				'header'            => $header,
 				'footer'            => $footer,
 				'layout-404'        => $layout_404,
+				'content'           => $content,
+				'display-devices'   => $display_devices,
+				'time-duration'     => $time_duration,
 			);
 			do_action( 'astra_advanced_hooks_settings_markup_before', $meta );
 			$this->page_header_tab( $ast_advanced_hooks );
@@ -1500,10 +1523,8 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Meta' ) ) {
 						unset( $_POST[ $key ][ $index ] );
 					}
 					$meta_value = array_map( 'esc_attr', $_POST[ $key ] );
-				} elseif ( in_array( $key, array( 'ast-advanced-hook-header', 'ast-advanced-hook-footer', 'ast-404-page' ) ) ) {
-					if ( isset( $_POST[ $key ] ) ) {
-						$meta_value = array_map( 'esc_attr', $_POST[ $key ] );
-					}
+				} elseif ( in_array( $key, array( 'ast-advanced-time-duration', 'ast-advanced-display-device', 'ast-advanced-hook-header', 'ast-advanced-hook-footer', 'ast-404-page', 'ast-advanced-hook-content' ) ) ) {
+					$meta_value = isset( $_POST[ $key ] ) ? array_map( 'esc_attr', $_POST[ $key ] ) : array();
 				} elseif ( in_array( $key, array( 'ast-advanced-hook-location', 'ast-advanced-hook-exclusion' ) ) ) {
 					$meta_value = Astra_Target_Rules_Fields::get_format_rule_value( $_POST, $key );
 				} else {
@@ -1570,6 +1591,34 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Meta' ) ) {
 			update_post_meta( get_the_ID(), 'ast-advanced-hook-location', $target_rule_404 );
 		}
 
+
+		/**
+		 * Get the timezone string as selected in wp general setting.
+		 *
+		 * @return false|mixed|string|void
+		 */
+		public static function get_wp_timezone_string() {
+
+			$current_offset = get_option( 'gmt_offset' );
+			$tzstring       = get_option( 'timezone_string' );
+
+			if ( false !== strpos( $tzstring, 'Etc/GMT' ) ) {
+				$tzstring = '';
+			}
+
+			if ( empty( $tzstring ) ) {
+				if ( 0 == $current_offset ) {
+					$tzstring = 'UTC+0';
+				} elseif ( $current_offset < 0 ) {
+					$tzstring = 'UTC' . $current_offset;
+				} else {
+					$tzstring = 'UTC+' . $current_offset;
+				}
+			}
+
+			return $tzstring;
+		}
+
 		/**
 		 * Page Header Tabs
 		 *
@@ -1585,17 +1634,23 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Meta' ) ) {
 			$padding           = $options['padding'];
 			$header            = $options['header'];
 			$footer            = $options['footer'];
+			$content           = $options['content'];
 			$layout_404        = $options['layout-404'];
+			$display_devices   = $options['display-devices'];
+			$time_duration     = $options['time-duration'];
 
-			$padding_top       = isset( $padding['top'] ) ? $padding['top'] : '';
-			$padding_bottom    = isset( $padding['bottom'] ) ? $padding['bottom'] : '';
-			$header_sticky     = isset( $header['sticky'] ) ? $header['sticky'] : '';
-			$header_shrink     = isset( $header['shrink'] ) ? $header['shrink'] : '';
-			$header_on_devices = isset( $header['sticky-header-on-devices'] ) ? $header['sticky-header-on-devices'] : '';
-			$footer_sticky     = isset( $footer['sticky'] ) ? $footer['sticky'] : '';
-			$footer_on_devices = isset( $footer['sticky-footer-on-devices'] ) ? $footer['sticky-footer-on-devices'] : '';
-			$disable_header    = isset( $layout_404['disable_header'] ) ? $layout_404['disable_header'] : '';
-			$disable_footer    = isset( $layout_404['disable_footer'] ) ? $layout_404['disable_footer'] : '';
+			$padding_top           = isset( $padding['top'] ) ? $padding['top'] : '';
+			$padding_bottom        = isset( $padding['bottom'] ) ? $padding['bottom'] : '';
+			$header_sticky         = isset( $header['sticky'] ) ? $header['sticky'] : '';
+			$header_shrink         = isset( $header['shrink'] ) ? $header['shrink'] : '';
+			$header_on_devices     = isset( $header['sticky-header-on-devices'] ) ? $header['sticky-header-on-devices'] : '';
+			$footer_sticky         = isset( $footer['sticky'] ) ? $footer['sticky'] : '';
+			$footer_on_devices     = isset( $footer['sticky-footer-on-devices'] ) ? $footer['sticky-footer-on-devices'] : '';
+			$disable_header        = isset( $layout_404['disable_header'] ) ? $layout_404['disable_header'] : '';
+			$disable_footer        = isset( $layout_404['disable_footer'] ) ? $layout_404['disable_footer'] : '';
+			$content_location      = isset( $content['location'] ) ? $content['location'] : '';
+			$after_blocks_number   = isset( $content['after_block_number'] ) ? $content['after_block_number'] : '';
+			$before_heading_number = isset( $content['before_heading_number'] ) ? $content['before_heading_number'] : '';
 			?>
 			<table class="ast-advanced-hook-table widefat">
 
@@ -1614,6 +1669,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Meta' ) ) {
 								<?php endforeach; ?>
 							<?php endif; ?>
 						</select>
+						<p class="ast-inside-content-notice"><?php esc_html_e( 'This option will be applicable only for the posts/pages created with the block editor.', 'astra-addon' ); ?></p>
 					</td>
 				</tr>
 
@@ -1635,6 +1691,41 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Meta' ) ) {
 					<td class="ast-advanced-hook-row-content">
 					<input type="checkbox" name="ast-404-page[disable_footer]"
 								value="enabled" <?php checked( $disable_footer, 'enabled' ); ?> />
+					</td>
+				</tr>
+
+				<tr class="ast-advanced-hook-row ast-layout-content-location-required">
+					<td class="ast-advanced-hook-row-heading">
+						<label><?php esc_html_e( 'Location on post/page', 'astra-addon' ); ?></label>
+						<i class="ast-advanced-hook-heading-help dashicons dashicons-editor-help" title="<?php echo esc_attr__( 'Layout will be inserted at a selected location on page/post in the block editor.', 'astra-addon' ); ?>"></i>
+					</td>
+					<td class="ast-advanced-hook-row-content">
+					<select id="ast-advanced-hook-content-location" name="ast-advanced-hook-content[location]" style="width: 50%;" >
+						<option value="<?php echo esc_attr( 'after_blocks' ); ?>" <?php selected( 'after_blocks', $content_location, true ); ?> ><?php esc_html_e( 'After certain number of blocks', 'astra-addon' ); ?></option>
+						<option value="<?php echo esc_attr( 'before_headings' ); ?>" <?php selected( 'before_headings', $content_location, true ); ?>><?php esc_html_e( 'Before certain number of Heading blocks', 'astra-addon' ); ?></option>
+					</select>
+					</td>
+				</tr>
+				<tr class="ast-advanced-hook-row ast-layout-content-after-blocks">
+					<td class="ast-advanced-hook-row-heading">
+						<label><?php esc_html_e( 'Block Number', 'astra-addon' ); ?></label>
+					</td>
+					<td class="ast-advanced-hook-row-content">
+						<span class="ast-advanced-hook-inline-label"><?php esc_attr_e( 'Add layout after', 'astra-addon' ); ?></span>
+						<input type="number" class="ast-inside-content-number-field" name="ast-advanced-hook-content[after_block_number]"  min="1" oninput="validity.valid||(value='');" value="<?php echo esc_attr( $after_blocks_number ); ?>" >
+						<span class="ast-advanced-hook-inline-label"><?php esc_attr_e( 'Block(s)', 'astra-addon' ); ?></span>
+						<p class="ast-inside-content-blocks-notice"><?php esc_attr_e( 'Layout will be inserted after the selected number of blocks. Example - If you set it 3, the layout will be added after the first 3 blocks.', 'astra-addon' ); ?></p>
+					</td>
+				</tr>
+				<tr class="ast-advanced-hook-row ast-layout-content-before-heading">
+					<td class="ast-advanced-hook-row-heading">
+						<label><?php esc_html_e( 'Heading Block Number', 'astra-addon' ); ?></label>
+					</td>
+					<td class="ast-advanced-hook-row-content">
+						<span class="ast-advanced-hook-inline-label"><?php esc_attr_e( 'Add content before', 'astra-addon' ); ?></span>
+						<input type="number" class="ast-inside-content-number-field" name="ast-advanced-hook-content[before_heading_number]"  min="1" oninput="validity.valid||(value='');" value="<?php echo esc_attr( $before_heading_number ); ?>" >
+						<span class="ast-advanced-hook-inline-label"><?php esc_attr_e( 'Heading Block(s)', 'astra-addon' ); ?></span>
+						<p class="ast-inside-content-heading-notice"><?php esc_attr_e( 'Layout will be inserted before the selected number of Heading blocks. Example - If you set it 3, the layout will be added just before 3rd Heading block on page.', 'astra-addon' ); ?></p>
 					</td>
 				</tr>
 
@@ -1817,6 +1908,66 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Meta' ) ) {
 							$users
 						);
 					?>
+					</td>
+				</tr>
+
+				<tr class="ast-advanced-hook-row ast-target-responsive-display ast-layout-required">
+					<td class="ast-advanced-hook-row-heading">
+						<label><?php esc_html_e( 'Responsive Visibility', 'astra-addon' ); ?></label>
+						<i class="ast-advanced-hook-heading-help dashicons dashicons-editor-help" title="<?php echo esc_attr__( 'Select Device for where this Custom Layout should appear.', 'astra-addon' ); ?>"></i>
+					</td>
+					<td class="ast-advanced-hook-row-content">
+						<ul class="ast-advanced-device-display-wrap">
+							<li>
+								<label>
+									<input type="checkbox" name="ast-advanced-display-device[]" value="desktop" <?php echo in_array( 'desktop', $display_devices, true ) ? 'checked="checked"' : ''; ?> />
+									<?php esc_html_e( 'Desktop', 'astra-addon' ); ?>
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="ast-advanced-display-device[]" value="tablet" <?php echo in_array( 'tablet', $display_devices, true ) ? 'checked="checked"' : ''; ?> />
+									<?php esc_html_e( 'Tablet', 'astra-addon' ); ?>
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="ast-advanced-display-device[]" value="mobile" <?php echo in_array( 'mobile', $display_devices, true ) ? 'checked="checked"' : ''; ?> />
+									<?php esc_html_e( 'Mobile', 'astra-addon' ); ?>
+								</label>
+							</li>
+						</ul>
+					</td>
+				</tr>
+
+				<tr class="ast-advanced-hook-row ast-target-time-duration-display ast-layout-required">
+					<td class="ast-advanced-hook-row-heading">
+						<label><?php esc_html_e( 'Time Duration', 'astra-addon' ); ?></label>
+						<i class="ast-advanced-hook-heading-help dashicons dashicons-editor-help" title="<?php echo esc_attr__( 'Select Time Duration in which this Custom Layout should appear.', 'astra-addon' ); ?>"></i>
+					</td>
+					<td class="ast-advanced-hook-row-content">
+						<ul class="ast-advanced-time-duration-wrap">
+							<li>
+								<label>
+									<input type="checkbox" id="ast-advanced-time-duration-enabled" name="ast-advanced-time-duration[enabled]" value="enabled" <?php checked( isset( $time_duration['enabled'] ) ? $time_duration['enabled'] : '', 'enabled' ); ?> />
+									<?php esc_html_e( 'Enable', 'astra-addon' ); ?>
+								</label>
+							</li>
+							<li class="ast-advanced-time-duration-enabled">
+								<label for="ast-advanced-time-duration-start-dt"> <?php esc_attr_e( 'Start Date/Time', 'astra-addon' ); ?>:
+								<input placeholder="<?php esc_attr_e( 'Click to pick a date', 'astra-addon' ); ?>" class="ast-advanced-date-time-input" type="text" id="ast-advanced-time-duration-start-dt" name="ast-advanced-time-duration[start-dt]"  value="<?php echo esc_attr( $time_duration['start-dt'] ); ?>" readonly />
+								</label>
+							</li>
+							<li class="ast-advanced-time-duration-enabled">
+								<label for="ast-advanced-time-duration-end-dt"> <?php esc_attr_e( 'End Date/Time', 'astra-addon' ); ?>:
+								<input placeholder="<?php esc_attr_e( 'Click to pick a date', 'astra-addon' ); ?>" class="ast-advanced-date-time-input" type="text" id="ast-advanced-time-duration-end-dt" name="ast-advanced-time-duration[end-dt]" value="<?php echo esc_attr( $time_duration['end-dt'] ); ?>" readonly />
+								</label>
+							</li>
+							<li class="ast-advanced-time-duration-enabled" >
+								<label> <?php esc_html_e( 'Timezone:', 'astra-addon' ); ?> </label>
+								<a target="_blank" href="<?php echo esc_attr( admin_url( 'options-general.php' ) ); ?>"> <?php echo esc_attr( static::get_wp_timezone_string() ); ?> </a>
+							</li>
+						</ul>
 					</td>
 				</tr>
 

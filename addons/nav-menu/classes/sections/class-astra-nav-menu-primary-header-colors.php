@@ -40,34 +40,34 @@ if ( ! class_exists( 'Astra_Nav_Menu_Primary_Header_Colors' ) ) {
 
 				// Option: Megamenu Heading Color.
 				array(
-					'type'      => 'sub-control',
-					'priority'  => 12,
-					'tab'       => __( 'Normal', 'astra-addon' ),
-					'parent'    => ASTRA_THEME_SETTINGS . '[sticky-header-primary-megamenu-colors]',
-					'control'   => 'ast-color',
-					'section'   => 'section-sticky-header',
-					'transport' => 'postMessage',
-					'name'      => 'sticky-primary-header-megamenu-heading-color',
-					'default'   => astra_get_option( 'sticky-primary-header-megamenu-heading-color' ),
-					'title'     => __( 'Color', 'astra-addon' ),
+					'type'              => 'sub-control',
+					'priority'          => 12,
+					'parent'            => ASTRA_THEME_SETTINGS . '[sticky-header-primary-megamenu-colors]',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'section'           => 'section-sticky-header',
+					'transport'         => 'postMessage',
+					'name'              => 'sticky-primary-header-megamenu-heading-color',
+					'default'           => astra_get_option( 'sticky-primary-header-megamenu-heading-color' ),
+					'title'             => __( 'Normal', 'astra-addon' ),
 				),
 
 				// Option: Megamenu Heading Hover Color.
 				array(
-					'type'      => 'sub-control',
-					'priority'  => 12,
-					'tab'       => __( 'Hover', 'astra-addon' ),
-					'parent'    => ASTRA_THEME_SETTINGS . '[sticky-header-primary-megamenu-colors]',
-					'control'   => 'ast-color',
-					'section'   => 'section-sticky-header',
-					'transport' => 'postMessage',
-					'name'      => 'sticky-primary-header-megamenu-heading-h-color',
-					'default'   => astra_get_option( 'sticky-primary-header-megamenu-heading-h-color' ),
-					'title'     => __( 'Hover Color', 'astra-addon' ),
+					'type'              => 'sub-control',
+					'priority'          => 12,
+					'parent'            => ASTRA_THEME_SETTINGS . '[sticky-header-primary-megamenu-colors]',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'section'           => 'section-sticky-header',
+					'transport'         => 'postMessage',
+					'name'              => 'sticky-primary-header-megamenu-heading-h-color',
+					'default'           => astra_get_option( 'sticky-primary-header-megamenu-heading-h-color' ),
+					'title'             => __( 'Hover', 'astra-addon' ),
 				),
 			);
 
-			if ( ! Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( false === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 				$new_configs = array(
 
@@ -78,13 +78,14 @@ if ( ! class_exists( 'Astra_Nav_Menu_Primary_Header_Colors' ) ) {
 						'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-primary-megamenu-colors]',
 						'default'   => astra_get_option( 'sticky-header-primary-megamenu-colors' ),
 						'type'      => 'control',
-						'control'   => 'ast-settings-group',
-						'title'     => __( 'Mega Menu Column Heading', 'astra-addon' ),
+						'control'   => Astra_Theme_Extension::$group_control,
+						'title'     => __( 'Mega Menu Heading', 'astra-addon' ),
 						'section'   => 'section-sticky-header',
+						'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
 						'transport' => 'postMessage',
 						'priority'  => 100,
-						'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-							Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+						'context'   => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+							astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 					),
 				);
 				$_configs    = array_merge( $_configs, $new_configs );

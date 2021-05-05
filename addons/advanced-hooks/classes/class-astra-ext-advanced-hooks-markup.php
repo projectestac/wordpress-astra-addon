@@ -23,6 +23,13 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 		private static $instance;
 
 		/**
+		 * Member Variable
+		 *
+		 * @var bool is_layout_content_in_process
+		 */
+		private $is_layout_content_in_process = false;
+
+		/**
 		 *  Initiator
 		 */
 		public static function get_instance() {
@@ -55,6 +62,75 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 			add_action( 'astra_get_js_files', array( $this, 'add_scripts' ) );
 			add_filter( 'astra_addon_js_localize', array( $this, 'localize_variables' ) );
 			add_filter( 'astra_dynamic_css', array( $this, 'astra_ext_advanced_hooks_dynamic_css' ) );
+		}
+
+
+		/**
+		 * Get the classes for custom layout.
+		 *
+		 * @param int  $post_id post id.
+		 * @param bool $layout is header | footer | 404-page.
+		 */
+		private function prepare_astra_header_filter( $post_id, $layout ) {
+
+			$hide_classes = explode( ' ', $this->get_display_device( $post_id, false ) );
+
+			if ( 'footer' === $layout && true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
+				add_action( 'astra_footer', array( Astra_Builder_Footer::get_instance(), 'footer_markup' ), 1 );
+			}
+
+			if ( ! static::get_time_duration_eligibility( $post_id ) ) {
+				return;
+			}
+
+			if ( 3 === count( $hide_classes ) ) { // If displayed on desktop, tablet & mobile.
+
+				switch ( $layout ) {
+					case 'header':
+						remove_action( 'astra_header', 'astra_header_markup' );
+						break;
+					case 'footer':
+						remove_action( 'astra_footer', 'astra_footer_markup' );
+						if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
+							remove_action( 'astra_footer', array( Astra_Builder_Footer::get_instance(), 'footer_markup' ), 1 );
+						}
+						break;
+					case '404-page':
+						remove_action( 'astra_entry_content_404_page', 'astra_entry_content_404_page_template' );
+						break;
+				}
+
+				return;
+
+			}
+
+			switch ( $layout ) {
+				case 'header':
+				case 'footer':
+					$filter = 'astra_get_' . $layout . '_classes';
+					break;
+				case '404-page':
+					$filter = 'astra_attr_404_page';
+					break;
+				default:
+					$filter = '';
+					break;
+			}
+
+			if ( $filter ) {
+				add_filter(
+					$filter,
+					function ( $classes ) use ( $hide_classes, $layout ) {
+						if ( '404-page' === $layout ) {
+							$hide_classes     = implode( ' ', $hide_classes );
+							$classes['class'] = isset( $classes['class'] ) ? $classes['class'] . ' ' . $hide_classes : $hide_classes;
+							return $classes;
+						}
+						return array_merge( $classes, $hide_classes );
+					}
+				);
+			}
+
 		}
 
 		/**
@@ -137,8 +213,9 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 					remove_action( 'astra_advanced_hook_template', array( $this, 'template_empty_content' ) );
 					add_action( 'astra_advanced_hook_template', 'the_content' );
 				} elseif ( 'header' == $layout ) {
-					// remove default site's header.
-					remove_action( 'astra_header', 'astra_header_markup' );
+
+					$this->prepare_astra_header_filter( $post_id, 'header' );
+
 					// remove default site's fixed header if sticky header is activated.
 					add_filter( 'astra_fixed_header_markup_enabled', '__return_false' );
 
@@ -160,8 +237,8 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 						$priority
 					);
 				} elseif ( 'footer' == $layout ) {
-					// remove default site's footer.
-					remove_action( 'astra_footer', 'astra_footer_markup' );
+
+					$this->prepare_astra_header_filter( $post_id, 'footer' );
 
 					$action = 'astra_custom_footer';
 					// if astra_custom_footer not exist then call astra_footer.
@@ -215,17 +292,23 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 			if ( is_singular( ASTRA_ADVANCED_HOOKS_POST_TYPE ) ) {
 				$post_id = get_the_id();
 
+				if ( ! static::get_time_duration_eligibility( $post_id ) ) {
+					return;
+				}
+
 				$php_snippet = $this->get_php_snippet( $post_id );
 				if ( $php_snippet ) {
 					$content = $php_snippet;
 				}
+
+				$display_device_classes = $this->get_display_device( $post_id );
 
 				$action = get_post_meta( $post_id, 'ast-advanced-hook-action', true );
 				// Exclude div wrapper if selected hook is from below list.
 				$exclude_wrapper_hooks = array( 'astra_html_before', 'astra_body_top', 'astra_head_top', 'astra_head_bottom', 'wp_head', 'astra_body_bottom', 'wp_footer' );
 				$with_wrapper          = ! in_array( $action, $exclude_wrapper_hooks );
 				if ( $with_wrapper ) {
-					$content = '<div class="astra-advanced-hook-' . $post_id . '">' . $content . '</div>';
+					$content = '<div class="astra-advanced-hook-' . esc_attr( $post_id ) . ' ' . esc_attr( $display_device_classes ) . '">' . $content . '</div>';
 				}
 			}
 			return $content;
@@ -269,15 +352,17 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 				$padding_bottom = isset( $padding['bottom'] ) ? $padding['bottom'] : '';
 				$padding_bottom = is_numeric( $padding_bottom ) ? $padding_bottom . 'px' : $padding_bottom;
 
-				$styles .= ' .astra-advanced-hook-' . $post_id . ' { ';
-				if ( ! empty( $padding_top ) ) {
-					$styles .= 'padding-top: ' . $padding_top . ';';
+				if ( ! ( empty( $padding_top ) && empty( $padding_bottom ) ) ) {
+					$styles .= ' .astra-advanced-hook-' . $post_id . ' { ';
+					if ( ! empty( $padding_top ) ) {
+						$styles .= 'padding-top: ' . $padding_top . ';';
+					}
+					if ( ! empty( $padding_bottom ) ) {
+						$styles .= 'padding-bottom: ' . $padding_bottom . ';';
+					}
+					$styles .= '}';
+					wp_add_inline_style( 'astra-addon-css', $styles );
 				}
-				if ( ! empty( $padding_bottom ) ) {
-					$styles .= 'padding-bottom: ' . $padding_bottom . ';';
-				}
-				$styles .= '}';
-				wp_add_inline_style( 'astra-addon-css', $styles );
 			}
 		}
 
@@ -401,35 +486,38 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 							$padding_bottom = isset( $padding['bottom'] ) ? $padding['bottom'] : '';
 							$padding_bottom = is_numeric( $padding_bottom ) ? $padding_bottom . 'px' : $padding_bottom;
 
-							$styles .= ' .astra-advanced-hook-' . $post_id . ' { ';
-							if ( ! empty( $padding_top ) ) {
-								$styles .= 'padding-top: ' . $padding_top . ';';
+							if ( ! ( empty( $padding_top ) && empty( $padding_bottom ) ) ) {
+								$styles .= ' .astra-advanced-hook-' . $post_id . ' { ';
+								if ( ! empty( $padding_top ) ) {
+									$styles .= 'padding-top: ' . $padding_top . ';';
+								}
+								if ( ! empty( $padding_bottom ) ) {
+									$styles .= 'padding-bottom: ' . $padding_bottom . ';';
+								}
+								$styles .= '}';
+								wp_add_inline_style( 'astra-addon-css', $styles );
 							}
-							if ( ! empty( $padding_bottom ) ) {
-								$styles .= 'padding-bottom: ' . $padding_bottom . ';';
-							}
-							$styles .= '}';
-							wp_add_inline_style( 'astra-addon-css', $styles );
 						}
 					);
 
 					if ( isset( $layout[0] ) && '404-page' == $layout[0] && 0 == $layout_404_counter ) {
 
-						remove_action( 'astra_entry_content_404_page', 'astra_entry_content_404_page_template' );
+						$this->prepare_astra_header_filter( $post_id, '404-page' );
+
 						add_action( 'astra_get_content_layout', 'astra_return_content_layout_page_builder' );
 						add_action( 'astra_page_layout', 'astra_return_page_layout_no_sidebar' );
 
 						$layout_404_settings = get_post_meta( $post_id, 'ast-404-page', true );
 						if ( isset( $layout_404_settings['disable_header'] ) && 'enabled' == $layout_404_settings['disable_header'] ) {
 							remove_action( 'astra_header', 'astra_header_markup' );
-							if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+							if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 								remove_action( 'astra_header', array( Astra_Builder_Header::get_instance(), 'prepare_header_builder_markup' ) );
 							}
 						}
 
 						if ( isset( $layout_404_settings['disable_footer'] ) && 'enabled' == $layout_404_settings['disable_footer'] ) {
 							remove_action( 'astra_footer', 'astra_footer_markup' );
-							if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+							if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 								remove_action( 'astra_footer', array( Astra_Builder_Footer::get_instance(), 'footer_markup' ) );
 							}
 						}
@@ -444,10 +532,10 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 
 						$layout_404_counter ++;
 					} elseif ( isset( $layout[0] ) && 'header' == $layout[0] && 0 == $header_counter ) {
-						// Remove default site's header.
 
-						remove_action( 'astra_header', 'astra_header_markup' );
-						if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+						$this->prepare_astra_header_filter( $post_id, 'header' );
+
+						if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 							remove_action( 'astra_header', array( Astra_Builder_Header::get_instance(), 'prepare_header_builder_markup' ) );
 						}
 						// remove default site's fixed header if sticky header is activated.
@@ -469,10 +557,10 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 						);
 						$header_counter++;
 					} elseif ( isset( $layout[0] ) && 'footer' == $layout[0] && 0 == $footer_counter ) {
-						// Remove default site's footer.
-						remove_action( 'astra_footer', 'astra_footer_markup' );
 
-						if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+						$this->prepare_astra_header_filter( $post_id, 'footer' );
+
+						if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 							remove_action( 'astra_footer', array( Astra_Builder_Footer::get_instance(), 'footer_markup' ) );
 						}
 
@@ -495,8 +583,18 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 							$priority
 						);
 						$footer_counter++;
-					}
+					} elseif ( isset( $layout[0] ) && 'content' == $layout[0] ) {
 
+						add_filter(
+							'render_block',
+							function ( $content, $parsed_block ) use ( $post_id ) {
+								return Astra_Ext_Advanced_Hooks_Markup::get_instance()->render_inside_content( $post_id, $content, $parsed_block );
+							},
+							10,
+							2
+						);
+
+					}
 					if ( isset( $layout[0] ) && '0' != $layout[0] && 'header' != $layout[0] && 'footer' != $layout[0] ) {
 						// Add Action for advanced-hooks.
 						add_action(
@@ -511,7 +609,106 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 					}
 				}
 			}
+		}
 
+		/**
+		 * Generates block array with layout content.
+		 *
+		 * @param int $post_id Post ID.
+		 * @since 3.2.0
+		 */
+		public function generate_blocks( $post_id ) {
+
+			$blocks = array();
+			ob_start();
+			self::get_instance()->get_action_content( $post_id );
+			$content = ob_get_clean();
+
+			$blocks = array(
+				array(
+					'blockName'    => 'core/html',
+					'attrs'        => array(),
+					'innerBlocks'  => array(),
+					'innerHTML'    => $content,
+					'innerContent' => array( $content ),
+				),
+			);
+
+			return $blocks;
+		}
+
+		/**
+		 * Insert array at specific position.
+		 *
+		 * @param array $array Array.
+		 * @param int   $position position of new array element.
+		 * @param array $insert_array Array needs to be inserted.
+		 * @since 3.2.0
+		 */
+		public function array_insert( &$array, $position, $insert_array ) {
+			$first_array = array_splice( $array, 0, $position );
+			$array       = array_merge( $first_array, $insert_array, $array );
+		}
+
+
+		/**
+		 * Prepare a class to hide custom layout as per selected device.
+		 *
+		 * @param int  $post_id post id.
+		 * @param bool $hide_classes get the hide/show classes.
+		 * @return string
+		 */
+		public function get_display_device( $post_id, $hide_classes = true ) {
+			$classes        = '';
+			$display_device = get_post_meta( $post_id, 'ast-advanced-display-device', true );
+			$devices        = array( 'desktop', 'tablet', 'mobile' );
+
+			if ( '' === $display_device ) {
+				$display_device = $devices; // Managing backward compatibility.
+			}
+
+			if ( ! is_array( $display_device ) ) {
+				return $classes;
+			}
+
+			if ( $hide_classes ) {
+				$devices        = array( 'desktop', 'tablet', 'mobile' );
+				$display_device = array_diff( $devices, $display_device );
+			}
+
+			if ( ! empty( $display_device ) ) {
+				$classes = implode( ' ', preg_filter( '/^/', 'ast-hide-display-device-', $display_device ) );
+			}
+			return $classes;
+		}
+
+
+		/**
+		 * Check if post eligible to show on time duration
+		 *
+		 *  @param int $post_id post id.
+		 */
+		public static function get_time_duration_eligibility( $post_id ) {
+
+			$time_duration = get_post_meta( $post_id, 'ast-advanced-time-duration', 'true' );
+
+			if ( isset( $time_duration['enabled'] ) && 'enabled' !== $time_duration['enabled'] ) {
+				return true; // Eligible to display as not enabled time duration.
+			}
+
+			$start_dt   = isset( $time_duration['start-dt'] ) ? strtotime( $time_duration['start-dt'] ) : false;
+			$end_dt     = isset( $time_duration['end-dt'] ) ? strtotime( $time_duration['end-dt'] ) : false;
+			$current_dt = strtotime( current_time( 'mysql' ) );
+
+			if ( $start_dt && $start_dt > $current_dt ) {
+				return false; // Not eligible if not started yet.
+			}
+
+			if ( $end_dt && $end_dt < $current_dt ) {
+				return false; // Not eligible if already time passed.
+			}
+
+			return true; // Fallback true.
 		}
 
 		/**
@@ -528,13 +725,18 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 				return;
 			}
 
-			$action = get_post_meta( $post_id, 'ast-advanced-hook-action', true );
+			if ( ! static::get_time_duration_eligibility( $post_id ) ) {
+				return;
+			}
+
+			$action                 = get_post_meta( $post_id, 'ast-advanced-hook-action', true );
+			$display_device_classes = $this->get_display_device( $post_id );
 
 			// Exclude div wrapper if selected hook is from below list.
 			$exclude_wrapper_hooks = array( 'astra_html_before', 'astra_body_top', 'astra_head_top', 'astra_head_bottom', 'wp_head', 'astra_body_bottom', 'wp_footer' );
 			$with_wrapper          = ! in_array( $action, $exclude_wrapper_hooks );
 			if ( $with_wrapper ) {
-				echo '<div class="astra-advanced-hook-' . esc_attr( $post_id ) . '">';
+				echo '<div class="astra-advanced-hook-' . esc_attr( $post_id ) . ' ' . esc_attr( $display_device_classes ) . '">';
 			}
 
 			$php_snippet = $this->get_php_snippet( $post_id );
@@ -544,6 +746,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 			} else {
 
 				if ( class_exists( 'Astra_Addon_Page_Builder_Compatibility' ) ) {
+
 					$page_builder_base_instance = Astra_Addon_Page_Builder_Compatibility::get_instance();
 
 					$page_builder_instance = $page_builder_base_instance->get_active_page_builder( $post_id );
@@ -775,6 +978,74 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 			return false;
 		}
 
+		/**
+		 * Create layout blocks data to insert in content.
+		 *
+		 * @param int    $post_id post ID.
+		 * @param string $content block content.
+		 * @param array  $parsed_block Block array.
+		 * @since 3.2.0
+		 */
+		public function render_inside_content( $post_id, $content, $parsed_block ) {
+
+			// We don't want to run this filter when we are processing layout content as it will result in infinite loop.
+			if ( true === $this->is_layout_content_in_process ) {
+				return $content;
+			}
+
+			$layout_meta = get_post_meta( $post_id, 'ast-advanced-hook-content', true );
+			$location    = isset( $layout_meta['location'] ) ? $layout_meta['location'] : 0;
+
+			$this->is_layout_content_in_process = true;
+
+			if ( 'after_blocks' === $location ) {
+
+				$after_blocks = isset( $layout_meta['after_block_number'] ) ? $layout_meta['after_block_number'] : 0;
+
+				// Match block index with After Blocks number and display the content.
+				if (
+					isset( $parsed_block['firstLevelBlock'] )
+					&&
+					$parsed_block['firstLevelBlock']
+					&&
+					isset( $parsed_block['firstLevelBlockIndex'] )
+					&&
+					intval(
+						$parsed_block['firstLevelBlockIndex']
+					) + 1 === intval( $after_blocks )
+				) {
+					ob_start();
+					self::get_instance()->get_action_content( $post_id );
+					$layout_content = ob_get_clean();
+					$content       .= $layout_content;
+				}
+			} elseif ( 'before_headings' === $location ) {
+
+				$headings_number = isset( $layout_meta['before_heading_number'] ) ? $layout_meta['before_heading_number'] : 0;
+
+				// Match block index with before headings number and display the content.
+				if (
+					isset( $parsed_block['firstLevelBlock'] )
+					&&
+					$parsed_block['firstLevelBlock']
+					&&
+					isset( $parsed_block['firstLevelHeadingIndex'] )
+					&&
+					intval(
+						$parsed_block['firstLevelHeadingIndex']
+					) + 1 === intval( $headings_number )
+				) {
+					ob_start();
+					self::get_instance()->get_action_content( $post_id );
+					$layout_content = ob_get_clean();
+					$content        = $layout_content . $content;
+				}
+			}
+
+			$this->is_layout_content_in_process = false;
+
+			return $content;
+		}
 	}
 }
 

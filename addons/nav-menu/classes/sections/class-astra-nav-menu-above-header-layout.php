@@ -38,46 +38,26 @@ if ( ! class_exists( 'Astra_Nav_Menu_Above_Header_Layout' ) ) {
 
 			$_configs = array(
 
-				/**
-				 * Option - Top Menu Space
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[above-header-spacing-divider]',
-					'section'  => 'section-above-header',
-					'type'     => 'control',
-					'control'  => 'ast-heading',
-					'title'    => __( 'Spacing', 'astra-addon' ),
-					'priority' => 150,
-					'settings' => array(),
-					'context'  => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-layout]',
-							'operator' => '!=',
-							'value'    => 'disabled',
-						),
-					),
-				),
-
 				// Option - Megamenu Heading Space.
 				array(
-					'name'           => ASTRA_THEME_SETTINGS . '[above-header-megamenu-heading-space]',
-					'default'        => astra_get_option( 'above-header-megamenu-heading-space' ),
-					'type'           => 'control',
-					'transport'      => 'postMessage',
-					'control'        => 'ast-responsive-spacing',
-					'priority'       => 175,
-					'title'          => __( 'Megamenu Heading Space', 'astra-addon' ),
-					'linked_choices' => true,
-					'unit_choices'   => array( 'px', 'em', '%' ),
-					'choices'        => array(
+					'name'              => ASTRA_THEME_SETTINGS . '[above-header-megamenu-heading-space]',
+					'default'           => astra_get_option( 'above-header-megamenu-heading-space' ),
+					'type'              => 'control',
+					'transport'         => 'postMessage',
+					'control'           => 'ast-responsive-spacing',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+					'priority'          => 175,
+					'title'             => __( 'Megamenu Heading Space', 'astra-addon' ),
+					'linked_choices'    => true,
+					'unit_choices'      => array( 'px', 'em', '%' ),
+					'choices'           => array(
 						'top'    => __( 'Top', 'astra-addon' ),
 						'right'  => __( 'Right', 'astra-addon' ),
 						'bottom' => __( 'Bottom', 'astra-addon' ),
 						'left'   => __( 'Left', 'astra-addon' ),
 					),
-					'section'        => 'section-above-header',
-					'context'        => array(
+					'section'           => 'section-above-header',
+					'context'           => array(
 						'relation' => 'OR',
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',

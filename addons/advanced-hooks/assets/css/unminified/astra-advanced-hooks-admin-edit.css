@@ -108,7 +108,7 @@
 	vertical-align: middle;
 }
 .ast-advanced-hook-row td *{
-	vertical-align: middle;	
+	vertical-align: middle;
 }
 .ast-advanced-hook-row:last-child td {
 	border-bottom: none;
@@ -309,4 +309,40 @@
 .ast-advanced-hook-enable-php-wrapper {
 	margin: 0;
 	order: 2;
+}
+.widefat td .ast-inside-content-notice {
+	display: none;
+	margin-top: 10px;
+}
+.widefat td .ast-inside-content-blocks-notice,
+.widefat td .ast-inside-content-heading-notice{
+	margin-top: 10px;
+}
+.ast-advanced-hook-inline-label{
+	font-size: 14px;
+	color: #2c3338;
+}
+.ast-inside-content-number-field{
+	width: 60px;
+}
+
+.ast-advanced-hook-wrap {
+	margin-bottom: 5px;
+}
+
+input.readonly, input[readonly], .ast-advanced-date-time-input {
+	width: 190px;
+	background: white;
+}
+
+.ast-advanced-time-duration-wrap {
+	display: grid;
+	grid-template-columns: 10em 25em 25em 10em;
+	height: 50px;
+	align-items: center;
+}
+
+.ast-advanced-device-display-wrap {
+	display: grid;
+	grid-template-columns: 7em 7em 7em;
 }

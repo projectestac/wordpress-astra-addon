@@ -41,22 +41,12 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Archive' ) ) {
 		 */
 		public function register_configuration( $configurations, $wp_customize ) {
 
-			$_configs = array(
+			$content_colors_config_title = __( 'Content', 'astra-addon' );
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
+				$content_colors_config_title = __( 'Content Color', 'astra-addon' );
+			}
 
-				/**
-				 * Option: Blog Color Section heading
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[blog-color-heading-divider]',
-					'type'     => 'control',
-					'control'  => 'ast-heading',
-					'section'  => 'section-blog',
-					'title'    => __( 'Colors and Background', 'astra-addon' ),
-					'priority' => 125,
-					'settings' => array(),
-					'context'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
-				),
+			$_configs = array(
 
 				/**
 				 * Option: Blog / Archive Color Group
@@ -66,12 +56,13 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Archive' ) ) {
 					'default'   => astra_get_option( 'blog-content-color-group' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
-					'title'     => __( 'Content', 'astra-addon' ),
+					'title'     => $content_colors_config_title,
 					'section'   => 'section-blog',
 					'transport' => 'postMessage',
 					'priority'  => 130,
-					'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+					'context'   => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 
 				// Option: Divider.
@@ -86,14 +77,14 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Archive' ) ) {
 					'tab'      => __( 'Normal', 'astra-addon' ),
 					'priority' => 11,
 					'settings' => array(),
-					'context'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+					'context'  => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 
 				// Option: Archive Summary Box Background Color.
 				array(
 					'name'        => 'archive-summary-box-bg-color',
-					'default'     => '',
+					'default'     => astra_get_option( 'archive-summary-box-bg-color' ),
 					'tab'         => __( 'Normal', 'astra-addon' ),
 					'priority'    => 11,
 					'type'        => 'sub-control',
@@ -103,94 +94,120 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Archive' ) ) {
 					'control'     => 'ast-color',
 					'title'       => __( 'Background Color', 'astra-addon' ),
 					'description' => __( 'This background color will not work on full-width layout.', 'astra-addon' ),
-					'context'     => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+					'context'     => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 
 				// Option: Archive Summary Box Title Color.
 				array(
-					'type'      => 'sub-control',
-					'tab'       => __( 'Normal', 'astra-addon' ),
-					'priority'  => 11,
-					'parent'    => ASTRA_THEME_SETTINGS . '[blog-content-color-group]',
-					'section'   => 'section-blog',
-					'control'   => 'ast-color',
-					'transport' => 'postMessage',
-					'name'      => 'archive-summary-box-title-color',
-					'default'   => '',
-					'title'     => __( 'Title Color', 'astra-addon' ),
+					'type'              => 'sub-control',
+					'tab'               => __( 'Normal', 'astra-addon' ),
+					'priority'          => 11,
+					'parent'            => ASTRA_THEME_SETTINGS . '[blog-content-color-group]',
+					'section'           => 'section-blog',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'name'              => 'archive-summary-box-title-color',
+					'default'           => astra_get_option( 'archive-summary-box-title-color' ),
+					'title'             => __( 'Title Color', 'astra-addon' ),
 				),
 
 				// Option: Archive Summary Box Description Color.
 				array(
-					'type'      => 'sub-control',
-					'tab'       => __( 'Normal', 'astra-addon' ),
-					'priority'  => 11,
-					'parent'    => ASTRA_THEME_SETTINGS . '[blog-content-color-group]',
-					'section'   => 'section-blog',
-					'control'   => 'ast-color',
-					'transport' => 'postMessage',
-					'name'      => 'archive-summary-box-text-color',
-					'default'   => '',
-					'title'     => __( 'Description Color', 'astra-addon' ),
+					'type'              => 'sub-control',
+					'tab'               => __( 'Normal', 'astra-addon' ),
+					'priority'          => 11,
+					'parent'            => ASTRA_THEME_SETTINGS . '[blog-content-color-group]',
+					'section'           => 'section-blog',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'name'              => 'archive-summary-box-text-color',
+					'default'           => astra_get_option( 'archive-summary-box-text-color' ),
+					'title'             => __( 'Description Color', 'astra-addon' ),
 				),
 
 				// Option: Blog / Archive Post Title Color.
 				array(
-					'type'      => 'sub-control',
-					'tab'       => __( 'Normal', 'astra-addon' ),
-					'priority'  => 10,
-					'parent'    => ASTRA_THEME_SETTINGS . '[blog-content-color-group]',
-					'section'   => 'section-blog',
-					'control'   => 'ast-color',
-					'default'   => '',
-					'transport' => 'postMessage',
-					'name'      => 'page-title-color',
-					'title'     => __( 'Post Title Color', 'astra-addon' ),
+					'type'              => 'sub-control',
+					'tab'               => __( 'Normal', 'astra-addon' ),
+					'priority'          => 10,
+					'parent'            => ASTRA_THEME_SETTINGS . '[blog-content-color-group]',
+					'section'           => 'section-blog',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'default'           => astra_get_option( 'page-title-color' ),
+					'transport'         => 'postMessage',
+					'name'              => 'page-title-color',
+					'title'             => __( 'Post Title Color', 'astra-addon' ),
 				),
 
 				// Option: Post Meta Color.
 				array(
-					'type'      => 'sub-control',
-					'tab'       => __( 'Normal', 'astra-addon' ),
-					'priority'  => 10,
-					'parent'    => ASTRA_THEME_SETTINGS . '[blog-content-color-group]',
-					'section'   => 'section-blog',
-					'control'   => 'ast-color',
-					'default'   => '',
-					'transport' => 'postMessage',
-					'name'      => 'post-meta-color',
-					'title'     => __( 'Meta Color', 'astra-addon' ),
+					'type'              => 'sub-control',
+					'tab'               => __( 'Normal', 'astra-addon' ),
+					'priority'          => 10,
+					'parent'            => ASTRA_THEME_SETTINGS . '[blog-content-color-group]',
+					'section'           => 'section-blog',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'default'           => astra_get_option( 'post-meta-color' ),
+					'transport'         => 'postMessage',
+					'name'              => 'post-meta-color',
+					'title'             => __( 'Meta Color', 'astra-addon' ),
 				),
 
 				// Option: Post Meta Link Color.
 				array(
-					'type'      => 'sub-control',
-					'tab'       => __( 'Normal', 'astra-addon' ),
-					'priority'  => 10,
-					'parent'    => ASTRA_THEME_SETTINGS . '[blog-content-color-group]',
-					'section'   => 'section-blog',
-					'control'   => 'ast-color',
-					'default'   => '',
-					'transport' => 'postMessage',
-					'name'      => 'post-meta-link-color',
-					'title'     => __( 'Meta Link Color', 'astra-addon' ),
+					'type'              => 'sub-control',
+					'tab'               => __( 'Normal', 'astra-addon' ),
+					'priority'          => 10,
+					'parent'            => ASTRA_THEME_SETTINGS . '[blog-content-color-group]',
+					'section'           => 'section-blog',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'default'           => astra_get_option( 'post-meta-link-color' ),
+					'transport'         => 'postMessage',
+					'name'              => 'post-meta-link-color',
+					'title'             => __( 'Meta Link Color', 'astra-addon' ),
 				),
 
 				// Option: Post Meta Link Hover Color.
 				array(
-					'type'      => 'sub-control',
-					'tab'       => __( 'Hover', 'astra-addon' ),
-					'priority'  => 12,
-					'parent'    => ASTRA_THEME_SETTINGS . '[blog-content-color-group]',
-					'section'   => 'section-blog',
-					'control'   => 'ast-color',
-					'default'   => '',
-					'transport' => 'postMessage',
-					'name'      => 'post-meta-link-h-color',
-					'title'     => __( 'Meta Link Color', 'astra-addon' ),
+					'type'              => 'sub-control',
+					'tab'               => __( 'Hover', 'astra-addon' ),
+					'priority'          => 12,
+					'parent'            => ASTRA_THEME_SETTINGS . '[blog-content-color-group]',
+					'section'           => 'section-blog',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'default'           => astra_get_option( 'post-meta-link-h-color' ),
+					'transport'         => 'postMessage',
+					'name'              => 'post-meta-link-h-color',
+					'title'             => __( 'Meta Link Color', 'astra-addon' ),
 				),
 			);
+
+			if ( false === astra_addon_builder_helper()->is_header_footer_builder_active ) {
+
+				array_push(
+					$_configs,
+					/**
+					 * Option: Blog Color Section heading
+					 */
+					array(
+						'name'     => ASTRA_THEME_SETTINGS . '[blog-color-heading-divider]',
+						'type'     => 'control',
+						'control'  => 'ast-heading',
+						'section'  => 'section-blog',
+						'title'    => __( 'Colors and Background', 'astra-addon' ),
+						'priority' => 125,
+						'settings' => array(),
+						'context'  => astra_addon_builder_helper()->general_tab,
+					)
+				);
+			}
 
 			return array_merge( $configurations, $_configs );
 		}

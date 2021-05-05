@@ -39,6 +39,55 @@ function astra_ext_mobile_header_dynamic_css( $dynamic_css, $dynamic_css_filtere
 
 	$css_output = '';
 
+	if ( false === Astra_Icons::is_svg_icons() ) {
+		$search_close_btn = array(
+			'.ast-fullscreen-menu-enable.ast-header-break-point .main-header-bar-navigation .close:after, .ast-fullscreen-above-menu-enable.ast-header-break-point .ast-above-header-navigation-wrap .close:after, .ast-fullscreen-below-menu-enable.ast-header-break-point .ast-below-header-navigation-wrap .close:after' => array(
+				'content'                 => '"\e5cd"',
+				'display'                 => 'inline-block',
+				'font-family'             => "'Astra'",
+				'font-size'               => '22px',
+				'font-size'               => '2rem',
+				'text-rendering'          => 'auto',
+				'-webkit-font-smoothing'  => 'antialiased',
+				'-moz-osx-font-smoothing' => 'grayscale',
+				'line-height'             => 'normal',
+				'line-height'             => '40px',
+				'height'                  => '40px',
+				'width'                   => '40px',
+				'text-align'              => 'center',
+				'margin'                  => '0',
+			),
+			'.ast-flyout-above-menu-enable.ast-header-break-point .ast-above-header-navigation-wrap .close:after' => array(
+				'content'                 => '"\e5cd"',
+				'display'                 => 'inline-block',
+				'font-family'             => "'Astra'",
+				'font-size'               => '28px',
+				'text-rendering'          => 'auto',
+				'-webkit-font-smoothing'  => 'antialiased',
+				'-moz-osx-font-smoothing' => 'grayscale',
+				'line-height'             => 'normal',
+			),
+			'.ast-flyout-below-menu-enable.ast-header-break-point .ast-below-header-navigation-wrap .close:after' => array(
+				'content'                 => '"\e5cd"',
+				'display'                 => 'inline-block',
+				'font-family'             => "'Astra'",
+				'font-size'               => '28px',
+				'text-rendering'          => 'auto',
+				'-webkit-font-smoothing'  => 'antialiased',
+				'-moz-osx-font-smoothing' => 'grayscale',
+				'line-height'             => 'normal',
+			),
+		);
+	} else {
+		$search_close_btn = array(
+			'.ast-fullscreen-menu-enable.ast-header-break-point .main-header-bar-navigation .close .icon-close, .ast-fullscreen-above-menu-enable.ast-header-break-point .ast-above-header-navigation-wrap .close .icon-close, .ast-fullscreen-below-menu-enable.ast-header-break-point .ast-below-header-navigation-wrap .close .icon-close' => array(
+				'margin-right' => '8px',
+			),
+		);
+	}
+
+	$css_output .= astra_parse_css( $search_close_btn );
+
 	/**
 	 * Responsive Colors options
 	 * [2]. Primary Menu Responsive Colors only for Full Screen menu style

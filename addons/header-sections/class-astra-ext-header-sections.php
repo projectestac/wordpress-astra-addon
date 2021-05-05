@@ -39,7 +39,7 @@ if ( ! class_exists( 'Astra_Ext_Header_Sections' ) ) {
 		 */
 		public function __construct() {
 
-			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 				return;
 			}
 

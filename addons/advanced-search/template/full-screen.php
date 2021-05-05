@@ -7,7 +7,7 @@
 
 ?>
 <div class="ast-search-box full-screen" id="ast-seach-full-screen-form">
-	<span id="close" class="close"></span>
+	<span id="close" class="close"><?php Astra_Icons::get_icons( 'close', true ); ?></span>
 	<div class="ast-search-wrapper">
 		<div class="ast-container">
 			<h3 class="large-search-text"><?php echo esc_html( astra_default_strings( 'string-full-width-search-message', false ) ); ?></h3>

@@ -41,14 +41,16 @@ if ( ! class_exists( 'Astra_Advanced_Footer_Configs' ) ) {
 				 * Option: Footer Widgets Layout
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[footer-adv]',
-					'default'  => astra_get_option( 'footer-adv' ),
-					'type'     => 'control',
-					'priority' => 0,
-					'control'  => 'ast-radio-image',
-					'title'    => __( 'Layout', 'astra-addon' ),
-					'section'  => 'section-footer-adv',
-					'choices'  => array(
+					'name'              => ASTRA_THEME_SETTINGS . '[footer-adv]',
+					'default'           => astra_get_option( 'footer-adv' ),
+					'type'              => 'control',
+					'priority'          => 0,
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
+					'control'           => 'ast-radio-image',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_choices' ),
+					'title'             => __( 'Layout', 'astra-addon' ),
+					'section'           => 'section-footer-adv',
+					'choices'           => array(
 						'disabled' => array(
 							'label' => __( 'Disable', 'astra-addon' ),
 							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'disabled', false ) : '',
@@ -92,7 +94,8 @@ if ( ! class_exists( 'Astra_Advanced_Footer_Configs' ) ) {
 					'default'  => astra_get_option( 'footer-adv-layout-width' ),
 					'type'     => 'control',
 					'priority' => 1,
-					'control'  => 'select',
+					'control'  => 'ast-select',
+					'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
 					'section'  => 'section-footer-adv',
 					'title'    => __( 'Width', 'astra-addon' ),
 					'choices'  => array(
@@ -100,7 +103,7 @@ if ( ! class_exists( 'Astra_Advanced_Footer_Configs' ) ) {
 						'content' => __( 'Content Width', 'astra-addon' ),
 					),
 					'context'  => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[footer-adv]',
 							'operator' => '!=',
@@ -115,24 +118,26 @@ if ( ! class_exists( 'Astra_Advanced_Footer_Configs' ) ) {
 				 * @since 1.2.0 Updated to support responsive spacing param
 				 */
 				array(
-					'name'           => ASTRA_THEME_SETTINGS . '[footer-adv-area-padding]',
-					'default'        => astra_get_option( 'footer-adv-area-padding' ),
-					'type'           => 'control',
-					'transport'      => 'postMessage',
-					'priority'       => 2,
-					'control'        => 'ast-responsive-spacing',
-					'section'        => 'section-footer-adv',
-					'title'          => __( 'Padding', 'astra-addon' ),
-					'linked_choices' => true,
-					'unit_choices'   => array( 'px', 'em', '%' ),
-					'choices'        => array(
+					'name'              => ASTRA_THEME_SETTINGS . '[footer-adv-area-padding]',
+					'default'           => astra_get_option( 'footer-adv-area-padding' ),
+					'type'              => 'control',
+					'transport'         => 'postMessage',
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
+					'priority'          => 2,
+					'control'           => 'ast-responsive-spacing',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+					'section'           => 'section-footer-adv',
+					'title'             => __( 'Padding', 'astra-addon' ),
+					'linked_choices'    => true,
+					'unit_choices'      => array( 'px', 'em', '%' ),
+					'choices'           => array(
 						'top'    => __( 'Top', 'astra-addon' ),
 						'right'  => __( 'Right', 'astra-addon' ),
 						'bottom' => __( 'Bottom', 'astra-addon' ),
 						'left'   => __( 'Left', 'astra-addon' ),
 					),
-					'context'        => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+					'context'           => array(
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[footer-adv]',
 							'operator' => '!=',

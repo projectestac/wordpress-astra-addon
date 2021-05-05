@@ -45,8 +45,11 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 		 * @since 1.4.0
 		 */
 		public function __construct() {
+
 			add_action( 'customize_register', array( $this, 'customize_register' ) );
+			add_action( 'customize_controls_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 			add_action( 'customize_register', array( $this, 'customize_register_new' ), 3 );
+
 		}
 
 		/**
@@ -58,8 +61,8 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 		public function customize_register_new( $wp_customize ) {
 
 			require ASTRA_EXT_DIR . 'classes/customizer/class-astra-customizer-notices-configs.php';
-		}
 
+		}
 
 		/**
 		 * Register custom section and panel.
@@ -82,10 +85,12 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 						'sanitize_callback' => '',
 					)
 				);
+
 			}
 
-			// Helper files.
+			// Control Class files.
 			require ASTRA_EXT_DIR . 'classes/customizer/controls/class-astra-control-customizer-refresh.php';
+
 		}
 
 		/**
@@ -194,6 +199,30 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 		}
 
 		/**
+		 * Sanitize Box Shadow control
+		 *
+		 * @since 3.3.0
+		 * @param  array|number $val Customizer setting input number.
+		 * @return array        Return number.
+		 */
+		public static function sanitize_box_shadow( $val ) {
+
+			$box_shadow = array(
+				'x'      => '',
+				'y'      => '',
+				'blur'   => '',
+				'spread' => '',
+			);
+			if ( is_array( $val ) ) {
+				$box_shadow['x']      = is_numeric( $val['x'] ) ? $val['x'] : '';
+				$box_shadow['y']      = is_numeric( $val['y'] ) ? $val['y'] : '';
+				$box_shadow['blur']   = is_numeric( $val['blur'] ) ? $val['blur'] : '';
+				$box_shadow['spread'] = is_numeric( $val['spread'] ) ? $val['spread'] : '';
+			}
+			return $box_shadow;
+		}
+
+		/**
 		 * Sanitize Responsive Color
 		 *
 		 * @param  array $color_obj color object.
@@ -215,6 +244,51 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 				$out_color_obj[ $device ] = Astra_Customizer_Sanitizes::sanitize_alpha_color( $color );
 			}
 			return $out_color_obj;
+		}
+
+		/**
+		 * Enqueue Admin Scripts
+		 *
+		 * @since 3.1.0
+		 */
+		public function enqueue_scripts() {
+
+			$dir_name    = ( SCRIPT_DEBUG ) ? 'unminified' : 'minified';
+			$file_prefix = ( SCRIPT_DEBUG ) ? '' : '.min';
+			$js_uri      = ASTRA_EXT_URI . 'classes/customizer/assets/js/';
+
+			wp_enqueue_style( 'ast-ext-admin-settings', ASTRA_EXT_URI . 'admin/assets/css/customizer-controls.css', array(), ASTRA_EXT_VER );
+
+			if ( ! SCRIPT_DEBUG ) {
+				// Enqueue Customizer script.
+				$custom_controls_deps = array(
+					'jquery',
+					'customize-base',
+					'jquery-ui-tabs',
+					'jquery-ui-sortable',
+					'wp-i18n',
+					'wp-components',
+					'wp-element',
+					'wp-media-utils',
+					'wp-block-editor',
+				);
+
+				wp_enqueue_script( 'astra-addon-custom-control-script', $js_uri . 'custom-controls.min.js', $custom_controls_deps, ASTRA_EXT_VER, true );
+
+			} else {
+
+				// Enqueue Customizer React.JS script.
+				$custom_controls_react_deps = array(
+					'astra-custom-control-plain-script',
+					'wp-i18n',
+					'wp-components',
+					'wp-element',
+					'wp-media-utils',
+					'wp-block-editor',
+				);
+
+				wp_enqueue_script( 'astra-addon-custom-control-react-script', ASTRA_EXT_URI . 'classes/customizer/extend-controls/build/index.js', $custom_controls_react_deps, ASTRA_EXT_VER, true );
+			}
 		}
 	}
 

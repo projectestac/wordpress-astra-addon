@@ -44,47 +44,29 @@ if ( ! class_exists( 'Astra_Customizer_Above_Header_Spacing_Configs' ) ) {
 			$_configs = array(
 
 				/**
-				 * Option - Top Menu Space
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[above-header-spacing-divider]',
-					'section'  => 'section-above-header',
-					'type'     => 'control',
-					'control'  => 'ast-heading',
-					'title'    => __( 'Spacing', 'astra-addon' ),
-					'priority' => 150,
-					'settings' => array(),
-					'context'  => array(
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-layout]',
-							'operator' => '!=',
-							'value'    => 'disabled',
-						),
-					),
-				),
-
-				/**
 				 * Option - Above Header Space
 				 */
 				array(
-					'name'           => ASTRA_THEME_SETTINGS . '[above-header-spacing]',
-					'default'        => astra_get_option( 'above-header-spacing' ),
-					'type'           => 'control',
-					'control'        => 'ast-responsive-spacing',
-					'transport'      => 'postMessage',
-					'section'        => 'section-above-header',
-					'priority'       => 160,
-					'title'          => __( 'Header Space', 'astra-addon' ),
-					'context'        => array(
+					'name'              => ASTRA_THEME_SETTINGS . '[above-header-spacing]',
+					'default'           => astra_get_option( 'above-header-spacing' ),
+					'type'              => 'control',
+					'control'           => 'ast-responsive-spacing',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+					'transport'         => 'postMessage',
+					'section'           => 'section-above-header',
+					'priority'          => 160,
+					'divider'           => array( 'ast_class' => 'ast-top-divider' ),
+					'title'             => __( 'Header Space', 'astra-addon' ),
+					'context'           => array(
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-layout]',
 							'operator' => '!=',
 							'value'    => 'disabled',
 						),
 					),
-					'linked_choices' => true,
-					'unit_choices'   => array( 'px', 'em', '%' ),
-					'choices'        => array(
+					'linked_choices'    => true,
+					'unit_choices'      => array( 'px', 'em', '%' ),
+					'choices'           => array(
 						'top'    => __( 'Top', 'astra-addon' ),
 						'right'  => __( 'Right', 'astra-addon' ),
 						'bottom' => __( 'Bottom', 'astra-addon' ),
@@ -96,15 +78,16 @@ if ( ! class_exists( 'Astra_Customizer_Above_Header_Spacing_Configs' ) ) {
 				 * Option - Above Header Menu Space
 				 */
 				array(
-					'name'           => ASTRA_THEME_SETTINGS . '[above-header-menu-spacing]',
-					'default'        => astra_get_option( 'above-header-menu-spacing' ),
-					'type'           => 'control',
-					'control'        => 'ast-responsive-spacing',
-					'transport'      => 'postMessage',
-					'section'        => 'section-above-header',
-					'priority'       => 165,
-					'title'          => __( 'Menu Space', 'astra-addon' ),
-					'context'        => array(
+					'name'              => ASTRA_THEME_SETTINGS . '[above-header-menu-spacing]',
+					'default'           => astra_get_option( 'above-header-menu-spacing' ),
+					'type'              => 'control',
+					'control'           => 'ast-responsive-spacing',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+					'transport'         => 'postMessage',
+					'section'           => 'section-above-header',
+					'priority'          => 165,
+					'title'             => __( 'Menu Space', 'astra-addon' ),
+					'context'           => array(
 						'relation' => 'AND',
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-layout]',
@@ -126,9 +109,9 @@ if ( ! class_exists( 'Astra_Customizer_Above_Header_Spacing_Configs' ) ) {
 						),
 					),
 
-					'linked_choices' => true,
-					'unit_choices'   => array( 'px', 'em', '%' ),
-					'choices'        => array(
+					'linked_choices'    => true,
+					'unit_choices'      => array( 'px', 'em', '%' ),
+					'choices'           => array(
 						'top'    => __( 'Top', 'astra-addon' ),
 						'right'  => __( 'Right', 'astra-addon' ),
 						'bottom' => __( 'Bottom', 'astra-addon' ),
@@ -140,15 +123,16 @@ if ( ! class_exists( 'Astra_Customizer_Above_Header_Spacing_Configs' ) ) {
 				 * Option - Above Header Submenu Space
 				 */
 				array(
-					'name'           => ASTRA_THEME_SETTINGS . '[above-header-submenu-spacing]',
-					'default'        => astra_get_option( 'above-header-submenu-spacing' ),
-					'type'           => 'control',
-					'control'        => 'ast-responsive-spacing',
-					'transport'      => 'postMessage',
-					'section'        => 'section-above-header',
-					'priority'       => 170,
-					'title'          => __( 'Submenu Space', 'astra-addon' ),
-					'context'        => array(
+					'name'              => ASTRA_THEME_SETTINGS . '[above-header-submenu-spacing]',
+					'default'           => astra_get_option( 'above-header-submenu-spacing' ),
+					'type'              => 'control',
+					'control'           => 'ast-responsive-spacing',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+					'transport'         => 'postMessage',
+					'section'           => 'section-above-header',
+					'priority'          => 170,
+					'title'             => __( 'Submenu Space', 'astra-addon' ),
+					'context'           => array(
 						'relation' => 'OR',
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[above-header-section-1]',
@@ -162,9 +146,9 @@ if ( ! class_exists( 'Astra_Customizer_Above_Header_Spacing_Configs' ) ) {
 						),
 					),
 
-					'linked_choices' => true,
-					'unit_choices'   => array( 'px', 'em', '%' ),
-					'choices'        => array(
+					'linked_choices'    => true,
+					'unit_choices'      => array( 'px', 'em', '%' ),
+					'choices'           => array(
 						'top'    => __( 'Top', 'astra-addon' ),
 						'right'  => __( 'Right', 'astra-addon' ),
 						'bottom' => __( 'Bottom', 'astra-addon' ),

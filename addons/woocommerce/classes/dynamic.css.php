@@ -239,6 +239,97 @@ function astra_woocommerce_dynamic_css( $dynamic_css, $dynamic_css_filtered = ''
 	/* Parse CSS from array() */
 	$css_output = astra_parse_css( $css_output );
 
+	if ( false === Astra_Icons::is_svg_icons() ) {
+		$woo_shopping_cart = array(
+			'.ast-site-header-cart i.astra-icon:before' => array(
+				'font-family' => 'Astra',
+			),
+			'.ast-icon-shopping-cart:before'            => array(
+				'content' => '"\f07a"',
+			),
+			'.ast-icon-shopping-bag:before'             => array(
+				'content' => '"\f290"',
+			),
+			'.ast-icon-shopping-basket:before'          => array(
+				'content' => '"\f291"',
+			),
+			'.woocommerce .astra-shop-filter-button .astra-woo-filter-icon:after, .woocommerce button.astra-shop-filter-button .astra-woo-filter-icon:after, .woocommerce-page .astra-shop-filter-button .astra-woo-filter-icon:after, .woocommerce-page button.astra-shop-filter-button .astra-woo-filter-icon:after, .woocommerce .astra-shop-filter-button .astra-woo-filter-icon:after, .woocommerce button.astra-shop-filter-button .astra-woo-filter-icon:after, .woocommerce-page .astra-shop-filter-button .astra-woo-filter-icon:after, .woocommerce-page button.astra-shop-filter-button .astra-woo-filter-icon:after' => array(
+				'content'         => '"\e5d2"',
+				'font-family'     => "'Astra'",
+				'text-decoration' => 'inherit',
+			),
+			'.woocommerce .astra-off-canvas-sidebar-wrapper .close:after, .woocommerce-page .astra-off-canvas-sidebar-wrapper .close:after' => array(
+				'content'                 => '"\e5cd"',
+				'font-family'             => "'Astra'",
+				'display'                 => 'inline-block',
+				'font-size'               => '22px',
+				'font-size'               => '2rem',
+				'text-rendering'          => 'auto',
+				'-webkit-font-smoothing'  => 'antialiased',
+				'-moz-osx-font-smoothing' => 'grayscale',
+				'line-height'             => 'normal',
+			),
+			'#ast-quick-view-close:before'              => array(
+				'content'         => '"\e5cd"',
+				'font-family'     => "'Astra'",
+				'text-decoration' => 'inherit',
+			),
+			'.ast-icon-previous:before, .ast-icon-next:before' => array(
+				'content'                 => '"\e900"',
+				'font-family'             => "'Astra'",
+				'display'                 => 'inline-block',
+				'font-size'               => '.8rem',
+				'font-weight'             => '700',
+				'text-rendering'          => 'auto',
+				'-webkit-font-smoothing'  => 'antialiased',
+				'-moz-osx-font-smoothing' => 'grayscale',
+				'vertical-align'          => 'middle',
+				'line-height'             => 'normal',
+				'font-style'              => 'normal',
+			),
+			'.ast-icon-previous:before'                 => array(
+				'transform' => 'rotate(90deg)',
+			),
+			'.ast-icon-next:before'                     => array(
+				'transform' => 'rotate(-90deg)',
+			),
+		);
+	} else {
+		$woo_shopping_cart = array(
+			'.ast-addon-cart-wrap .ast-icon' => array(
+				'vertical-align' => 'middle',
+			),
+			'.ast-icon-shopping-cart svg'    => array(
+				'height' => '.82em',
+			),
+			'.ast-icon-shopping-bag svg'     => array(
+				'height' => '1em',
+				'width'  => '1em',
+			),
+			'.ast-icon-shopping-basket svg'  => array(
+				'height' => '1.15em',
+				'width'  => '1.2em',
+			),
+			'#ast-quick-view-close svg'      => array(
+				'height' => '12px',
+				'width'  => '12px',
+			),
+			'.ast-product-icon-previous svg' => array(
+				'transform' => 'rotate(90deg)',
+			),
+			'.ast-product-icon-next svg'     => array(
+				'transform' => 'rotate(-90deg)',
+			),
+			'.ast-product-icon-previous .ast-icon.icon-arrow svg, .ast-product-icon-next .ast-icon.icon-arrow svg' => array(
+				'margin-left' => '0',
+				'width'       => '0.8em',
+			),
+		);
+	}
+
+	/* Parse CSS from array() */
+	$css_output .= astra_parse_css( $woo_shopping_cart );
+
 	/**
 	 * Header Cart color
 	 */
@@ -246,7 +337,7 @@ function astra_woocommerce_dynamic_css( $dynamic_css, $dynamic_css_filtered = ''
 
 		$header_cart_icon = array();
 
-		if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+		if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 			/**
 			 * Header Cart Icon colors
@@ -974,7 +1065,26 @@ function astra_woocommerce_dynamic_css( $dynamic_css, $dynamic_css_filtered = ''
 	}
 	$css_output .= astra_parse_css( $mobile_css, '', astra_addon_get_mobile_breakpoint() );
 
+	if ( version_compare( ASTRA_THEME_VERSION, '3.2.0', '<' ) ) {
+
+		$woo_static_css = '
+		.astra-hfb-header .ast-addon-cart-wrap {
+			padding: 0.2em .6em;
+		}
+		';
+
+		if ( $is_site_rtl ) {
+
+			$woo_static_css .= '
+			.astra-hfb-header .ast-addon-cart-wrap {
+				padding: 0.2em .6em;
+			}
+			';
+		}
+
+		$css_output .= Astra_Enqueue_Scripts::trim_css( $woo_static_css );
+	}
+
 	return $dynamic_css . $css_output;
 
 }
-

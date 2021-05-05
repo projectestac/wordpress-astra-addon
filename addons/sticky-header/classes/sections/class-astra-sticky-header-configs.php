@@ -42,7 +42,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 			$header_color_label            = __( 'Header', 'astra-addon' );
 			$header_primary_color_priority = 85;
 
-			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 				$header_above_section          = 'section-above-header-builder';
 				$header_below_section          = 'section-below-header-builder';
@@ -50,8 +50,6 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 				$header_primary_color_priority = 85;
 				$header_color_label            = __( 'Background Color', 'astra-addon' );
 			}
-
-			$defaults = Astra_Theme_Options::defaults();
 
 			$_config = array(
 
@@ -66,8 +64,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 					'title'    => __( 'Primary Header Colors', 'astra-addon' ),
 					'settings' => array(),
 					'priority' => 80,
-					'context'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-						Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+					'context'  => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
 
 				/**
@@ -80,9 +78,11 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 					'section'   => 'section-sticky-header',
 					'title'     => __( 'Stick Primary Header', 'astra-addon' ),
 					'priority'  => 10,
-					'control'   => 'checkbox',
+					'control'   => Astra_Theme_Extension::$switch_control,
 					'transport' => 'refresh',
+					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
+
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[different-sticky-logo]',
 					'default'  => astra_get_option( 'different-sticky-logo' ),
@@ -90,7 +90,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 					'section'  => 'section-sticky-header',
 					'title'    => __( 'Different Logo for Sticky Header?', 'astra-addon' ),
 					'priority' => 15,
-					'control'  => 'checkbox',
+					'control'  => Astra_Theme_Extension::$switch_control,
+					'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
@@ -106,7 +107,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 					'title'          => __( 'Sticky Logo', 'astra-addon' ),
 					'library_filter' => array( 'gif', 'jpg', 'jpeg', 'png', 'ico' ),
 					'context'        => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[different-sticky-logo]',
 							'operator' => '==',
@@ -120,20 +121,21 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 				 */
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[different-sticky-retina-logo]',
-					'default'  => false,
+					'default'  => astra_get_option( 'different-sticky-retina-logo' ),
 					'type'     => 'control',
 					'section'  => 'section-sticky-header',
 					'title'    => __( 'Different Logo for retina devices?', 'astra-addon' ),
 					'priority' => 20,
-					'control'  => 'checkbox',
+					'control'  => Astra_Theme_Extension::$switch_control,
 					'context'  => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[different-sticky-logo]',
 							'operator' => '==',
 							'value'    => 1,
 						),
 					),
+					'divider'  => array( 'ast_class' => 'ast-bottom-divider ast-top-divider' ),
 				),
 
 				/**
@@ -149,7 +151,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 					'title'          => __( 'Sticky Retina Logo', 'astra-addon' ),
 					'library_filter' => array( 'gif', 'jpg', 'jpeg', 'png', 'ico' ),
 					'context'        => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[different-sticky-logo]',
 							'operator' => '==',
@@ -167,28 +169,31 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 				 * Option: Sticky header logo width
 				 */
 				array(
-					'name'        => ASTRA_THEME_SETTINGS . '[sticky-header-logo-width]',
-					'default'     => astra_get_option( 'sticky-header-logo-width' ),
-					'type'        => 'control',
-					'transport'   => 'postMessage',
-					'control'     => 'ast-responsive-slider',
-					'section'     => 'section-sticky-header',
-					'priority'    => 25,
-					'title'       => __( 'Sticky Logo Width', 'astra-addon' ),
-					'input_attrs' => array(
+					'name'              => ASTRA_THEME_SETTINGS . '[sticky-header-logo-width]',
+					'default'           => astra_get_option( 'sticky-header-logo-width' ),
+					'type'              => 'control',
+					'transport'         => 'postMessage',
+					'control'           => 'ast-responsive-slider',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
+					'section'           => 'section-sticky-header',
+					'priority'          => 25,
+					'suffix'            => 'px',
+					'title'             => __( 'Sticky Logo Width', 'astra-addon' ),
+					'input_attrs'       => array(
 						'min'  => 50,
 						'step' => 1,
 						'max'  => 600,
 					),
-					'context'     => array(
+					'context'           => array(
 						'relation' => 'AND',
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[different-sticky-logo]',
 							'operator' => '==',
 							'value'    => 1,
 						),
 					),
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
@@ -201,7 +206,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 					'section'     => 'section-sticky-header',
 					'title'       => __( 'Enable Shrink Effect', 'astra-addon' ),
 					'priority'    => 13.1,
-					'control'     => 'checkbox',
+					'control'     => Astra_Theme_Extension::$switch_control,
+					'divider'     => array( 'ast_class' => 'ast-bottom-divider' ),
 					'description' => __( 'It will shrink the sticky header height, logo, and menu size. Sticky header will display in a compact size.', 'astra-addon' ),
 				),
 
@@ -215,78 +221,59 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 					'section'  => 'section-sticky-header',
 					'title'    => __( 'Hide When Scrolling Down', 'astra-addon' ),
 					'priority' => 13.2,
-					'control'  => 'checkbox',
+					'control'  => Astra_Theme_Extension::$switch_control,
+					'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
 				 * Option: Enable disable mobile header
 				 */
 				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-style]',
-					'default'   => astra_get_option( 'sticky-header-style' ),
-					'type'      => 'control',
-					'control'   => 'select',
-					'section'   => 'section-sticky-header',
-					'priority'  => 40,
-					'title'     => __( 'Select Animation', 'astra-addon' ),
-					'choices'   => array(
+					'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-style]',
+					'default'    => astra_get_option( 'sticky-header-style' ),
+					'type'       => 'control',
+					'control'    => Astra_Theme_Extension::$selector_control,
+					'section'    => 'section-sticky-header',
+					'priority'   => 40,
+					'title'      => __( 'Select Animation', 'astra-addon' ),
+					'choices'    => array(
 						'none'  => __( 'None', 'astra-addon' ),
 						'slide' => __( 'Slide', 'astra-addon' ),
 						'fade'  => __( 'Fade', 'astra-addon' ),
 					),
-					'context'   => array(
+					'context'    => array(
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[sticky-hide-on-scroll]',
 							'operator' => '!=',
 							'value'    => 1,
 						),
 					),
-					'transport' => 'refresh',
+					'transport'  => 'refresh',
+					'responsive' => false,
+					'renderAs'   => 'text',
+					'divider'    => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
 				 * Option: Sticky Header Display On
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[sticky-header-on-devices]',
-					'default'  => astra_get_option( 'sticky-header-on-devices' ),
-					'type'     => 'control',
-					'section'  => 'section-sticky-header',
-					'priority' => 50,
-					'title'    => __( 'Enable On', 'astra-addon' ),
-					'control'  => 'select',
-					'choices'  => array(
+					'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-on-devices]',
+					'default'    => astra_get_option( 'sticky-header-on-devices' ),
+					'type'       => 'control',
+					'section'    => 'section-sticky-header',
+					'priority'   => 50,
+					'title'      => __( 'Enable On', 'astra-addon' ),
+					'control'    => Astra_Theme_Extension::$selector_control,
+					'choices'    => array(
 						'desktop' => __( 'Desktop', 'astra-addon' ),
 						'mobile'  => __( 'Mobile', 'astra-addon' ),
 						'both'    => __( 'Desktop + Mobile', 'astra-addon' ),
 					),
+					'responsive' => false,
+					'renderAs'   => 'text',
 				),
 
-				/**
-				 * Option: Sticky Header Button Colors Divider
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[sticky-header-button-color-divider]',
-					'type'     => 'control',
-					'control'  => 'ast-heading',
-					'section'  => 'section-sticky-header',
-					'title'    => __( 'Header Button', 'astra-addon' ),
-					'settings' => array(),
-					'priority' => 55,
-					'context'  => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[header-main-rt-section]',
-							'operator' => '==',
-							'value'    => 'button',
-						),
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[header-main-rt-section-button-style]',
-							'operator' => '===',
-							'value'    => 'custom-button',
-						),
-					),
-				),
 				/**
 				 * Group: Theme Button Colors Group
 				 */
@@ -300,7 +287,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 					'transport' => 'postMessage',
 					'priority'  => 55,
 					'context'   => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[header-main-rt-section]',
 							'operator' => '==',
@@ -326,7 +313,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 					'transport' => 'postMessage',
 					'priority'  => 55,
 					'context'   => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[header-main-rt-section]',
 							'operator' => '==',
@@ -356,8 +343,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 						'title'    => __( 'Above Header Colors', 'astra-addon' ),
 						'settings' => array(),
 						'priority' => 60,
-						'context'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-							Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+						'context'  => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+							astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 					),
 
 					/**
@@ -371,11 +358,11 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 						'title'    => __( 'Below Header Colors', 'astra-addon' ),
 						'settings' => array(),
 						'priority' => 110,
-						'context'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-							Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+						'context'  => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+							astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 					),
 				);
-				if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+				if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 					$sticky_individual_configs = array(
 
@@ -390,8 +377,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'title'    => __( 'Sticky Header Option', 'astra-addon' ),
 							'settings' => array(),
 							'priority' => 80,
-							'context'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-								Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+							'context'  => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 						),
 
 						/**
@@ -405,8 +392,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'title'    => __( 'Sticky Header Option', 'astra-addon' ),
 							'settings' => array(),
 							'priority' => 80,
-							'context'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-								Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+							'context'  => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 						),
 
 						/**
@@ -420,8 +407,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'title'    => __( 'Sticky Header Option', 'astra-addon' ),
 							'settings' => array(),
 							'priority' => 80,
-							'context'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-								Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+							'context'  => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 						),
 						/**
 						* Option: Sticky Site Identity Heading
@@ -436,7 +423,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'priority' => 20,
 							'context'  => array(
 								'relation' => 'AND',
-								Astra_Addon_Builder_Helper::$design_tab_config,
+								astra_addon_builder_helper()->design_tab_config,
 								array(
 									'relation' => 'OR',
 									array(
@@ -457,13 +444,14 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'name'      => ASTRA_THEME_SETTINGS . '[sticky-site-identity-title-color-group]',
 							'default'   => astra_get_option( 'sticky-site-identity-title-color-group' ),
 							'type'      => 'control',
-							'control'   => 'ast-settings-group',
-							'title'     => __( 'Title', 'astra-addon' ),
+							'control'   => 'ast-color-group',
+							'title'     => __( 'Title Color', 'astra-addon' ),
 							'section'   => 'title_tagline',
 							'transport' => 'postMessage',
 							'priority'  => 21,
+							'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
 							'context'   => array(
-								Astra_Addon_Builder_Helper::$design_tab_config,
+								astra_addon_builder_helper()->design_tab_config,
 								array(
 									'setting'  => ASTRA_THEME_SETTINGS . '[display-site-title]',
 									'operator' => '==',
@@ -480,8 +468,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'type'    => 'sub-control',
 							'control' => 'ast-color',
 							'default' => astra_get_option( 'sticky-header-builder-site-title-color' ),
-							'title'   => __( 'Text Color', 'astra-addon' ),
-							'tab'     => __( 'Normal', 'astra-addon' ),
+							'title'   => __( 'Normal', 'astra-addon' ),
 						),
 
 						// Option: Site Title Hover Color.
@@ -492,21 +479,22 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'type'    => 'sub-control',
 							'control' => 'ast-color',
 							'default' => astra_get_option( 'sticky-header-builder-site-title-h-color' ),
-							'title'   => __( 'Hover Color', 'astra-addon' ),
-							'tab'     => __( 'Hover', 'astra-addon' ),
+							'title'   => __( 'Hover', 'astra-addon' ),
 						),
 						// Option: Site Tagline Color.
 						array(
-							'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-builder-site-tagline-color]',
-							'type'      => 'control',
-							'control'   => 'ast-color',
-							'priority'  => 22,
-							'transport' => 'postMessage',
-							'default'   => astra_get_option( 'sticky-header-builder-site-tagline-color' ),
-							'title'     => __( 'Tagline', 'astra-addon' ),
-							'section'   => 'title_tagline',
-							'context'   => array(
-								Astra_Addon_Builder_Helper::$design_tab_config,
+							'name'              => ASTRA_THEME_SETTINGS . '[sticky-header-builder-site-tagline-color]',
+							'type'              => 'control',
+							'control'           => 'ast-color',
+							'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+							'priority'          => 22,
+							'transport'         => 'postMessage',
+							'default'           => astra_get_option( 'sticky-header-builder-site-tagline-color' ),
+							'title'             => __( 'Tagline', 'astra-addon' ),
+							'section'           => 'title_tagline',
+							'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
+							'context'           => array(
+								astra_addon_builder_helper()->design_tab_config,
 								array(
 									'setting'  => ASTRA_THEME_SETTINGS . '[display-site-tagline]',
 									'operator' => '==',
@@ -517,7 +505,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 
 						array(
 							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-bg-color-responsive]',
-							'default'    => $defaults['sticky-header-bg-color-responsive'],
+							'default'    => astra_get_option( 'sticky-header-bg-color-responsive' ),
 							'type'       => 'control',
 							'section'    => $header_primary_section,
 							'priority'   => $header_primary_color_priority,
@@ -526,14 +514,15 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'title'      => __( 'Background Color', 'astra-addon' ),
 							'responsive' => true,
 							'rgba'       => true,
-							'context'    => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-							Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+							astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 						),
 					);
 
 					$sticky_menu_configs = array();
 
-					for ( $index = 1; $index <= Astra_Addon_Builder_Helper::$num_of_header_menu; $index++ ) {
+					$component_limit = astra_addon_builder_helper()->component_limit;
+					for ( $index = 1; $index <= $component_limit; $index++ ) {
 
 						$_section = 'section-hb-menu-' . $index;
 						$_prefix  = 'menu' . $index;
@@ -551,138 +540,169 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 								'title'    => __( 'Sticky Header Options', 'astra-addon' ),
 								'settings' => array(),
 								'priority' => 100,
-								'context'  => Astra_Addon_Builder_Helper::$design_tab,
+								'context'  => astra_addon_builder_helper()->design_tab,
 							),
 
 							// Option Group: Menu Color.
 							array(
-								'name'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-colors]',
-								'type'     => 'control',
-								'control'  => 'ast-settings-group',
-								'title'    => __( 'Menu', 'astra-addon' ),
-								'section'  => $_section,
-								'priority' => 101,
-								'context'  => Astra_Addon_Builder_Helper::$design_tab,
+								'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-link-colors]',
+								'type'       => 'control',
+								'control'    => Astra_Theme_Extension::$group_control,
+								'title'      => __( 'Text / Link', 'astra-addon' ),
+								'section'    => $_section,
+								'priority'   => 101,
+								'context'    => astra_addon_builder_helper()->design_tab,
+								'responsive' => true,
+								'divider'    => array(
+									'ast_title' => __( 'Menu Color', 'astra-addon' ),
+								),
+							),
+
+							array(
+								'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-background-colors]',
+								'type'       => 'control',
+								'control'    => Astra_Theme_Extension::$group_control,
+								'title'      => __( 'Background', 'astra-addon' ),
+								'section'    => $_section,
+								'priority'   => 101,
+								'context'    => astra_addon_builder_helper()->design_tab,
+								'responsive' => true,
 							),
 
 							// Option: Menu Color.
 							array(
 								'name'       => 'sticky-header-' . $_prefix . '-color-responsive',
 								'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-color-responsive' ),
-								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-colors]',
+								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-link-colors]',
 								'type'       => 'sub-control',
 								'control'    => 'ast-responsive-color',
-								'tab'        => __( 'Normal', 'astra-addon' ),
 								'section'    => $_section,
-								'title'      => __( 'Link / Text Color', 'astra-addon' ),
+								'title'      => __( 'Normal', 'astra-addon' ),
+								'tab'        => __( 'Normal', 'astra-addon' ),
 								'responsive' => true,
 								'rgba'       => true,
 								'priority'   => 7,
-								'context'    => Astra_Addon_Builder_Helper::$design_tab,
+								'context'    => astra_addon_builder_helper()->design_tab,
 							),
 
 							// Option: Menu Background image, color.
 							array(
 								'name'       => 'sticky-header-' . $_prefix . '-bg-obj-responsive',
 								'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-bg-obj-responsive' ),
-								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-colors]',
+								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-background-colors]',
 								'type'       => 'sub-control',
 								'control'    => 'ast-responsive-color',
 								'responsive' => true,
 								'rgba'       => true,
 								'section'    => $_section,
-								'tab'        => __( 'Normal', 'astra-addon' ),
 								'data_attrs' => array( 'name' => 'sticky-header-' . $_prefix . '-bg-obj-responsive' ),
-								'title'      => __( 'Background Color', 'astra-addon' ),
+								'title'      => __( 'Normal', 'astra-addon' ),
+								'tab'        => __( 'Normal', 'astra-addon' ),
 								'priority'   => 9,
-								'context'    => Astra_Addon_Builder_Helper::$design_tab,
+								'context'    => astra_addon_builder_helper()->design_tab,
 							),
 
 							// Option: Menu Hover Color.
 							array(
 								'name'       => 'sticky-header-' . $_prefix . '-h-color-responsive',
 								'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-h-color-responsive' ),
-								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-colors]',
-								'tab'        => __( 'Hover', 'astra-addon' ),
+								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-link-colors]',
 								'type'       => 'sub-control',
 								'control'    => 'ast-responsive-color',
-								'title'      => __( 'Link Color', 'astra-addon' ),
+								'title'      => __( 'Hover', 'astra-addon' ),
+								'tab'        => __( 'Hover', 'astra-addon' ),
 								'section'    => $_section,
 								'responsive' => true,
 								'rgba'       => true,
 								'priority'   => 19,
-								'context'    => Astra_Addon_Builder_Helper::$design_tab,
+								'context'    => astra_addon_builder_helper()->design_tab,
 							),
 
 							// Option: Menu Hover Background Color.
 							array(
 								'name'       => 'sticky-header-' . $_prefix . '-h-bg-color-responsive',
 								'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-h-bg-color-responsive' ),
-								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-colors]',
+								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-background-colors]',
 								'type'       => 'sub-control',
-								'title'      => __( 'Background Color', 'astra-addon' ),
+								'title'      => __( 'Hover', 'astra-addon' ),
+								'tab'        => __( 'Hover', 'astra-addon' ),
 								'section'    => $_section,
 								'control'    => 'ast-responsive-color',
-								'tab'        => __( 'Hover', 'astra-addon' ),
 								'responsive' => true,
 								'rgba'       => true,
 								'priority'   => 21,
-								'context'    => Astra_Addon_Builder_Helper::$design_tab,
+								'context'    => astra_addon_builder_helper()->design_tab,
 							),
 
 							// Option: Active Menu Color.
 							array(
 								'name'       => 'sticky-header-' . $_prefix . '-a-color-responsive',
 								'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-a-color-responsive' ),
-								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-colors]',
+								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-link-colors]',
 								'type'       => 'sub-control',
 								'section'    => $_section,
 								'control'    => 'ast-responsive-color',
+								'title'      => __( 'Active', 'astra-addon' ),
 								'tab'        => __( 'Active', 'astra-addon' ),
-								'title'      => __( 'Link Color', 'astra-addon' ),
 								'responsive' => true,
 								'rgba'       => true,
 								'priority'   => 31,
-								'context'    => Astra_Addon_Builder_Helper::$design_tab,
+								'context'    => astra_addon_builder_helper()->design_tab,
 							),
 
 							// Option: Active Menu Background Color.
 							array(
 								'name'       => 'sticky-header-' . $_prefix . '-a-bg-color-responsive',
 								'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-a-bg-color-responsive' ),
-								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-colors]',
+								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-background-colors]',
 								'type'       => 'sub-control',
 								'control'    => 'ast-responsive-color',
 								'section'    => $_section,
-								'title'      => __( 'Background Color', 'astra-addon' ),
+								'title'      => __( 'Active', 'astra-addon' ),
 								'tab'        => __( 'Active', 'astra-addon' ),
 								'responsive' => true,
 								'rgba'       => true,
 								'priority'   => 33,
-								'context'    => Astra_Addon_Builder_Helper::$design_tab,
+								'context'    => astra_addon_builder_helper()->design_tab,
 							),
 
 							// Option Group: Sub Menu Colors.
 							array(
-								'name'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-submenu-colors]',
-								'type'     => 'control',
-								'control'  => 'ast-settings-group',
-								'title'    => __( 'Submenu', 'astra-addon' ),
-								'section'  => $_section,
-								'priority' => 102,
-								'context'  => Astra_Addon_Builder_Helper::$design_tab,
+								'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-submenu-link-colors]',
+								'type'       => 'control',
+								'control'    => Astra_Theme_Extension::$group_control,
+								'title'      => __( 'Text / Link', 'astra-addon' ),
+								'section'    => $_section,
+								'priority'   => 102,
+								'context'    => astra_addon_builder_helper()->design_tab,
+								'responsive' => true,
+								'divider'    => array(
+									'ast_class' => 'ast-top-divider',
+									'ast_title' => __( 'Submenu Color', 'astra-addon' ),
+								),
+							),
+							array(
+								'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-submenu-background-colors]',
+								'type'       => 'control',
+								'control'    => Astra_Theme_Extension::$group_control,
+								'title'      => __( 'Background', 'astra-addon' ),
+								'section'    => $_section,
+								'priority'   => 102,
+								'context'    => astra_addon_builder_helper()->design_tab,
+								'responsive' => true,
+								'divider'    => array( 'ast_class' => 'ast-bottom-divider' ),
 							),
 
 							// Option: Submenu Color.
 							array(
 								'name'       => 'sticky-header-' . $_prefix . '-submenu-color-responsive',
 								'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-submenu-color-responsive' ),
-								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-submenu-colors]',
+								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-submenu-link-colors]',
 								'type'       => 'sub-control',
 								'control'    => 'ast-responsive-color',
-								'title'      => __( 'Link / Text Color', 'astra-addon' ),
-								'section'    => $_section,
+								'title'      => __( 'Normal', 'astra-addon' ),
 								'tab'        => __( 'Normal', 'astra-addon' ),
+								'section'    => $_section,
 								'responsive' => true,
 								'rgba'       => true,
 								'priority'   => 13,
@@ -692,12 +712,12 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							array(
 								'name'       => 'sticky-header-' . $_prefix . '-submenu-bg-color-responsive',
 								'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-submenu-bg-color-responsive' ),
-								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-submenu-colors]',
+								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-submenu-background-colors]',
 								'type'       => 'sub-control',
-								'title'      => __( 'Background Color', 'astra-addon' ),
+								'title'      => __( 'Normal', 'astra-addon' ),
+								'tab'        => __( 'Normal', 'astra-addon' ),
 								'section'    => $_section,
 								'control'    => 'ast-responsive-color',
-								'tab'        => __( 'Normal', 'astra-addon' ),
 								'responsive' => true,
 								'rgba'       => true,
 								'priority'   => 15,
@@ -707,12 +727,12 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							array(
 								'name'       => 'sticky-header-' . $_prefix . '-submenu-h-color-responsive',
 								'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-submenu-h-color-responsive' ),
-								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-submenu-colors]',
+								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-submenu-link-colors]',
 								'type'       => 'sub-control',
 								'control'    => 'ast-responsive-color',
-								'tab'        => __( 'Hover', 'astra-addon' ),
 								'section'    => $_section,
-								'title'      => __( 'Link Color', 'astra-addon' ),
+								'title'      => __( 'Hover', 'astra-addon' ),
+								'tab'        => __( 'Hover', 'astra-addon' ),
 								'responsive' => true,
 								'rgba'       => true,
 								'priority'   => 25,
@@ -722,12 +742,12 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							array(
 								'name'       => 'sticky-header-' . $_prefix . '-submenu-h-bg-color-responsive',
 								'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-submenu-h-bg-color-responsive' ),
-								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-submenu-colors]',
+								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-submenu-background-colors]',
 								'type'       => 'sub-control',
 								'control'    => 'ast-responsive-color',
 								'section'    => $_section,
+								'title'      => __( 'Hover', 'astra-addon' ),
 								'tab'        => __( 'Hover', 'astra-addon' ),
-								'title'      => __( 'Background Color', 'astra-addon' ),
 								'responsive' => true,
 								'rgba'       => true,
 								'priority'   => 27,
@@ -737,12 +757,12 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							array(
 								'name'       => 'sticky-header-' . $_prefix . '-submenu-a-color-responsive',
 								'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-submenu-a-color-responsive' ),
-								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-submenu-colors]',
+								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-submenu-link-colors]',
 								'type'       => 'sub-control',
 								'control'    => 'ast-responsive-color',
 								'section'    => $_section,
+								'title'      => __( 'Active', 'astra-addon' ),
 								'tab'        => __( 'Active', 'astra-addon' ),
-								'title'      => __( 'Link Color', 'astra-addon' ),
 								'responsive' => true,
 								'rgba'       => true,
 								'priority'   => 37,
@@ -752,12 +772,12 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							array(
 								'name'       => 'sticky-header-' . $_prefix . '-submenu-a-bg-color-responsive',
 								'default'    => astra_get_option( 'sticky-header-' . $_prefix . '-submenu-a-bg-color-responsive' ),
-								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-submenu-colors]',
+								'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-submenu-background-colors]',
 								'type'       => 'sub-control',
 								'control'    => 'ast-responsive-color',
 								'section'    => $_section,
+								'title'      => __( 'Active', 'astra-addon' ),
 								'tab'        => __( 'Active', 'astra-addon' ),
-								'title'      => __( 'Background Color', 'astra-addon' ),
 								'responsive' => true,
 								'rgba'       => true,
 								'priority'   => 39,
@@ -773,12 +793,13 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 								array(
 									'name'     => ASTRA_THEME_SETTINGS . '[sticky-header-' . $_prefix . '-mega-menu-col-color-group]',
 									'type'     => 'control',
-									'control'  => 'ast-settings-group',
-									'title'    => __( 'Mega Menu Column Heading', 'astra-addon' ),
+									'control'  => 'ast-color-group',
+									'title'    => __( 'Mega Menu Heading', 'astra-addon' ),
 									'section'  => $_section,
 									'priority' => 103,
-									'context'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-									Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+									'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
+									'context'  => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+									astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 								),
 
 								// Option: Megamenu Heading Color.
@@ -789,8 +810,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 									'type'    => 'sub-control',
 									'control' => 'ast-color',
 									'section' => $_section,
-									'title'   => __( 'Heading Color', 'astra-addon' ),
-									'tab'     => __( 'Normal', 'astra-addon' ),
+									'title'   => __( 'Normal', 'astra-addon' ),
 								),
 
 								// Option: Megamenu Heading Hover Color.
@@ -801,8 +821,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 									'type'    => 'sub-control',
 									'control' => 'ast-color',
 									'section' => $_section,
-									'title'   => __( 'Hover Color', 'astra-addon' ),
-									'tab'     => __( 'Hover', 'astra-addon' ),
+									'title'   => __( 'Hover', 'astra-addon' ),
 								),
 							);
 
@@ -821,121 +840,244 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 						 * Option: Sticky Header primary Color Group
 						 */
 						array(
-							'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-primary-header-colors]',
-							'default'   => astra_get_option( 'sticky-header-primary-header-colors' ),
-							'type'      => 'control',
-							'control'   => 'ast-settings-group',
-							'title'     => $header_color_label,
-							'section'   => $header_primary_section,
-							'transport' => 'postMessage',
-							'priority'  => $header_primary_color_priority,
-							'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-								Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-primary-header-colors]',
+							'default'    => astra_get_option( 'sticky-header-primary-header-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => 'Site Title Color',
+							'section'    => $header_primary_section,
+							'transport'  => 'postMessage',
+							'priority'   => 86,
+							'responsive' => true,
+							'divider'    => array( 'ast_class' => 'ast-top-divider' ),
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
+						),
+
+						/**
+						 * Option: Sticky Header Above Menu Link Color Group
+						 */
+						array(
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-above-menus-link-colors]',
+							'default'    => astra_get_option( 'sticky-header-above-menus-link-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => __( 'Link / Text', 'astra-addon' ),
+							'section'    => 'section-sticky-header',
+							'transport'  => 'postMessage',
+							'priority'   => 61,
+							'responsive' => true,
+							'divider'    => array(
+								'ast_class' => 'ast-top-divider',
+								'ast_title' => __( 'Menu', 'astra-addon' ),
+							),
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
+						),
+						/**
+						 * Option: Sticky Header Above Menu Color Group
+						 */
+						array(
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-above-menus-colors]',
+							'default'    => astra_get_option( 'sticky-header-above-menus-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => __( 'Background', 'astra-addon' ),
+							'section'    => 'section-sticky-header',
+							'transport'  => 'postMessage',
+							'priority'   => 61,
+							'responsive' => true,
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 						),
 
 						/**
 						 * Option: Sticky Header Above Menu Color Group
 						 */
 						array(
-							'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-above-menus-colors]',
-							'default'   => astra_get_option( 'sticky-header-above-menus-colors' ),
-							'type'      => 'control',
-							'control'   => 'ast-settings-group',
-							'title'     => __( 'Menu', 'astra-addon' ),
-							'section'   => 'section-sticky-header',
-							'transport' => 'postMessage',
-							'priority'  => 61,
-							'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-								Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-above-submenus-link-colors]',
+							'default'    => astra_get_option( 'sticky-header-above-submenus-link-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => __( 'Link / Text', 'astra-addon' ),
+							'section'    => 'section-sticky-header',
+							'transport'  => 'postMessage',
+							'priority'   => 65,
+							'responsive' => true,
+							'divider'    => array(
+								'ast_class' => 'ast-top-divider',
+								'ast_title' => __( 'Submenu', 'astra-addon' ),
+							),
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 						),
 						/**
 						 * Option: Sticky Header Above Menu Color Group
 						 */
 						array(
-							'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-above-submenus-colors]',
-							'default'   => astra_get_option( 'sticky-header-above-submenus-colors' ),
-							'type'      => 'control',
-							'control'   => 'ast-settings-group',
-							'title'     => __( 'Submenu', 'astra-addon' ),
-							'section'   => 'section-sticky-header',
-							'transport' => 'postMessage',
-							'priority'  => 65,
-							'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-								Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-above-submenus-colors]',
+							'default'    => astra_get_option( 'sticky-header-above-submenus-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => __( 'Background', 'astra-addon' ),
+							'section'    => 'section-sticky-header',
+							'transport'  => 'postMessage',
+							'priority'   => 65,
+							'responsive' => true,
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 						),
+
 						/**
-						 * Option: Sticky Header primary Color Group
+						 * Option: Sticky Header primary Link Color Group
 						 */
 						array(
-							'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-primary-menus-colors]',
-							'default'   => astra_get_option( 'sticky-header-primary-menus-colors' ),
-							'type'      => 'control',
-							'control'   => 'ast-settings-group',
-							'title'     => __( 'Menu', 'astra-addon' ),
-							'section'   => 'section-sticky-header',
-							'transport' => 'postMessage',
-							'priority'  => 90,
-							'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-								Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-primary-menus-link-colors]',
+							'default'    => astra_get_option( 'sticky-header-primary-menus-link-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => __( 'Link / Text', 'astra-addon' ),
+							'section'    => 'section-sticky-header',
+							'transport'  => 'postMessage',
+							'priority'   => 90,
+							'divider'    => array(
+								'ast_class' => 'ast-top-divider',
+								'ast_title' => __( 'Menu', 'astra-addon' ),
+							),
+							'responsive' => true,
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
+						),
+						/**
+						 * Option: Sticky Header primary Link Color Group
+						 */
+						array(
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-primary-menus-colors]',
+							'default'    => astra_get_option( 'sticky-header-primary-menus-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => __( 'Background', 'astra-addon' ),
+							'section'    => 'section-sticky-header',
+							'transport'  => 'postMessage',
+							'priority'   => 90,
+							'responsive' => true,
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 						),
 
 						/**
 						 * Option: Sticky Header primary Color Group
 						 */
 						array(
-							'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-primary-submenu-colors]',
-							'default'   => astra_get_option( 'sticky-header-primary-submenu-colors' ),
-							'type'      => 'control',
-							'control'   => 'ast-settings-group',
-							'title'     => __( 'Submenu', 'astra-addon' ),
-							'section'   => 'section-sticky-header',
-							'transport' => 'postMessage',
-							'priority'  => 95,
-							'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-								Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-primary-submenu-link-colors]',
+							'default'    => astra_get_option( 'sticky-header-primary-submenu-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => __( 'Link/Text', 'astra-addon' ),
+							'section'    => 'section-sticky-header',
+							'transport'  => 'postMessage',
+							'priority'   => 95,
+							'divider'    => array(
+								'ast_class' => 'ast-top-divider',
+								'ast_title' => __( 'Submenu', 'astra-addon' ),
+							),
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+							astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
+							'responsive' => true,
 						),
+						array(
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-primary-submenu-background-colors]',
+							'default'    => astra_get_option( 'sticky-header-primary-submenu-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => __( 'Background', 'astra-addon' ),
+							'section'    => 'section-sticky-header',
+							'transport'  => 'postMessage',
+							'priority'   => 95,
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
+							'responsive' => true,
+						),
+
 						/**
 						 * Option: Sticky Header Below Color Group
 						 */
 						array(
-							'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-below-menus-colors]',
-							'default'   => astra_get_option( 'sticky-header-below-menus-colors' ),
-							'type'      => 'control',
-							'control'   => 'ast-settings-group',
-							'title'     => __( 'Menu', 'astra-addon' ),
-							'section'   => 'section-sticky-header',
-							'transport' => 'postMessage',
-							'priority'  => 120,
-							'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-								Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-below-menus-link-colors]',
+							'default'    => astra_get_option( 'sticky-header-below-menus-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => __( 'Link/Text', 'astra-addon' ),
+							'section'    => 'section-sticky-header',
+							'transport'  => 'postMessage',
+							'priority'   => 120,
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
+							'responsive' => true,
+							'divider'    => array(
+								'ast_class' => 'ast-top-divider',
+								'ast_title' => __( 'Menu', 'astra-addon' ),
+							),
 						),
+						array(
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-below-menus-background-colors]',
+							'default'    => astra_get_option( 'sticky-header-below-menus-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => __( 'Background', 'astra-addon' ),
+							'section'    => 'section-sticky-header',
+							'transport'  => 'postMessage',
+							'priority'   => 120,
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
+							'responsive' => true,
+						),
+
 						/**
 						 * Option: Sticky Header Below Submenu Color Group
 						 */
 						array(
-							'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-below-submenus-colors]',
-							'default'   => astra_get_option( 'sticky-header-below-submenus-colors' ),
-							'type'      => 'control',
-							'control'   => 'ast-settings-group',
-							'title'     => __( 'Submenu', 'astra-addon' ),
-							'section'   => 'section-sticky-header',
-							'transport' => 'postMessage',
-							'priority'  => 125,
-							'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-								Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-below-submenus-link-colors]',
+							'default'    => astra_get_option( 'sticky-header-below-submenus-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => __( 'Link / Text', 'astra-addon' ),
+							'section'    => 'section-sticky-header',
+							'transport'  => 'postMessage',
+							'priority'   => 125,
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
+							'responsive' => true,
+							'divider'    => array(
+								'ast_class' => 'ast-top-divider',
+								'ast_title' => __( 'Submenu', 'astra-addon' ),
+							),
+						),
+						array(
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-below-submenus-background-colors]',
+							'default'    => astra_get_option( 'sticky-header-below-submenus-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => __( 'Background', 'astra-addon' ),
+							'section'    => 'section-sticky-header',
+							'transport'  => 'postMessage',
+							'priority'   => 125,
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
+							'responsive' => true,
 						),
 
 						array(
-							'name'       => 'sticky-header-bg-color-responsive',
-							'default'    => $defaults['sticky-header-bg-color-responsive'],
-							'type'       => 'sub-control',
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-bg-color-responsive]',
+							'default'    => astra_get_option( 'sticky-header-bg-color-responsive' ),
+							'type'       => 'control',
 							'tab'        => __( 'Normal', 'astra-addon' ),
-							'priority'   => 6,
-							'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-header-colors]',
+							'priority'   => 85,
 							'section'    => 'section-sticky-header',
 							'control'    => 'ast-responsive-color',
 							'transport'  => 'postMessage',
 							'title'      => __( 'Background Color', 'astra-addon' ),
+							'divider'    => array( 'ast_class' => 'ast-bottom-divider' ),
 							'responsive' => true,
 							'rgba'       => true,
 						),
@@ -944,7 +1086,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 						*/
 						array(
 							'name'       => 'sticky-header-color-site-title-responsive',
-							'default'    => $defaults['sticky-header-color-site-title-responsive'],
+							'default'    => astra_get_option( 'sticky-header-color-site-title-responsive' ),
 							'type'       => 'sub-control',
 							'tab'        => __( 'Normal', 'astra-addon' ),
 							'priority'   => 7,
@@ -952,7 +1094,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'section'    => 'section-sticky-header',
 							'control'    => 'ast-responsive-color',
 							'transport'  => 'postMessage',
-							'title'      => __( 'Site Title Color', 'astra-addon' ),
+							'title'      => __( 'Normal', 'astra-addon' ),
 							'responsive' => true,
 							'rgba'       => true,
 						),
@@ -962,7 +1104,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 						*/
 						array(
 							'name'       => 'sticky-header-color-h-site-title-responsive',
-							'default'    => $defaults['sticky-header-color-h-site-title-responsive'],
+							'default'    => astra_get_option( 'sticky-header-color-h-site-title-responsive' ),
 							'type'       => 'sub-control',
 							'tab'        => __( 'Hover', 'astra-addon' ),
 							'priority'   => 8,
@@ -970,7 +1112,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'section'    => 'section-sticky-header',
 							'control'    => 'ast-responsive-color',
 							'transport'  => 'postMessage',
-							'title'      => __( 'Site Title Color', 'astra-addon' ),
+							'title'      => __( 'Hover', 'astra-addon' ),
 							'responsive' => true,
 							'rgba'       => true,
 						),
@@ -979,12 +1121,10 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 						* Option: Site Tagline Color
 						*/
 						array(
-							'name'       => 'sticky-header-color-site-tagline-responsive',
-							'default'    => $defaults['sticky-header-color-site-tagline-responsive'],
-							'type'       => 'sub-control',
-							'priority'   => 8,
-							'tab'        => __( 'Normal', 'astra-addon' ),
-							'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-header-colors]',
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-color-site-tagline-responsive]',
+							'default'    => astra_get_option( 'sticky-header-color-site-tagline-responsive' ),
+							'type'       => 'control',
+							'priority'   => 85,
 							'section'    => 'section-sticky-header',
 							'control'    => 'ast-responsive-color',
 							'transport'  => 'postMessage',
@@ -993,50 +1133,73 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'rgba'       => true,
 							'connect'    => ASTRA_THEME_SETTINGS . '[sticky-header-color-site-tagline-responsive]',
 						),
+
+						/**
+						* Option: Content Section Text color.
+						*/
+						array(
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-below-header-content-section-text-color-responsive]',
+							'default'    => astra_get_option( 'sticky-below-header-content-section-text-color-responsive' ),
+							'type'       => 'control',
+							'transport'  => 'postMessage',
+							'control'    => 'ast-responsive-color',
+							'title'      => __( 'Text', 'astra-addon' ),
+							'responsive' => true,
+							'rgba'       => true,
+							'priority'   => 135,
+							'section'    => 'section-sticky-header',
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
+						),
 						/**
 						 * Option: Sticky Header Header Content Color Group
 						 */
 						array(
-							'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-below-header-content-colors]',
-							'default'   => astra_get_option( 'sticky-header-below-header-content-colors' ),
-							'type'      => 'control',
-							'control'   => 'ast-settings-group',
-							'title'     => __( 'Content', 'astra-addon' ),
-							'section'   => 'section-sticky-header',
-							'transport' => 'postMessage',
-							'priority'  => 135,
-							'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-								Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-below-header-content-colors]',
+							'default'    => astra_get_option( 'sticky-header-below-header-content-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => __( 'Link', 'astra-addon' ),
+							'section'    => 'section-sticky-header',
+							'transport'  => 'postMessage',
+							'priority'   => 135,
+							'responsive' => true,
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 						),
+
 						/**
 						 * Option: Sticky Header primary Color Group
 						 */
 						array(
-							'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-primary-outside-item-colors]',
-							'default'   => astra_get_option( 'sticky-header-primary-outside-item-colors' ),
-							'type'      => 'control',
-							'control'   => 'ast-settings-group',
-							'title'     => __( 'Outside Item', 'astra-addon' ),
-							'section'   => 'section-sticky-header',
-							'transport' => 'postMessage',
-							'priority'  => 105,
-							'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-								Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-primary-outside-item-colors]',
+							'default'    => astra_get_option( 'sticky-header-primary-outside-item-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => __( 'Outside Item', 'astra-addon' ),
+							'section'    => 'section-sticky-header',
+							'transport'  => 'postMessage',
+							'priority'   => 105,
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
+							'responsive' => true,
 						),
+
 						/**
-						 * Option: Sticky Header Above Color Group
+						 * Option: Sticky Header Above Link Color Group
 						 */
 						array(
-							'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-above-outside-item-colors]',
-							'default'   => astra_get_option( 'sticky-header-above-outside-item-colors' ),
-							'type'      => 'control',
-							'control'   => 'ast-settings-group',
-							'title'     => __( 'Content', 'astra-addon' ),
-							'section'   => 'section-sticky-header',
-							'transport' => 'postMessage',
-							'priority'  => 75,
-							'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-								Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-above-outside-item-link-colors]',
+							'default'    => astra_get_option( 'sticky-header-above-outside-item-link-colors' ),
+							'type'       => 'control',
+							'control'    => Astra_Theme_Extension::$group_control,
+							'title'      => __( 'Content Link', 'astra-addon' ),
+							'section'    => 'section-sticky-header',
+							'transport'  => 'postMessage',
+							'priority'   => 75,
+							'responsive' => true,
+							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 						),
 					);
 				}
@@ -1045,91 +1208,96 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 				$_config      = array_merge( $_config, $_new_configs );
 			}
 
-			if ( ! Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( false === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 				$_new_configs = array(
 					/**
 					 * Option: Button Text Color
 					 */
 					array(
-						'name'      => 'header-main-rt-sticky-section-button-text-color',
-						'transport' => 'postMessage',
-						'default'   => astra_get_option( 'header-main-rt-sticky-section-button-text-color' ),
-						'type'      => 'sub-control',
-						'parent'    => ASTRA_THEME_SETTINGS . '[sticky-header-button-color-group]',
-						'section'   => 'section-sticky-header',
-						'tab'       => __( 'Normal', 'astra-addon' ),
-						'control'   => 'ast-color',
-						'priority'  => 10,
-						'title'     => __( 'Text Color', 'astra-addon' ),
+						'name'              => 'header-main-rt-sticky-section-button-text-color',
+						'transport'         => 'postMessage',
+						'default'           => astra_get_option( 'header-main-rt-sticky-section-button-text-color' ),
+						'type'              => 'sub-control',
+						'parent'            => ASTRA_THEME_SETTINGS . '[sticky-header-button-color-group]',
+						'section'           => 'section-sticky-header',
+						'tab'               => __( 'Normal', 'astra-addon' ),
+						'control'           => 'ast-color',
+						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+						'priority'          => 10,
+						'title'             => __( 'Text Color', 'astra-addon' ),
 					),
 
 					/**
 					 * Option: Button Text Hover Color
 					 */
 					array(
-						'name'      => 'header-main-rt-sticky-section-button-text-h-color',
-						'default'   => astra_get_option( 'header-main-rt-sticky-section-button-text-h-color' ),
-						'transport' => 'postMessage',
-						'type'      => 'sub-control',
-						'parent'    => ASTRA_THEME_SETTINGS . '[sticky-header-button-color-group]',
-						'section'   => 'section-sticky-header',
-						'tab'       => __( 'Hover', 'astra-addon' ),
-						'control'   => 'ast-color',
-						'priority'  => 10,
-						'title'     => __( 'Text Color', 'astra-addon' ),
+						'name'              => 'header-main-rt-sticky-section-button-text-h-color',
+						'default'           => astra_get_option( 'header-main-rt-sticky-section-button-text-h-color' ),
+						'transport'         => 'postMessage',
+						'type'              => 'sub-control',
+						'parent'            => ASTRA_THEME_SETTINGS . '[sticky-header-button-color-group]',
+						'section'           => 'section-sticky-header',
+						'tab'               => __( 'Hover', 'astra-addon' ),
+						'control'           => 'ast-color',
+						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+						'priority'          => 10,
+						'title'             => __( 'Text Color', 'astra-addon' ),
 					),
 
 					/**
 					 * Option: Button Background Color
 					 */
 					array(
-						'name'      => 'header-main-rt-sticky-section-button-back-color',
-						'default'   => astra_get_option( 'header-main-rt-sticky-section-button-back-color' ),
-						'transport' => 'postMessage',
-						'type'      => 'sub-control',
-						'parent'    => ASTRA_THEME_SETTINGS . '[sticky-header-button-color-group]',
-						'section'   => 'section-sticky-header',
-						'tab'       => __( 'Normal', 'astra-addon' ),
-						'control'   => 'ast-color',
-						'priority'  => 10,
-						'title'     => __( 'Background Color', 'astra-addon' ),
+						'name'              => 'header-main-rt-sticky-section-button-back-color',
+						'default'           => astra_get_option( 'header-main-rt-sticky-section-button-back-color' ),
+						'transport'         => 'postMessage',
+						'type'              => 'sub-control',
+						'parent'            => ASTRA_THEME_SETTINGS . '[sticky-header-button-color-group]',
+						'section'           => 'section-sticky-header',
+						'tab'               => __( 'Normal', 'astra-addon' ),
+						'control'           => 'ast-color',
+						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+						'priority'          => 10,
+						'title'             => __( 'Background Color', 'astra-addon' ),
 					),
 
 					/**
 					 * Option: Button Button Hover Color
 					 */
 					array(
-						'name'      => 'header-main-rt-sticky-section-button-back-h-color',
-						'default'   => astra_get_option( 'header-main-rt-sticky-section-button-back-h-color' ),
-						'transport' => 'postMessage',
-						'type'      => 'sub-control',
-						'parent'    => ASTRA_THEME_SETTINGS . '[sticky-header-button-color-group]',
-						'section'   => 'section-sticky-header',
-						'tab'       => __( 'Hover', 'astra-addon' ),
-						'control'   => 'ast-color',
-						'priority'  => 10,
-						'title'     => __( 'Background Color', 'astra-addon' ),
+						'name'              => 'header-main-rt-sticky-section-button-back-h-color',
+						'default'           => astra_get_option( 'header-main-rt-sticky-section-button-back-h-color' ),
+						'transport'         => 'postMessage',
+						'type'              => 'sub-control',
+						'parent'            => ASTRA_THEME_SETTINGS . '[sticky-header-button-color-group]',
+						'section'           => 'section-sticky-header',
+						'tab'               => __( 'Hover', 'astra-addon' ),
+						'control'           => 'ast-color',
+						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+						'priority'          => 10,
+						'title'             => __( 'Background Color', 'astra-addon' ),
 					),
 
 					// Option: Button Custom Menu Button Border.
 					array(
-						'type'           => 'control',
-						'control'        => 'ast-responsive-spacing',
-						'name'           => ASTRA_THEME_SETTINGS . '[header-main-rt-sticky-section-button-padding]',
-						'section'        => 'section-sticky-header',
-						'transport'      => 'postMessage',
-						'linked_choices' => true,
-						'priority'       => 55,
-						'default'        => astra_get_option( 'header-main-rt-sticky-section-button-padding' ),
-						'title'          => __( 'Padding', 'astra-addon' ),
-						'choices'        => array(
+						'type'              => 'control',
+						'control'           => 'ast-responsive-spacing',
+						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+						'name'              => ASTRA_THEME_SETTINGS . '[header-main-rt-sticky-section-button-padding]',
+						'section'           => 'section-sticky-header',
+						'transport'         => 'postMessage',
+						'linked_choices'    => true,
+						'priority'          => 55,
+						'default'           => astra_get_option( 'header-main-rt-sticky-section-button-padding' ),
+						'title'             => __( 'Padding', 'astra-addon' ),
+						'choices'           => array(
 							'top'    => __( 'Top', 'astra-addon' ),
 							'right'  => __( 'Right', 'astra-addon' ),
 							'bottom' => __( 'Bottom', 'astra-addon' ),
 							'left'   => __( 'Left', 'astra-addon' ),
 						),
-						'context'        => array(
-							Astra_Addon_Builder_Helper::$general_tab_config,
+						'context'           => array(
+							astra_addon_builder_helper()->general_tab_config,
 							array(
 								'setting'  => ASTRA_THEME_SETTINGS . '[header-main-rt-section-button-style]',
 								'operator' => '===',
@@ -1164,30 +1332,32 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 					 * Option: Button Border Color
 					 */
 					array(
-						'name'      => 'header-main-rt-sticky-section-button-border-color',
-						'default'   => astra_get_option( 'header-main-rt-sticky-section-button-border-color' ),
-						'transport' => 'postMessage',
-						'type'      => 'sub-control',
-						'parent'    => ASTRA_THEME_SETTINGS . '[sticky-header-button-border-group]',
-						'section'   => 'section-sticky-header',
-						'control'   => 'ast-color',
-						'priority'  => 12,
-						'title'     => __( 'Color', 'astra-addon' ),
+						'name'              => 'header-main-rt-sticky-section-button-border-color',
+						'default'           => astra_get_option( 'header-main-rt-sticky-section-button-border-color' ),
+						'transport'         => 'postMessage',
+						'type'              => 'sub-control',
+						'parent'            => ASTRA_THEME_SETTINGS . '[sticky-header-button-border-group]',
+						'section'           => 'section-sticky-header',
+						'control'           => 'ast-color',
+						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+						'priority'          => 12,
+						'title'             => __( 'Color', 'astra-addon' ),
 					),
 
 					/**
 					 * Option: Button Border Hover Color
 					 */
 					array(
-						'name'      => 'header-main-rt-sticky-section-button-border-h-color',
-						'default'   => astra_get_option( 'header-main-rt-sticky-section-button-border-h-color' ),
-						'transport' => 'postMessage',
-						'type'      => 'sub-control',
-						'parent'    => ASTRA_THEME_SETTINGS . '[sticky-header-button-border-group]',
-						'section'   => 'section-sticky-header',
-						'control'   => 'ast-color',
-						'priority'  => 14,
-						'title'     => __( 'Hover Color', 'astra-addon' ),
+						'name'              => 'header-main-rt-sticky-section-button-border-h-color',
+						'default'           => astra_get_option( 'header-main-rt-sticky-section-button-border-h-color' ),
+						'transport'         => 'postMessage',
+						'type'              => 'sub-control',
+						'parent'            => ASTRA_THEME_SETTINGS . '[sticky-header-button-border-group]',
+						'section'           => 'section-sticky-header',
+						'control'           => 'ast-color',
+						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+						'priority'          => 14,
+						'title'             => __( 'Hover Color', 'astra-addon' ),
 					),
 
 					/**
@@ -1201,6 +1371,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 						'section'     => 'section-sticky-header',
 						'control'     => 'ast-slider',
 						'transport'   => 'postMessage',
+						'suffix'      => 'px',
 						'priority'    => 16,
 						'title'       => __( 'Border Radius', 'astra-addon' ),
 						'input_attrs' => array(
@@ -1221,7 +1392,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 						'help'     => __( 'Note: You can find all the Sticky Header related design options in the individual Elements for Logo, Primary Menu, Button etc.', 'astra-addon' ),
 						'context'  => array(
 							'relation' => 'AND',
-							Astra_Addon_Builder_Helper::$general_tab_config,
+							astra_addon_builder_helper()->general_tab_config,
 							array(
 								'relation' => 'OR',
 								array(
@@ -1258,7 +1429,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 		 */
 		public static function is_header_section_active() {
 			$status = false;
-			if ( Astra_Ext_Extension::is_active( 'header-sections' ) || Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( Astra_Ext_Extension::is_active( 'header-sections' ) || true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 				$status = true;
 			}
 			return $status;

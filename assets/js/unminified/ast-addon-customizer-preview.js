@@ -123,7 +123,6 @@ function astra_color_responsive_css( addon, control, css_property, selector ) {
 				);
 
 			} else {
-				wp.customize.preview.send( 'refresh' );
 				jQuery( 'style#' + control + '-' + addon ).remove();
 			}
 

@@ -23,15 +23,20 @@ function astra_addon_blog_pro_dynamic_css( $dynamic_css, $dynamic_css_filtered =
 	 */
 	$is_site_rtl = is_rtl();
 	$css_output  = '';
+	$theme_color = astra_get_option( 'theme-color' );
+	$link_color  = astra_get_option( 'link-color', $theme_color );
 
 	$desktop_max_css = array(
 		// Updated before content value to fix the masonry layout issue.
-		'#content:before' => array(
+		'#content:before'                           => array(
 			'content'    => '"' . astra_addon_get_tablet_breakpoint() . '"',
 			'position'   => 'absolute',
 			'overflow'   => 'hidden',
 			'opacity'    => '0',
 			'visibility' => 'hidden',
+		),
+		'.single .ast-author-details .author-title' => array(
+			'color' => esc_attr( $link_color ),
 		),
 	);
 

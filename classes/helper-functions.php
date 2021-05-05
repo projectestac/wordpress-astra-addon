@@ -365,6 +365,10 @@ if ( ! function_exists( 'astra_get_prop' ) ) :
 			return $default;
 		}
 
+		if ( ( isset( $array[ $prop ] ) && false === $array[ $prop ] ) ) {
+			return false;
+		}
+
 		if ( isset( $array[ $prop ] ) ) {
 			$value = $array[ $prop ];
 		} else {

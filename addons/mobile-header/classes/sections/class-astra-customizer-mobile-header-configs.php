@@ -65,7 +65,7 @@ if ( ! class_exists( 'Astra_Customizer_Mobile_Header_Configs' ) ) {
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[mobile-menu-style]',
 					'type'        => 'control',
-					'control'     => 'select',
+					'control'     => 'ast-select',
 					'section'     => 'section-primary-menu',
 					'default'     => astra_get_option( 'mobile-menu-style' ),
 					'title'       => __( 'Menu Style', 'astra-addon' ),
@@ -73,7 +73,7 @@ if ( ! class_exists( 'Astra_Customizer_Mobile_Header_Configs' ) ) {
 					'choices'     => $menu_style_choices,
 					'description' => $menu_style_description,
 					'context'     => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[disable-primary-nav]',
 							'operator' => '!=',
@@ -91,10 +91,10 @@ if ( ! class_exists( 'Astra_Customizer_Mobile_Header_Configs' ) ) {
 					'title'    => __( 'Flyout Menu Alignment', 'astra-addon' ),
 					'default'  => astra_get_option( 'flyout-mobile-menu-alignment' ),
 					'type'     => 'control',
-					'control'  => 'select',
+					'control'  => 'ast-select',
 
 					'context'  => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[mobile-menu-style]',
 							'operator' => '==',
@@ -134,14 +134,15 @@ if ( ! class_exists( 'Astra_Customizer_Mobile_Header_Configs' ) ) {
 				 * Option: Mobile Header Menu Border Color
 				 */
 				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[mobile-header-menu-b-color]',
-					'section'   => 'section-primary-menu',
-					'type'      => 'control',
-					'control'   => 'ast-color',
-					'title'     => __( 'Border Color', 'astra-addon' ),
-					'default'   => '#dadada',
-					'transport' => 'postMessage',
-					'priority'  => 68,
+					'name'              => ASTRA_THEME_SETTINGS . '[mobile-header-menu-b-color]',
+					'section'           => 'section-primary-menu',
+					'type'              => 'control',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'title'             => __( 'Border Color', 'astra-addon' ),
+					'default'           => astra_get_option( 'mobile-header-menu-b-color', '#dadada' ),
+					'transport'         => 'postMessage',
+					'priority'          => 68,
 				),
 			);
 

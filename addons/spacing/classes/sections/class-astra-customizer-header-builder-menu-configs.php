@@ -43,7 +43,8 @@ if ( ! class_exists( 'Astra_Customizer_Header_Builder_Menu_Configs' ) ) {
 
 			$html_config = array();
 
-			for ( $index = 1; $index <= Astra_Addon_Builder_Helper::$num_of_header_menu; $index++ ) {
+			$component_limit = astra_addon_builder_helper()->component_limit;
+			for ( $index = 1; $index <= $component_limit; $index++ ) {
 
 				$_section = 'section-hb-menu-' . $index;
 				$_prefix  = 'menu' . $index;
@@ -52,25 +53,26 @@ if ( ! class_exists( 'Astra_Customizer_Header_Builder_Menu_Configs' ) ) {
 
 					// Option - Primary Sub Menu Space.
 					array(
-						'name'           => ASTRA_THEME_SETTINGS . '[header-' . $_prefix . '-submenu-spacing]',
-						'default'        => astra_get_option( 'header-' . $_prefix . '-submenu-spacing' ),
-						'type'           => 'control',
-						'transport'      => 'postMessage',
-						'control'        => 'ast-responsive-spacing',
-						'section'        => $_section,
-						'priority'       => 160,
-						'title'          => __( 'Submenu Space', 'astra-addon' ),
-						'linked_choices' => true,
-						'unit_choices'   => array( 'px', 'em', '%' ),
-						'choices'        => array(
+						'name'              => ASTRA_THEME_SETTINGS . '[header-' . $_prefix . '-submenu-spacing]',
+						'default'           => astra_get_option( 'header-' . $_prefix . '-submenu-spacing' ),
+						'type'              => 'control',
+						'transport'         => 'postMessage',
+						'control'           => 'ast-responsive-spacing',
+						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+						'section'           => $_section,
+						'priority'          => 160,
+						'title'             => __( 'Submenu Spacing', 'astra-addon' ),
+						'linked_choices'    => true,
+						'unit_choices'      => array( 'px', 'em', '%' ),
+						'choices'           => array(
 							'top'    => __( 'Top', 'astra-addon' ),
 							'right'  => __( 'Right', 'astra-addon' ),
 							'bottom' => __( 'Bottom', 'astra-addon' ),
 							'left'   => __( 'Left', 'astra-addon' ),
 						),
-						'context'        => Astra_Addon_Builder_Helper::$design_tab,
+						'context'           => astra_addon_builder_helper()->design_tab,
+						'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
 					),
-
 				);
 
 				$html_config[] = $_configs;
@@ -80,29 +82,133 @@ if ( ! class_exists( 'Astra_Customizer_Header_Builder_Menu_Configs' ) ) {
 					$_configs = array(
 						// Option - Megamenu Heading Space.
 						array(
-							'name'           => ASTRA_THEME_SETTINGS . '[header-' . $_prefix . '-megamenu-heading-space]',
-							'default'        => astra_get_option( 'header-' . $_prefix . '-megamenu-heading-space' ),
-							'type'           => 'control',
-							'transport'      => 'postMessage',
-							'control'        => 'ast-responsive-spacing',
-							'priority'       => 170,
-							'title'          => __( 'Megamenu Heading Space', 'astra-addon' ),
-							'linked_choices' => true,
-							'unit_choices'   => array( 'px', 'em', '%' ),
-							'section'        => $_section,
-							'choices'        => array(
+							'name'              => ASTRA_THEME_SETTINGS . '[header-' . $_prefix . '-megamenu-heading-space]',
+							'default'           => astra_get_option( 'header-' . $_prefix . '-megamenu-heading-space' ),
+							'type'              => 'control',
+							'transport'         => 'postMessage',
+							'control'           => 'ast-responsive-spacing',
+							'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+							'priority'          => 170,
+							'title'             => __( 'Megamenu Heading Spacing', 'astra-addon' ),
+							'linked_choices'    => true,
+							'unit_choices'      => array( 'px', 'em', '%' ),
+							'section'           => $_section,
+							'choices'           => array(
 								'top'    => __( 'Top', 'astra-addon' ),
 								'right'  => __( 'Right', 'astra-addon' ),
 								'bottom' => __( 'Bottom', 'astra-addon' ),
 								'left'   => __( 'Left', 'astra-addon' ),
 							),
-							'context'        => Astra_Addon_Builder_Helper::$design_tab,
+							'context'           => astra_addon_builder_helper()->design_tab,
+							'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
 						),
 					);
 
 					$html_config[] = $_configs;
 				}
 			}
+
+			$html_config[] = array(
+
+				/**
+				 * Option: Item Spacing
+				 */
+				array(
+					'name'           => ASTRA_THEME_SETTINGS . '[section-hb-language-switcher-item-spacing]',
+					'default'        => astra_get_option( 'section-hb-language-switcher-item-spacing' ),
+					'type'           => 'control',
+					'transport'      => 'postMessage',
+					'control'        => 'ast-responsive-spacing',
+					'section'        => 'section-hb-language-switcher',
+					'priority'       => 320,
+					'title'          => __( 'Item Spacing', 'astra-addon' ),
+					'linked_choices' => true,
+					'unit_choices'   => array( 'px', 'em', '%' ),
+					'divider'        => array( 'ast_class' => 'ast-bottom-divider' ),
+					'choices'        => array(
+						'top'    => __( 'Top', 'astra-addon' ),
+						'right'  => __( 'Right', 'astra-addon' ),
+						'bottom' => __( 'Bottom', 'astra-addon' ),
+						'left'   => __( 'Left', 'astra-addon' ),
+					),
+					'context'        => astra_addon_builder_helper()->design_tab,
+				),
+
+				/**
+				 * Option: Margin Space
+				 */
+				array(
+					'name'           => ASTRA_THEME_SETTINGS . '[section-hb-language-switcher-margin]',
+					'default'        => astra_get_option( 'section-hb-language-switcher-margin' ),
+					'type'           => 'control',
+					'transport'      => 'postMessage',
+					'control'        => 'ast-responsive-spacing',
+					'section'        => 'section-hb-language-switcher',
+					'priority'       => 330,
+					'title'          => __( 'Margin', 'astra-addon' ),
+					'linked_choices' => true,
+					'unit_choices'   => array( 'px', 'em', '%' ),
+					'choices'        => array(
+						'top'    => __( 'Top', 'astra-addon' ),
+						'right'  => __( 'Right', 'astra-addon' ),
+						'bottom' => __( 'Bottom', 'astra-addon' ),
+						'left'   => __( 'Left', 'astra-addon' ),
+					),
+					'context'        => astra_addon_builder_helper()->design_tab,
+				),
+
+			);
+
+			$html_config[] = array(
+
+				/**
+				 * Option: Item Spacing
+				 */
+				array(
+					'name'           => ASTRA_THEME_SETTINGS . '[section-fb-language-switcher-item-spacing]',
+					'default'        => astra_get_option( 'section-fb-language-switcher-item-spacing' ),
+					'type'           => 'control',
+					'transport'      => 'postMessage',
+					'control'        => 'ast-responsive-spacing',
+					'section'        => 'section-fb-language-switcher',
+					'priority'       => 320,
+					'title'          => __( 'Item Spacing', 'astra-addon' ),
+					'linked_choices' => true,
+					'unit_choices'   => array( 'px', 'em', '%' ),
+					'choices'        => array(
+						'top'    => __( 'Top', 'astra-addon' ),
+						'right'  => __( 'Right', 'astra-addon' ),
+						'bottom' => __( 'Bottom', 'astra-addon' ),
+						'left'   => __( 'Left', 'astra-addon' ),
+					),
+					'context'        => astra_addon_builder_helper()->design_tab,
+					'divider'        => array( 'ast_class' => 'ast-bottom-divider' ),
+				),
+
+				/**
+				 * Option: Margin Space
+				 */
+				array(
+					'name'           => ASTRA_THEME_SETTINGS . '[section-fb-language-switcher-margin]',
+					'default'        => astra_get_option( 'section-fb-language-switcher-margin' ),
+					'type'           => 'control',
+					'transport'      => 'postMessage',
+					'control'        => 'ast-responsive-spacing',
+					'section'        => 'section-fb-language-switcher',
+					'priority'       => 330,
+					'title'          => __( 'Margin', 'astra-addon' ),
+					'linked_choices' => true,
+					'unit_choices'   => array( 'px', 'em', '%' ),
+					'choices'        => array(
+						'top'    => __( 'Top', 'astra-addon' ),
+						'right'  => __( 'Right', 'astra-addon' ),
+						'bottom' => __( 'Bottom', 'astra-addon' ),
+						'left'   => __( 'Left', 'astra-addon' ),
+					),
+					'context'        => astra_addon_builder_helper()->design_tab,
+				),
+
+			);
 
 			/**
 			 * Mobile Menu - Spacing.
@@ -111,50 +217,53 @@ if ( ! class_exists( 'Astra_Customizer_Header_Builder_Menu_Configs' ) ) {
 
 				// Option - Primary Sub Menu Space.
 				array(
-					'name'           => ASTRA_THEME_SETTINGS . '[header-mobile-menu-submenu-spacing]',
-					'default'        => astra_get_option( 'header-mobile-menu-submenu-spacing' ),
-					'type'           => 'control',
-					'transport'      => 'postMessage',
-					'control'        => 'ast-responsive-spacing',
-					'section'        => 'section-header-mobile-menu',
-					'priority'       => 160,
-					'title'          => __( 'Submenu Space', 'astra-addon' ),
-					'linked_choices' => true,
-					'unit_choices'   => array( 'px', 'em', '%' ),
-					'choices'        => array(
+					'name'              => ASTRA_THEME_SETTINGS . '[header-mobile-menu-submenu-spacing]',
+					'default'           => astra_get_option( 'header-mobile-menu-submenu-spacing' ),
+					'type'              => 'control',
+					'transport'         => 'postMessage',
+					'control'           => 'ast-responsive-spacing',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+					'section'           => 'section-header-mobile-menu',
+					'priority'          => 160,
+					'title'             => __( 'Submenu Spacing', 'astra-addon' ),
+					'linked_choices'    => true,
+					'unit_choices'      => array( 'px', 'em', '%' ),
+					'choices'           => array(
 						'top'    => __( 'Top', 'astra-addon' ),
 						'right'  => __( 'Right', 'astra-addon' ),
 						'bottom' => __( 'Bottom', 'astra-addon' ),
 						'left'   => __( 'Left', 'astra-addon' ),
 					),
-					'context'        => Astra_Addon_Builder_Helper::$design_tab,
+					'context'           => astra_addon_builder_helper()->design_tab,
 				),
 
 				// Option - Account Menu Space.
 				array(
-					'name'           => ASTRA_THEME_SETTINGS . '[header-account-menu-spacing]',
-					'default'        => astra_get_option( 'header-account-menu-spacing' ),
-					'type'           => 'control',
-					'control'        => 'ast-responsive-spacing',
-					'transport'      => 'postMessage',
-					'section'        => 'section-header-account',
-					'priority'       => 510,
-					'title'          => __( 'Menu Space', 'astra-addon' ),
-					'linked_choices' => true,
-					'unit_choices'   => array( 'px', 'em', '%' ),
-					'choices'        => array(
+					'name'              => ASTRA_THEME_SETTINGS . '[header-account-menu-spacing]',
+					'default'           => astra_get_option( 'header-account-menu-spacing' ),
+					'type'              => 'control',
+					'control'           => 'ast-responsive-spacing',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+					'transport'         => 'postMessage',
+					'section'           => 'section-header-account',
+					'priority'          => 510,
+					'title'             => __( 'Menu Spacing', 'astra-addon' ),
+					'linked_choices'    => true,
+					'unit_choices'      => array( 'px', 'em', '%' ),
+					'choices'           => array(
 						'top'    => __( 'Top', 'astra-addon' ),
 						'right'  => __( 'Right', 'astra-addon' ),
 						'bottom' => __( 'Bottom', 'astra-addon' ),
 						'left'   => __( 'Left', 'astra-addon' ),
 					),
-					'context'        => array(
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
+					'context'           => array(
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[header-account-action-type]',
 							'operator' => '==',
 							'value'    => 'menu',
 						),
-						Astra_Addon_Builder_Helper::$design_tab_config,
+						astra_addon_builder_helper()->design_tab_config,
 					),
 				),
 			);

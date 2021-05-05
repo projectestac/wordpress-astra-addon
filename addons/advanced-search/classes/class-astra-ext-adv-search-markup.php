@@ -50,14 +50,48 @@ if ( ! class_exists( 'Astra_Ext_Adv_Search_Markup' ) ) {
 			/**
 			 * Compatibility with Default Astra & Astra Header Builder > Search.
 			 */
-			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 				add_action( 'astra_main_header_bar_top', array( $this, 'header_builder_cover_search' ) );
 				add_action( 'astra_mobile_header_bar_top', array( $this, 'header_builder_cover_search' ) );
+
+				add_filter( 'astra_default_strings', array( $this, 'header_builder_default_strings' ), 10 );
+				add_filter( 'astra_search_field_placeholder', array( $this, 'header_builder_default_search_string' ), 10 );
+
 			} else {
 				add_action( 'astra_main_header_bar_top', array( $this, 'main_header_cover_search' ) );
 				add_action( 'astra_above_header_top', array( $this, 'top_header_cover_search' ) );
 				add_action( 'astra_below_header_top', array( $this, 'below_header_cover_search' ) );
 			}
+		}
+
+		/**
+		 * Add default strings
+		 *
+		 * @param array $strings Default strings array.
+		 * @since 3.1.0
+		 */
+		public function header_builder_default_strings( $strings ) {
+
+			$search_string = astra_get_option( 'header-search-box-placeholder' );
+
+			$strings['string-header-cover-search-placeholder'] = esc_attr( $search_string );
+			$strings['string-search-input-placeholder']        = esc_attr( $search_string );
+			$strings['string-full-width-search-placeholder']   = esc_attr( $search_string );
+
+			return $strings;
+		}
+
+		/**
+		 * Add default search filter callback
+		 *
+		 * @param string $search_string Default string.
+		 * @since 3.1.0
+		 */
+		public function header_builder_default_search_string( $search_string ) {
+
+			$search_string = esc_attr( astra_get_option( 'header-search-box-placeholder' ) );
+
+			return $search_string;
 		}
 
 		/**
@@ -98,7 +132,7 @@ if ( ! class_exists( 'Astra_Ext_Adv_Search_Markup' ) ) {
 		 */
 		public function localize_variables( $localize_vars ) {
 
-			$localize_vars['is_header_builder_active'] = Astra_Addon_Builder_Helper::$is_header_footer_builder_active;
+			$localize_vars['is_header_builder_active'] = astra_addon_builder_helper()->is_header_footer_builder_active;
 
 			return $localize_vars;
 		}
@@ -184,7 +218,7 @@ if ( ! class_exists( 'Astra_Ext_Adv_Search_Markup' ) ) {
 				'full-screen' === astra_get_option( 'header-main-rt-section-search-box-type' ) ||
 				'full-screen' === astra_get_option( 'below-header-section-1-search-box-type' ) ||
 				'full-screen' === astra_get_option( 'below-header-section-2-search-box-type' ) ||
-				( Astra_Addon_Builder_Helper::$is_header_footer_builder_active && 'full-screen' === astra_get_option( 'header-search-box-type' ) )
+				( true === astra_addon_builder_helper()->is_header_footer_builder_active && 'full-screen' === astra_get_option( 'header-search-box-type' ) )
 			) {
 				$this->get_search_form( 'full-screen', true );
 			}
@@ -202,7 +236,7 @@ if ( ! class_exists( 'Astra_Ext_Adv_Search_Markup' ) ) {
 		 */
 		public function get_search_markup( $search_markup, $option = '', $device = '' ) {
 
-			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 				$search_box_style = astra_get_option( 'header-search-box-type', 'slide-search' );
 				$search_box_style = apply_filters( 'astra_search_style_hs', $search_box_style );
@@ -251,7 +285,7 @@ if ( ! class_exists( 'Astra_Ext_Adv_Search_Markup' ) ) {
 		 * @return mixed        HTML Markup.
 		 */
 		public function get_search_icon( $style ) {
-			return '<div class="ast-search-icon"><a class="' . esc_attr( $style ) . ' astra-search-icon" aria-label="Search icon link" href="#"></a></div>';
+			return '<div class="ast-search-icon"><a class="' . esc_attr( $style ) . ' astra-search-icon" aria-label="Search icon link" href="#">' . Astra_Icons::get_icons( 'search' ) . '</a></div>';
 		}
 
 		/**

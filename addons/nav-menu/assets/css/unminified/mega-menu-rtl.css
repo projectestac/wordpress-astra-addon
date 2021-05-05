@@ -138,6 +138,10 @@
   content: '';
 }
 
+.ast-desktop .ast-mega-menu-enabled .menu-item-has-children.astra-megamenu-li.menu-item .astra-megamenu.sub-menu .menu-item > .menu-link .ast-icon.icon-arrow {
+  display: none;
+}
+
 .ast-desktop .ast-mega-menu-enabled.submenu-with-border .astra-megamenu-li .sub-menu .menu-link,
 .ast-desktop .ast-mega-menu-enabled .astra-megamenu-li .sub-menu .menu-link {
   border: none;
@@ -355,20 +359,6 @@
   display: none;
 }
 
-.ast-desktop .ast-mega-menu-enabled.main-header-menu > .menu-item-has-children > .menu-link .sub-arrow:after, .ast-desktop .ast-mega-menu-enabled.ast-below-header-menu > .menu-item-has-children > .menu-link .sub-arrow:after, .ast-desktop .ast-mega-menu-enabled.ast-above-header-menu > .menu-item-has-children > .menu-link .sub-arrow:after {
-  content: "\e900";
-  display: inline-block;
-  font-family: 'Astra';
-  font-size: 9px;
-  font-size: .6rem;
-  font-weight: bold;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  margin-right: 10px;
-  line-height: normal;
-}
-
 .ast-desktop .ast-mega-menu-enabled.main-header-menu > .menu-item-has-children > .menu-link::after, .ast-desktop .ast-mega-menu-enabled.ast-below-header-menu > .menu-item-has-children > .menu-link::after, .ast-desktop .ast-mega-menu-enabled.ast-above-header-menu > .menu-item-has-children > .menu-link::after {
   content: '';
   margin: 0;
@@ -398,7 +388,10 @@
   background: transparent;
 }
 
-.ast-header-break-point .ast-mega-menu-enabled .menu-item-has-children.astra-megamenu-li > .menu-link .sub-arrow:after {
+.ast-header-break-point .ast-mega-menu-enabled.main-header-menu .menu-item-has-children.astra-megamenu-li > .menu-link .sub-arrow:after,
+.ast-header-break-point .ast-mega-menu-enabled.main-header-menu .menu-item-has-children > .menu-link .sub-arrow:after,
+.ast-builder-menu-mobile .ast-mega-menu-enabled.main-header-menu .menu-item-has-children.astra-megamenu-li > .menu-link .sub-arrow:after,
+.ast-builder-menu-mobile .ast-mega-menu-enabled.main-header-menu .menu-item-has-children > .menu-link .sub-arrow:after {
   display: none;
 }
 

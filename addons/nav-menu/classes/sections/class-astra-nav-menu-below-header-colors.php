@@ -38,7 +38,7 @@ if ( ! class_exists( 'Astra_Nav_Menu_Below_Header_Colors' ) ) {
 
 			$_configs = array();
 
-			if ( is_callable( 'Astra_Sticky_Header_Configs::is_header_section_active' ) && Astra_Sticky_Header_Configs::is_header_section_active() && ! Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( is_callable( 'Astra_Sticky_Header_Configs::is_header_section_active' ) && Astra_Sticky_Header_Configs::is_header_section_active() && false === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 				$_configs = array(
 
@@ -49,13 +49,14 @@ if ( ! class_exists( 'Astra_Nav_Menu_Below_Header_Colors' ) ) {
 						'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-below-mega-menus-colors]',
 						'default'   => astra_get_option( 'sticky-header-below-mega-menus-colors' ),
 						'type'      => 'control',
-						'control'   => 'ast-settings-group',
-						'title'     => __( 'Mega Menu Column Heading', 'astra-addon' ),
+						'control'   => Astra_Theme_Extension::$group_control,
+						'title'     => __( 'Mega Menu Heading', 'astra-addon' ),
 						'section'   => 'section-sticky-header',
 						'transport' => 'postMessage',
+						'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
 						'priority'  => 130,
-						'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ?
-							Astra_Addon_Builder_Helper::$design_tab : Astra_Addon_Builder_Helper::$general_tab,
+						'context'   => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 					),
 
 				);

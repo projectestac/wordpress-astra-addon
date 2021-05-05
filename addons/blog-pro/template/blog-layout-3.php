@@ -13,11 +13,11 @@
 	<?php if ( $featured_item ) : ?>
 		<?php
 		// Blog Post Featured Image.
-			astra_get_post_thumbnail( '<div class="ast-blog-featured-section post-thumb ast-col-md-6">', '</div>' );
+			astra_get_post_thumbnail( '<div class="ast-blog-featured-section post-thumb ' . astra_attr( 'ast-grid-col-6' ) . '">', '</div>' );
 		?>
 	<?php endif; ?>
 
-	<div class="post-content ast-col-md-6">
+	<div class="post-content <?php echo astra_attr( 'ast-grid-col-6' ); ?>">
 
 		<?php astra_get_blog_post_title_meta(); ?>
 

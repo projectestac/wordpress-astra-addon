@@ -63,17 +63,6 @@
   opacity: 1;
 }
 
-.ast-flyout-above-menu-enable.ast-header-break-point .ast-above-header-navigation-wrap .close:after {
-  content: "\e5cd";
-  display: inline-block;
-  font-family: 'Astra';
-  font-size: 28px;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: normal;
-}
-
 .ast-flyout-above-menu-enable.ast-header-break-point .ast-above-header-navigation-wrap .ast-above-header-navigation {
   position: absolute;
   background: #fff;

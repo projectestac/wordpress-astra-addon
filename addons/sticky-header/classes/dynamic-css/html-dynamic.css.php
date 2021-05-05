@@ -16,7 +16,12 @@ add_filter( 'astra_dynamic_css', 'astra_sticky_header_html_dynamic_css' );
  */
 function astra_sticky_header_html_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 
-	for ( $index = 1; $index <= Astra_Addon_Builder_Helper::$num_of_header_html; $index++ ) {
+	$num_of_header_html = astra_addon_builder_helper()->num_of_header_html;
+	for ( $index = 1; $index <= $num_of_header_html; $index++ ) {
+
+		if ( ! Astra_Addon_Builder_Helper::is_component_loaded( 'html-' . $index, 'header' ) ) {
+			continue;
+		}
 
 		$selector = '.ast-header-sticked .site-header-section .ast-builder-layout-element.ast-header-html-' . $index;
 

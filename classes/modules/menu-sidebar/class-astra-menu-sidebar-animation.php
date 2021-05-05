@@ -155,6 +155,8 @@ if ( ! class_exists( 'Astra_Menu_Sidebar_Animation' ) ) {
 				$localize_vars['sticky_active'] = false;
 			}
 
+			$localize_vars['svgIconClose'] = Astra_Icons::get_icons( 'close' );
+
 			return $localize_vars;
 		}
 	}

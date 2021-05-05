@@ -38,28 +38,16 @@ if ( ! class_exists( 'Astra_Primary_Menu_Typo_Configs' ) ) {
 
 			$_configs = array(
 
-				/**
-				 * Option: Header Styling
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[primary-header-typography-styling-divider]',
-					'type'     => 'control',
-					'control'  => 'ast-heading',
-					'section'  => 'section-primary-menu',
-					'title'    => __( 'Typography', 'astra-addon' ),
-					'priority' => 71,
-					'settings' => array(),
-				),
-
 				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[primary-header-menu-typography]',
 					'default'   => astra_get_option( 'primary-header-menu-typography' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
-					'title'     => __( 'Menu', 'astra-addon' ),
+					'title'     => __( 'Menu Font', 'astra-addon' ),
 					'section'   => 'section-primary-menu',
 					'transport' => 'postMessage',
 					'priority'  => 72,
+					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				array(
@@ -67,10 +55,11 @@ if ( ! class_exists( 'Astra_Primary_Menu_Typo_Configs' ) ) {
 					'default'   => astra_get_option( 'primary-sub-menu-typography' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
-					'title'     => __( 'Submenu', 'astra-addon' ),
+					'title'     => __( 'Submenu Font', 'astra-addon' ),
 					'section'   => 'section-primary-menu',
 					'transport' => 'postMessage',
 					'priority'  => 72,
+					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
@@ -161,10 +150,10 @@ if ( ! class_exists( 'Astra_Primary_Menu_Typo_Configs' ) ) {
 					'priority'          => 26,
 					'title'             => __( 'Line Height', 'astra-addon' ),
 					'transport'         => 'postMessage',
-					'default'           => '',
+					'default'           => astra_get_option( 'line-height-primary-menu' ),
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_number_n_blank' ),
 					'control'           => 'ast-slider',
-					'suffix'            => '',
+					'suffix'            => 'em',
 					'input_attrs'       => array(
 						'min'  => 1,
 						'step' => 0.01,
@@ -261,10 +250,10 @@ if ( ! class_exists( 'Astra_Primary_Menu_Typo_Configs' ) ) {
 					'priority'          => 32,
 					'title'             => __( 'Line Height', 'astra-addon' ),
 					'transport'         => 'postMessage',
-					'default'           => '',
+					'default'           => astra_get_option( 'line-height-primary-dropdown-menu' ),
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_number_n_blank' ),
 					'control'           => 'ast-slider',
-					'suffix'            => '',
+					'suffix'            => 'em',
 					'input_attrs'       => array(
 						'min'  => 1,
 						'step' => 0.01,
@@ -275,14 +264,13 @@ if ( ! class_exists( 'Astra_Primary_Menu_Typo_Configs' ) ) {
 				/**
 				 * Option: Primary Header Outside Menu Item Typography Group
 				 */
-
 				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[primary-header-outside-menu-item-typography-group]',
 					'default'   => astra_get_option( 'primary-header-outside-menu-item-typography-group' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
 					'title'     => __( 'Outside menu item', 'astra-addon' ),
-					'section'   => 'section-header',
+					'section'   => 'section-primary-menu',
 					'transport' => 'postMessage',
 					'context'   => array(
 						array(
@@ -302,7 +290,7 @@ if ( ! class_exists( 'Astra_Primary_Menu_Typo_Configs' ) ) {
 					'name'        => 'outside-menu-font-size',
 					'control'     => 'ast-responsive',
 					'parent'      => ASTRA_THEME_SETTINGS . '[primary-header-outside-menu-item-typography-group]',
-					'section'     => 'section-header',
+					'section'     => 'section-primary-menu',
 					'type'        => 'sub-control',
 					'default'     => astra_get_option( 'outside-menu-font-size' ),
 					'priority'    => 5,
@@ -324,13 +312,13 @@ if ( ! class_exists( 'Astra_Primary_Menu_Typo_Configs' ) ) {
 					'transport'         => 'postMessage',
 					'title'             => __( 'Line Height', 'astra-addon' ),
 					'parent'            => ASTRA_THEME_SETTINGS . '[primary-header-outside-menu-item-typography-group]',
-					'section'           => 'section-header',
+					'section'           => 'section-primary-menu',
 					'type'              => 'sub-control',
 					'control'           => 'ast-slider',
-					'default'           => '',
+					'default'           => astra_get_option( 'outside-menu-line-height' ),
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_number_n_blank' ),
 					'priority'          => 7,
-					'suffix'            => '',
+					'suffix'            => 'em',
 					'input_attrs'       => array(
 						'min'  => 1,
 						'step' => 0.01,

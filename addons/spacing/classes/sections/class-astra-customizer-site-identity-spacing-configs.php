@@ -54,7 +54,7 @@ if ( ! class_exists( 'Astra_Customizer_Site_Identity_Spacing_Configs' ) ) {
 					'title'    => __( 'Spacing', 'astra-addon' ),
 					'context'  => array(
 						'relation' => 'AND',
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'relation' => 'OR',
 							array(
@@ -77,17 +77,18 @@ if ( ! class_exists( 'Astra_Customizer_Site_Identity_Spacing_Configs' ) ) {
 				 * Option - Header Space
 				 */
 				array(
-					'name'           => ASTRA_THEME_SETTINGS . '[site-identity-spacing]',
-					'default'        => astra_get_option( 'site-identity-spacing' ),
-					'type'           => 'control',
-					'transport'      => 'postMessage',
-					'control'        => 'ast-responsive-spacing',
-					'section'        => 'title_tagline',
-					'priority'       => 50,
-					'title'          => __( 'Site Identity Space', 'astra-addon' ),
-					'context'        => array(
+					'name'              => ASTRA_THEME_SETTINGS . '[site-identity-spacing]',
+					'default'           => astra_get_option( 'site-identity-spacing' ),
+					'type'              => 'control',
+					'transport'         => 'postMessage',
+					'control'           => 'ast-responsive-spacing',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+					'section'           => 'title_tagline',
+					'priority'          => 50,
+					'title'             => __( 'Site Identity Space', 'astra-addon' ),
+					'context'           => array(
 						'relation' => 'AND',
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'relation' => 'OR',
 							array(
@@ -102,9 +103,9 @@ if ( ! class_exists( 'Astra_Customizer_Site_Identity_Spacing_Configs' ) ) {
 							),
 						),
 					),
-					'linked_choices' => true,
-					'unit_choices'   => array( 'px', 'em', '%' ),
-					'choices'        => array(
+					'linked_choices'    => true,
+					'unit_choices'      => array( 'px', 'em', '%' ),
+					'choices'           => array(
 						'top'    => __( 'Top', 'astra-addon' ),
 						'right'  => __( 'Right', 'astra-addon' ),
 						'bottom' => __( 'Bottom', 'astra-addon' ),

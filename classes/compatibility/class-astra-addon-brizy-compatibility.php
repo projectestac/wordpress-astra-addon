@@ -92,8 +92,24 @@ if ( ! class_exists( 'Astra_Addon_Brizy_Compatibility' ) ) :
 				return;
 			}
 
-			$post = Brizy_Editor_Post::get( $post_id );
-			$main = method_exists( 'Brizy_Public_Main', 'get' ) ? Brizy_Public_Main::get( $post ) : new Brizy_Public_Main( $post );
+			try {
+				$post = Brizy_Editor_Post::get( $post_id );
+				$main = method_exists( 'Brizy_Public_Main', 'get' ) ? Brizy_Public_Main::get( $post ) : new Brizy_Public_Main( $post );
+			} catch ( Exception $e ) {
+				return;
+			}
+
+			$needs_compile = ! $post->isCompiledWithCurrentVersion() || $post->get_needs_compile();
+
+			if ( $needs_compile ) {
+				try {
+					$post->compile_page();
+					$post->saveStorage();
+					$post->savePost();
+				} catch ( Exception $e ) {
+					return;
+				}
+			}
 
 			// Add page CSS.
 			add_filter( 'body_class', array( $main, 'body_class_frontend' ) );

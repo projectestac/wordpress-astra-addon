@@ -42,56 +42,60 @@ if ( ! class_exists( 'Astra_Edd_Archive_Colors_Configs' ) ) {
 				 * Shop Product Title Color
 				 */
 				array(
-					'name'      => 'edd-archive-product-title-color',
-					'parent'    => ASTRA_THEME_SETTINGS . '[edd-archive-colors]',
-					'section'   => 'section-edd-archive',
-					'default'   => '',
-					'type'      => 'sub-control',
-					'control'   => 'ast-color',
-					'transport' => 'postMessage',
-					'context'   => array(
+					'name'              => ASTRA_THEME_SETTINGS . '[edd-archive-product-title-color]',
+					'section'           => 'section-edd-archive',
+					'default'           => astra_get_option( 'edd-archive-product-title-color' ),
+					'type'              => 'control',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'context'           => array(
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[edd-archive-product-structure]',
 							'operator' => 'contains',
 							'value'    => 'title',
 						),
 					),
-					'title'     => __( 'Product Title Color', 'astra-addon' ),
+					'title'             => __( 'Product Title', 'astra-addon' ),
+					'priority'          => 231,
 				),
 
 				/**
 				 * Shop Product Price Color
 				 */
 				array(
-					'name'      => 'edd-archive-product-price-color',
-					'parent'    => ASTRA_THEME_SETTINGS . '[edd-archive-colors]',
-					'section'   => 'section-edd-archive',
-					'default'   => '',
-					'type'      => 'sub-control',
-					'control'   => 'ast-color',
-					'transport' => 'postMessage',
-					'context'   => array(
+					'name'              => ASTRA_THEME_SETTINGS . '[edd-archive-product-price-color]',
+					'section'           => 'section-edd-archive',
+					'default'           => astra_get_option( 'edd-archive-product-price-color' ),
+					'type'              => 'control',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'context'           => array(
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[edd-archive-product-structure]',
 							'operator' => 'contains',
 							'value'    => 'price',
 						),
 					),
-					'title'     => __( 'Product Price Color', 'astra-addon' ),
+					'title'             => __( 'Product Price', 'astra-addon' ),
+					'priority'          => 231,
 				),
 
 				/**
 				 * Shop Product Content Color
 				 */
 				array(
-					'name'      => 'edd-archive-product-content-color',
-					'parent'    => ASTRA_THEME_SETTINGS . '[edd-archive-colors]',
-					'section'   => 'section-edd-archive',
-					'default'   => '',
-					'type'      => 'sub-control',
-					'control'   => 'ast-color',
-					'transport' => 'postMessage',
-					'title'     => __( 'Product Content Color', 'astra-addon' ),
+					'name'              => ASTRA_THEME_SETTINGS . '[edd-archive-product-content-color]',
+					'section'           => 'section-edd-archive',
+					'default'           => astra_get_option( 'edd-archive-product-content-color' ),
+					'type'              => 'control',
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'title'             => __( 'Product Content', 'astra-addon' ),
+					'priority'          => 231,
 				),
 			);
 			return array_merge( $configurations, $_configs );

@@ -51,9 +51,9 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'font_type' => 'ast-font-family',
 					'title'     => __( 'Family', 'astra-addon' ),
 					'connect'   => ASTRA_THEME_SETTINGS . '[font-weight-edd-archive-product-title]',
-					'priority'  => 5,
+					'priority'  => 3,
 					'context'   => array(
-						Astra_Addon_Builder_Helper::$design_tab_config,
+						astra_addon_builder_helper()->design_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[edd-archive-product-structure]',
 							'operator' => 'contains',
@@ -75,7 +75,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'control'           => 'ast-font',
 					'font_type'         => 'ast-font-weight',
 					'context'           => array(
-						Astra_Addon_Builder_Helper::$design_tab_config,
+						astra_addon_builder_helper()->design_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[edd-archive-product-structure]',
 							'operator' => 'contains',
@@ -84,7 +84,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					),
 					'title'             => __( 'Weight', 'astra-addon' ),
 					'connect'           => 'font-family-edd-archive-product-title',
-					'priority'          => 5,
+					'priority'          => 4,
 				),
 
 				/**
@@ -98,9 +98,9 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'type'        => 'sub-control',
 					'transport'   => 'postMessage',
 					'control'     => 'ast-responsive',
-					'priority'    => 5,
+					'priority'    => 3,
 					'context'     => array(
-						Astra_Addon_Builder_Helper::$design_tab_config,
+						astra_addon_builder_helper()->design_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[edd-archive-product-structure]',
 							'operator' => 'contains',
@@ -124,11 +124,11 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'name'        => 'line-height-edd-archive-product-title',
 					'parent'      => ASTRA_THEME_SETTINGS . '[edd-archive-product-title-typo]',
 					'section'     => 'section-edd-archive',
-					'default'     => '',
+					'default'     => astra_get_option( 'line-height-edd-archive-product-title' ),
 					'type'        => 'sub-control',
 					'transport'   => 'postMessage',
 					'context'     => array(
-						Astra_Addon_Builder_Helper::$design_tab_config,
+						astra_addon_builder_helper()->design_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[edd-archive-product-structure]',
 							'operator' => 'contains',
@@ -138,7 +138,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'title'       => __( 'Line Height', 'astra-addon' ),
 					'control'     => 'ast-slider',
 					'priority'    => 5,
-					'suffix'      => '',
+					'suffix'      => 'em',
 					'input_attrs' => array(
 						'min'  => 1,
 						'step' => 0.01,
@@ -157,7 +157,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'type'      => 'sub-control',
 					'transport' => 'postMessage',
 					'context'   => array(
-						Astra_Addon_Builder_Helper::$design_tab_config,
+						astra_addon_builder_helper()->design_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[edd-archive-product-structure]',
 							'operator' => 'contains',
@@ -166,7 +166,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					),
 					'title'     => __( 'Text Transform', 'astra-addon' ),
 					'control'   => 'ast-select',
-					'priority'  => 5,
+					'priority'  => 4,
 					'choices'   => array(
 						''           => __( 'Inherit', 'astra-addon' ),
 						'none'       => __( 'None', 'astra-addon' ),
@@ -188,7 +188,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'control'   => 'ast-font',
 					'font_type' => 'ast-font-family',
 					'context'   => array(
-						Astra_Addon_Builder_Helper::$design_tab_config,
+						astra_addon_builder_helper()->design_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[edd-archive-product-structure]',
 							'operator' => 'contains',
@@ -197,7 +197,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					),
 					'title'     => __( 'Family', 'astra-addon' ),
 					'connect'   => ASTRA_THEME_SETTINGS . '[font-weight-edd-archive-product-price]',
-					'priority'  => 10,
+					'priority'  => 9,
 				),
 
 				/**
@@ -213,7 +213,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'control'           => 'ast-font',
 					'font_type'         => 'ast-font-weight',
 					'context'           => array(
-						Astra_Addon_Builder_Helper::$design_tab_config,
+						astra_addon_builder_helper()->design_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[edd-archive-product-structure]',
 							'operator' => 'contains',
@@ -236,9 +236,9 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'type'        => 'sub-control',
 					'transport'   => 'postMessage',
 					'control'     => 'ast-responsive',
-					'priority'    => 10,
+					'priority'    => 9,
 					'context'     => array(
-						Astra_Addon_Builder_Helper::$design_tab_config,
+						astra_addon_builder_helper()->design_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[edd-archive-product-structure]',
 							'operator' => 'contains',
@@ -262,11 +262,11 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'name'        => 'line-height-edd-archive-product-price',
 					'parent'      => ASTRA_THEME_SETTINGS . '[edd-archive-product-price-typo]',
 					'section'     => 'section-edd-archive',
-					'default'     => '',
+					'default'     => astra_get_option( 'line-height-edd-archive-product-price' ),
 					'type'        => 'sub-control',
 					'transport'   => 'postMessage',
 					'context'     => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[edd-archive-product-structure]',
 							'operator' => 'contains',
@@ -276,7 +276,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'title'       => __( 'Line Height', 'astra-addon' ),
 					'control'     => 'ast-slider',
 					'priority'    => 10,
-					'suffix'      => '',
+					'suffix'      => 'em',
 					'input_attrs' => array(
 						'min'  => 1,
 						'step' => 0.01,
@@ -297,7 +297,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'font_type' => 'ast-font-family',
 					'title'     => __( 'Family', 'astra-addon' ),
 					'connect'   => ASTRA_THEME_SETTINGS . '[font-weight-edd-archive-product-content]',
-					'priority'  => 15,
+					'priority'  => 13,
 				),
 
 				/**
@@ -314,7 +314,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'font_type'         => 'ast-font-weight',
 					'title'             => __( 'Weight', 'astra-addon' ),
 					'connect'           => 'font-family-edd-archive-product-content',
-					'priority'          => 15,
+					'priority'          => 14,
 				),
 
 				/**
@@ -328,7 +328,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'type'        => 'sub-control',
 					'transport'   => 'postMessage',
 					'control'     => 'ast-responsive',
-					'priority'    => 15,
+					'priority'    => 13,
 					'title'       => __( 'Size', 'astra-addon' ),
 					'input_attrs' => array(
 						'min' => 0,
@@ -346,13 +346,13 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'name'        => 'line-height-edd-archive-product-content',
 					'parent'      => ASTRA_THEME_SETTINGS . '[edd-archive-product-content-typo]',
 					'section'     => 'section-edd-archive',
-					'default'     => '',
+					'default'     => astra_get_option( 'line-height-edd-archive-product-content' ),
 					'type'        => 'sub-control',
 					'transport'   => 'postMessage',
 					'title'       => __( 'Line Height', 'astra-addon' ),
 					'control'     => 'ast-slider',
 					'priority'    => 15,
-					'suffix'      => '',
+					'suffix'      => 'em',
 					'input_attrs' => array(
 						'min'  => 1,
 						'step' => 0.01,
@@ -372,7 +372,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Typo_Configs' ) ) {
 					'transport' => 'postMessage',
 					'title'     => __( 'Text Transform', 'astra-addon' ),
 					'control'   => 'ast-select',
-					'priority'  => 15,
+					'priority'  => 14,
 					'choices'   => array(
 						''           => __( 'Inherit', 'astra-addon' ),
 						'none'       => __( 'None', 'astra-addon' ),

@@ -54,7 +54,8 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_General_Configs' ) ) {
 					'title'       => __( 'Enable Distraction Free Learning', 'astra-addon' ),
 					'description' => __( 'Remove extra links in the header and footer in LearnDash learning pages', 'astra-addon' ),
 					'priority'    => 5,
-					'control'     => 'checkbox',
+					'control'     => Astra_Theme_Extension::$switch_control,
+					'divider'     => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
@@ -67,7 +68,7 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_General_Configs' ) ) {
 					'section'  => 'section-learndash',
 					'title'    => __( 'Display Student\'s Gravatar in Primary Header', 'astra-addon' ),
 					'priority' => 10,
-					'control'  => 'checkbox',
+					'control'  => Astra_Theme_Extension::$switch_control,
 				),
 
 				/**
@@ -81,8 +82,9 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_General_Configs' ) ) {
 					'section'  => 'section-learndash',
 					'title'    => __( 'Profile Picture Links to:', 'astra-addon' ),
 					'priority' => 15,
+					'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
 					'context'  => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[learndash-profile-link-enabled]',
 							'operator' => '==',
@@ -92,31 +94,21 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_General_Configs' ) ) {
 				),
 
 				/**
-				 * Option: Divider
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[learndash-lesson-content]',
-					'type'     => 'control',
-					'title'    => __( 'Course Content Table', 'astra-addon' ),
-					'section'  => 'section-learndash',
-					'control'  => 'ast-divider',
-					'priority' => 20,
-					'settings' => array(),
-				),
-
-				/**
 				 * Option: Table Border Radius
 				 */
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[learndash-table-border-radius]',
-					'default'     => '0',
+					'default'     => astra_get_option( 'learndash-table-border-radius' ),
 					'type'        => 'control',
 					'transport'   => 'postMessage',
 					'control'     => 'ast-slider',
 					'title'       => __( 'Table Border Radius', 'astra-addon' ),
 					'section'     => 'section-learndash',
-					'suffix'      => '',
+					'suffix'      => 'px',
 					'priority'    => 35,
+					'divider'     => array(
+						'ast_class' => 'ast-top-divider',
+					),
 					'input_attrs' => array(
 						'min'  => 0,
 						'step' => 1,

@@ -41,46 +41,20 @@ if ( ! class_exists( 'Astra_Customizer_Existing_Header' ) ) {
 		 */
 		public function register_configuration( $configurations, $wp_customize ) {
 
-			$defaults = Astra_Theme_Options::defaults();
-
 			$_configs = array(
-
-				/**
-				 * Option: Primary Header color and background divider
-				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[primary-header-colors-and-background-divider]',
-					'type'     => 'control',
-					'control'  => 'ast-heading',
-					'section'  => 'section-header',
-					'title'    => __( 'Color', 'astra-addon' ),
-					'priority' => 71,
-					'settings' => array(),
-				),
-
-				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[primary-header-background-group]',
-					'default'   => astra_get_option( 'primary-header-background-group' ),
-					'type'      => 'control',
-					'control'   => 'ast-settings-group',
-					'title'     => __( 'Background', 'astra-addon' ),
-					'section'   => 'section-header',
-					'transport' => 'postMessage',
-					'priority'  => 71,
-				),
-
-				array(
-					'name'       => 'header-bg-obj-responsive',
-					'parent'     => ASTRA_THEME_SETTINGS . '[primary-header-background-group]',
+					'name'       => ASTRA_THEME_SETTINGS . '[header-bg-obj-responsive]',
 					'section'    => 'section-header',
-					'type'       => 'sub-control',
+					'type'       => 'control',
 					'control'    => 'ast-responsive-background',
 					'transport'  => 'postMessage',
 					'data_attrs' => array(
 						'name' => 'header-bg-obj-responsive',
 					),
-					'default'    => $defaults['header-bg-obj-responsive'],
+					'default'    => astra_get_option( 'header-bg-obj-responsive' ),
 					'label'      => __( 'Background', 'astra-addon' ),
+					'priority'   => 71,
+					'divider'    => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 			);
 

@@ -38,7 +38,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Html_Configs' ) ) {
 
 			$html_config = array();
 
-			for ( $index = 1; $index <= Astra_Addon_Builder_Helper::$num_of_header_html; $index++ ) {
+			$component_limit = astra_addon_builder_helper()->component_limit;
+			for ( $index = 1; $index <= $component_limit; $index++ ) {
 
 				$_section = 'section-hb-html-' . $index;
 
@@ -55,21 +56,22 @@ if ( ! class_exists( 'Astra_Sticky_Header_Html_Configs' ) ) {
 						'title'    => __( 'Sticky Header Option', 'astra-addon' ),
 						'settings' => array(),
 						'priority' => 110,
-						'context'  => Astra_Addon_Builder_Helper::$design_tab,
+						'context'  => astra_addon_builder_helper()->design_tab,
 					),
 					/**
 					 * Option: HTML Color.
 					 */
 					array(
-						'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-html-' . $index . 'color]',
-						'default'   => '',
-						'type'      => 'control',
-						'section'   => $_section,
-						'priority'  => 120,
-						'transport' => 'postMessage',
-						'control'   => 'ast-color',
-						'title'     => __( 'Color', 'astra-addon' ),
-						'context'   => Astra_Addon_Builder_Helper::$design_tab,
+						'name'              => ASTRA_THEME_SETTINGS . '[sticky-header-html-' . $index . 'color]',
+						'default'           => astra_get_option( 'sticky-header-html-' . $index . 'color' ),
+						'type'              => 'control',
+						'section'           => $_section,
+						'priority'          => 120,
+						'transport'         => 'postMessage',
+						'control'           => 'ast-color',
+						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+						'title'             => __( 'Text Color', 'astra-addon' ),
+						'context'           => astra_addon_builder_helper()->design_tab,
 					),
 				);
 

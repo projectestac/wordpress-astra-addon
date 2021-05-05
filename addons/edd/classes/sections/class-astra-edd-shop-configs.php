@@ -42,14 +42,16 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 				 * Option: Choose Product Style
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[edd-archive-style]',
-					'default'  => astra_get_option( 'edd-archive-style' ),
-					'type'     => 'control',
-					'section'  => 'section-edd-archive',
-					'title'    => __( 'Layout', 'astra-addon' ),
-					'control'  => 'ast-radio-image',
-					'priority' => 5,
-					'choices'  => array(
+					'name'              => ASTRA_THEME_SETTINGS . '[edd-archive-style]',
+					'default'           => astra_get_option( 'edd-archive-style' ),
+					'type'              => 'control',
+					'section'           => 'section-edd-archive',
+					'title'             => __( 'Layout', 'astra-addon' ),
+					'control'           => 'ast-radio-image',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_choices' ),
+					'priority'          => 5,
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
+					'choices'           => array(
 						'edd-archive-page-grid-style' => array(
 							'label' => __( 'Grid View', 'astra-addon' ),
 							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'edd-archive-page-grid-style', false ) : '',
@@ -65,15 +67,17 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 				 * Option: EDD Archive Post override-heading to display notice
 				 */
 				array(
-					'name'        => ASTRA_THEME_SETTINGS . '[edd-archive-product-structure]',
-					'type'        => 'control',
-					'control'     => 'ast-sortable',
-					'section'     => 'section-edd-archive',
-					'default'     => astra_get_option( 'edd-archive-product-structure' ),
-					'priority'    => 30,
-					'title'       => __( 'Product Structure', 'astra-addon' ),
-					'description' => __( 'The Image option cannot be sortable if the Product Style is selected to the List Style ', 'astra-addon' ),
-					'choices'     => array(
+					'name'              => ASTRA_THEME_SETTINGS . '[edd-archive-product-structure]',
+					'type'              => 'control',
+					'control'           => 'ast-sortable',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_multi_choices' ),
+					'section'           => 'section-edd-archive',
+					'default'           => astra_get_option( 'edd-archive-product-structure' ),
+					'priority'          => 30,
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
+					'title'             => __( 'Product Structure', 'astra-addon' ),
+					'description'       => __( 'The Image option cannot be sortable if the Product Style is selected to the List Style ', 'astra-addon' ),
+					'choices'           => array(
 						'image'      => __( 'Image', 'astra-addon' ),
 						'title'      => __( 'Title', 'astra-addon' ),
 						'price'      => __( 'Price', 'astra-addon' ),
@@ -100,19 +104,21 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 				 * Option: Content Alignment
 				 */
 				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[edd-archive-product-align]',
-					'default'   => astra_get_option( 'edd-archive-product-align' ),
-					'type'      => 'control',
-					'transport' => 'postMessage',
-					'control'   => 'select',
-					'section'   => 'section-edd-archive',
-					'priority'  => 80,
-					'title'     => __( 'Content Alignment', 'astra-addon' ),
-					'choices'   => array(
-						'align-left'   => __( 'Left', 'astra-addon' ),
-						'align-center' => __( 'Center', 'astra-addon' ),
-						'align-right'  => __( 'Right', 'astra-addon' ),
+					'name'       => ASTRA_THEME_SETTINGS . '[edd-archive-product-align]',
+					'default'    => astra_get_option( 'edd-archive-product-align' ),
+					'type'       => 'control',
+					'divider'    => array( 'ast_class' => 'ast-bottom-divider' ),
+					'transport'  => 'postMessage',
+					'control'    => Astra_Theme_Extension::$selector_control,
+					'section'    => 'section-edd-archive',
+					'priority'   => 80,
+					'title'      => __( 'Content Alignment', 'astra-addon' ),
+					'choices'    => array(
+						'align-left'   => 'align-left',
+						'align-center' => 'align-center',
+						'align-right'  => 'align-right',
 					),
+					'responsive' => false,
 				),
 
 				/**
@@ -126,7 +132,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 					'control'     => 'ast-slider',
 					'title'       => __( 'Box Shadow', 'astra-addon' ),
 					'section'     => 'section-edd-archive',
-					'suffix'      => '',
+					'suffix'      => 'px',
 					'priority'    => 85,
 					'input_attrs' => array(
 						'min'  => 0,
@@ -146,7 +152,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 					'control'     => 'ast-slider',
 					'title'       => __( 'Box Hover Shadow', 'astra-addon' ),
 					'section'     => 'section-edd-archive',
-					'suffix'      => '',
+					'suffix'      => 'px',
 					'priority'    => 90,
 					'input_attrs' => array(
 						'min'  => 0,
@@ -176,10 +182,12 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 					'default'           => astra_get_option( 'edd-archive-button-v-padding' ),
 					'type'              => 'control',
 					'transport'         => 'postMessage',
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
 					'section'           => 'section-edd-archive',
 					'title'             => __( 'Vertical Padding', 'astra-addon' ),
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_number_n_blank' ),
 					'control'           => 'ast-slider',
+					'suffix'            => 'px',
 					'priority'          => 110,
 					'input_attrs'       => array(
 						'min'  => 1,
@@ -201,23 +209,13 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 					'title'             => __( 'Horizontal Padding', 'astra-addon' ),
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_number_n_blank' ),
 					'control'           => 'ast-slider',
+					'suffix'            => 'px',
 					'input_attrs'       => array(
 						'min'  => 1,
 						'step' => 1,
 						'max'  => 200,
 					),
-				),
-
-				/**
-				 * Option: Divider
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[edd-archive-meta-divider]',
-					'section'  => 'section-edd-archive',
-					'type'     => 'control',
-					'control'  => 'ast-divider',
-					'priority' => 29,
-					'settings' => array(),
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
@@ -230,47 +228,8 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 					'section'  => 'section-edd-archive',
 					'title'    => __( 'Display Page Title', 'astra-addon' ),
 					'priority' => 29,
-					'control'  => 'checkbox',
-				),
-
-				/**
-				 * Option: Divider
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[edd-archive-colors-heading]',
-					'section'  => 'section-edd-archive',
-					'type'     => 'control',
-					'control'  => 'ast-heading',
-					'title'    => __( 'Colors', 'astra-addon' ),
-					'priority' => 230,
-					'settings' => array(),
-				),
-
-				/**
-				 * Option: EDD Archive Page Color Group
-				 */
-				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[edd-archive-colors]',
-					'default'   => astra_get_option( 'edd-archive-colors' ),
-					'type'      => 'control',
-					'control'   => 'ast-settings-group',
-					'title'     => __( 'Product', 'astra-addon' ),
-					'section'   => 'section-edd-archive',
-					'transport' => 'postMessage',
-					'priority'  => 231,
-				),
-
-				/**
-				 * Option: Divider
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[edd-archive-typo-heading]',
-					'section'  => 'section-edd-archive',
-					'type'     => 'control',
-					'control'  => 'ast-heading',
-					'title'    => __( 'Typography', 'astra-addon' ),
-					'priority' => 232,
-					'settings' => array(),
+					'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
+					'control'  => Astra_Theme_Extension::$switch_control,
 				),
 
 				/**
@@ -281,7 +240,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 					'default'   => astra_get_option( 'edd-archive-product-title-typo' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
-					'title'     => __( 'Product Title', 'astra-addon' ),
+					'title'     => __( 'Product Title Font', 'astra-addon' ),
 					'section'   => 'section-edd-archive',
 					'transport' => 'postMessage',
 					'priority'  => 233,
@@ -295,7 +254,7 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 					'default'   => astra_get_option( 'edd-archive-product-price-typo' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
-					'title'     => __( 'Product Price', 'astra-addon' ),
+					'title'     => __( 'Product Price Font', 'astra-addon' ),
 					'section'   => 'section-edd-archive',
 					'transport' => 'postMessage',
 					'priority'  => 233,
@@ -309,12 +268,12 @@ if ( ! class_exists( 'Astra_Edd_Shop_Configs' ) ) {
 					'default'   => astra_get_option( 'edd-archive-product-content-typo' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
-					'title'     => __( 'Product Content', 'astra-addon' ),
+					'title'     => __( 'Product Content Font', 'astra-addon' ),
 					'section'   => 'section-edd-archive',
 					'transport' => 'postMessage',
 					'context'   => array(
 						'relation' => 'AND',
-						Astra_Addon_Builder_Helper::$general_tab_config,
+						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'relation' => 'OR',
 							array(

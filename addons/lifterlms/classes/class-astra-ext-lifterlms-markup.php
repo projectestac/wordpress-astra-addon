@@ -153,7 +153,7 @@ if ( ! class_exists( 'ASTRA_Ext_LifterLMS_Markup' ) ) {
 					if ( astra_get_option( 'lifterlms-distraction-free-learning' ) ) {
 
 						// HFB Support for distration free checkout.
-						if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+						if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 							remove_action( 'astra_header', array( Astra_Builder_Header::get_instance(), 'prepare_header_builder_markup' ) );
 							remove_action( 'astra_footer', array( Astra_Builder_Footer::get_instance(), 'footer_markup' ), 10 );
 						}
@@ -233,7 +233,7 @@ if ( ! class_exists( 'ASTRA_Ext_LifterLMS_Markup' ) ) {
 			if ( is_llms_checkout() && astra_get_option( 'lifterlms-distraction-free-checkout' ) ) {
 
 				// HFB Support for distration free checkout.
-				if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+				if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 					remove_action( 'astra_header', array( Astra_Builder_Header::get_instance(), 'prepare_header_builder_markup' ) );
 					remove_action( 'astra_footer', array( Astra_Builder_Footer::get_instance(), 'footer_markup' ), 10 );
 				}

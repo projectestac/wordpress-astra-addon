@@ -47,44 +47,54 @@ if ( ! class_exists( 'Astra_Customizer_Lifterlms_General_Configs' ) ) {
 				 * Option: Shop Columns
 				 */
 				array(
-					'name'        => ASTRA_THEME_SETTINGS . '[llms-course-grid]',
-					'default'     => array(
-						'desktop' => 3,
-						'tablet'  => 2,
-						'mobile'  => 1,
+					'name'              => ASTRA_THEME_SETTINGS . '[llms-course-grid]',
+					'default'           => astra_get_option(
+						'llms-course-grid',
+						array(
+							'desktop' => 3,
+							'tablet'  => 2,
+							'mobile'  => 1,
+						)
 					),
-					'type'        => 'control',
-					'control'     => 'ast-responsive-slider',
-					'section'     => 'section-lifterlms-general',
-					'title'       => __( 'Course Columns', 'astra-addon' ),
-					'priority'    => 5,
-					'input_attrs' => array(
+					'type'              => 'control',
+					'control'           => 'ast-responsive-slider',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
+					'section'           => 'section-lifterlms-general',
+					'title'             => __( 'Course Columns', 'astra-addon' ),
+					'priority'          => 5,
+					'input_attrs'       => array(
 						'step' => 1,
 						'min'  => 1,
 						'max'  => 6,
 					),
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
 				 * Option: Shop Columns
 				 */
 				array(
-					'name'        => ASTRA_THEME_SETTINGS . '[llms-membership-grid]',
-					'default'     => array(
-						'desktop' => 3,
-						'tablet'  => 2,
-						'mobile'  => 1,
+					'name'              => ASTRA_THEME_SETTINGS . '[llms-membership-grid]',
+					'default'           => astra_get_option(
+						'llms-membership-grid',
+						array(
+							'desktop' => 3,
+							'tablet'  => 2,
+							'mobile'  => 1,
+						)
 					),
-					'type'        => 'control',
-					'control'     => 'ast-responsive-slider',
-					'section'     => 'section-lifterlms-general',
-					'title'       => __( 'Membership Columns', 'astra-addon' ),
-					'priority'    => 5,
-					'input_attrs' => array(
+					'type'              => 'control',
+					'control'           => 'ast-responsive-slider',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
+					'section'           => 'section-lifterlms-general',
+					'title'             => __( 'Membership Columns', 'astra-addon' ),
+					'priority'          => 5,
+					'input_attrs'       => array(
 						'step' => 1,
 						'min'  => 1,
 						'max'  => 6,
 					),
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 
 				/**
@@ -94,23 +104,10 @@ if ( ! class_exists( 'Astra_Customizer_Lifterlms_General_Configs' ) ) {
 					'name'     => ASTRA_THEME_SETTINGS . '[lifterlms-profile-link-enabled]',
 					'default'  => astra_get_option( 'lifterlms-profile-link-enabled' ),
 					'type'     => 'control',
-					'control'  => 'checkbox',
+					'control'  => Astra_Theme_Extension::$switch_control,
 					'section'  => 'section-lifterlms-general',
 					'title'    => __( 'Enable Header Profile Link', 'astra-addon' ),
 					'priority' => 5,
-				),
-
-				/**
-				 * Option: Divider
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[lifterlms-distraction-free-checkout-divider]',
-					'section'  => 'section-lifterlms-general',
-					'title'    => __( 'Checkout', 'astra-addon' ),
-					'type'     => 'control',
-					'control'  => 'ast-divider',
-					'priority' => 10,
-					'settings' => array(),
 				),
 
 				/**
@@ -120,23 +117,14 @@ if ( ! class_exists( 'Astra_Customizer_Lifterlms_General_Configs' ) ) {
 					'name'     => ASTRA_THEME_SETTINGS . '[lifterlms-distraction-free-checkout]',
 					'default'  => astra_get_option( 'lifterlms-distraction-free-checkout' ),
 					'type'     => 'control',
-					'control'  => 'checkbox',
+					'control'  => Astra_Theme_Extension::$switch_control,
 					'section'  => 'section-lifterlms-general',
 					'title'    => __( 'Distraction Free Checkout', 'astra-addon' ),
 					'priority' => 10,
-				),
-
-				/**
-				 * Option: Divider
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[lifterlms-my-account-vertical-divider]',
-					'section'  => 'section-lifterlms-general',
-					'title'    => __( 'My Account', 'astra-addon' ),
-					'type'     => 'control',
-					'control'  => 'ast-divider',
-					'priority' => 15,
-					'settings' => array(),
+					'divider'  => array(
+						'ast_class' => 'ast-top-divider',
+						'ast_title' => __( 'Checkout', 'astra-addon' ),
+					),
 				),
 
 				/**
@@ -146,10 +134,14 @@ if ( ! class_exists( 'Astra_Customizer_Lifterlms_General_Configs' ) ) {
 					'name'     => ASTRA_THEME_SETTINGS . '[lifterlms-my-account-vertical]',
 					'default'  => astra_get_option( 'lifterlms-my-account-vertical' ),
 					'type'     => 'control',
-					'control'  => 'checkbox',
+					'control'  => Astra_Theme_Extension::$switch_control,
 					'section'  => 'section-lifterlms-general',
 					'title'    => __( 'Display Tabs Vertically', 'astra-addon' ),
 					'priority' => 15,
+					'divider'  => array(
+						'ast_class' => 'ast-top-divider',
+						'ast_title' => __( 'My Account', 'astra-addon' ),
+					),
 				),
 
 			);

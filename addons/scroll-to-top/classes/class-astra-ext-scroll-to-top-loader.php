@@ -50,7 +50,7 @@ if ( ! class_exists( 'Astra_Ext_Scroll_To_Top_Loader' ) ) {
 		 */
 		public function theme_defaults( $defaults ) {
 
-			$defaults['scroll-to-top-icon-size']       = '15';
+			$defaults['scroll-to-top-icon-size']       = 15;
 			$defaults['scroll-to-top-icon-position']   = 'right';
 			$defaults['scroll-to-top-on-devices']      = 'both';
 			$defaults['scroll-to-top-icon-radius']     = '';

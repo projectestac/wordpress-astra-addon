@@ -48,12 +48,18 @@ if ( ! class_exists( 'Astra_Addon_Builder_Header' ) ) {
 		 */
 		public function __construct() {
 
-			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
-				for ( $index = 1; $index <= Astra_Addon_Builder_Helper::$num_of_header_divider; $index++ ) {
+				$component_limit = astra_addon_builder_helper()->component_limit;
+				for ( $index = 1; $index <= $component_limit; $index++ ) {
 					add_action( 'astra_header_divider_' . $index, array( $this, 'header_divider_' . $index ) );
 					self::$methods[] = 'header_divider_' . $index;
 				}
+
+				add_action( 'astra_header_language_switcher', array( $this, 'header_language_switcher' ) );
+
+				add_action( 'astra_desktop_header_content', array( $this, 'render_desktop_column' ), 10, 2 );
+				add_action( 'astra_render_desktop_popup', array( $this, 'render_desktop_column' ), 10, 2 );
 			}
 		}
 
@@ -74,6 +80,24 @@ if ( ! class_exists( 'Astra_Addon_Builder_Header' ) ) {
 					}
 				}
 			}
+		}
+
+		/**
+		 * Render language switcher.
+		 */
+		public function header_language_switcher() {
+			Astra_Addon_Builder_UI_Controller::render_language_switcher_markup( 'header-language-switcher', 'header' );
+		}
+
+		/**
+		 * Call desktop component header UI.
+		 *
+		 * @since 3.3.0
+		 * @param string $row row.
+		 * @param string $column column.
+		 */
+		public function render_desktop_column( $row, $column ) {
+			Astra_Builder_Helper::render_builder_markup( $row, $column, 'desktop', 'header' );
 		}
 	}
 

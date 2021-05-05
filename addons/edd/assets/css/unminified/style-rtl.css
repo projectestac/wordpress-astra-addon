@@ -149,7 +149,7 @@
 }
 
 /**
- * Checkout 
+ * Checkout
  */
 .ast-edd-distraction-free-checkout .main-header-bar {
   padding-top: 1em;
@@ -188,10 +188,6 @@
   padding: 0 2px;
 }
 
-.ast-edd-site-header-cart span.astra-icon:before {
-  font-family: 'Astra';
-}
-
 .ast-edd-site-header-cart span.astra-icon.no-cart-total:after {
   display: none;
 }
@@ -226,18 +222,6 @@
 
 li.edd-custom-menu-item .ast-edd-site-header-cart span.astra-icon:after {
   padding-right: 2px;
-}
-
-.ast-icon-shopping-cart:before {
-  content: "\f07a";
-}
-
-.ast-icon-shopping-bag:before {
-  content: "\f290";
-}
-
-.ast-icon-shopping-basket:before {
-  content: "\f291";
 }
 
 .ast-header-break-point.ast-header-custom-item-outside .ast-edd-header-cart-info-wrap {

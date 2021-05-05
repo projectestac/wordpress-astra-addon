@@ -28,7 +28,6 @@ class Astra_Header_Divider_Component_Loader {
 	public function __construct() {
 		add_filter( 'astra_theme_defaults', array( $this, 'theme_defaults' ) );
 		add_action( 'customize_preview_init', array( $this, 'preview_scripts' ), 110 );
-		add_action( 'astra_get_css_files', array( $this, 'add_styles' ) );
 	}
 
 	/**
@@ -40,68 +39,33 @@ class Astra_Header_Divider_Component_Loader {
 	 */
 	public function theme_defaults( $defaults ) {
 		// Divider header defaults.
-		for ( $index = 1; $index <= Astra_Addon_Builder_Helper::$num_of_header_divider; $index++ ) {
+		$component_limit = astra_addon_builder_helper()->component_limit;
+		for ( $index = 1; $index <= $component_limit; $index++ ) {
 
 			$defaults[ 'header-divider-' . $index . '-layout' ] = 'vertical';
 			$defaults[ 'header-divider-' . $index . '-style' ]  = 'solid';
-			$defaults[ 'header-divider-' . $index . '-color' ]  = '#3a3a3a';
+			$defaults[ 'header-divider-' . $index . '-color' ]  = '#000000';
 
 			$defaults[ 'header-divider-' . $index . '-size' ] = array(
-				'desktop' => 50,
-				'tablet'  => '',
-				'mobile'  => '',
+				'desktop' => '50',
+				'tablet'  => '50',
+				'mobile'  => '50',
+			);
+
+			$defaults[ 'header-horizontal-divider-' . $index . '-size' ] = array(
+				'desktop' => '50',
+				'tablet'  => '50',
+				'mobile'  => '50',
 			);
 
 			$defaults[ 'header-divider-' . $index . '-thickness' ] = array(
-				'desktop' => 1,
-				'tablet'  => '',
-				'mobile'  => '',
+				'desktop' => '1',
+				'tablet'  => '1',
+				'mobile'  => '1',
 			);
 		}
 
 		return $defaults;
-	}
-
-	/**
-	 * Add Styles Callback
-	 *
-	 * @since 3.0.0
-	 */
-	public function add_styles() {
-
-		/*** Start Path Logic */
-
-		/* Define Variables */
-		$uri  = ASTRA_HEADER_DIVIDER_URI . 'assets/css/';
-		$path = ASTRA_HEADER_DIVIDER_DIR . 'assets/css/';
-		$rtl  = '';
-
-		if ( is_rtl() ) {
-			$rtl = '-rtl';
-		}
-
-		/* Directory and Extension */
-		$file_prefix = $rtl . '.min';
-		$dir_name    = 'minified';
-
-		if ( SCRIPT_DEBUG ) {
-			$file_prefix = $rtl;
-			$dir_name    = 'unminified';
-		}
-
-		$css_uri = $uri . $dir_name . '/';
-		$css_dir = $path . $dir_name . '/';
-
-		if ( defined( 'ASTRA_THEME_HTTP2' ) && ASTRA_THEME_HTTP2 ) {
-			$gen_path = $css_uri;
-		} else {
-			$gen_path = $css_dir;
-		}
-
-		/*** End Path Logic */
-
-		/* Add style.css */
-		Astra_Minify::add_css( $gen_path . 'style' . $file_prefix . '.css' );
 	}
 
 	/**
@@ -116,14 +80,14 @@ class Astra_Header_Divider_Component_Loader {
 		/* Directory and Extension */
 		$dir_name    = ( SCRIPT_DEBUG ) ? 'unminified' : 'minified';
 		$file_prefix = ( SCRIPT_DEBUG ) ? '' : '.min';
-		wp_enqueue_script( 'astra-heading-divider-customizer-preview-js', ASTRA_HEADER_DIVIDER_URI . '/assets/js/customizer-preview.js', array( 'customize-preview', 'ahfb-addon-base-customizer-preview' ), ASTRA_EXT_VER, true );
+		wp_enqueue_script( 'astra-heading-divider-customizer-preview-js', ASTRA_HEADER_DIVIDER_URI . 'assets/js/' . $dir_name . '/customizer-preview' . $file_prefix . '.js', array( 'customize-preview', 'ahfb-addon-base-customizer-preview' ), ASTRA_EXT_VER, true );
 
 		// Localize variables for divider JS.
 		wp_localize_script(
 			'astra-heading-divider-customizer-preview-js',
 			'AstraBuilderDividerData',
 			array(
-				'header_divider_count' => Astra_Addon_Builder_Helper::$num_of_header_divider,
+				'component_limit' => astra_addon_builder_helper()->component_limit,
 			)
 		);
 	}

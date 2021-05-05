@@ -216,15 +216,6 @@
   vertical-align: middle;
 }
 
-.woocommerce .astra-shop-filter-button .astra-woo-filter-icon:after,
-.woocommerce button.astra-shop-filter-button .astra-woo-filter-icon:after,
-.woocommerce-page .astra-shop-filter-button .astra-woo-filter-icon:after,
-.woocommerce-page button.astra-shop-filter-button .astra-woo-filter-icon:after {
-  content: "\e5d2";
-  font-family: 'Astra';
-  text-decoration: inherit;
-}
-
 .woocommerce button.astra-shop-filter-button,
 .woocommerce-page button.astra-shop-filter-button {
   padding: 10px 1em;
@@ -270,19 +261,6 @@
 .woocommerce .astra-off-canvas-sidebar-wrapper .close:hover,
 .woocommerce-page .astra-off-canvas-sidebar-wrapper .close:hover {
   opacity: 1;
-}
-
-.woocommerce .astra-off-canvas-sidebar-wrapper .close:after,
-.woocommerce-page .astra-off-canvas-sidebar-wrapper .close:after {
-  content: "\e5cd";
-  display: inline-block;
-  font-family: 'Astra';
-  font-size: 22px;
-  font-size: 2rem;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: normal;
 }
 
 .woocommerce .astra-off-canvas-sidebar-wrapper .astra-off-canvas-sidebar,
@@ -618,7 +596,7 @@
 }
 
 /**
- * Checkout 
+ * Checkout
  */
 .woocommerce-checkout.distraction-free .main-header-bar {
   padding-top: 2em;
@@ -872,10 +850,6 @@
   padding: 0 2px;
 }
 
-.ast-site-header-cart i.astra-icon:before {
-  font-family: 'Astra';
-}
-
 .ast-site-header-cart i.astra-icon.no-cart-total:after {
   display: none;
 }
@@ -889,7 +863,7 @@
   font-weight: bold;
   box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.3);
   font-size: 11px;
-  padding-left: 0px;
+  padding-left: 2px;
   padding-right: 2px;
   line-height: 17px;
   letter-spacing: -.5px;
@@ -912,20 +886,8 @@ li.woocommerce-custom-menu-item .ast-site-header-cart i.astra-icon:after {
   padding-left: 2px;
 }
 
-.astra-hfb-header .ast-addon-cart-wrap {
+.ast-hfb-header .ast-addon-cart-wrap {
   padding: 0.2em .6em;
-}
-
-.ast-icon-shopping-cart:before {
-  content: "\f07a";
-}
-
-.ast-icon-shopping-bag:before {
-  content: "\f290";
-}
-
-.ast-icon-shopping-basket:before {
-  content: "\f291";
 }
 
 .ast-header-break-point.ast-header-custom-item-outside .ast-woo-header-cart-info-wrap {

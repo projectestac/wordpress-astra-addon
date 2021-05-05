@@ -9,12 +9,7 @@
 		return elementBottom > viewportTop && elementTop < viewportBottom;
 	};
 
-	var mainMenuFlyoutAlignment = astraAddon.main_menu_flyout_alignment || '',
-		aboveMenuFlyoutAlignment = astraAddon.above_menu_flyout_alignment || '',
-		belowMenuFlyoutAlignment = astraAddon.below_menu_flyout_alignment || '';
-
 	AstraMenu = {
-		
 
 		/**
 		 * Init
@@ -24,13 +19,13 @@
 			this._bind();
 
 			var body = document.querySelector('body');
-			
+
 			body.addEventListener( 'astraMenuHashLinkClicked', function ( event ) {
 				AstraMenu._close_fullscreen(event);
 				AstraMenu._close_offcanvas(event);
 			});
 		},
-		
+
 		/**
 		 * Binds events
 		 */
@@ -72,7 +67,7 @@
 			$(window).on( 'scroll', AstraMenu._wp_admin_bar_visible );
 
 		},
-		
+
 		_open_above_fullscreen: function(e) {
 			e.preventDefault();
 
@@ -84,7 +79,7 @@
 			$('html').addClass( 'ast-fullscreen-above-menu-overlay' );
 
 			if( ! $('.ast-above-header-navigation-wrap .close').length ) {
-				$('.ast-above-header-navigation-wrap').prepend('<span class="close"></span>');
+				$('.ast-above-header-navigation-wrap').prepend('<span class="close">' + astraAddon.svgIconClose + '</span>');
 				$('.ast-above-header-navigation-wrap .close').css( 'right', hiddenInnerWidth - innerWidth );
 			}
 		},
@@ -100,7 +95,7 @@
 			$('html').addClass( 'ast-fullscreen-below-menu-overlay' );
 
 			if( ! $('.ast-below-header-navigation-wrap .close').length ) {
-				$('.ast-below-header-navigation-wrap').prepend('<span class="close"></span>');
+				$('.ast-below-header-navigation-wrap').prepend('<span class="close">' + astraAddon.svgIconClose + '</span>');
 				$('.ast-below-header-navigation-wrap .close').css( 'right', hiddenInnerWidth - innerWidth );
 			}
 		},
@@ -115,14 +110,14 @@
 
 			$('html').addClass( 'ast-fullscreen-menu-overlay' );
 
-			$('html').addClass( 'ast-fullscreen-active' );			
+			$('html').addClass( 'ast-fullscreen-active' );
 
 			if( ! $('.main-header-bar nav .close').length ) {
-				$('.main-header-bar nav').prepend('<span class="close"></span>');
+				$('.main-header-bar nav').prepend('<span class="close">' + astraAddon.svgIconClose + '</span>');
 				$('.main-header-bar nav .close').css( 'right', hiddenInnerWidth - innerWidth );
 			}
 			if( ! $( '.ast-primary-menu-disabled .ast-header-custom-item .close').length ) {
-				$( ".ast-primary-menu-disabled .ast-header-custom-item .ast-merge-header-navigation-wrap" ).prepend( '<span class="close"></span>' );
+				$( ".ast-primary-menu-disabled .ast-header-custom-item .ast-merge-header-navigation-wrap" ).prepend( '<span class="close">' + astraAddon.svgIconClose + '</span>' );
 			}
 
 		},
@@ -136,21 +131,26 @@
 			$('html').css( 'margin-right', hiddenInnerWidth - innerWidth );
 
 			$('html').addClass( e.data.class );
+
+			// Added for accessibility issue.
+			setTimeout(function(){
+				$('#cart-accessibility').focus()
+			}, 100);
 		},
 
 		_enable_primary_menu_overlay: function(e) {
 			e.preventDefault();
 
 			if( ! $( '.main-header-bar-navigation .close' ).length ) {
-				$( ".main-navigation" ).before( '<span class="ast-nav-close close"></span>' );
+				$( ".main-navigation" ).before( '<span class="ast-nav-close close">' + astraAddon.svgIconClose + '</span>' );
 			}
 
 			if( ! $( '.ast-merge-header-navigation-wrap .close' ).length ) {
-				$( ".ast-merge-header-navigation-wrap" ).append( '<span class="ast-nav-close close"></span>' );
+				$( ".ast-merge-header-navigation-wrap" ).append( '<span class="ast-nav-close close">' + astraAddon.svgIconClose + '</span>' );
 			}
-			
+
 			if( ! $( 'div.ast-masthead-custom-menu-items .close' ).length ) {
-				$( "div.ast-masthead-custom-menu-items" ).append( '<span class="ast-nav-close close"></span>' );
+				$( "div.ast-masthead-custom-menu-items" ).append( '<span class="ast-nav-close close">' + astraAddon.svgIconClose + '</span>' );
 			}
 
 			if( astraAddon.sticky_active ) {
@@ -165,7 +165,7 @@
 			e.preventDefault();
 
 			if( ! $( '.ast-above-header-section .close' ).length ) {
-				$( ".ast-above-header-navigation" ).prepend( '<span class="ast-nav-close close"></span>' );
+				$( ".ast-above-header-navigation" ).prepend( '<span class="ast-nav-close close">' + astraAddon.svgIconClose + '</span>' );
 			}
 
 			if( astraAddon.sticky_active ) {
@@ -176,7 +176,7 @@
 		},
 
 		_close_above_offcanvas: function(e) {
-			if ( e.target === this ) {
+			if ( e.target.parentNode.parentNode === this ) {
 				$('html').removeClass( 'ast-flyout-above-menu-overlay' );
 				$( '.ast-above-header .menu-toggle' ).removeClass( 'toggled' );
 				$( '.ast-above-header' ).removeClass( 'toggle-on' );
@@ -192,7 +192,7 @@
 			e.preventDefault();
 
 			if( ! $( '.ast-below-header-actual-nav .close' ).length ) {
-				$( ".ast-below-header-actual-nav" ).prepend( '<span class="ast-nav-close close"></span>' );
+				$( ".ast-below-header-actual-nav" ).prepend( '<span class="ast-nav-close close">' + astraAddon.svgIconClose + '</span>' );
 			}
 
 			if( astraAddon.sticky_active ) {
@@ -203,8 +203,8 @@
 		},
 
 		_close_below_offcanvas: function(e) {
-			if ( e.target === this ) {
-				
+			if ( e.target.parentNode.parentNode === this ) {
+
 				$('html').removeClass( 'ast-flyout-below-menu-overlay' );
 				$( '.ast-below-header .menu-toggle' ).removeClass( 'toggled' );
 				$( '.ast-below-header' ).removeClass( 'toggle-on' );
@@ -217,19 +217,19 @@
 		},
 
 		_close_offcanvas: function(e) {
-			if (e.target === this || e.type === 'astraMenuHashLinkClicked') {
-				
+			if (e.target.parentNode.parentNode === this || e.type === 'astraMenuHashLinkClicked') {
+
 				e.data = e.data || {};
 				e.data.class = e.data.class || "ast-flyout-menu-overlay ast-offcanvas-active";
-			
+
 				$("html").css({
 				  overflow: "",
 				  "margin-left": "",
 				  "margin-right": ""
 				});
-			
+
 				$("html").removeClass(e.data.class);
-			
+
 				setTimeout(function() {
 				  $("html").removeClass("ast-offcanvas-active");
 				}, 300);
@@ -240,7 +240,7 @@
 		{
 			$('html').css({
 				'overflow': '',
-				'margin-right': '' 
+				'margin-right': ''
 			});
 
 			$('html').removeClass( 'ast-fullscreen-above-menu-overlay' );
@@ -256,7 +256,7 @@
 		{
 			$('html').css({
 				'overflow': '',
-				'margin-right': '' 
+				'margin-right': ''
 			});
 
 
@@ -271,11 +271,11 @@
 		{
 			$('html').css({
 				'overflow': '',
-				'margin-right': '' 
+				'margin-right': ''
 			});
 
 			$('html').removeClass( 'ast-fullscreen-menu-overlay' );
-			
+
 			setTimeout(function(){
 				$('html').removeClass( 'ast-fullscreen-active' );
 			}, 500);

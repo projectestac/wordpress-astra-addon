@@ -39,103 +39,98 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Single_Colors_Configs' ) ) {
 			$_configs = array(
 
 				/**
-				 * Option: WooCommerce single page Colors Divider
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[woo-single-page-divider]',
-					'type'     => 'control',
-					'control'  => 'ast-heading',
-					'section'  => 'section-woo-shop-single',
-					'title'    => __( 'colors', 'astra-addon' ),
-					'settings' => array(),
-					'priority' => 80,
-					'context'  => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[shop-product-structure]',
-							'operator' => 'contains',
-							'value'    => 'title',
-						),
-					),
-
-				),
-
-				/**
-				 * Group: WooCommerce single page Colors Group
-				 */
-				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[woo-single-page-color-group]',
-					'default'   => astra_get_option( 'woo-single-page-color-group' ),
-					'type'      => 'control',
-					'control'   => 'ast-settings-group',
-					'title'     => __( 'Colors', 'astra-addon' ),
-					'section'   => 'section-woo-shop-single',
-					'transport' => 'postMessage',
-					'context'   => array(
-						Astra_Addon_Builder_Helper::$general_tab_config,
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[shop-product-structure]',
-							'operator' => 'contains',
-							'value'    => 'title',
-						),
-					),
-					'priority'  => 80,
-				),
-
-				/**
 				 * Single Product Title Color
 				 */
 				array(
-					'name'      => 'single-product-title-color',
-					'default'   => '',
-					'type'      => 'sub-control',
-					'parent'    => ASTRA_THEME_SETTINGS . '[woo-single-page-color-group]',
-					'section'   => 'section-woo-shop-single',
-					'control'   => 'ast-color',
-					'transport' => 'postMessage',
-					'title'     => __( 'Title Color', 'astra-addon' ),
+					'name'              => ASTRA_THEME_SETTINGS . '[single-product-title-color]',
+					'default'           => astra_get_option( 'single-product-title-color' ),
+					'type'              => 'control',
+					'section'           => 'section-woo-shop-single',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'title'             => __( 'Title Color', 'astra-addon' ),
+					'context'           => array(
+						astra_addon_builder_helper()->general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[shop-product-structure]',
+							'operator' => 'contains',
+							'value'    => 'title',
+						),
+					),
+					'divider'           => array( 'ast_class' => 'ast-top-divider' ),
+					'priority'          => 80,
+					'divider'           => array( 'ast_class' => 'ast-top-divider' ),
 				),
 
 				/**
 				 * Single Product Price Color
 				 */
 				array(
-					'name'      => 'single-product-price-color',
-					'default'   => '',
-					'control'   => 'ast-color',
-					'transport' => 'postMessage',
-					'type'      => 'sub-control',
-					'parent'    => ASTRA_THEME_SETTINGS . '[woo-single-page-color-group]',
-					'section'   => 'section-woo-shop-single',
-					'title'     => __( 'Price Color', 'astra-addon' ),
+					'name'              => ASTRA_THEME_SETTINGS . '[single-product-price-color]',
+					'default'           => astra_get_option( 'single-product-price-color' ),
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'type'              => 'control',
+					'section'           => 'section-woo-shop-single',
+					'title'             => __( 'Price Color', 'astra-addon' ),
+					'context'           => array(
+						astra_addon_builder_helper()->general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[shop-product-structure]',
+							'operator' => 'contains',
+							'value'    => 'title',
+						),
+					),
+					'priority'          => 80,
 				),
 
 				/**
 				 * Single Product Content Color
 				 */
 				array(
-					'name'      => 'single-product-content-color',
-					'default'   => '',
-					'type'      => 'sub-control',
-					'parent'    => ASTRA_THEME_SETTINGS . '[woo-single-page-color-group]',
-					'section'   => 'section-woo-shop-single',
-					'control'   => 'ast-color',
-					'transport' => 'postMessage',
-					'title'     => __( 'Content Color', 'astra-addon' ),
+					'name'              => ASTRA_THEME_SETTINGS . '[single-product-content-color]',
+					'default'           => astra_get_option( 'single-product-content-color' ),
+					'type'              => 'control',
+					'section'           => 'section-woo-shop-single',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'title'             => __( 'Content Color', 'astra-addon' ),
+					'context'           => array(
+						astra_addon_builder_helper()->general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[shop-product-structure]',
+							'operator' => 'contains',
+							'value'    => 'title',
+						),
+					),
+					'priority'          => 80,
 				),
 
 				/**
 				 * Single Product Breadcrumb Color
 				 */
 				array(
-					'name'      => 'single-product-breadcrumb-color',
-					'default'   => '',
-					'type'      => 'sub-control',
-					'parent'    => ASTRA_THEME_SETTINGS . '[woo-single-page-color-group]',
-					'section'   => 'section-woo-shop-single',
-					'control'   => 'ast-color',
-					'transport' => 'postMessage',
-					'title'     => __( 'Breadcrumb Color', 'astra-addon' ),
+					'name'              => ASTRA_THEME_SETTINGS . '[single-product-breadcrumb-color]',
+					'default'           => astra_get_option( 'single-product-breadcrumb-color' ),
+					'type'              => 'control',
+					'section'           => 'section-woo-shop-single',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'title'             => __( 'Breadcrumb Color', 'astra-addon' ),
+					'context'           => array(
+						astra_addon_builder_helper()->general_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[shop-product-structure]',
+							'operator' => 'contains',
+							'value'    => 'title',
+						),
+					),
+					'priority'          => 80,
+					'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 			);
 

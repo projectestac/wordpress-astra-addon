@@ -14,82 +14,35 @@
 final class Astra_Addon_Builder_Helper {
 
 	/**
-	 * Config context general tab config.
-	 *
-	 * @var string[][]
-	 */
-	public static $general_tab_config = array(
-		'setting' => 'ast_selected_tab',
-		'value'   => 'general',
-	);
-
-	/**
-	 * Config context general tab.
+	 * Member Variable
 	 *
 	 * @since 3.0.0
-	 * @var string[][]
+	 * @var instance
 	 */
-	public static $general_tab = array(
-		array(
-			'setting' => 'ast_selected_tab',
-			'value'   => 'general',
-		),
-	);
+	private static $instance = null;
+
 
 	/**
-	 * Config context design tab.
-	 *
-	 * @var string[][]
-	 */
-	public static $design_tab_config = array(
-		'setting' => 'ast_selected_tab',
-		'value'   => 'design',
-	);
-
-	/**
-	 * Config context design tab.
+	 * Cached Helper Variable.
 	 *
 	 * @since 3.0.0
-	 * @var string[][]
+	 * @var instance
 	 */
-	public static $design_tab = array(
-		array(
-			'setting' => 'ast_selected_tab',
-			'value'   => 'design',
-		),
-	);
+	private static $cached_properties = null;
 
 	/**
-	 * No. Of. Footer HTML.
+	 *  No. Of. Component count array.
 	 *
-	 * @since 3.0.0
 	 * @var int
 	 */
-	public static $num_of_footer_html;
+	public static $component_count_array = array();
 
 	/**
-	 * No. Of. Header Menu.
+	 *  No. Of. Component Limit.
 	 *
-	 * @since 3.0.0
 	 * @var int
 	 */
-	public static $num_of_header_menu;
-
-	/**
-	 * No. Of. Header Buttons.
-	 *
-	 * @since 3.0.0
-	 * @var int
-	 */
-	public static $num_of_header_button;
-
-	/**
-	 * No. Of. Footer Buttons.
-	 *
-	 * @since 3.0.0
-	 * @var int
-	 */
-	public static $num_of_footer_button;
+	public static $component_limit = 10;
 
 	/**
 	 * No. Of. Header Dividers.
@@ -106,70 +59,6 @@ final class Astra_Addon_Builder_Helper {
 	 * @var int
 	 */
 	public static $num_of_footer_divider;
-
-	/**
-	 * No. Of. Header Widgets.
-	 *
-	 * @since 3.0.0
-	 * @var int
-	 */
-	public static $num_of_header_widgets;
-
-	/**
-	 * No. Of. Footer Widgets.
-	 *
-	 * @since 3.0.0
-	 * @var int
-	 */
-	public static $num_of_footer_widgets;
-
-	/**
-	 * No. Of. Header HTML.
-	 *
-	 * @since 3.0.0
-	 * @var int
-	 */
-	public static $num_of_header_html;
-
-	/**
-	 * No. Of. Header Social Icons.
-	 *
-	 * @since 3.0.0
-	 * @var int
-	 */
-	public static $num_of_header_social_icons;
-
-	/**
-	 * No. Of. Footer Social Icons.
-	 *
-	 * @since 3.0.0
-	 * @var int
-	 */
-	public static $num_of_footer_social_icons;
-
-	/**
-	 * Check if migrated to new HFB.
-	 *
-	 * @since 3.0.0
-	 * @var int
-	 */
-	public static $is_header_footer_builder_active;
-
-	/**
-	 * Member Variable
-	 *
-	 * @since 3.0.0
-	 * @var instance
-	 */
-	public static $loaded_grid = null;
-
-	/**
-	 * Member Variable
-	 *
-	 * @since 3.0.0
-	 * @var instance
-	 */
-	private static $instance = null;
 
 	/**
 	 * Initiator
@@ -192,155 +81,99 @@ final class Astra_Addon_Builder_Helper {
 	 */
 	public function __construct() {
 
-		$component_count_by_key = self::get_component_count_by_key();
+		add_filter( 'astra_builder_elements_count', __CLASS__ . '::elements_count', 10 );
 
-		self::$num_of_header_button = $component_count_by_key['header-button'];
-		self::$num_of_footer_button = $component_count_by_key['footer-button'];
-
-		self::$num_of_header_html = $component_count_by_key['header-html'];
-		self::$num_of_footer_html = $component_count_by_key['footer-html'];
+		$component_count_by_key = self::elements_count();
 
 		self::$num_of_header_divider = $component_count_by_key['header-divider'];
 		self::$num_of_footer_divider = $component_count_by_key['footer-divider'];
-
-		self::$num_of_header_menu = $component_count_by_key['header-menu'];
-
-		self::$num_of_header_widgets = $component_count_by_key['header-widget'];
-		self::$num_of_footer_widgets = $component_count_by_key['footer-widget'];
-
-		self::$num_of_header_social_icons = $component_count_by_key['header-social-icons'];
-		self::$num_of_footer_social_icons = $component_count_by_key['footer-social-icons'];
-
-		self::$is_header_footer_builder_active = self::is_header_footer_builder_active();
-
-		require_once ASTRA_EXT_DIR . 'classes/class-astra-addon-builder-loader.php';
 	}
 
 	/**
-	 * Get count of each component by its Key.
+	 * Update the count of elements in HF Builder.
 	 *
-	 * @since 3.0.0
-	 *
-	 * @return int Number of component.
+	 * @param array $elements array of elements having key as slug and value as count.
+	 * @return array $elements
 	 */
-	public static function get_component_count_by_key() {
+	public static function elements_count( $elements = array() ) {
 
-		$component_keys_count = array(
-			'header-button'       => 2,
-			'footer-button'       => 2,
-			'header-html'         => 2,
-			'footer-html'         => 2,
-			'header-menu'         => 2,
-			'header-widget'       => 4,
-			'footer-widget'       => 4,
-			'header-social-icons' => 1,
-			'footer-social-icons' => 1,
-			'header-divider'      => 3,
-			'footer-divider'      => 3,
-		);
+		$db_elements = get_option( 'astra-settings' );
+		$db_elements = isset( $db_elements['cloned-component-track'] ) ? $db_elements['cloned-component-track'] : array();
 
-		$component_keys_count = array_merge(
-			$component_keys_count,
-			apply_filters(
-				'astra_builder_elements_count',
-				$component_keys_count
-			)
-		);
-
-		// Buttons.
-		$component_keys_count['header-button'] = ( 10 >= $component_keys_count['header-button'] ) ? $component_keys_count['header-button'] : 10;
-		$component_keys_count['footer-button'] = ( 10 >= $component_keys_count['footer-button'] ) ? $component_keys_count['footer-button'] : 10;
-
-		// HTML.
-		$component_keys_count['header-html'] = ( 10 >= $component_keys_count['header-html'] ) ? $component_keys_count['header-html'] : 10;
-		$component_keys_count['footer-html'] = ( 10 >= $component_keys_count['footer-html'] ) ? $component_keys_count['footer-html'] : 10;
-
-		// Header Menu.
-		$component_keys_count['header-menu'] = ( 5 >= $component_keys_count['header-menu'] ) ? $component_keys_count['header-menu'] : 5;
-
-		// Widgets.
-		$component_keys_count['header-widget'] = ( 10 >= $component_keys_count['header-widget'] ) ? $component_keys_count['header-widget'] : 10;
-		$component_keys_count['footer-widget'] = ( 10 >= $component_keys_count['footer-widget'] ) ? $component_keys_count['footer-widget'] : 10;
-
-		// Social Icons.
-		$component_keys_count['header-social-icons'] = ( 5 >= $component_keys_count['header-social-icons'] ) ? $component_keys_count['header-social-icons'] : 5;
-		$component_keys_count['footer-social-icons'] = ( 5 >= $component_keys_count['footer-social-icons'] ) ? $component_keys_count['footer-social-icons'] : 5;
-
-		// Divider.
-		$component_keys_count['header-divider'] = ( 10 >= $component_keys_count['header-divider'] ) ? $component_keys_count['header-divider'] : 10;
-		$component_keys_count['footer-divider'] = ( 10 >= $component_keys_count['footer-divider'] ) ? $component_keys_count['footer-divider'] : 10;
-
-		return $component_keys_count;
-	}
-
-	/**
-	 * For existing users, do not load the wide/full width image CSS by default.
-	 *
-	 * @since 3.0.0
-	 * @return boolean true if Header Footer Builder is enabled, false if not.
-	 */
-	public static function is_header_footer_builder_active() {
-		$astra_settings                             = get_option( ASTRA_THEME_SETTINGS );
-		$astra_settings['is-header-footer-builder'] = isset( $astra_settings['is-header-footer-builder'] ) ? $astra_settings['is-header-footer-builder'] : true;
-		return apply_filters( 'astra_is_header_footer_builder_active', $astra_settings['is-header-footer-builder'] );
-	}
-
-	/**
-	 * Check if component placed on the builder.
-	 *
-	 * @since 3.0.0
-	 * @param integer $component_id component id.
-	 * @param string  $builder_type builder type.
-	 * @return bool
-	 */
-	public static function is_component_loaded( $component_id, $builder_type = 'header' ) {
-
-		$loaded_components = array();
-
-		if ( is_null( self::$loaded_grid ) ) {
-
-			$grids[] = astra_get_option( 'header-desktop-items', array() );
-			$grids[] = astra_get_option( 'header-mobile-items', array() );
-			$grids[] = astra_get_option( 'footer-desktop-items', array() );
-
-			if ( ! empty( $grids ) ) {
-
-				foreach ( $grids as $row_gird => $row_grids ) {
-
-					if ( ! empty( $row_grids ) ) {
-
-						foreach ( $row_grids as $row => $grid ) {
-
-							if ( ! in_array( $row, array( 'below', 'above', 'primary', 'popup' ) ) ) {
-								continue;
-							}
-
-							if ( ! is_array( $grid ) ) {
-								continue;
-							}
-
-							$result = array_values( $grid );
-							if ( is_array( $result ) ) {
-								$loaded_component    = call_user_func_array( 'array_merge', $result );
-								$loaded_components[] = is_array( $loaded_component ) ? $loaded_component : array();
-							}
-						}
-					}
-				}
-			}
-
-			if ( ! empty( $loaded_components ) ) {
-				$loaded_components = array_values( $loaded_components );
-				$loaded_components = call_user_func_array( 'array_merge', $loaded_components );
-			}
-
-			self::$loaded_grid = $loaded_components;
+		if ( ! empty( $db_elements ) ) {
+			return $db_elements;
 		}
 
-		$loaded_components = self::$loaded_grid;
+		$elements['header-button']       = 2;
+		$elements['footer-button']       = 2;
+		$elements['header-html']         = 3;
+		$elements['footer-html']         = 2;
+		$elements['header-menu']         = 3;
+		$elements['header-widget']       = 4;
+		$elements['footer-widget']       = 6;
+		$elements['header-social-icons'] = 1;
+		$elements['footer-social-icons'] = 1;
+		$elements['header-divider']      = 3;
+		$elements['footer-divider']      = 3;
+		$elements['removed-items']       = array();
 
-		return in_array( $component_id, $loaded_components, true ) || is_customize_preview();
+		return $elements;
 	}
+
+	/**
+	 * Callback of external properties.
+	 *
+	 * @param string $property_name property name.
+	 * @return false
+	 */
+	public function __get( $property_name ) {
+
+		if ( isset( self::$cached_properties[ $property_name ] ) ) {
+			return self::$cached_properties[ $property_name ];
+		}
+
+		if ( property_exists( 'Astra_Addon_Builder_Helper', $property_name ) ) {
+			// Directly override theme helper properties.
+			$return_value = self::${$property_name};
+		} else {
+			$return_value = property_exists( 'Astra_Builder_Helper', $property_name ) ? Astra_Builder_Helper::${$property_name} : false;
+		}
+		self::$cached_properties[ $property_name ] = $return_value;
+
+		return $return_value;
+	}
+
+	/**
+	 * Callback exception for static methods.
+	 *
+	 * @param string $function_name function name.
+	 * @param array  $function_agrs function arguments.
+	 * @return false|mixed
+	 */
+	public static function __callStatic( $function_name, $function_agrs ) {
+
+		$key = md5( $function_name ) . md5( maybe_serialize( $function_agrs ) );
+		if ( isset( self::$cached_properties[ $key ] ) ) {
+			return self::$cached_properties[ $key ];
+		}
+
+		if ( method_exists( 'Astra_Addon_Builder_Helper', $function_name ) ) {
+			// Check if self method exists.
+			$class_name = 'Astra_Addon_Builder_Helper';
+		} elseif ( method_exists( 'Astra_Builder_Helper', $function_name ) ) {
+			// if self method doesnot exists then check for theme helper.
+			$class_name = 'Astra_Builder_Helper';
+		} else {
+			// If not found anything then return false directly.
+			return false;
+		}
+
+		$return_value                    = call_user_func_array( array( $class_name, $function_name ), $function_agrs );
+		self::$cached_properties[ $key ] = $return_value;
+		return $return_value;
+
+	}
+
 }
 
 /**
@@ -348,3 +181,12 @@ final class Astra_Addon_Builder_Helper {
  *  Kicking this off by calling 'get_instance()' method
  */
 Astra_Addon_Builder_Helper::get_instance();
+
+/**
+ * Get instance to call properties and methods.
+ *
+ * @return Astra_Addon_Builder_Helper|instance|null
+ */
+function astra_addon_builder_helper() {
+	return Astra_Addon_Builder_Helper::get_instance();
+}

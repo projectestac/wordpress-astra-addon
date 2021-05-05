@@ -82,7 +82,7 @@
   word-wrap: break-word;
 }
 
-.ast-above-header-menu .sub-menu .menu-item.menu-item-has-children > .menu-link::after {
+.ast-above-header-menu .sub-menu .menu-item.menu-item-has-children > .menu-link .icon-arrow svg {
   position: absolute;
   right: 1em;
   top: 50%;
@@ -158,16 +158,6 @@
   right: auto;
 }
 
-.ast-header-break-point .ast-above-header-navigation .sub-menu .menu-item .menu-link:before {
-  content: "\e900";
-  font-family: 'Astra';
-  font-size: .65em;
-  text-decoration: inherit;
-  display: inline-block;
-  transform: translate(0, -2px) rotateZ(270deg);
-  margin-right: 5px;
-}
-
 .ast-header-break-point .ast-above-header-navigation .sub-menu .menu-item .menu-item .menu-link {
   padding-left: 40px;
 }
@@ -200,13 +190,6 @@
   font-size: inherit;
   font-weight: normal;
   line-height: inherit;
-}
-
-.ast-header-break-point .ast-above-header-navigation .menu-item-has-children > .ast-menu-toggle::before {
-  content: "\e900";
-  font-family: 'Astra';
-  text-decoration: inherit;
-  display: inline-block;
 }
 
 .ast-header-break-point .ast-above-header-navigation .ast-submenu-expanded > .ast-menu-toggle::before {
@@ -333,20 +316,6 @@
   position: relative;
   transition: all 0.2s linear;
   /* Woocommerce Above Header cart*/
-}
-
-.ast-above-header .menu-item-has-children > .menu-link:after {
-  content: "\e900";
-  display: inline-block;
-  font-family: 'Astra';
-  font-size: 9px;
-  font-size: .6rem;
-  font-weight: bold;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  margin-left: 10px;
-  line-height: normal;
 }
 
 .ast-above-header .user-select {

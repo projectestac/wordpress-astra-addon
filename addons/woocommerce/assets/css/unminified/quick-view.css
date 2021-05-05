@@ -342,12 +342,6 @@ body #ast-quick-view-modal div.product .flex-viewport {
   box-shadow: 0 0 4px #4c4c4c;
 }
 
-#ast-quick-view-close:before {
-  content: "\e5cd";
-  font-family: 'Astra';
-  text-decoration: inherit;
-}
-
 #ast-quick-view-close:hover {
   opacity: 1;
   transition: all 0.2s ease;

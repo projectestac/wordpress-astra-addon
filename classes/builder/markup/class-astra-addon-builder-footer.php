@@ -48,10 +48,13 @@ if ( ! class_exists( 'Astra_Addon_Builder_Footer' ) ) {
 		 */
 		public function __construct() {
 
-			for ( $index = 1; $index <= Astra_Addon_Builder_Helper::$num_of_header_divider; $index++ ) {
+			$component_limit = astra_addon_builder_helper()->component_limit;
+			for ( $index = 1; $index <= $component_limit; $index++ ) {
 				add_action( 'astra_footer_divider_' . $index, array( $this, 'footer_divider_' . $index ) );
 				self::$methods[] = 'footer_divider_' . $index;
 			}
+
+			add_action( 'astra_footer_language_switcher', array( $this, 'footer_language_switcher' ) );
 		}
 
 		/**
@@ -73,6 +76,13 @@ if ( ! class_exists( 'Astra_Addon_Builder_Footer' ) ) {
 					}
 				}
 			}
+		}
+
+		/**
+		 * Render language switcher.
+		 */
+		public function footer_language_switcher() {
+			Astra_Addon_Builder_UI_Controller::render_language_switcher_markup( 'footer-language-switcher', 'footer' );
 		}
 	}
 

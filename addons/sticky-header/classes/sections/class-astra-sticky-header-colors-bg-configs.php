@@ -36,8 +36,6 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 		 */
 		public function register_configuration( $configurations, $wp_customize ) {
 
-			$defaults = Astra_Theme_Options::defaults();
-
 			$_config = array(
 
 				/**
@@ -45,15 +43,15 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 				*/
 				array(
 					'name'       => 'sticky-header-menu-color-responsive',
-					'default'    => $defaults['sticky-header-menu-color-responsive'],
+					'default'    => astra_get_option( 'sticky-header-menu-color-responsive' ),
 					'type'       => 'sub-control',
 					'tab'        => __( 'Normal', 'astra-addon' ),
 					'priority'   => 6,
-					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-menus-colors]',
+					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-menus-link-colors]',
 					'section'    => 'section-sticky-header',
 					'control'    => 'ast-responsive-color',
 					'transport'  => 'postMessage',
-					'title'      => __( 'Link / Text Color', 'astra-addon' ),
+					'title'      => __( 'Normal', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
 				),
@@ -62,7 +60,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 				*/
 				array(
 					'name'       => 'sticky-header-menu-bg-color-responsive',
-					'default'    => $defaults['sticky-header-menu-bg-color-responsive'],
+					'default'    => astra_get_option( 'sticky-header-menu-bg-color-responsive' ),
 					'type'       => 'sub-control',
 					'tab'        => __( 'Normal', 'astra-addon' ),
 					'priority'   => 7,
@@ -70,23 +68,9 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 					'section'    => 'section-sticky-header',
 					'control'    => 'ast-responsive-color',
 					'transport'  => 'postMessage',
-					'title'      => __( 'Background Color', 'astra-addon' ),
+					'title'      => __( 'Normal', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
-				),
-
-				// Option: Divider.
-				array(
-					'name'     => 'divider-sticky-primary-h-menu-colors',
-					'control'  => 'ast-divider',
-					'default'  => '',
-					'type'     => 'sub-control',
-					'parent'   => ASTRA_THEME_SETTINGS . '[sticky-header-primary-menus-colors]',
-					'section'  => 'section-sticky-header',
-					'title'    => __( 'Active / Hover', 'astra-addon' ),
-					'tab'      => __( 'Hover', 'astra-addon' ),
-					'priority' => 5,
-					'settings' => array(),
 				),
 
 				/**
@@ -94,15 +78,15 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 				*/
 				array(
 					'name'       => 'sticky-header-menu-h-color-responsive',
-					'default'    => $defaults['sticky-header-menu-h-color-responsive'],
+					'default'    => astra_get_option( 'sticky-header-menu-h-color-responsive' ),
 					'type'       => 'sub-control',
 					'tab'        => __( 'Hover', 'astra-addon' ),
 					'priority'   => 6,
-					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-menus-colors]',
+					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-menus-link-colors]',
 					'section'    => 'section-sticky-header',
 					'control'    => 'ast-responsive-color',
 					'transport'  => 'postMessage',
-					'title'      => __( 'Link Color', 'astra-addon' ),
+					'title'      => __( 'Active/Hover', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
 					'connect'    => ASTRA_THEME_SETTINGS . '[sticky-header-menu-h-color-responsive]',
@@ -112,7 +96,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 				*/
 				array(
 					'name'       => 'sticky-header-menu-h-a-bg-color-responsive',
-					'default'    => $defaults['sticky-header-menu-h-a-bg-color-responsive'],
+					'default'    => astra_get_option( 'sticky-header-menu-h-a-bg-color-responsive' ),
 					'type'       => 'sub-control',
 					'tab'        => __( 'Hover', 'astra-addon' ),
 					'priority'   => 7,
@@ -120,7 +104,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 					'section'    => 'section-sticky-header',
 					'control'    => 'ast-responsive-color',
 					'transport'  => 'postMessage',
-					'title'      => __( 'Link Background Color', 'astra-addon' ),
+					'title'      => __( 'Active/Hover', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
 				),
@@ -129,15 +113,14 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 				*/
 				array(
 					'name'       => 'sticky-header-submenu-color-responsive',
-					'default'    => $defaults['sticky-header-submenu-color-responsive'],
+					'default'    => astra_get_option( 'sticky-header-submenu-color-responsive' ),
 					'type'       => 'sub-control',
-					'tab'        => __( 'Normal', 'astra-addon' ),
 					'priority'   => 9,
-					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-submenu-colors]',
+					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-submenu-link-colors]',
 					'section'    => 'section-sticky-header',
 					'control'    => 'ast-responsive-color',
 					'transport'  => 'postMessage',
-					'title'      => __( 'Link / Text Color', 'astra-addon' ),
+					'title'      => __( 'Normal', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
 					'connect'    => ASTRA_THEME_SETTINGS . '[sticky-header-submenu-color-responsive]',
@@ -147,15 +130,14 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 				*/
 				array(
 					'name'       => 'sticky-header-submenu-bg-color-responsive',
-					'default'    => $defaults['sticky-header-submenu-bg-color-responsive'],
+					'default'    => astra_get_option( 'sticky-header-submenu-bg-color-responsive' ),
 					'type'       => 'sub-control',
-					'tab'        => __( 'Normal', 'astra-addon' ),
 					'priority'   => 10,
-					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-submenu-colors]',
+					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-submenu-background-colors]',
 					'section'    => 'section-sticky-header',
 					'control'    => 'ast-responsive-color',
 					'transport'  => 'postMessage',
-					'title'      => __( 'Background Color', 'astra-addon' ),
+					'title'      => __( 'Normal', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
 				),
@@ -179,15 +161,14 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 				*/
 				array(
 					'name'       => 'sticky-header-submenu-h-color-responsive',
-					'default'    => $defaults['sticky-header-submenu-h-color-responsive'],
+					'default'    => astra_get_option( 'sticky-header-submenu-h-color-responsive' ),
 					'type'       => 'sub-control',
-					'tab'        => __( 'Hover', 'astra-addon' ),
 					'priority'   => 9,
-					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-submenu-colors]',
+					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-submenu-link-colors]',
 					'section'    => 'section-sticky-header',
 					'control'    => 'ast-responsive-color',
 					'transport'  => 'postMessage',
-					'title'      => __( 'Link Color', 'astra-addon' ),
+					'title'      => __( 'Hover', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
 					'connect'    => ASTRA_THEME_SETTINGS . '[sticky-header-submenu-h-color-responsive]',
@@ -197,15 +178,14 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 				*/
 				array(
 					'name'       => 'sticky-header-submenu-h-a-bg-color-responsive',
-					'default'    => $defaults['sticky-header-submenu-h-a-bg-color-responsive'],
+					'default'    => astra_get_option( 'sticky-header-submenu-h-a-bg-color-responsive' ),
 					'type'       => 'sub-control',
-					'tab'        => __( 'Hover', 'astra-addon' ),
 					'priority'   => 10,
-					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-submenu-colors]',
+					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-submenu-background-colors]',
 					'section'    => 'section-sticky-header',
 					'control'    => 'ast-responsive-color',
 					'transport'  => 'postMessage',
-					'title'      => __( 'Link Background Color', 'astra-addon' ),
+					'title'      => __( 'Hover', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
 					'connect'    => ASTRA_THEME_SETTINGS . '[sticky-header-submenu-h-a-bg-color-responsive]',
@@ -216,7 +196,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 				 */
 				array(
 					'name'       => 'sticky-header-content-section-text-color-responsive',
-					'default'    => $defaults['sticky-header-content-section-text-color-responsive'],
+					'default'    => astra_get_option( 'sticky-header-content-section-text-color-responsive' ),
 					'type'       => 'sub-control',
 					'tab'        => __( 'Normal', 'astra-addon' ),
 					'priority'   => 20,
@@ -234,15 +214,14 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 				 */
 				array(
 					'name'       => 'sticky-header-content-section-link-color-responsive',
-					'default'    => $defaults['sticky-header-content-section-link-color-responsive'],
+					'default'    => astra_get_option( 'sticky-header-content-section-link-color-responsive' ),
 					'type'       => 'sub-control',
-					'tab'        => __( 'Normal', 'astra-addon' ),
 					'priority'   => 21,
 					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-outside-item-colors]',
 					'section'    => 'section-sticky-header',
 					'transport'  => 'postMessage',
 					'control'    => 'ast-responsive-color',
-					'title'      => __( 'Link Color', 'astra-addon' ),
+					'title'      => __( 'Link', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
 					'connect'    => ASTRA_THEME_SETTINGS . '[sticky-header-content-section-link-color-responsive]',
@@ -253,15 +232,14 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 				 */
 				array(
 					'name'       => 'sticky-header-content-section-link-h-color-responsive',
-					'default'    => $defaults['sticky-header-content-section-link-h-color-responsive'],
+					'default'    => astra_get_option( 'sticky-header-content-section-link-h-color-responsive' ),
 					'type'       => 'sub-control',
-					'tab'        => __( 'Hover', 'astra-addon' ),
 					'priority'   => 22,
 					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-outside-item-colors]',
 					'section'    => 'section-sticky-header',
 					'transport'  => 'postMessage',
 					'control'    => 'ast-responsive-color',
-					'title'      => __( 'Link Color', 'astra-addon' ),
+					'title'      => __( 'Link Hover', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
 					'connect'    => ASTRA_THEME_SETTINGS . '[sticky-header-content-section-link-h-color-responsive]',

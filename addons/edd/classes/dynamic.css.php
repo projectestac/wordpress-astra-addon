@@ -147,6 +147,26 @@ function astra_edd_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 	/* Parse CSS from array() */
 	$css_output = astra_parse_css( $css_output );
 
+	if ( false === Astra_Icons::is_svg_icons() ) {
+		$edd_shopping_cart_icon = array(
+			'.ast-edd-site-header-cart span.astra-icon:before' => array(
+				'font-family' => 'Astra',
+			),
+			'.ast-icon-shopping-cart:before'   => array(
+				'content' => '"\f07a"',
+			),
+			'.ast-icon-shopping-bag:before'    => array(
+				'content' => '"\f290"',
+			),
+			'.ast-icon-shopping-basket:before' => array(
+				'content' => '"\f291"',
+			),
+		);
+
+		/* Parse CSS from array() */
+		$css_output .= astra_parse_css( $edd_shopping_cart_icon );
+	}
+
 	/**
 	 * Header Cart color
 	 */
@@ -154,7 +174,7 @@ function astra_edd_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 
 		$header_cart_icon = array();
 
-		if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+		if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 			/**
 			 * Header Cart Icon colors

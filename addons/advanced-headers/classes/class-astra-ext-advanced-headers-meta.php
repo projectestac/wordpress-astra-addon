@@ -47,7 +47,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Headers_Meta' ) ) {
 			add_action( 'load-post-new.php', array( $this, 'init_metabox' ) );
 			add_action( 'astra_adv_headers_tabs_page-header_action', array( $this, 'page_header_tab' ), 10, 1 );
 
-			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 				add_action( 'astra_adv_headers_tabs_site-header_action', array( $this, 'hfb_site_header_tab' ), 10, 1 );
 			} else {
 				add_action( 'astra_adv_headers_tabs_site-header_action', array( $this, 'site_header_tab' ), 10, 1 );

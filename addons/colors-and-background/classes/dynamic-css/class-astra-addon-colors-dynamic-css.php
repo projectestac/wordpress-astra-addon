@@ -214,6 +214,7 @@ class Astra_Addon_Colors_Dynamic_CSS {
 			'.ast-small-footer a:hover'                  => array(
 				'color' => esc_attr( $footer_link_h_color ),
 			),
+
 		);
 
 		/* Parse CSS from array() */
@@ -237,15 +238,15 @@ class Astra_Addon_Colors_Dynamic_CSS {
 				'color' => esc_attr( $archive_summary_title_color ),
 			),
 
-			'.ast-separate-container .ast-article-single, .ast-separate-container .comment-respond,.ast-separate-container .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .ast-author-meta, .ast-separate-container .related-posts-title-wrapper, .ast-separate-container.ast-two-container #secondary .widget,.ast-separate-container .comments-count-wrapper, .ast-box-layout.ast-plain-container .site-content,.ast-padded-layout.ast-plain-container .site-content' => astra_get_responsive_background_obj( $content_bg_obj, 'desktop' ),
+			'.ast-separate-container .ast-article-single:not(.ast-related-post), .ast-separate-container .comment-respond,.ast-separate-container .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .ast-author-meta, .ast-separate-container .related-posts-title-wrapper, .ast-separate-container.ast-two-container #secondary .widget,.ast-separate-container .comments-count-wrapper, .ast-box-layout.ast-plain-container .site-content,.ast-padded-layout.ast-plain-container .site-content' => astra_get_responsive_background_obj( $content_bg_obj, 'desktop' ),
 		);
 		// Container Layout Colors.
 		$separate_container_css_tablet = array(
-			'.ast-separate-container .ast-article-single, .ast-separate-container .comment-respond,.ast-separate-container .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .ast-author-meta, .ast-separate-container .related-posts-title-wrapper, .ast-separate-container.ast-two-container #secondary .widget,.ast-separate-container .comments-count-wrapper, .ast-box-layout.ast-plain-container .site-content,.ast-padded-layout.ast-plain-container .site-content' => astra_get_responsive_background_obj( $content_bg_obj, 'tablet' ),
+			'.ast-separate-container .ast-article-single:not(.ast-related-post), .ast-separate-container .comment-respond,.ast-separate-container .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .ast-author-meta, .ast-separate-container .related-posts-title-wrapper, .ast-separate-container.ast-two-container #secondary .widget,.ast-separate-container .comments-count-wrapper, .ast-box-layout.ast-plain-container .site-content,.ast-padded-layout.ast-plain-container .site-content' => astra_get_responsive_background_obj( $content_bg_obj, 'tablet' ),
 		);
 		// Container Layout Colors.
 		$separate_container_css_mobile = array(
-			'.ast-separate-container .ast-article-single, .ast-separate-container .comment-respond,.ast-separate-container .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .ast-author-meta, .ast-separate-container .related-posts-title-wrapper, .ast-separate-container.ast-two-container #secondary .widget,.ast-separate-container .comments-count-wrapper, .ast-box-layout.ast-plain-container .site-content,.ast-padded-layout.ast-plain-container .site-content' => astra_get_responsive_background_obj( $content_bg_obj, 'mobile' ),
+			'.ast-separate-container .ast-article-single:not(.ast-related-post), .ast-separate-container .comment-respond,.ast-separate-container .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .ast-author-meta, .ast-separate-container .related-posts-title-wrapper, .ast-separate-container.ast-two-container #secondary .widget,.ast-separate-container .comments-count-wrapper, .ast-box-layout.ast-plain-container .site-content,.ast-padded-layout.ast-plain-container .site-content' => astra_get_responsive_background_obj( $content_bg_obj, 'mobile' ),
 		);
 		// Blog Pro Layout Colors.
 		if ( 'blog-layout-1' == $blog_layout && 1 != $blog_grid ) {
@@ -297,7 +298,7 @@ class Astra_Addon_Colors_Dynamic_CSS {
 			$css_output        .= astra_parse_css( $sidebar_foreground );
 		}
 
-		if ( ! Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+		if ( false === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 			/**
 			 * Responsive Colors options
@@ -486,6 +487,123 @@ class Astra_Addon_Colors_Dynamic_CSS {
 				$css_output   .= astra_parse_css( $menu_bg_color, '', astra_addon_get_mobile_breakpoint() );
 			}
 		}
+
+		/**
+		 * Search Colors Dynamic CSS.
+		 */
+
+		$search_selector      = '.ast-header-search .ast-search-menu-icon';
+		$search_border_size   = astra_get_option( 'header-search-border-size' );
+		$search_border_radius = astra_get_option( 'header-search-border-radius' );
+
+		$icon_h_color_desktop = astra_get_prop( astra_get_option( 'header-search-icon-h-color' ), 'desktop' );
+		$icon_h_color_tablet  = astra_get_prop( astra_get_option( 'header-search-icon-h-color' ), 'tablet' );
+		$icon_h_color_mobile  = astra_get_prop( astra_get_option( 'header-search-icon-h-color' ), 'mobile' );
+
+		$text_color_desktop = astra_get_prop( astra_get_option( 'header-search-text-placeholder-color' ), 'desktop' );
+		$text_color_tablet  = astra_get_prop( astra_get_option( 'header-search-text-placeholder-color' ), 'tablet' );
+		$text_color_mobile  = astra_get_prop( astra_get_option( 'header-search-text-placeholder-color' ), 'mobile' );
+
+		$search_height_desktop = astra_get_prop( astra_get_option( 'header-search-height' ), 'desktop' );
+		$search_height_tablet  = astra_get_prop( astra_get_option( 'header-search-height' ), 'tablet' );
+		$search_height_mobile  = astra_get_prop( astra_get_option( 'header-search-height' ), 'mobile' );
+
+		$search_css_output = array(
+			$search_selector . ' form.search-form .search-field' => array(
+				'height' => astra_get_css_value( $search_height_desktop, 'px' ),
+			),
+
+			// Search Box Background.
+			$search_selector . ' .search-field'           => array(
+				'background-color' => esc_attr( astra_get_option( 'header-search-box-background-color' ) ),
+
+				// Search Box Border.
+				'border-radius'    => astra_get_css_value( $search_border_radius, 'px' ),
+			),
+			$search_selector . ' .search-submit'          => array(
+				'background-color' => esc_attr( astra_get_option( 'header-search-box-background-color' ) ),
+
+				// Search Box Border.
+				'border-radius'    => astra_get_css_value( $search_border_radius, 'px' ),
+			),
+			$search_selector . ' .search-form'            => array(
+				'background-color'    => esc_attr( astra_get_option( 'header-search-box-background-color' ) ),
+
+				// Search Box Border.
+				'border-top-width'    => astra_get_css_value( $search_border_size['top'], 'px' ),
+				'border-bottom-width' => astra_get_css_value( $search_border_size['bottom'], 'px' ),
+				'border-left-width'   => astra_get_css_value( $search_border_size['left'], 'px' ),
+				'border-right-width'  => astra_get_css_value( $search_border_size['right'], 'px' ),
+				'border-color'        => esc_attr( astra_get_option( 'header-search-border-color' ) ),
+				'border-radius'       => astra_get_css_value( $search_border_radius, 'px' ),
+			),
+
+			$search_selector . ' .search-form:hover'      => array(
+				'border-color' => esc_attr( astra_get_option( 'header-search-border-h-color' ) ),
+			),
+
+			// Seach Full Screen Overlay Color.
+			'.ast-search-box.full-screen, .ast-search-box.header-cover' => array(
+				'background' => esc_attr( astra_get_option( 'header-search-overlay-color' ) ),
+			),
+
+			// Search Overlay Text Color.
+			'.ast-search-box.header-cover #close, .ast-search-box.full-screen #close, .ast-search-box.full-screen .ast-search-wrapper .large-search-text, .ast-search-box.header-cover .search-submit, .ast-search-box.full-screen .search-submit, .ast-search-box.header-cover .search-field, .ast-search-box.full-screen .search-field, .ast-search-box.header-cover .search-field::-webkit-input-placeholder, .ast-search-box.full-screen .search-field::-webkit-input-placeholder' => array(
+				'color' => esc_attr( astra_get_option( 'header-search-overlay-text-color' ) ),
+			),
+
+			'.ast-search-box.full-screen .ast-search-wrapper fieldset' => array(
+				'border-color' => esc_attr( astra_get_option( 'header-search-overlay-text-color' ) ),
+			),
+
+			'.ast-header-break-point ' . $search_selector . '.slide-search:hover .search-field, .ast-header-break-point ' . $search_selector . '.slide-search:focus .search-field, .ast-header-break-point ' . $search_selector . '.slide-search:hover .search-submit, .ast-header-break-point ' . $search_selector . '.slide-search:focus .search-submit, .ast-header-break-point ' . $search_selector . '.slide-search:hover .search-form, .ast-header-break-point ' . $search_selector . '.slide-search:focus .search-form' => array(
+				'background-color' => esc_attr( astra_get_option( 'header-search-box-background-color' ) ),
+			),
+
+			$search_selector . ':hover .search-field, ' . $search_selector . ':focus .search-field' => array(
+				'background-color' => esc_attr( astra_get_option( 'header-search-box-background-h-color' ) ),
+			),
+			$search_selector . ':hover .search-submit, ' . $search_selector . ':focus .search-submit' => array(
+				'background-color' => esc_attr( astra_get_option( 'header-search-box-background-h-color' ) ),
+			),
+			$search_selector . ':hover .search-form, ' . $search_selector . ':focus .search-form' => array(
+				'background-color' => esc_attr( astra_get_option( 'header-search-box-background-h-color' ) ),
+			),
+			'.ast-header-search .astra-search-icon:hover' => array(
+				'color' => esc_attr( $icon_h_color_desktop ),
+			),
+			$search_selector . ' .search-field, ' . $search_selector . ' .search-field::placeholder' => array(
+				'color' => esc_attr( $text_color_desktop ),
+			),
+		);
+
+		$search_css_output_tablet = array(
+			'.ast-header-search .astra-search-icon:hover' => array(
+				'color' => esc_attr( $icon_h_color_tablet ),
+			),
+			$search_selector . ' .search-field, ' . $search_selector . ' .search-field::placeholder' => array(
+				'color' => esc_attr( $text_color_tablet ),
+			),
+			'.ast-header-break-point ' . $search_selector . ' .search-form .search-field' => array(
+				'height' => esc_attr( $search_height_tablet ) . 'px',
+			),
+		);
+
+		$search_css_output_mobile = array(
+			'.ast-header-search .astra-search-icon:hover' => array(
+				'color' => esc_attr( $icon_h_color_mobile ),
+			),
+			$search_selector . ' .search-field, ' . $search_selector . ' .search-field::placeholder' => array(
+				'color' => esc_attr( $text_color_mobile ),
+			),
+			'.ast-header-break-point ' . $search_selector . ' .search-form .search-field' => array(
+				'height' => esc_attr( $search_height_mobile ) . 'px',
+			),
+		);
+
+		$css_output .= astra_parse_css( $search_css_output );
+		$css_output .= astra_parse_css( $search_css_output_tablet, '', astra_get_tablet_breakpoint() );
+		$css_output .= astra_parse_css( $search_css_output_mobile, '', astra_get_mobile_breakpoint() );
 
 		return $dynamic_css . $css_output;
 	}

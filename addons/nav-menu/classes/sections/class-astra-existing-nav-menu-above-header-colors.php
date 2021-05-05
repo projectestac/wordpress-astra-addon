@@ -67,28 +67,30 @@ if ( ! class_exists( 'Astra_Existing_Nav_Menu_Above_Header_Colors' ) ) {
 
 				// Option: Megamenu Heading Color.
 				array(
-					'type'      => 'sub-control',
-					'control'   => 'ast-color',
-					'transport' => 'postMessage',
-					'name'      => 'above-header-megamenu-heading-color',
-					'parent'    => ASTRA_THEME_SETTINGS . '[above-header-megamenu-colors]',
-					'section'   => 'section-above-header',
-					'default'   => astra_get_option( 'above-header-megamenu-heading-color' ),
-					'title'     => __( 'Color', 'astra-addon' ),
-					'tab'       => __( 'Normal', 'astra-addon' ),
+					'type'              => 'sub-control',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'name'              => 'above-header-megamenu-heading-color',
+					'parent'            => ASTRA_THEME_SETTINGS . '[above-header-megamenu-colors]',
+					'section'           => 'section-above-header',
+					'default'           => astra_get_option( 'above-header-megamenu-heading-color' ),
+					'title'             => __( 'Color', 'astra-addon' ),
+					'tab'               => __( 'Normal', 'astra-addon' ),
 				),
 
 				// Option: Megamenu Heading Hover Color.
 				array(
-					'type'      => 'sub-control',
-					'control'   => 'ast-color',
-					'section'   => 'section-above-header',
-					'transport' => 'postMessage',
-					'name'      => 'above-header-megamenu-heading-h-color',
-					'parent'    => ASTRA_THEME_SETTINGS . '[above-header-megamenu-colors]',
-					'default'   => astra_get_option( 'above-header-megamenu-heading-h-color' ),
-					'title'     => __( 'Color', 'astra-addon' ),
-					'tab'       => __( 'Hover', 'astra-addon' ),
+					'type'              => 'sub-control',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'section'           => 'section-above-header',
+					'transport'         => 'postMessage',
+					'name'              => 'above-header-megamenu-heading-h-color',
+					'parent'            => ASTRA_THEME_SETTINGS . '[above-header-megamenu-colors]',
+					'default'           => astra_get_option( 'above-header-megamenu-heading-h-color' ),
+					'title'             => __( 'Color', 'astra-addon' ),
+					'tab'               => __( 'Hover', 'astra-addon' ),
 				),
 
 			);

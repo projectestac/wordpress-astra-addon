@@ -39,7 +39,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Social_Configs' ) ) {
 			$section       = 'section-hb-social-icons-';
 			$social_config = array();
 
-			for ( $index = 1; $index <= Astra_Addon_Builder_Helper::$num_of_header_social_icons; $index++ ) {
+			$component_limit = astra_addon_builder_helper()->component_limit;
+			for ( $index = 1; $index <= $component_limit; $index++ ) {
 
 				$_section = $section . $index;
 
@@ -57,7 +58,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Social_Configs' ) ) {
 						'settings' => array(),
 						'priority' => 50,
 						'context'  => array(
-							Astra_Addon_Builder_Helper::$design_tab_config,
+							astra_addon_builder_helper()->design_tab_config,
 							array(
 								'setting'  => ASTRA_THEME_SETTINGS . '[header-social-' . $index . '-color-type]',
 								'operator' => '==',
@@ -70,22 +71,43 @@ if ( ! class_exists( 'Astra_Sticky_Header_Social_Configs' ) ) {
 					 * Group: Primary Social Colors Group
 					 */
 					array(
-						'name'      => ASTRA_THEME_SETTINGS . '[sticky-header-social-' . $index . '-color-group]',
-						'default'   => astra_get_option( 'sticky-header-social-' . $index . '-color-group' ),
-						'type'      => 'control',
-						'control'   => 'ast-settings-group',
-						'title'     => __( 'Colors', 'astra-addon' ),
-						'section'   => $_section,
-						'transport' => 'postMessage',
-						'priority'  => 70,
-						'context'   => array(
-							Astra_Addon_Builder_Helper::$design_tab_config,
+						'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-social-' . $index . '-color-group]',
+						'default'    => astra_get_option( 'sticky-header-social-' . $index . '-color-group' ),
+						'type'       => 'control',
+						'control'    => Astra_Theme_Extension::$group_control,
+						'title'      => __( 'Color', 'astra-addon' ),
+						'section'    => $_section,
+						'transport'  => 'postMessage',
+						'priority'   => 70,
+						'context'    => array(
+							astra_addon_builder_helper()->design_tab_config,
 							array(
 								'setting'  => ASTRA_THEME_SETTINGS . '[header-social-' . $index . '-color-type]',
 								'operator' => '==',
 								'value'    => 'custom',
 							),
 						),
+						'responsive' => true,
+					),
+					array(
+						'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-social-' . $index . '-background-color-group]',
+						'default'    => astra_get_option( 'sticky-header-social-' . $index . '-color-group' ),
+						'type'       => 'control',
+						'control'    => Astra_Theme_Extension::$group_control,
+						'title'      => __( 'Background Color', 'astra-addon' ),
+						'section'    => $_section,
+						'transport'  => 'postMessage',
+						'priority'   => 70,
+						'context'    => array(
+							astra_addon_builder_helper()->design_tab_config,
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[header-social-' . $index . '-color-type]',
+								'operator' => '==',
+								'value'    => 'custom',
+							),
+						),
+						'responsive' => true,
+						'divider'    => array( 'ast_class' => 'ast-bottom-divider' ),
 					),
 
 					/**
@@ -103,8 +125,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Social_Configs' ) ) {
 						'responsive' => true,
 						'rgba'       => true,
 						'priority'   => 9,
-						'context'    => Astra_Addon_Builder_Helper::$design_tab,
-						'title'      => __( 'Color', 'astra-addon' ),
+						'context'    => astra_addon_builder_helper()->design_tab,
+						'title'      => __( 'Normal', 'astra-addon' ),
 					),
 
 					/**
@@ -122,8 +144,8 @@ if ( ! class_exists( 'Astra_Sticky_Header_Social_Configs' ) ) {
 						'responsive' => true,
 						'rgba'       => true,
 						'priority'   => 9,
-						'context'    => Astra_Addon_Builder_Helper::$design_tab,
-						'title'      => __( 'Color', 'astra-addon' ),
+						'context'    => astra_addon_builder_helper()->design_tab,
+						'title'      => __( 'Hover', 'astra-addon' ),
 					),
 
 					/**
@@ -134,15 +156,15 @@ if ( ! class_exists( 'Astra_Sticky_Header_Social_Configs' ) ) {
 						'default'    => astra_get_option( 'sticky-header-social-' . $index . '-bg-color' ),
 						'transport'  => 'postMessage',
 						'type'       => 'sub-control',
-						'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-social-' . $index . '-color-group]',
+						'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-social-' . $index . '-background-color-group]',
 						'section'    => $_section,
-						'tab'        => __( 'Normal', 'astra-addon' ),
 						'control'    => 'ast-responsive-color',
 						'responsive' => true,
 						'rgba'       => true,
 						'priority'   => 9,
-						'context'    => Astra_Addon_Builder_Helper::$design_tab,
-						'title'      => __( 'Background Color', 'astra-addon' ),
+						'context'    => astra_addon_builder_helper()->design_tab,
+						'title'      => __( 'Normal', 'astra-addon' ),
+						'tab'        => __( 'Normal', 'astra-addon' ),
 					),
 
 					/**
@@ -153,15 +175,15 @@ if ( ! class_exists( 'Astra_Sticky_Header_Social_Configs' ) ) {
 						'default'    => astra_get_option( 'sticky-header-social-' . $index . '-bg-h-color' ),
 						'transport'  => 'postMessage',
 						'type'       => 'sub-control',
-						'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-social-' . $index . '-color-group]',
+						'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-social-' . $index . '-background-color-group]',
 						'section'    => $_section,
-						'tab'        => __( 'Hover', 'astra-addon' ),
 						'control'    => 'ast-responsive-color',
 						'responsive' => true,
 						'rgba'       => true,
 						'priority'   => 9,
-						'context'    => Astra_Addon_Builder_Helper::$design_tab,
-						'title'      => __( 'Background Color', 'astra-addon' ),
+						'context'    => astra_addon_builder_helper()->design_tab,
+						'title'      => __( 'Hover', 'astra-addon' ),
+						'tab'        => __( 'Hover', 'astra-addon' ),
 					),
 
 				);

@@ -199,23 +199,6 @@
   opacity: 1;
 }
 
-.ast-fullscreen-menu-enable.ast-header-break-point .main-header-bar-navigation .close:after {
-  content: "\e5cd";
-  display: inline-block;
-  font-family: 'Astra';
-  font-size: 22px;
-  font-size: 2rem;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: normal;
-  line-height: 40px;
-  height: 40px;
-  width: 40px;
-  text-align: center;
-  margin: 0;
-}
-
 .ast-fullscreen-menu-enable.ast-header-break-point .main-header-bar-navigation #site-navigation {
   position: fixed;
   left: 0;

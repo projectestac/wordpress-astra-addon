@@ -43,8 +43,8 @@ function astrawpWooQuantityButtons( $quantitySelector ) {
             // Add plus and minus icons.
             $qty_parent = $quantityBoxes.parentElement;
             $qty_parent.classList.add( 'buttons_added' );
-            $qty_parent.insertAdjacentHTML( 'afterbegin', '<a href="javascript:void(0)" class="minus">-</a>' );
-            $qty_parent.insertAdjacentHTML( 'beforeend', '<a href="javascript:void(0)" class="plus">+</a>' );
+            $qty_parent.insertAdjacentHTML( 'afterbegin', '<label class="screen-reader-text" for="minus_qty">' + astraAddon.product_plus_minus_text.minus_qty + '</label><a href="javascript:void(0)" id ="minus_qty" class="minus">-</a>' );
+            $qty_parent.insertAdjacentHTML( 'beforeend', '<label class="screen-reader-text" for="plus_qty"> '+ astraAddon.product_plus_minus_text.plus_qty + '</label><a href="javascript:void(0)" id ="plus_qty" class="plus">+</a>' );
             $quantityEach = document.querySelectorAll( 'input' + $quantitySelector + ':not(.product-quantity)' );
             
             for ( var j = 0; j < $quantityEach.length; j++ ) {

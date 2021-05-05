@@ -29,6 +29,27 @@ if ( ! class_exists( 'Astra_Theme_Extension' ) ) {
 		public static $options;
 
 		/**
+		 * Control Value to use Checkbox | Toggle control in WP_Customize
+		 *
+		 * @var const control
+		 */
+		public static $switch_control;
+
+		/**
+		 * Control Value to use Setting Group | Color Group in WP_Customize
+		 *
+		 * @var const control
+		 */
+		public static $group_control;
+
+		/**
+		 * Control Value to use Selector control in WP_Customize
+		 *
+		 * @var const control
+		 */
+		public static $selector_control;
+
+		/**
 		 *  Initiator
 		 */
 		public static function get_instance() {
@@ -526,6 +547,17 @@ if ( ! class_exists( 'Astra_Theme_Extension' ) ) {
 			if ( ! defined( 'ASTRA_THEME_VERSION' ) ) {
 				return;
 			}
+			require_once ASTRA_EXT_DIR . 'classes/class-astra-icons.php';
+
+			if ( version_compare( ASTRA_THEME_VERSION, '3.1.0', '>=' ) ) {
+				self::$switch_control   = 'ast-toggle-control';
+				self::$group_control    = 'ast-color-group';
+				self::$selector_control = 'ast-selector';
+			} else {
+				self::$switch_control   = 'checkbox';
+				self::$group_control    = 'ast-settings-group';
+				self::$selector_control = 'select';
+			}
 
 			require_once ASTRA_EXT_DIR . 'classes/class-astra-addon-builder-loader.php';
 
@@ -544,6 +576,7 @@ if ( ! class_exists( 'Astra_Theme_Extension' ) ) {
 				require_once ASTRA_EXT_DIR . 'classes/cache/class-astra-addon-cache.php';
 			}
 			require_once ASTRA_EXT_DIR . 'classes/class-astra-ext-model.php';
+
 		}
 		/**
 		 * Load Gutenberg assets
@@ -565,8 +598,19 @@ if ( ! class_exists( 'Astra_Theme_Extension' ) ) {
 		 */
 		public function controls_scripts() {
 
-			wp_enqueue_style( 'ast-ext-admin-settings', ASTRA_EXT_URI . 'admin/assets/css/customizer-controls.css', array(), ASTRA_EXT_VER );
 			wp_enqueue_script( 'ast-ext-admin-settings', ASTRA_EXT_URI . 'admin/assets/js/customizer-controls.js', array(), ASTRA_EXT_VER, false );
+
+			// Enqueue Customizer React.JS script.
+			$custom_controls_react_deps = array(
+				'astra-custom-control-plain-script',
+				'wp-i18n',
+				'wp-components',
+				'wp-element',
+				'wp-media-utils',
+				'wp-block-editor',
+			);
+
+			wp_enqueue_script( 'astra-ext-custom-control-react-script', ASTRA_EXT_URI . 'classes/customizer/extend-controls/build/index.js', $custom_controls_react_deps, ASTRA_EXT_VER, true );
 
 			if ( function_exists( 'astra_get_option' ) ) {
 				$show_deprecated_no_toggle_style = 'no-toggle' == astra_get_option( 'mobile-menu-style' ) ? true : false;

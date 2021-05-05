@@ -16,6 +16,8 @@ add_filter( 'astra_dynamic_css', 'astra_ext_blog_pro_dynamic_css' );
  */
 function astra_ext_blog_pro_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 
+	$parse_css = '';
+
 	$body_font_family = astra_body_font_family();
 	$link_color       = astra_get_option( 'link-color' );
 	$text_color       = astra_get_option( 'text-color' );
@@ -61,7 +63,7 @@ function astra_ext_blog_pro_dynamic_css( $dynamic_css, $dynamic_css_filtered = '
 	}
 
 	/* Parse CSS from array() */
-	$css_output = astra_parse_css( $css_output );
+	$parse_css = astra_parse_css( $css_output );
 
-	return $dynamic_css . $css_output;
+	return $dynamic_css . $parse_css;
 }

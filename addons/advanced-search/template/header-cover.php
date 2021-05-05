@@ -14,7 +14,7 @@
 					<label for="s" class="screen-reader-text"><?php echo esc_html( astra_default_strings( 'string-header-cover-search-placeholder', false ) ); ?></label>
 					<input name="s" class="search-field" type="text" autocomplete="off" value="" placeholder="<?php echo esc_attr( astra_default_strings( 'string-header-cover-search-placeholder', false ) ); ?>">
 				</span>
-				<span id="close" class="close"></span>
+				<span id="close" class="close"><?php Astra_Icons::get_icons( 'close', true ); ?></span>
 			</form>
 		</div>
 	</div>

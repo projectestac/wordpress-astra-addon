@@ -41,27 +41,25 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Header' ) ) {
 		 */
 		public function register_configuration( $configurations, $wp_customize ) {
 
-			$defaults = Astra_Theme_Options::defaults();
-
-			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			$title_color_heading = __( 'Colors', 'astra-addon' );
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 				$title_color_heading = __( 'Title', 'astra-addon' );
-			} else {
-				$title_color_heading = __( 'Colors', 'astra-addon' );
 			}
 
 			$_configs = array(
 
 				array(
-					'name'      => ASTRA_THEME_SETTINGS . '[site-identity-title-color-group]',
-					'default'   => astra_get_option( 'site-identity-title-color-group' ),
-					'type'      => 'control',
-					'control'   => 'ast-settings-group',
-					'title'     => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ? __( 'Title', 'astra-addon' ) : __( 'Colors', 'astra-addon' ),
-					'section'   => 'title_tagline',
-					'transport' => 'postMessage',
-					'priority'  => 8,
-					'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ? array(
-						Astra_Addon_Builder_Helper::$design_tab_config,
+					'name'       => ASTRA_THEME_SETTINGS . '[site-identity-title-color-group]',
+					'default'    => astra_get_option( 'site-identity-title-color-group' ),
+					'type'       => 'control',
+					'control'    => Astra_Theme_Extension::$group_control,
+					'title'      => astra_addon_builder_helper()->is_header_footer_builder_active ? __( 'Title Color', 'astra-addon' ) : __( 'Colors', 'astra-addon' ),
+					'section'    => 'title_tagline',
+					'responsive' => false,
+					'transport'  => 'postMessage',
+					'priority'   => 8,
+					'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ? array(
+						astra_addon_builder_helper()->design_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[display-site-title]',
 							'operator' => '==',
@@ -76,34 +74,6 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Header' ) ) {
 					),
 				),
 
-				// Option: Site Title Color.
-				array(
-					'name'      => 'header-color-site-title',
-					'parent'    => ASTRA_THEME_SETTINGS . '[site-identity-title-color-group]',
-					'section'   => 'title_tagline',
-					'type'      => 'sub-control',
-					'control'   => 'ast-color',
-					'default'   => astra_get_option( 'header-color-site-title' ),
-					'transport' => 'postMessage',
-					'title'     => __( 'Title Color', 'astra-addon' ),
-					'tab'       => __( 'Normal', 'astra-addon' ),
-					'context'   => Astra_Addon_Builder_Helper::$design_tab,
-				),
-
-				// Option: Site Title Hover Color.
-				array(
-					'name'      => 'header-color-h-site-title',
-					'parent'    => ASTRA_THEME_SETTINGS . '[site-identity-title-color-group]',
-					'section'   => 'title_tagline',
-					'type'      => 'sub-control',
-					'control'   => 'ast-color',
-					'transport' => 'postMessage',
-					'default'   => astra_get_option( 'header-color-h-site-title' ),
-					'title'     => __( 'Title Hover Color', 'astra-addon' ),
-					'tab'       => __( 'Hover', 'astra-addon' ),
-					'context'   => Astra_Addon_Builder_Helper::$design_tab,
-				),
-
 				// Option: Site Tagline Color.
 				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[header-color-site-tagline]',
@@ -111,11 +81,11 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Header' ) ) {
 					'control'   => 'ast-color',
 					'transport' => 'postMessage',
 					'default'   => astra_get_option( 'header-color-site-tagline' ),
-					'title'     => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ? __( 'Tagline', 'astra-addon' ) : __( 'Color', 'astra-addon' ),
+					'title'     => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ? __( 'Tagline', 'astra-addon' ) : __( 'Color', 'astra-addon' ),
 					'section'   => 'title_tagline',
-					'priority'  => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ? 8 : 11,
-					'context'   => Astra_Addon_Builder_Helper::$is_header_footer_builder_active ? array(
-						Astra_Addon_Builder_Helper::$design_tab_config,
+					'priority'  => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ? 8 : 11,
+					'context'   => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ? array(
+						astra_addon_builder_helper()->design_tab_config,
 						array(
 							'setting'  => ASTRA_THEME_SETTINGS . '[display-site-tagline]',
 							'operator' => '==',
@@ -131,36 +101,35 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Header' ) ) {
 				),
 			);
 
-			if ( Astra_Addon_Builder_Helper::$is_header_footer_builder_active ) {
+			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 				array_push(
 					$_configs,
 					/**
-					 * Option: Color heading
+					 * Option: Search height
 					 */
 					array(
-						'name'     => ASTRA_THEME_SETTINGS . '[site-identity-colors-heading]',
-						'type'     => 'control',
-						'control'  => 'ast-heading',
-						'section'  => 'title_tagline',
-						'title'    => __( 'Colors', 'astra-addon' ),
-						'priority' => 7,
-						'settings' => array(),
-						'context'  => array(
-							'relation' => 'AND',
-							Astra_Addon_Builder_Helper::$design_tab_config,
+						'name'        => ASTRA_THEME_SETTINGS . '[header-search-height]',
+						'section'     => 'section-header-search',
+						'priority'    => 3,
+						'transport'   => 'postMessage',
+						'default'     => astra_get_option( 'header-search-height' ),
+						'title'       => __( 'Search Height', 'astra-addon' ),
+						'suffix'      => 'px',
+						'type'        => 'control',
+						'control'     => 'ast-responsive-slider',
+						'input_attrs' => array(
+							'min'  => 40,
+							'step' => 1,
+							'max'  => 100,
+						),
+						'divider'     => array( 'ast_class' => 'ast-top-divider' ),
+						'context'     => array(
+							astra_addon_builder_helper()->general_tab_config,
 							array(
-								'relation' => 'OR',
-								array(
-									'setting'  => ASTRA_THEME_SETTINGS . '[display-site-title]',
-									'operator' => '==',
-									'value'    => true,
-								),
-								array(
-									'setting'  => ASTRA_THEME_SETTINGS . '[display-site-tagline]',
-									'operator' => '==',
-									'value'    => true,
-								),
+								'setting'  => ASTRA_THEME_SETTINGS . '[header-search-box-type]',
+								'operator' => 'in',
+								'value'    => array( 'slide-search', 'search-box' ),
 							),
 						),
 					),
@@ -177,7 +146,7 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Header' ) ) {
 						'control'   => 'ast-color',
 						'title'     => __( 'Overlay Background Color', 'astra-addon' ),
 						'context'   => array(
-							Astra_Addon_Builder_Helper::$design_tab_config,
+							astra_addon_builder_helper()->design_tab_config,
 							array(
 								'setting'  => ASTRA_THEME_SETTINGS . '[header-search-box-type]',
 								'operator' => 'in',
@@ -198,7 +167,7 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Header' ) ) {
 						'control'   => 'ast-color',
 						'title'     => __( 'Overlay Text Color', 'astra-addon' ),
 						'context'   => array(
-							Astra_Addon_Builder_Helper::$design_tab_config,
+							astra_addon_builder_helper()->design_tab_config,
 							array(
 								'setting'  => ASTRA_THEME_SETTINGS . '[header-search-box-type]',
 								'operator' => 'in',
@@ -206,63 +175,93 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Header' ) ) {
 							),
 						),
 					),
+					array(
+						'name'       => 'header-search-icon-h-color',
+						'default'    => astra_get_option( 'header-search-icon-h-color' ),
+						'type'       => 'sub-control',
+						'parent'     => ASTRA_THEME_SETTINGS . '[header-search-icon-color-parent]',
+						'section'    => 'section-header-search',
+						'priority'   => 1,
+						'transport'  => 'postMessage',
+						'control'    => 'ast-responsive-color',
+						'responsive' => true,
+						'rgba'       => true,
+						'title'      => __( 'Icon Hover Color', 'astra-addon' ),
+						'context'    => astra_addon_builder_helper()->design_tab,
+					),
+					/**
+					 * Option: Search Color.
+					 */
+					array(
+						'name'      => ASTRA_THEME_SETTINGS . '[header-search-bg-color-parent]',
+						'default'   => astra_get_option( 'header-search-bg-color-parent' ),
+						'type'      => 'control',
+						'control'   => 'ast-color-group',
+						'title'     => __( 'Box Background', 'astra-addon' ),
+						'section'   => 'section-header-search',
+						'transport' => 'postMessage',
+						'priority'  => 9,
+						'context'   => array(
+							astra_addon_builder_helper()->design_tab_config,
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[header-search-box-type]',
+								'operator' => 'in',
+								'value'    => array( 'slide-search', 'search-box' ),
+							),
+						),
+						'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+					),
 					/**
 					 * Search Box Background Color
 					 */
 					array(
-						'name'      => ASTRA_THEME_SETTINGS . '[header-search-box-background-color]',
+						'name'      => 'header-search-box-background-color',
 						'default'   => astra_get_option( 'header-search-box-background-color' ),
-						'type'      => 'control',
+						'type'      => 'sub-control',
+						'parent'    => ASTRA_THEME_SETTINGS . '[header-search-bg-color-parent]',
 						'section'   => 'section-header-search',
-						'priority'  => 9,
+						'priority'  => 1,
 						'transport' => 'postMessage',
 						'control'   => 'ast-color',
-						'title'     => __( 'Box Background Color', 'astra-addon' ),
-						'context'   => array(
-							Astra_Addon_Builder_Helper::$design_tab_config,
-							array(
-								'setting'  => ASTRA_THEME_SETTINGS . '[header-search-box-type]',
-								'operator' => 'in',
-								'value'    => array( 'slide-search', 'search-box' ),
-							),
-						),
+						'title'     => __( 'Normal', 'astra-addon' ),
+						'context'   => astra_addon_builder_helper()->design_tab,
 					),
 					/**
-					 * Group: Search Border Group
+					 * Search Box Background hover Color
 					 */
 					array(
-						'name'      => ASTRA_THEME_SETTINGS . '[header-search-border-group]',
-						'default'   => astra_get_option( 'header-search-border-group' ),
-						'type'      => 'control',
-						'control'   => 'ast-settings-group',
-						'title'     => __( 'Border', 'astra-addon' ),
-						'section'   => 'section-header-search',
+						'name'      => 'header-search-box-background-h-color',
+						'default'   => astra_get_option( 'header-search-box-background-h-color' ),
+						'type'      => 'sub-control',
+						'parent'    => ASTRA_THEME_SETTINGS . '[header-search-bg-color-parent]',
+						'section'   => 'section-heade-search',
+						'priority'  => 2,
 						'transport' => 'postMessage',
-						'priority'  => 9,
-						'context'   => array(
-							Astra_Addon_Builder_Helper::$design_tab_config,
-							array(
-								'setting'  => ASTRA_THEME_SETTINGS . '[header-search-box-type]',
-								'operator' => 'in',
-								'value'    => array( 'slide-search', 'search-box' ),
-							),
-						),
+						'control'   => 'ast-color',
+						'title'     => __( 'Hover', 'astra-addon' ),
+						'context'   => astra_addon_builder_helper()->design_tab,
 					),
 					/**
-					* Option: Search Border Size
-					*/
+					 * Option: Search Border Size
+					 */
 					array(
-						'name'           => 'header-search-border-size',
+						'name'           => ASTRA_THEME_SETTINGS . '[header-search-border-size]',
 						'default'        => astra_get_option( 'header-search-border-size' ),
-						'parent'         => ASTRA_THEME_SETTINGS . '[header-search-border-group]',
-						'type'           => 'sub-control',
+						'type'           => 'control',
 						'section'        => 'section-header-search',
 						'control'        => 'ast-border',
 						'transport'      => 'postMessage',
 						'linked_choices' => true,
-						'priority'       => 10,
+						'priority'       => 9,
 						'title'          => __( 'Width', 'astra-addon' ),
-						'context'        => Astra_Addon_Builder_Helper::$general_tab,
+						'context'        => array(
+							astra_addon_builder_helper()->design_tab_config,
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[header-search-box-type]',
+								'operator' => 'in',
+								'value'    => array( 'slide-search', 'search-box' ),
+							),
+						),
 						'choices'        => array(
 							'top'    => __( 'Top', 'astra-addon' ),
 							'right'  => __( 'Right', 'astra-addon' ),
@@ -271,58 +270,167 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Header' ) ) {
 						),
 					),
 					/**
-					* Option: Search Border Color
-					*/
+					 * Group: Search Border Group
+					 */
+					array(
+						'name'      => ASTRA_THEME_SETTINGS . '[header-search-border-color-group]',
+						'default'   => astra_get_option( 'header-search-border-color-group' ),
+						'type'      => 'control',
+						'control'   => Astra_Theme_Extension::$group_control,
+						'title'     => __( 'Border Color', 'astra-addon' ),
+						'section'   => 'section-header-search',
+						'transport' => 'postMessage',
+						'priority'  => 9,
+						'context'   => array(
+							astra_addon_builder_helper()->design_tab_config,
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[header-search-box-type]',
+								'operator' => 'in',
+								'value'    => array( 'slide-search', 'search-box' ),
+							),
+						),
+					),
+					/**
+					 * Option: Search Border Color
+					 */
 					array(
 						'name'       => 'header-search-border-color',
 						'default'    => astra_get_option( 'header-search-border-color' ),
 						'transport'  => 'postMessage',
 						'type'       => 'sub-control',
-						'parent'     => ASTRA_THEME_SETTINGS . '[header-search-border-group]',
+						'parent'     => ASTRA_THEME_SETTINGS . '[header-search-border-color-group]',
 						'section'    => 'section-header-search',
 						'control'    => 'ast-color',
 						'responsive' => true,
 						'rgba'       => true,
-						'priority'   => 12,
-						'context'    => Astra_Addon_Builder_Helper::$general_tab,
-						'title'      => __( 'Color', 'astra-addon' ),
+						'priority'   => 1,
+						'context'    => astra_addon_builder_helper()->general_tab,
+						'title'      => __( 'Normal', 'astra-addon' ),
 					),
 					/**
-					* Option: Search Border Hover Color
-					*/
+					 * Option: Search Border Hover Color
+					 */
 					array(
 						'name'       => 'header-search-border-h-color',
 						'default'    => astra_get_option( 'header-search-border-h-color' ),
+						'parent'     => ASTRA_THEME_SETTINGS . '[header-search-border-color-group]',
 						'transport'  => 'postMessage',
 						'type'       => 'sub-control',
-						'parent'     => ASTRA_THEME_SETTINGS . '[header-search-border-group]',
 						'section'    => 'section-header-search',
 						'control'    => 'ast-color',
 						'responsive' => true,
 						'rgba'       => true,
-						'priority'   => 14,
-						'context'    => Astra_Addon_Builder_Helper::$general_tab,
-						'title'      => __( 'Hover Color', 'astra-addon' ),
+						'priority'   => 2,
+						'context'    => astra_addon_builder_helper()->general_tab,
+						'title'      => __( 'Hover', 'astra-addon' ),
 					),
 					/**
-					* Option: Search Border Radius
-					*/
+					 * Option: Search Border Radius
+					 */
 					array(
-						'name'        => 'header-search-border-radius',
+						'name'        => ASTRA_THEME_SETTINGS . '[header-search-border-radius]',
 						'default'     => astra_get_option( 'header-search-border-radius' ),
-						'type'        => 'sub-control',
-						'parent'      => ASTRA_THEME_SETTINGS . '[header-search-border-group]',
+						'type'        => 'control',
+						'parent'      => ASTRA_THEME_SETTINGS . '[header-search-border-color-group]',
 						'section'     => 'section-header-search',
 						'control'     => 'ast-slider',
 						'transport'   => 'postMessage',
-						'priority'    => 16,
-						'context'     => Astra_Addon_Builder_Helper::$general_tab,
+						'priority'    => 9,
 						'title'       => __( 'Border Radius', 'astra-addon' ),
+						'suffix'      => 'px',
 						'input_attrs' => array(
 							'min'  => 0,
 							'step' => 1,
 							'max'  => 100,
 						),
+						'context'     => array(
+							astra_addon_builder_helper()->design_tab_config,
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[header-search-box-type]',
+								'operator' => 'in',
+								'value'    => array( 'slide-search', 'search-box' ),
+							),
+						),
+					),
+					/**
+					 * Option: Search text/placeholder Color
+					 */
+					array(
+						'name'       => ASTRA_THEME_SETTINGS . '[header-search-text-placeholder-color]',
+						'default'    => astra_get_option( 'header-search-text-placeholder-color' ),
+						'transport'  => 'postMessage',
+						'type'       => 'control',
+						'section'    => 'section-header-search',
+						'control'    => 'ast-responsive-color',
+						'responsive' => true,
+						'rgba'       => true,
+						'priority'   => 8.5,
+						'title'      => __( 'Text / Placeholder Color', 'astra-addon' ),
+						'context'    => array(
+							astra_addon_builder_helper()->design_tab_config,
+							array(
+								'setting'  => ASTRA_THEME_SETTINGS . '[header-search-box-type]',
+								'operator' => 'in',
+								'value'    => array( 'slide-search', 'search-box' ),
+							),
+						),
+					)
+				);
+			} else {
+				array_push(
+					$_configs,
+					/**
+					 * Option: Color heading
+					 */
+					array(
+						'name'     => ASTRA_THEME_SETTINGS . '[site-identity-colors-heading]',
+						'type'     => 'control',
+						'control'  => 'ast-heading',
+						'section'  => 'title_tagline',
+						'title'    => __( 'Colors', 'astra-addon' ),
+						'priority' => 7,
+						'settings' => array(),
+						'context'  => array(
+							'relation' => 'AND',
+							astra_addon_builder_helper()->design_tab_config,
+							array(
+								'relation' => 'OR',
+								array(
+									'setting'  => ASTRA_THEME_SETTINGS . '[display-site-title]',
+									'operator' => '==',
+									'value'    => true,
+								),
+								array(
+									'setting'  => ASTRA_THEME_SETTINGS . '[display-site-tagline]',
+									'operator' => '==',
+									'value'    => true,
+								),
+							),
+						),
+					),
+					// Option: Site Title Color.
+					array(
+						'name'      => 'header-color-site-title',
+						'parent'    => ASTRA_THEME_SETTINGS . '[site-identity-title-color-group]',
+						'section'   => 'title_tagline',
+						'type'      => 'sub-control',
+						'control'   => 'ast-color',
+						'default'   => astra_get_option( 'header-color-site-title' ),
+						'transport' => 'postMessage',
+						'title'     => __( 'Normal', 'astra-addon' ),
+						'context'   => astra_addon_builder_helper()->design_tab,
+					),
+					// Option: Site Title Hover Color.
+					array(
+						'name'      => 'header-color-h-site-title',
+						'parent'    => ASTRA_THEME_SETTINGS . '[site-identity-title-color-group]',
+						'section'   => 'title_tagline',
+						'type'      => 'sub-control',
+						'control'   => 'ast-color',
+						'transport' => 'postMessage',
+						'default'   => astra_get_option( 'header-color-h-site-title' ),
+						'title'     => __( 'Hover', 'astra-addon' ),
+						'context'   => astra_addon_builder_helper()->design_tab,
 					)
 				);
 			}

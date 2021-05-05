@@ -22,6 +22,12 @@
   }
 }
 
+#ast-scroll-top .ast-icon.icon-arrow svg {
+  margin-right: 0px;
+  transform: translate(0, -20%) rotate(-180deg);
+  width: 1.6em;
+}
+
 .ast-scroll-to-top-right {
   left: 30px;
   bottom: 30px;
@@ -30,14 +36,4 @@
 .ast-scroll-to-top-left {
   right: 30px;
   bottom: 30px;
-}
-
-.ast-scroll-top-icon {
-  transform: rotate(-180deg);
-}
-
-.ast-scroll-top-icon::before {
-  content: "\e900";
-  font-family: 'Astra';
-  text-decoration: inherit;
 }

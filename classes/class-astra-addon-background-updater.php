@@ -49,6 +49,12 @@ if ( ! class_exists( 'Astra_Addon_Background_Updater' ) ) {
 			'3.0.0' => array(
 				'astra_addon_clear_assets_cache',
 			),
+			'3.3.0' => array(
+				'astra_addon_clear_assets_cache',
+			),
+			'3.3.2' => array(
+				'astra_addon_clear_assets_cache',
+			),
 		);
 
 		/**

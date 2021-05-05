@@ -101,6 +101,63 @@ function astra_ext_below_header_dynamic_css( $dynamic_css, $dynamic_css_filtered
 
 	$parse_css = '';
 
+	if ( false === Astra_Icons::is_svg_icons() ) {
+		$astra_font = array(
+			'.ast-desktop .ast-below-header-menu .sub-menu .menu-item.menu-item-has-children > .menu-link:after' => array(
+				'position'  => 'absolute',
+				'right'     => '1em',
+				'top'       => '50%',
+				'transform' => 'translate(0, -50%) rotate( 270deg )',
+			),
+			'.ast-desktop .ast-below-header .menu-item-has-children > .menu-link:after' => array(
+				'content'                 => '"\e900"',
+				'display'                 => 'inline-block',
+				'font-family'             => "'Astra'",
+				'font-size'               => '9px',
+				'font-size'               => '.6rem',
+				'font-weight'             => 'bold',
+				'text-rendering'          => 'auto',
+				'-webkit-font-smoothing'  => 'antialiased',
+				'-moz-osx-font-smoothing' => 'grayscale',
+				'margin-left'             => '10px',
+				'line-height'             => 'normal',
+			),
+			'.ast-header-break-point .ast-below-header-actual-nav .menu-item-has-children > .ast-menu-toggle::before' => array(
+				'content'         => '"\e900"',
+				'font-family'     => "'Astra'",
+				'text-decoration' => 'inherit',
+				'display'         => 'inline-block',
+			),
+			'.ast-header-break-point .ast-below-header-actual-nav .sub-menu .menu-item .menu-link:before' => array(
+				'content'         => '"\e900"',
+				'font-family'     => "'Astra'",
+				'text-decoration' => 'inherit',
+				'font-size'       => '.65em',
+				'display'         => 'inline-block',
+				'transform'       => 'translate(0, -2px) rotateZ(270deg)',
+				'margin-right'    => '5px',
+			),
+		);
+	} else {
+		$astra_font = array(
+			'.ast-header-break-point .ast-below-header-menu .menu-item .menu-link .icon-arrow:first-of-type svg' => array(
+				'left'         => '.1em',
+				'top'          => '.1em',
+				'transform'    => 'translate(0,-2px) rotateZ( 270deg )',
+				'margin-right' => '5px',
+				'position'     => 'unset',
+			),
+		);
+		if ( false === Astra_Builder_Helper::$is_header_footer_builder_active && false === Astra_Ext_Extension::is_active( 'nav-menu' ) ) {
+			$astra_font['.ast-desktop .ast-below-header-menu .menu-link > .icon-arrow'] = array(
+				'display' => 'none',
+			);
+		}
+	}
+
+	/* Parse CSS from array() */
+	$parse_css .= astra_parse_css( $astra_font );
+
 	/**
 	 * [1]. Below Header General options
 	 * [2]. Below Header Responsive Typography

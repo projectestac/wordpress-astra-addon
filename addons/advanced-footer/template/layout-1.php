@@ -29,7 +29,7 @@ $classes   = implode( ' ', $classes );
 		<div class="ast-container">
 			<?php do_action( 'astra_footer_inside_container_top' ); ?>
 			<div class="ast-row">
-				<div class="ast-col-lg-12 ast-col-md-12 ast-col-sm-12 ast-col-xs-12 footer-adv-widget footer-adv-widget-1">
+				<div class="<?php echo astra_attr( 'ast-layout-1-grid' ); ?> footer-adv-widget footer-adv-widget-1">
 					<?php Astra_Ext_Adv_Footer_Markup::get_sidebar( 'advanced-footer-widget-1' ); ?>
 				</div>
 			</div><!-- .ast-row -->

@@ -16,7 +16,7 @@
 	astra_responsive_font_size( 'astra-settings[font-size-widget-title]', '.secondary .widget-title' );
 	astra_responsive_font_size( 'astra-settings[font-size-widget-content]', '.secondary .widget > *:not(.widget-title)' );
 	astra_responsive_font_size( 'astra-settings[font-size-footer-content]', '.ast-small-footer' );
-	
+
 	astra_generate_outside_font_family_css( 'astra-settings[font-family-archive-summary-title]', '.ast-archive-description .ast-archive-title' );
 	astra_generate_font_weight_css( 'astra-settings[font-family-archive-summary-title]', 'astra-settings[font-weight-archive-summary-title]', 'font-weight', '.ast-archive-description .ast-archive-title' );
 	astra_css( 'astra-settings[line-height-archive-summary-title]', 'line-height', '.ast-archive-description .ast-archive-title' );
@@ -24,6 +24,7 @@
 
 	astra_generate_outside_font_family_css( 'astra-settings[font-family-page-title]', '.blog .entry-title, .blog .entry-title a, .archive .entry-title, .archive .entry-title a, .search .entry-title, .search .entry-title a' );
 	astra_generate_font_weight_css( 'astra-settings[font-family-page-title]', 'astra-settings[font-weight-page-title]', 'font-weight', '.blog .entry-title, .blog .entry-title a, .archive .entry-title, .archive .entry-title a, .search .entry-title, .search .entry-title a' );
+	astra_css( 'astra-settings[font-weight-page-title]', 'font-weight', '.blog .entry-title, .blog .entry-title a, .archive .entry-title, .archive .entry-title a, .search .entry-title, .search .entry-title a' );
 	astra_css( 'astra-settings[line-height-page-title]', 'line-height', '.blog .entry-title, .blog .entry-title a, .archive .entry-title, .archive .entry-title a, .search .entry-title, .search .entry-title a' );
 	astra_css( 'astra-settings[text-transform-page-title]', 'text-transform', '.blog .entry-title, .blog .entry-title a, .archive .entry-title, .archive .entry-title a, .search .entry-title, .search .entry-title a' );
 
@@ -38,7 +39,7 @@
 	astra_css( 'astra-settings[text-transform-post-meta]', 'text-transform', '.entry-meta, .read-more' );
 
 	astra_css( 'astra-settings[text-transform-post-pagination]', 'text-transform', '.ast-pagination .page-numbers, .ast-pagination .page-navigation' );
-	
+
 	astra_css( 'astra-settings[line-height-footer-content]', 'line-height', '.ast-small-footer' );
 	astra_css( 'astra-settings[text-transform-footer-content]', 'text-transform', '.ast-small-footer' );
 
@@ -56,7 +57,7 @@
 
 	// Page builder elementor CSS for line height.
 	if( astTypography.addon_page_builder_button_style_css ) {
-		// Check if anchors should be loaded in the CSS for headings.	
+		// Check if anchors should be loaded in the CSS for headings.
 		if (true == astraCustomizer.includeAnchorsInHeadindsCss) {
 			astra_css('astra-settings[line-height-h4]', 'line-height', 'h4, .entry-content h4, .entry-content h4 a, .elementor-widget-heading h4.elementor-heading-title');
 			astra_css('astra-settings[line-height-h5]', 'line-height', 'h5, .entry-content h5, .entry-content h5 a, .elementor-widget-heading h5.elementor-heading-title');
@@ -67,7 +68,7 @@
 			astra_css('astra-settings[line-height-h6]', 'line-height', 'h6, .entry-content h6, .elementor-widget-heading h6.elementor-heading-title');
 		}
 	} else {
-		// Check if anchors should be loaded in the CSS for headings.	
+		// Check if anchors should be loaded in the CSS for headings.
 		if (true == astraCustomizer.includeAnchorsInHeadindsCss) {
 			astra_css('astra-settings[line-height-h4]', 'line-height', 'h4, .entry-content h4, .entry-content h4 a');
 			astra_css('astra-settings[line-height-h5]', 'line-height', 'h5, .entry-content h5, .entry-content h5 a');
@@ -78,9 +79,9 @@
 			astra_css('astra-settings[line-height-h6]', 'line-height', 'h6, .entry-content h6');
 		}
 	}
-	// Check if anchors should be loaded in the CSS for headings.	
+	// Check if anchors should be loaded in the CSS for headings.
 	if (true == astraCustomizer.includeAnchorsInHeadindsCss) {
-		astra_generate_outside_font_family_css( 'astra-settings[font-family-h1]', 'h1, .entry-content h1, .entry-content h1 a' );	
+		astra_generate_outside_font_family_css( 'astra-settings[font-family-h1]', 'h1, .entry-content h1, .entry-content h1 a' );
 		astra_generate_font_weight_css( 'astra-settings[font-family-h1]', 'astra-settings[font-weight-h1]', 'font-weight', 'h1, .entry-content h1, .entry-content h1 a' );
 		astra_css('astra-settings[line-height-h1]', 'line-height', 'h1, .entry-content h1, .entry-content h1 a');
 		astra_css('astra-settings[text-transform-h1]', 'text-transform', 'h1, .entry-content h1, .entry-content h1 a');
@@ -137,7 +138,7 @@
 
 	astra_css( 'astra-settings[text-transform-button]', 'text-transform', 'button, .ast-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' );
 	astra_responsive_font_size( 'astra-settings[font-size-button]', 'button, .ast-button, input#submit, input[type="button"], input[type="submit"], input[type="reset"]' );
-	
+
 	astra_css( 'astra-settings[outside-menu-line-height]', 'line-height', '.ast-masthead-custom-menu-items, .ast-masthead-custom-menu-items *' );
 
 	var selector = '.main-navigation';
@@ -163,16 +164,16 @@
 	astra_css( 'astra-settings[text-transform-primary-menu]', 'text-transform', '.main-header-bar .main-header-bar-navigation' );
 
 	astra_responsive_font_size( 'astra-settings[font-size-primary-menu]', '.main-navigation, .ast-header-sections-navigation, .ast-above-header-menu-items, .ast-below-header-menu-items' );
-	
+
 	astra_css( 'astra-settings[line-height-primary-menu]', 'line-height', '.main-header-bar' );
 
 	astra_css( 'astra-settings[font-weight-primary-dropdown-menu]', 'font-weight', '.main-header-menu > .menu-item > .sub-menu:first-of-type, .main-header-menu > .menu-item > .astra-full-megamenu-wrapper:first-of-type' );
-	
+
 	astra_css( 'astra-settings[text-transform-primary-dropdown-menu]', 'text-transform', '.main-header-bar .main-header-bar-navigation .sub-menu, .ast-header-sections-navigation .sub-menu, .ast-above-header-menu-items .sub-menu, .ast-below-header-menu-items .sub-menu' );
-	
+
 	astra_responsive_font_size( 'astra-settings[font-size-primary-dropdown-menu]', '.main-header-menu > .menu-item > .sub-menu:first-of-type, .ast-header-sections-navigation li > .sub-menu:first-of-type, .ast-above-header-menu-items .menu-item > .sub-menu:first-of-type, .ast-below-header-menu-items li > .sub-menu:first-of-type, .main-header-menu > .menu-item > .astra-full-megamenu-wrapper:first-of-type' );
 
-	astra_css( 'astra-settings[line-height-primary-dropdown-menu]', 'line-height', '.main-header-bar .main-header-bar-navigation .sub-menu, .ast-header-sections-navigation .sub-menu, .ast-above-header-menu-items .sub-menu, .ast-below-header-menu-items .sub-menu' );	
+	astra_css( 'astra-settings[line-height-primary-dropdown-menu]', 'line-height', '.main-header-bar .main-header-bar-navigation .sub-menu, .ast-header-sections-navigation .sub-menu, .ast-above-header-menu-items .sub-menu, .ast-below-header-menu-items .sub-menu' );
 
 	// Footer Typo
 
@@ -181,7 +182,7 @@
 	astra_generate_outside_font_family_css( 'astra-settings[font-family-footer-content]', '.ast-small-footer' );
 
 	astra_css( 'astra-settings[font-weight-footer-content]', 'font-weight', '.ast-small-footer' );
-	
+
 	astra_css( 'astra-settings[text-transform-footer-content]', 'text-transform', '.ast-small-footer' );
 
 	astra_responsive_font_size( 'astra-settings[font-size-footer-content]', '.ast-small-footer' );
@@ -232,10 +233,14 @@
 	/**
 	 * Header - Menu - Typography.
 	 */
-	for ( var index = 1; index <= astTypography.header_menu_count; index++ ) {
+	for ( var index = 1; index <= astTypography.component_limit; index++ ) {
 
 		var prefix = 'menu' + index;
-		var selector = '.astra-hfb-header .ast-builder-menu-' + index + '.ast-builder-menu .main-header-menu';
+		var selector = '.ast-hfb-header .ast-builder-menu-' + index + '.ast-builder-menu .main-header-menu';
+
+		if ( astTypography.astra_not_updated ) {
+			selector = '.astra-hfb-header .ast-builder-menu-' + index + '.ast-builder-menu .main-header-menu';
+		}
 
 		// Sub-Menu Typography.
 		astra_generate_outside_font_family_css(
@@ -297,7 +302,11 @@
 	 * Mobile menu - Typography
 	 */
 
-	var selector = '.astra-hfb-header .ast-builder-menu-mobile .main-header-menu';
+	var selector = '.ast-hfb-header .ast-builder-menu-mobile .main-header-menu';
+
+	if ( astTypography.astra_not_updated ) {
+		selector = '.astra-hfb-header .ast-builder-menu-mobile .main-header-menu';
+	}
 
 	// Sub-Menu Typography.
 	astra_generate_outside_font_family_css(
@@ -331,11 +340,8 @@
 		'px'
 	);
 
-	/**
-	 * Header - HTML - Typography
-	 */
 
-	for ( var index = 1; index <= astTypography.header_html_count; index++ ) {
+	function prepare_html_preview( index ) {
 
 		var prefix = 'html' + index;
 		var section = 'section-hb-html-' + index;
@@ -361,14 +367,14 @@
 			'line-height',
 			selector
 		);
+
+
+
 	}
 
-	/**
-	 * Header - Button - Typography
-	 */
+	function prepare_button_preview(index) {
 
-	for ( var index = 1; index <= astTypography.header_button_count; index++ ) {
-
+		// Header.
 		var prefix = 'button' + index;
 		var selector = '.ast-header-button-' + index + ' .ast-builder-button-wrap';
 
@@ -398,14 +404,8 @@
 			selector + ' .ast-custom-button',
 			'px'
 		);
-	}
 
-	/**
-	 * Footer - Button - Typography
-	 */
-
-	for ( var index = 1; index <= astTypography.footer_button_count; index++ ) {
-
+		// Footer.
 		var prefix = 'button' + index;
 		var selector = '.ast-footer-button-' + index + ' .ast-builder-button-wrap';
 
@@ -437,151 +437,221 @@
 		);
 	}
 
-	/**
-	 * Header - Widget - Typography
-	 */
+	function prepare_social_icon_preview(index) {
 
-	for ( var index = 1; index <= astTypography.header_widget_count; index++ ) {
+		// Header.
+		var section = 'section-hb-social-icons-' + index;
+		var selector = '.ast-builder-layout-element .ast-header-social-' + index + '-wrap';
 
-		var prefix = 'widget-' + index;
-		var selector = '.header-widget-area[data-section="sidebar-widgets-header-widget-' + index + '"]';
-
-		/**
-		 * Widget Title
-		 */
 		astra_generate_outside_font_family_css(
-			'astra-settings[header-' + prefix + '-font-family]',
-			selector + ' .widget-title'
+			'astra-settings[font-family-' + section + ']',
+			selector
 		);
 		astra_generate_font_weight_css(
-			'astra-settings[header-' + prefix + '-font-family]',
-			'astra-settings[header-' + prefix + '-font-weight]',
+			'astra-settings[font-family-' + section + ']',
+			'astra-settings[font-weight-' + section + ']',
 			'font-weight',
-			selector + ' .widget-title'
+			selector
 		);
 		astra_css(
-			'astra-settings[header-' + prefix + '-text-transform]',
+			'astra-settings[text-transform-' + section + ']',
 			'text-transform',
-			selector + ' .widget-title'
+			selector
 		);
 		astra_css(
-			'astra-settings[header-' + prefix + '-line-height]',
+			'astra-settings[line-height-' + section + ']',
 			'line-height',
-			selector + ' .widget-title'
-		);
-		astra_css(
-			'astra-settings[header-' + prefix + '-letter-spacing]',
-			'letter-spacing',
-			selector + ' .widget-title',
-			'px'
+			selector
 		);
 
-		/**
-		 * Widget Content
-		 */
+		// Footer.
+		var section = 'section-fb-social-icons-' + index;
+		var selector = '.ast-builder-layout-element .ast-footer-social-' + index + '-wrap';
+
 		astra_generate_outside_font_family_css(
-			'astra-settings[header-' + prefix + '-content-font-family]',
-			selector + ' .header-widget-area-inner'
+			'astra-settings[font-family-' + section + ']',
+			selector
 		);
 		astra_generate_font_weight_css(
-			'astra-settings[header-' + prefix + '-content-font-family]',
-			'astra-settings[header-' + prefix + '-content-font-weight]',
+			'astra-settings[font-family-' + section + ']',
+			'astra-settings[font-weight-' + section + ']',
 			'font-weight',
-			selector + ' .header-widget-area-inner'
+			selector
 		);
 		astra_css(
-			'astra-settings[header-' + prefix + '-content-transform]',
+			'astra-settings[text-transform-' + section + ']',
 			'text-transform',
-			selector + ' .header-widget-area-inner'
+			selector
 		);
 		astra_css(
-			'astra-settings[header-' + prefix + '-content-line-height]',
+			'astra-settings[line-height-' + section + ']',
 			'line-height',
-			selector + ' .header-widget-area-inner'
+			selector
 		);
-		astra_css(
-			'astra-settings[header-' + prefix + '-content-letter-spacing]',
-			'letter-spacing',
-			selector + ' .header-widget-area-inner',
-			'px'
-		);
+
 	}
 
-	/**
-	 * Footer - Widget - Typography
-	 */
+	for ( var index = 1; index <= astTypography.component_limit; index++ ) {
 
-	for ( var index = 1; index <= astTypography.footer_widget_count; index++ ) {
+		prepare_html_preview(index);
+		prepare_button_preview(index);
+		prepare_social_icon_preview(index);
+		prepare_header_widget_preview(index);
+		prepare_footer_widget_preview(index);
 
-		var prefix = 'widget-' + index;
-		var selector = '.footer-widget-area[data-section="sidebar-widgets-footer-widget-' + index + '"]';
+	}
 
-		/**
-		 * Widget Title
-		 */
-		astra_generate_outside_font_family_css(
-			'astra-settings[footer-' + prefix + '-font-family]',
-			selector + ' .widget-title'
-		);
-		astra_generate_font_weight_css(
-			'astra-settings[footer-' + prefix + '-font-family]',
-			'astra-settings[footer-' + prefix + '-font-weight]',
-			'font-weight',
-			selector + ' .widget-title'
-		);
-		astra_css(
-			'astra-settings[footer-' + prefix + '-text-transform]',
-			'text-transform',
-			selector + ' .widget-title'
-		);
-		astra_css(
-			'astra-settings[footer-' + prefix + '-line-height]',
-			'line-height',
-			selector + ' .widget-title'
-		);
-		astra_css(
-			'astra-settings[footer-' + prefix + '-letter-spacing]',
-			'letter-spacing',
-			selector + ' .widget-title',
-			'px'
-		);
+	function prepare_header_widget_preview(index) {
 
 		/**
-		 * Widget Content
+		 * Header - Widget - Typography
 		 */
-		astra_generate_outside_font_family_css(
-			'astra-settings[footer-' + prefix + '-content-font-family]',
-			selector + ' .footer-widget-area-inner'
-		);
-		astra_generate_font_weight_css(
-			'astra-settings[footer-' + prefix + '-content-font-family]',
-			'astra-settings[footer-' + prefix + '-content-font-weight]',
-			'font-weight',
-			selector + ' .footer-widget-area-inner'
-		);
-		astra_css(
-			'astra-settings[footer-' + prefix + '-content-transform]',
-			'text-transform',
-			selector + ' .footer-widget-area-inner'
-		);
-		astra_css(
-			'astra-settings[footer-' + prefix + '-content-line-height]',
-			'line-height',
-			selector + ' .footer-widget-area-inner'
-		);
-		astra_css(
-			'astra-settings[footer-' + prefix + '-content-letter-spacing]',
-			'letter-spacing',
-			selector + ' .footer-widget-area-inner',
-			'px'
-		);
+
+		for ( var index = 1; index <= astTypography.component_limit; index++ ) {
+
+			var prefix = 'widget-' + index;
+			var selector = '.header-widget-area[data-section="sidebar-widgets-header-widget-' + index + '"]';
+
+			/**
+			 * Widget Title
+			 */
+			astra_generate_outside_font_family_css(
+				'astra-settings[header-' + prefix + '-font-family]',
+				selector + ' .widget-title'
+			);
+			astra_generate_font_weight_css(
+				'astra-settings[header-' + prefix + '-font-family]',
+				'astra-settings[header-' + prefix + '-font-weight]',
+				'font-weight',
+				selector + ' .widget-title'
+			);
+			astra_css(
+				'astra-settings[header-' + prefix + '-text-transform]',
+				'text-transform',
+				selector + ' .widget-title'
+			);
+			astra_css(
+				'astra-settings[header-' + prefix + '-line-height]',
+				'line-height',
+				selector + ' .widget-title'
+			);
+			astra_css(
+				'astra-settings[header-' + prefix + '-letter-spacing]',
+				'letter-spacing',
+				selector + ' .widget-title',
+				'px'
+			);
+
+			/**
+			 * Widget Content
+			 */
+			astra_generate_outside_font_family_css(
+				'astra-settings[header-' + prefix + '-content-font-family]',
+				selector + ' .header-widget-area-inner'
+			);
+			astra_generate_font_weight_css(
+				'astra-settings[header-' + prefix + '-content-font-family]',
+				'astra-settings[header-' + prefix + '-content-font-weight]',
+				'font-weight',
+				selector + ' .header-widget-area-inner'
+			);
+			astra_css(
+				'astra-settings[header-' + prefix + '-content-transform]',
+				'text-transform',
+				selector + ' .header-widget-area-inner'
+			);
+			astra_css(
+				'astra-settings[header-' + prefix + '-content-line-height]',
+				'line-height',
+				selector + ' .header-widget-area-inner'
+			);
+			astra_css(
+				'astra-settings[header-' + prefix + '-content-letter-spacing]',
+				'letter-spacing',
+				selector + ' .header-widget-area-inner',
+				'px'
+			);
+		}
+	}
+
+	function prepare_footer_widget_preview(index) {
+
+		/**
+		 * Footer - Widget - Typography
+		 */
+
+		for ( var index = 1; index <= astTypography.component_limit; index++ ) {
+
+			var prefix = 'widget-' + index;
+			var selector = '.footer-widget-area[data-section="sidebar-widgets-footer-widget-' + index + '"]';
+
+			/**
+			 * Widget Title
+			 */
+			astra_generate_outside_font_family_css(
+				'astra-settings[footer-' + prefix + '-font-family]',
+				selector + ' .widget-title'
+			);
+			astra_generate_font_weight_css(
+				'astra-settings[footer-' + prefix + '-font-family]',
+				'astra-settings[footer-' + prefix + '-font-weight]',
+				'font-weight',
+				selector + ' .widget-title'
+			);
+			astra_css(
+				'astra-settings[footer-' + prefix + '-text-transform]',
+				'text-transform',
+				selector + ' .widget-title'
+			);
+			astra_css(
+				'astra-settings[footer-' + prefix + '-line-height]',
+				'line-height',
+				selector + ' .widget-title'
+			);
+			astra_css(
+				'astra-settings[footer-' + prefix + '-letter-spacing]',
+				'letter-spacing',
+				selector + ' .widget-title',
+				'px'
+			);
+
+			/**
+			 * Widget Content
+			 */
+			astra_generate_outside_font_family_css(
+				'astra-settings[footer-' + prefix + '-content-font-family]',
+				selector + ' .footer-widget-area-inner'
+			);
+			astra_generate_font_weight_css(
+				'astra-settings[footer-' + prefix + '-content-font-family]',
+				'astra-settings[footer-' + prefix + '-content-font-weight]',
+				'font-weight',
+				selector + ' .footer-widget-area-inner'
+			);
+			astra_css(
+				'astra-settings[footer-' + prefix + '-content-transform]',
+				'text-transform',
+				selector + ' .footer-widget-area-inner'
+			);
+			astra_css(
+				'astra-settings[footer-' + prefix + '-content-line-height]',
+				'line-height',
+				selector + ' .footer-widget-area-inner'
+			);
+			astra_css(
+				'astra-settings[footer-' + prefix + '-content-letter-spacing]',
+				'letter-spacing',
+				selector + ' .footer-widget-area-inner',
+				'px'
+			);
+		}
 	}
 
 	/**
 	 * Footer - HTML - Typography
 	 */
 
-	for ( var index = 1; index <= astTypography.footer_html_count; index++ ) {
+	for ( var index = 1; index <= astTypography.component_limit; index++ ) {
 
 		var prefix = 'html' + index;
 		var section = 'section-fb-html-' + index;
@@ -610,73 +680,79 @@
 	}
 
 	/**
-	 * Header - Socials - Typography
+	 * Header - Language switcher - Typography
 	 */
+	var lswitcher_section = 'section-hb-language-switcher';
+	var lswitcher_selector = '.ast-lswitcher-item-header';
 
-	for ( var index = 1; index <= astTypography.header_social_count; index++ ) {
+	astra_responsive_font_size(
+		'astra-settings[font-size-' + lswitcher_section + ']',
+		lswitcher_selector
+	);
+	astra_generate_outside_font_family_css(
+		'astra-settings[font-family-' + lswitcher_section + ']',
+		lswitcher_selector
+	);
+	astra_generate_font_weight_css(
+		'astra-settings[font-family-' + lswitcher_section + ']',
+		'astra-settings[font-weight-' + lswitcher_section + ']',
+		'font-weight',
+		lswitcher_selector
+	);
+	astra_css(
+		'astra-settings[text-transform-' + lswitcher_section + ']',
+		'text-transform',
+		lswitcher_selector
+	);
+	astra_css(
+		'astra-settings[line-height-' + lswitcher_section + ']',
+		'line-height',
+		lswitcher_selector
+	);
 
-		var section = 'section-hb-social-icons-' + index;
-		var selector = '.ast-builder-layout-element .ast-header-social-' + index + '-wrap';
-
-		astra_generate_outside_font_family_css(
-			'astra-settings[font-family-' + section + ']',
-			selector
-		);
-		astra_generate_font_weight_css(
-			'astra-settings[font-family-' + section + ']',
-			'astra-settings[font-weight-' + section + ']',
-			'font-weight',
-			selector
-		);
-		astra_css(
-			'astra-settings[text-transform-' + section + ']',
-			'text-transform',
-			selector
-		);
-		astra_css(
-			'astra-settings[line-height-' + section + ']',
-			'line-height',
-			selector
-		);
-	}
 
 	/**
-	 * Footer - Socials - Typography
+	 * Footer - Language switcher - Typography
 	 */
+	var lswitcher_fb_section = 'section-fb-language-switcher';
+	var lswitcher_fb_selector = '.ast-lswitcher-item-footer';
 
-	for ( var index = 1; index <= astTypography.footer_social_count; index++ ) {
-
-		var section = 'section-fb-social-icons-' + index;
-		var selector = '.ast-builder-layout-element .ast-footer-social-' + index + '-wrap';
-
-		astra_generate_outside_font_family_css(
-			'astra-settings[font-family-' + section + ']',
-			selector
-		);
-		astra_generate_font_weight_css(
-			'astra-settings[font-family-' + section + ']',
-			'astra-settings[font-weight-' + section + ']',
-			'font-weight',
-			selector
-		);
-		astra_css(
-			'astra-settings[text-transform-' + section + ']',
-			'text-transform',
-			selector
-		);
-		astra_css(
-			'astra-settings[line-height-' + section + ']',
-			'line-height',
-			selector
-		);
-	}
+	astra_responsive_font_size(
+		'astra-settings[font-size-' + lswitcher_fb_section + ']',
+		lswitcher_fb_selector
+	);
+	astra_generate_outside_font_family_css(
+		'astra-settings[font-family-' + lswitcher_fb_section + ']',
+		lswitcher_fb_selector
+	);
+	astra_generate_font_weight_css(
+		'astra-settings[font-family-' + lswitcher_fb_section + ']',
+		'astra-settings[font-weight-' + lswitcher_fb_section + ']',
+		'font-weight',
+		lswitcher_fb_selector
+	);
+	astra_css(
+		'astra-settings[text-transform-' + lswitcher_fb_section + ']',
+		'text-transform',
+		lswitcher_fb_selector
+	);
+	astra_css(
+		'astra-settings[line-height-' + lswitcher_fb_section + ']',
+		'line-height',
+		lswitcher_fb_selector
+	);
 
 	/**
 	 * Footer - Copyright - Typography
 	 */
 
-	var selector = '.ast-footer-copyright .ast-footer-html-inner';
+	var selector = '.ast-footer-copyright';
 	var section = 'section-footer-copyright';
+
+	astra_responsive_font_size(
+		'astra-settings[font-size-' + section + ']',
+		selector
+	);
 
 	astra_generate_outside_font_family_css(
 		'astra-settings[font-family-' + section + ']',
@@ -758,7 +834,7 @@
 		selector + ' .main-header-menu.ast-account-nav-menu .menu-link',
 		'px'
 	);
-	
+
 	// Login Popup Typography.
 	astra_responsive_font_size(
 		'astra-settings[' + section + '-popup-font-size]',
