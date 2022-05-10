@@ -1,3 +1,147 @@
+v3.6.8
+- Improvement: Compatibility for enhancing block editor experience. ( https://wpastra.com/docs/improved-block-editor-experience/ )
+- Fix: Builder - Search - Search markup is loaded even when the search element is not added.
+- Fix: WooCommerce - Grouped product - Add to Cart not appearing properly on Quick view.
+- Fix: Some of the Search shortcodes are not working on the posts or pages.
+- Fix: W3 validation - aria-label attribute is missing for the close icon for the Off-canvas sidebar trigger on the Shop page.
+- Fix: Sticky header meta option is not working on the frontend.
+- Fix: Custom Layout - 'Header is built using Custom Layout' notice showing in customizer even the layout's toggle is disabled.
+
+v3.6.7
+- Fix: Blog - Infinite scroll is not working with Masonry Layout.
+
+v3.6.6
+- Improvement: Removed jQuery dependency from Blog Pro Infinite Scroll addon.
+- Improvement: Removed jQuery dependency from WooCommerce Infinite Scroll addon.
+- Improvement: Added activate UAG notice in Custom Layout editor sidebar.
+- Improvement: Compatibility with PHP 8.0.
+- Fix: Gravity form checkbox not accessible when WooCommerce Quick View option is active.
+- Fix: Accessibility - href attribute is missing in the Anchor element for Scroll to top.
+- Fix: W3 validation - Removed unwanted CSS value set for content property for Quick View summary section.
+- Fix: Navigation menu was not scrollable for the sticky header.
+- Fix: Dropdown Mobile Menu - unable to open submenu on Sticky Header with Max Width - Site Layout.
+- Fix: Elementor Pro popup not triggered when WooCommerce Single Product gallery layout is set to vertical.
+- Fix: Scroll to top - Icon not appearing properly on responsive devices.
+- Fix: Inside post/page content breaking the page when Yoast SEO and Beaver Builder plugins are active.
+- Fix: Custom Layout - Inside Post Content - appearing in the sidebar.
+- Fix: Builder - Language Switcher - WPML - all langauges appearing as active.
+
+v3.6.5
+- Fix: Custom Layout's meta fields not saving when editor type is Code Editor.
+
+v3.6.4
+- New: Added feature to enable or disable specific Custom Layout. ( https://wpastra.com/docs/custom-layouts-pro/ )
+- Improvement: Added easy filtering tabs for custom layouts lists.
+- Improvement: Moved Custom Layout existing settings into a separate Gutenberg sidebar panel.
+- Improvement: Add Custom Layouts on pages/posts using shortcode feature.
+- Fix: Image field error in the CreativeWork Type.
+- Fix: Removed unwanted title and desc tag present for search icon.
+
+v3.6.3
+- Improvement: Added compatibility for Elementor Pro v3.5.0 WooCommerce widgets.
+
+v3.6.2
+- Improvement: Code refactor – Some filters, functions, hooks are deprecated and replaced with astra_addon_ prefix NamingConvention. ( https://wpastra.com/docs/deprecated-astra-hooks/ )
+- Fix: W3 validation - Getting duplicate H1 tag for 'site-title' in case of Sticky header.
+- Fix: W3 validation - CSS parse error for search icon height.
+- Fix: W3 validation - Duplicate ID: '#ast-hf-mobile-menu'.
+- Fix: W3 validation - Duplicate HTML id '#site-navigation' in case of multiple menus on a single page.
+- Fix: Builder - Menu - Transparent header's submenu background color not overridden by Sticky header's submenu background color.
+- Fix: Builder - Search - Placeholder was not reflecting on frontend when changing from customizer in Search box style.
+- Fix: Search input field border color was not changing when hovered on search icon for Slide Search style.
+- Fix: Builder – Language Switcher – Element's language options overlapping on one another.
+- Fix: Flyout menu reoccurs when clicked on close icon for Old Header on iPhone devices.
+
+v3.6.1
+- New: Rollback to previous versions feature for the theme and addon.
+
+v3.6.0
+- Improvement: Moved heading color options to Global Colors section.
+- Fix: Backward compatibility for Content Background option with the theme.
+
+v3.6.0-beta.1
+- Improvement: Content background option is removed and will be available with the free Astra Theme.
+- Improvement: Typography options for Heading H4 to H6 are now moved to the free Astra Theme.
+
+v3.5.9
+- Improvement: Astra menu settings button made accessible to users with 'edit-theme-options' capability.
+- Improvement: Clear asset cache of theme and addon on every new update of the addon.
+- Improvement: WooCommerce & EDD cart - Introducing Cart product count color option.
+- Fix: Fatal error `Uncaught Error: Call to undefined function astra_get_tablet_breakpoint()` in some cases.
+- Fix: Search - Added Accessibility for Search Box style of Search Button.
+- Fix: EDD - Cart count is overlapping on the submenu section.
+- Fix: Builder - Account Element - Sticky header menu color not working.
+- Fix: Builder - Account Element - Menu Font not working.
+- Fix: Builder - Account Element - Deprecated responsive options for menu colors.
+- Fix: Builder - Account Element - Login menu notice only visible when WooCommerce or Lifter LMS plugin activated.
+- Fix: Sticky Header shrink option not working in new Header/Footer builder.
+
+v3.5.8
+- Fix: Previous & Next arrow icons not appearing for product gallery in Quick View layout.
+- Fix: Compatibility with WPML plugin version 4.5.
+- Fix: Console error while editing in the beaver builder editor view when "CSS File Generation" is enabled with Ultimate Addons for Beaver Builder plugin.
+- Deprecated: Header Footer Widgets - Deprecated design specific sticky header options for better compatibility with WordPress 5.8. ( https://wpastra.com/docs/enable-astra-widget-design-options/ )
+
+v3.5.7
+- Security Fix: Replaced AJAX post request with simple JS request for Infinite pagination from WooCommerce & Blog Pro addon.
+- Fix: Builder - Submenu & sticky header colors not working if "Header Sections" addon is deactivated from old header. ( https://wpastra.com/docs/editing-submenu-above-below-header-fix/ )
+- Fix: Search - In 'Search Box' style search icon missing when Astra CSS icons available on site.
+- Fix: Category archive title showing extra 1em space around when "Add Space Between Posts" option is disabled.
+- Fix: Showing old footer copyright section on checkout page when distraction free checkout option is enabled for WooCommercce, EDD and LifterLMS.
+- Fix: Stack On option for footer Social Icons not reflecting correctly as per setting in customizer.
+- Fix: Search icon color is not applying to the Sticky Header Search Box style.
+- Fix: Builder - WooCommerce & EDD cart - Outline cart type has transparent background. ( https://wpastra.com/docs/fix-transparent-woocommerce-cart/ )
+- Fix: Page Headers and Custom Layouts for specific Pages/ Posts/ Taxonomies, etc. do not work in customizer.
+- Fix: Swap Section feature not working for mobile in Old Header Footer. ( https://wpastra.com/docs/fix-swap-sections-not-working/ )
+- Deprecated: Filter 'astra_infinite_pagination_post_type' deprecated as AJAX request handled by simple JS request. ( https://wpastra.com/docs/restrict-search-results-post/ )
+
+v3.5.6
+- Fix: Fatal error on the widgets page when Learndash module is active.
+
+v3.5.5
+- Fix: Customizer not working due to conflict with block editor JS.
+
+v3.5.4
+- Fix: WooCommerce - Infinite Posts scroll event showing duplicate products in AJAX search results.
+
+v3.5.3
+- Fix: WooCommerce & Blog - Infinite Posts showing different taxonomy's products on category or tag archive pages.
+
+v3.5.2
+- Security Fix: Sanitized AJAX query_vars for Infinite Scroll actions.
+
+v3.5.1
+- Improvement: Added headings font-weight support to widget-title headings. (https://wpastra.com/docs/font-weight-for-widget-titles/)
+- Improvement: Removed jQuery dependency in Scroll To Top addon.
+- Improvement: Custom Layout - Added close button for multiselect selected items for Display On field.
+- Fix: Builder - Account Element - Sticky Icon Color creates color patch on sticky header active.
+- Fix: Builder - WooCommerce cart - 0 Border width count removes default cart icon's border.
+- Fix: WooCommerce cart - Color option not working in old header layout.
+- Fix: Megamenu - Clicking on any item causes a short gray blink on the items in other columns.
+- Fix: Customizer's font & color settings not reflecting in Gutenberg editor. (https://wpastra.com/astra-3-6/)
+- Fix: 'Page Header: Center Aligned' layout not working for new users.
+- Fix: Core Web Vitals - WooCommerce add to cart plus/minus buttons increasing CLS score.
+- Fix: Sticky Header - Transition effect of headers when Shrink Effect is enabled.
+
+v3.5.0
+- Improvement: Frontend optimization by reducing static CSS and loading it conditionally. (https://wpastra.com/astra-3-5/)
+- Fix: Version compare updated to v3.5.0 to support Site Title & Tagline pro color controls dependency.
+
+v3.5.0-beta.1
+- Improvement: Added compatibility for upcoming 'Ultimate addons for Gutenberg' plugin version 1.23.0 and above.
+- Improvement: Separate out options for outside item color controls in sticky header.
+- Improvement: Separate out options for outside item color controls in sticky header.
+- Fix: Builder - WooCommerce cart - Empty icons visible along with SVG icons in builder cart element.
+- Fix: Spacing options visible in Single Post customizer section even though Spacing addon is disabled.
+- Fix: Removed unwanted dividers from customizer setting sections.
+- Fix: Builder - Menu - Arrow icon visible aside to Mega Menu Highlight text.
+- Fix: JS console error on click of WooCommerce Off-Canvas close icon.
+
+v3.4.2
+- New: Builder - WooCommerce & EDD Cart - Border width option for cart outline style. (https://wpastra.com/docs/remove-border-around-cart/)
+- Fix: WooCommerce - Grid column layout not working for upsell products.
+- Fix: Builder - WooCommerce & EDD cart - double icon appearing when icon selected from Addon.
+
 v3.4.1
 - Fix: Fatal error `Uncaught Error: Class 'Astra_Builder_Helper'` not found when footer build with custom layout.
 

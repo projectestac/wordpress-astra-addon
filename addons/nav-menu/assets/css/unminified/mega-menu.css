@@ -30,7 +30,6 @@
 
 .ast-desktop .ast-mega-menu-enabled .astra-megamenu-li .astra-megamenu-focus .menu-item > .menu-link {
   background-color: transparent;
-  color: inherit;
 }
 
 .ast-desktop .ast-mega-menu-enabled .astra-megamenu-li .astra-megamenu.astra-megamenu-focus {
@@ -422,6 +421,27 @@
 .ast-desktop .astra-mega-menu-width-full,
 .ast-desktop .astra-mega-menu-width-full-stretched {
   background: transparent;
+}
+
+.ast-desktop .main-header-menu > .menu-item .astra-full-megamenu-wrapper:before {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(-100%);
+}
+
+.ast-desktop .main-header-menu.ast-menu-shadow .astra-full-megamenu-wrapper .sub-menu {
+  box-shadow: none;
+}
+
+.ast-desktop .main-header-menu.ast-menu-shadow .astra-megamenu .sub-menu {
+  box-shadow: none;
+}
+
+.ast-desktop .main-header-menu.ast-menu-shadow .astra-full-megamenu-wrapper {
+  box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.1);
 }
 
 .ast-header-break-point .main-navigation .sub-menu .menu-item .ast-hide-menu-item,

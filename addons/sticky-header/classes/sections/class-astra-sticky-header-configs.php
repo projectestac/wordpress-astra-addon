@@ -24,7 +24,10 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 	/**
 	 * Register Sticky Header Customizer Configurations.
 	 */
+	// @codingStandardsIgnoreStart
 	class Astra_Sticky_Header_Configs extends Astra_Customizer_Config_Base {
+ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+		// @codingStandardsIgnoreEnd
 
 		/**
 		 * Register Sticky Header Customizer Configurations.
@@ -410,55 +413,6 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'context'  => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
 								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 						),
-						/**
-						* Option: Sticky Site Identity Heading
-						*/
-						array(
-							'name'     => ASTRA_THEME_SETTINGS . '[sticky-site-identity-options]',
-							'type'     => 'control',
-							'control'  => 'ast-heading',
-							'section'  => 'title_tagline',
-							'title'    => __( 'Sticky Header Options', 'astra-addon' ),
-							'settings' => array(),
-							'priority' => 20,
-							'context'  => array(
-								'relation' => 'AND',
-								astra_addon_builder_helper()->design_tab_config,
-								array(
-									'relation' => 'OR',
-									array(
-										'setting'  => ASTRA_THEME_SETTINGS . '[display-site-title]',
-										'operator' => '==',
-										'value'    => true,
-									),
-									array(
-										'setting'  => ASTRA_THEME_SETTINGS . '[display-site-tagline]',
-										'operator' => '==',
-										'value'    => true,
-									),
-								),
-							),
-						),
-
-						array(
-							'name'      => ASTRA_THEME_SETTINGS . '[sticky-site-identity-title-color-group]',
-							'default'   => astra_get_option( 'sticky-site-identity-title-color-group' ),
-							'type'      => 'control',
-							'control'   => 'ast-color-group',
-							'title'     => __( 'Title Color', 'astra-addon' ),
-							'section'   => 'title_tagline',
-							'transport' => 'postMessage',
-							'priority'  => 21,
-							'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
-							'context'   => array(
-								astra_addon_builder_helper()->design_tab_config,
-								array(
-									'setting'  => ASTRA_THEME_SETTINGS . '[display-site-title]',
-									'operator' => '==',
-									'value'    => true,
-								),
-							),
-						),
 
 						// Option: Site Title Color.
 						array(
@@ -481,27 +435,6 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'default' => astra_get_option( 'sticky-header-builder-site-title-h-color' ),
 							'title'   => __( 'Hover', 'astra-addon' ),
 						),
-						// Option: Site Tagline Color.
-						array(
-							'name'              => ASTRA_THEME_SETTINGS . '[sticky-header-builder-site-tagline-color]',
-							'type'              => 'control',
-							'control'           => 'ast-color',
-							'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
-							'priority'          => 22,
-							'transport'         => 'postMessage',
-							'default'           => astra_get_option( 'sticky-header-builder-site-tagline-color' ),
-							'title'             => __( 'Tagline', 'astra-addon' ),
-							'section'           => 'title_tagline',
-							'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
-							'context'           => array(
-								astra_addon_builder_helper()->design_tab_config,
-								array(
-									'setting'  => ASTRA_THEME_SETTINGS . '[display-site-tagline]',
-									'operator' => '==',
-									'value'    => true,
-								),
-							),
-						),
 
 						array(
 							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-bg-color-responsive]',
@@ -518,6 +451,212 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 						),
 					);
+
+					if ( astra_addon_check_theme_3_5_0_version() ) {
+						array_push(
+							$sticky_individual_configs,
+							/**
+							* Option: Sticky Site Identity Heading
+							*/
+							array(
+								'name'     => ASTRA_THEME_SETTINGS . '[sticky-site-identity-options]',
+								'type'     => 'control',
+								'control'  => 'ast-heading',
+								'section'  => 'title_tagline',
+								'title'    => __( 'Sticky Header Options', 'astra-addon' ),
+								'settings' => array(),
+								'priority' => 20,
+								'context'  => array(
+									'relation' => 'AND',
+									astra_addon_builder_helper()->design_tab_config,
+									array(
+										'relation' => 'OR',
+										array(
+											'setting'  => ASTRA_THEME_SETTINGS . '[display-site-title]',
+											'operator' => '==',
+											'value'    => true,
+										),
+										array(
+											'setting'  => ASTRA_THEME_SETTINGS . '[display-site-tagline]',
+											'operator' => '==',
+											'value'    => true,
+										),
+									),
+								),
+							),
+							array(
+								'name'      => ASTRA_THEME_SETTINGS . '[sticky-site-identity-title-color-group]',
+								'default'   => astra_get_option( 'sticky-site-identity-title-color-group' ),
+								'type'      => 'control',
+								'control'   => 'ast-color-group',
+								'title'     => __( 'Title Color', 'astra-addon' ),
+								'section'   => 'title_tagline',
+								'transport' => 'postMessage',
+								'priority'  => 21,
+								'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+								'context'   => array(
+									astra_addon_builder_helper()->design_tab_config,
+									array(
+										'setting'  => ASTRA_THEME_SETTINGS . '[display-site-title]',
+										'operator' => '==',
+										'value'    => true,
+									),
+								),
+							),
+							// Option: Site Tagline Color.
+							array(
+								'name'              => ASTRA_THEME_SETTINGS . '[sticky-header-builder-site-tagline-color]',
+								'type'              => 'control',
+								'control'           => 'ast-color',
+								'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+								'priority'          => 22,
+								'transport'         => 'postMessage',
+								'default'           => astra_get_option( 'sticky-header-builder-site-tagline-color' ),
+								'title'             => __( 'Tagline', 'astra-addon' ),
+								'section'           => 'title_tagline',
+								'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
+								'context'           => array(
+									astra_addon_builder_helper()->design_tab_config,
+									array(
+										'setting'  => ASTRA_THEME_SETTINGS . '[display-site-tagline]',
+										'operator' => '==',
+										'value'    => true,
+									),
+								),
+							)
+						);
+					} else {
+						array_push(
+							$sticky_individual_configs,
+							/**
+							* Option: Sticky Site Identity Heading
+							*/
+							array(
+								'name'     => ASTRA_THEME_SETTINGS . '[sticky-site-identity-options]',
+								'type'     => 'control',
+								'control'  => 'ast-heading',
+								'section'  => 'title_tagline',
+								'title'    => __( 'Sticky Header Options', 'astra-addon' ),
+								'settings' => array(),
+								'priority' => 20,
+								'context'  => array(
+									'relation' => 'AND',
+									astra_addon_builder_helper()->design_tab_config,
+									array(
+										'relation' => 'OR',
+										array(
+											'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+											'setting-key' => 'desktop',
+											'operator'    => '==',
+											'value'       => true,
+										),
+										array(
+											'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+											'setting-key' => 'tablet',
+											'operator'    => '==',
+											'value'       => true,
+										),
+										array(
+											'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+											'setting-key' => 'mobile',
+											'operator'    => '==',
+											'value'       => true,
+										),
+										array(
+											'setting'     => ASTRA_THEME_SETTINGS . '[display-site-tagline-responsive]',
+											'setting-key' => 'desktop',
+											'operator'    => '==',
+											'value'       => true,
+										),
+										array(
+											'setting'     => ASTRA_THEME_SETTINGS . '[display-site-tagline-responsive]',
+											'setting-key' => 'tablet',
+											'operator'    => '==',
+											'value'       => true,
+										),
+										array(
+											'setting'     => ASTRA_THEME_SETTINGS . '[display-site-tagline-responsive]',
+											'setting-key' => 'mobile',
+											'operator'    => '==',
+											'value'       => true,
+										),
+									),
+								),
+							),
+							array(
+								'name'      => ASTRA_THEME_SETTINGS . '[sticky-site-identity-title-color-group]',
+								'default'   => astra_get_option( 'sticky-site-identity-title-color-group' ),
+								'type'      => 'control',
+								'control'   => 'ast-color-group',
+								'title'     => __( 'Title Color', 'astra-addon' ),
+								'section'   => 'title_tagline',
+								'transport' => 'postMessage',
+								'priority'  => 21,
+								'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
+								'context'   => array(
+									astra_addon_builder_helper()->design_tab_config,
+									array(
+										'relation' => 'OR',
+										array(
+											'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+											'setting-key' => 'desktop',
+											'operator'    => '==',
+											'value'       => true,
+										),
+										array(
+											'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+											'setting-key' => 'tablet',
+											'operator'    => '==',
+											'value'       => true,
+										),
+										array(
+											'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+											'setting-key' => 'mobile',
+											'operator'    => '==',
+											'value'       => true,
+										),
+									),
+								),
+							),
+							// Option: Site Tagline Color.
+							array(
+								'name'              => ASTRA_THEME_SETTINGS . '[sticky-header-builder-site-tagline-color]',
+								'type'              => 'control',
+								'control'           => 'ast-color',
+								'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+								'priority'          => 22,
+								'transport'         => 'postMessage',
+								'default'           => astra_get_option( 'sticky-header-builder-site-tagline-color' ),
+								'title'             => __( 'Tagline', 'astra-addon' ),
+								'section'           => 'title_tagline',
+								'divider'           => array( 'ast_class' => 'ast-bottom-divider' ),
+								'context'           => array(
+									astra_addon_builder_helper()->design_tab_config,
+									array(
+										'relation' => 'OR',
+										array(
+											'setting'     => ASTRA_THEME_SETTINGS . '[display-site-tagline-responsive]',
+											'setting-key' => 'desktop',
+											'operator'    => '==',
+											'value'       => true,
+										),
+										array(
+											'setting'     => ASTRA_THEME_SETTINGS . '[display-site-tagline-responsive]',
+											'setting-key' => 'tablet',
+											'operator'    => '==',
+											'value'       => true,
+										),
+										array(
+											'setting'     => ASTRA_THEME_SETTINGS . '[display-site-tagline-responsive]',
+											'setting-key' => 'mobile',
+											'operator'    => '==',
+											'value'       => true,
+										),
+									),
+								),
+							)
+						);
+					}
 
 					$sticky_menu_configs = array();
 
@@ -1144,6 +1283,10 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'transport'  => 'postMessage',
 							'control'    => 'ast-responsive-color',
 							'title'      => __( 'Text', 'astra-addon' ),
+							'divider'    => array(
+								'ast_class' => 'ast-top-divider',
+								'ast_title' => __( 'Content', 'astra-addon' ),
+							),
 							'responsive' => true,
 							'rgba'       => true,
 							'priority'   => 135,
@@ -1167,7 +1310,26 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'context'    => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
 								astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 						),
-
+						/**
+						 * Option: Content Section Text color.
+						 */
+						array(
+							'name'       => ASTRA_THEME_SETTINGS . '[sticky-header-content-section-text-color-responsive]',
+							'default'    => astra_get_option( 'sticky-header-content-section-text-color-responsive' ),
+							'type'       => 'control',
+							'priority'   => 105,
+							'section'    => 'section-sticky-header',
+							'control'    => 'ast-responsive-color',
+							'transport'  => 'postMessage',
+							'title'      => __( 'Text', 'astra-addon' ),
+							'responsive' => true,
+							'rgba'       => true,
+							'divider'    => array(
+								'ast_class' => 'ast-top-divider',
+								'ast_title' => __( 'Outside Item', 'astra-addon' ),
+							),
+							'context'    => astra_addon_builder_helper()->is_header_footer_builder_active ? astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
+						),
 						/**
 						 * Option: Sticky Header primary Color Group
 						 */
@@ -1176,7 +1338,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'default'    => astra_get_option( 'sticky-header-primary-outside-item-colors' ),
 							'type'       => 'control',
 							'control'    => Astra_Theme_Extension::$group_control,
-							'title'      => __( 'Outside Item', 'astra-addon' ),
+							'title'      => __( 'Link', 'astra-addon' ),
 							'section'    => 'section-sticky-header',
 							'transport'  => 'postMessage',
 							'priority'   => 105,
@@ -1193,7 +1355,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Configs' ) ) {
 							'default'    => astra_get_option( 'sticky-header-above-outside-item-link-colors' ),
 							'type'       => 'control',
 							'control'    => Astra_Theme_Extension::$group_control,
-							'title'      => __( 'Content Link', 'astra-addon' ),
+							'title'      => __( 'Link', 'astra-addon' ),
 							'section'    => 'section-sticky-header',
 							'transport'  => 'postMessage',
 							'priority'   => 75,

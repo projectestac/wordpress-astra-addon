@@ -13,7 +13,10 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Loader' ) ) {
 	 *
 	 * @since 1.0.0
 	 */
+	// @codingStandardsIgnoreStart
 	class Astra_Ext_Sticky_Header_Loader {
+ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+		// @codingStandardsIgnoreEnd
 
 		/**
 		 * Member Variable
@@ -378,53 +381,52 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Loader' ) ) {
 			/**
 			 * Register Panel & Sections
 			 */
-			require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/class-astra-sticky-header-panels-configs.php';
+			require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/class-astra-sticky-header-panels-configs.php';
 
 			/**
 			 * Sections
 			 */
-			require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-configs.php';
+			require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-configs.php';
 
-			require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-colors-bg-configs.php';
+			require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-colors-bg-configs.php';
 
 			// Header Sections.
-			require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-sections-configs.php';
+			require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-sections-configs.php';
 
 			// Check Header Sections is activated.
-			if ( Astra_Ext_Extension::is_active( 'header-sections' ) ) {
-
-				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-above-header-colors-bg-configs.php';
-				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-below-header-colors-bg-configs.php';
-			}
+			require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-above-header-colors-bg-configs.php';
+			require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-below-header-colors-bg-configs.php';
 
 			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
 				// Button Sticky Configs.
-				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-button-configs.php';
+				require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-button-configs.php';
 
 				// Social Sticky Configs.
-				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-social-configs.php';
+				require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-social-configs.php';
 
 				// Search Sticky Configs.
-				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-search-configs.php';
+				require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-search-configs.php';
 
 				// HTML Sticky Configs.
-				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-html-configs.php';
+				require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-html-configs.php';
 
-				// Widget Sticky Configs.
-				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-widget-configs.php';
+				if ( ! astra_addon_remove_widget_design_options() ) {
+					// Widget Sticky Configs.
+					require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-widget-configs.php';
+				}
 
 				// Divider Sticky Configs.
-				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-divider-configs.php';
+				require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-divider-configs.php';
 
 				// Language-switcher Sticky Configs.
-				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-language-switcher-configs.php';
+				require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-language-switcher-configs.php';
 
 				// Account Sticky Configs.
-				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-account-configs.php';
+				require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-account-configs.php';
 
 				// Menu Toggle Sticky Configs.
-				require_once ASTRA_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-toggle-configs.php';
+				require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-toggle-configs.php';
 			}
 		}
 
@@ -432,21 +434,23 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Loader' ) ) {
 		 * Customizer Preview
 		 */
 		public function preview_scripts() {
-			wp_register_script( 'astra-sticky-header-customizer-preview-js', ASTRA_EXT_STICKY_HEADER_URI . 'assets/js/unminified/customizer-preview.js', array( 'customize-preview', 'astra-customizer-preview-js' ), ASTRA_EXT_VER, true );
+			wp_register_script( 'astra-sticky-header-customizer-preview-js', ASTRA_ADDON_EXT_STICKY_HEADER_URI . 'assets/js/unminified/customizer-preview.js', array( 'customize-preview', 'astra-customizer-preview-js' ), ASTRA_EXT_VER, true );
 
 			$sticky_header_style   = astra_get_option( 'sticky-header-style' );
 			$sticky_hide_on_scroll = astra_get_option( 'sticky-hide-on-scroll' );
 
 			$localize_array = array(
-				'stickyHeaderStyle'  => $sticky_header_style,
-				'stickyHideOnScroll' => $sticky_hide_on_scroll,
-				'component_limit'    => astra_addon_builder_helper()->component_limit,
-				'is_flex_based_css'  => Astra_Addon_Builder_Helper::apply_flex_based_css(),
+				'stickyHeaderStyle'     => $sticky_header_style,
+				'stickyHideOnScroll'    => $sticky_hide_on_scroll,
+				'component_limit'       => astra_addon_builder_helper()->component_limit,
+				'is_flex_based_css'     => Astra_Addon_Builder_Helper::apply_flex_based_css(),
+				'header_builder_active' => astra_addon_builder_helper()->is_header_footer_builder_active,
+				'sticky_header_style'   => astra_get_option_meta( 'sticky-header-style' ),
+				'sticky_hide_on_scroll' => astra_get_option_meta( 'sticky-hide-on-scroll' ),
+
 			);
 
 			wp_localize_script( 'astra-sticky-header-customizer-preview-js', 'astSticky', $localize_array );
-			wp_localize_script( 'astra-sticky-header-customizer-preview-js', 'astraAddon', apply_filters( 'astra_addon_js_localize', array() ) );
-
 			wp_enqueue_script( 'astra-sticky-header-customizer-preview-js' );
 
 		}

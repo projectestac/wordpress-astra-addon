@@ -5,7 +5,7 @@
  * @package Astra Addon
  */
 
-add_filter( 'astra_dynamic_css', 'astra_edd_dynamic_css' );
+add_filter( 'astra_addon_dynamic_css', 'astra_edd_dynamic_css' );
 
 /**
  * Dynamic CSS
@@ -69,13 +69,18 @@ function astra_edd_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 	$checkout_width        = astra_get_option( 'edd-checkout-content-width' );
 	$checkout_custom_width = astra_get_option( 'edd-checkout-content-max-width' );
 
-	$header_cart_icon_style  = astra_get_option( 'edd-header-cart-icon-style' );
-	$header_cart_icon_color  = astra_get_option( 'edd-header-cart-icon-color', $theme_color );
-	$header_cart_icon_radius = astra_get_option( 'edd-header-cart-icon-radius' );
-	$cart_h_color            = astra_get_foreground_color( $header_cart_icon_color );
+	$header_cart_icon_style    = astra_get_option( 'edd-header-cart-icon-style' );
+	$header_cart_icon_color    = astra_get_option( 'edd-header-cart-icon-color', $theme_color );
+	$header_cart_icon_radius   = astra_get_option( 'edd-header-cart-icon-radius' );
+	$cart_h_color              = astra_get_foreground_color( $header_cart_icon_color );
+	$cart_products_count_color = astra_get_option( 'edd-header-cart-product-count-color', astra_get_foreground_color( $theme_color ) );
 
 	// Default headings font family.
 	$headings_font_family = astra_get_option( 'headings-font-family' );
+
+	// Supporting color setting for default icon as well.
+	$can_update_cart_color   = Astra_Addon_Update_Filter_Function::astra_cart_color_default_icon_old_header();
+	$header_cart_count_color = ( $can_update_cart_color ) ? $header_cart_icon_color : $theme_color;
 
 	/**
 	 * Set font sizes
@@ -89,12 +94,12 @@ function astra_edd_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 			'padding-right'  => astra_get_css_value( $btn_h_padding, 'px' ),
 		),
 
-		'.ast-edd-site-header-cart span.astra-icon:after' => array(
-			'background' => $theme_color,
-			'color'      => astra_get_foreground_color( $theme_color ),
+		'.ast-edd-site-header-cart .ast-addon-cart-wrap span.astra-icon:after' => array(
+			'background' => $header_cart_count_color,
+			'color'      => $cart_products_count_color,
 		),
 
-		'.single-download .entry-title'                   => array(
+		'.single-download .entry-title'       => array(
 			'font-size'      => astra_responsive_font( $product_title_font_size, 'desktop' ),
 			'line-height'    => esc_attr( $product_title_line_height ),
 			'font-weight'    => astra_get_css_value( $product_title_font_weight, 'font' ),
@@ -103,7 +108,7 @@ function astra_edd_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 			'color'          => esc_attr( $product_title_color ),
 		),
 		// Single Product Content.
-		'.single-download .entry-content'                 => array(
+		'.single-download .entry-content'     => array(
 			'font-size'      => astra_responsive_font( $product_content_font_size, 'desktop' ),
 			'line-height'    => esc_attr( $product_content_line_height ),
 			'font-weight'    => astra_get_css_value( $product_content_font_weight, 'font' ),
@@ -129,7 +134,7 @@ function astra_edd_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 			'color'       => esc_attr( $edd_archive_product_price_color ),
 		),
 
-		'.single-download .post-navigation a'             => array(
+		'.single-download .post-navigation a' => array(
 			'color' => esc_attr( $product_navigation_color ),
 		),
 
@@ -143,6 +148,12 @@ function astra_edd_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 		),
 
 	);
+
+	if ( false === astra_addon_builder_helper()->is_header_footer_builder_active && $can_update_cart_color && 'default' === astra_get_option( 'edd-header-cart-icon' ) ) {
+		$css_output['.ast-edd-site-header-cart .ast-edd-cart-container, .ast-edd-site-header-cart a:focus, .ast-edd-site-header-cart a:hover'] = array(
+			'color' => $header_cart_icon_color,
+		);
+	}
 
 	/* Parse CSS from array() */
 	$css_output = astra_parse_css( $css_output );
@@ -170,7 +181,7 @@ function astra_edd_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 	/**
 	 * Header Cart color
 	 */
-	if ( 'none' != $header_cart_icon_style ) {
+	if ( 'none' !== $header_cart_icon_style ) {
 
 		$header_cart_icon = array();
 
@@ -193,6 +204,35 @@ function astra_edd_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 				'padding' => esc_attr( '0 .6em' ),
 			);
 
+			// We adding this conditional CSS only to maintain backwards. Remove this condition after 2-3 updates of theme.
+			if ( version_compare( ASTRA_THEME_VERSION, '3.4.3', '>=' ) ) {
+				$add_background_outline_cart  = Astra_Addon_Update_Filter_Function::astra_add_bg_color_outline_cart_header_builder();
+				$border_width                 = astra_get_option( 'edd-header-cart-border-width' );
+				$trans_header_cart_icon_color = astra_get_option( 'transparent-header-edd-cart-icon-color', $theme_color );
+
+				// Outline cart style border.
+				$header_cart_icon['.ast-edd-menu-cart-outline .ast-addon-cart-wrap'] = array(
+					'border-width' => astra_get_css_value( $border_width, 'px' ),
+					'border-style' => 'solid',
+					'border-color' => esc_attr( $header_cart_icon_color ),
+				);
+
+				// Transparent header outline cart style.
+				$header_cart_icon['.ast-theme-transparent-header .ast-edd-menu-cart-outline .ast-addon-cart-wrap'] = array(
+					'border-width' => astra_get_css_value( $border_width, 'px' ),
+					'border-style' => 'solid',
+					'border-color' => esc_attr( $trans_header_cart_icon_color ),
+				);
+
+				if ( $add_background_outline_cart ) {
+					$header_cart_icon['.ast-edd-menu-cart-outline .ast-addon-cart-wrap'] = array(
+						'border-width' => astra_get_css_value( $border_width, 'px' ),
+						'border-style' => 'solid',
+						'border-color' => esc_attr( $header_cart_icon_color ),
+						'background'   => '#ffffff',
+					);
+				}
+			}
 		} else {
 
 			/**
@@ -226,6 +266,21 @@ function astra_edd_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 					'border-radius' => astra_get_css_value( $header_cart_icon_radius, 'px' ),
 				),
 			);
+
+			// We adding this conditional CSS only to maintain backwards. Remove this condition after 2-3 updates of theme.
+			if ( version_compare( ASTRA_THEME_VERSION, '3.4.3', '>=' ) ) {
+				$border_width = astra_get_option( 'edd-header-cart-border-width' );
+
+				// Outline icon colors.
+				$header_cart_icon['.ast-edd-menu-cart-outline .ast-addon-cart-wrap'] = array(
+					'background'   => '#ffffff',
+					'border-width' => astra_get_css_value( $border_width, 'px' ),
+					'border-style' => 'solid',
+					'border-color' => esc_attr( $header_cart_icon_color ),
+					'color'        => esc_attr( $header_cart_icon_color ),
+				);
+			}
+
 			/**
 			 * Header Cart Icon colors
 			 */
@@ -311,4 +366,3 @@ function astra_edd_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 	return $dynamic_css . $css_output;
 
 }
-

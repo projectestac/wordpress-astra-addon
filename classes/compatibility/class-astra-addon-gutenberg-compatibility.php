@@ -50,110 +50,127 @@ class Astra_Addon_Gutenberg_Compatibility extends Astra_Addon_Page_Builder_Compa
 
 		wp_enqueue_style( 'wp-block-library' );
 
-		if ( class_exists( 'UAGB_Helper' ) && class_exists( 'UAGB_Config' ) ) {
-
-			/**
-			 * Load UAG styles and scripts assets.
-			 *
-			 * @since 2.5.1
-			 */
-			if ( defined( 'UAGB_VER' ) && version_compare( UAGB_VER, '1.14.11', '>=' ) ) {
-				$uag_post_meta = get_post_meta( $post_id, 'uag_style_timestamp-css', true );
+		if ( defined( 'UAGB_VER' ) ) {
+			if ( version_compare( UAGB_VER, '1.23.0', '>=' ) && class_exists( 'UAGB_Post_Assets' ) ) {
+				$post_assets = new UAGB_Post_Assets( $post_id );
+				$post_assets->enqueue_scripts();
 			} else {
-				$uag_post_meta = get_post_meta( $post_id, 'uagb_style_timestamp-css', true );
-			}
+				/**
+				 * We can keep this compatibility for some releases and after few releases we need to remove it.
+				 *
+				 * @since 3.5.0
+				 */
+				if ( class_exists( 'UAGB_Helper' ) && class_exists( 'UAGB_Config' ) ) {
 
-			/**
-			 * Set flag to load UAG assets.
-			 *
-			 * Resolving this to manage "UAG styles not load in some cases for Custom Layouts".
-			 *
-			 * @since 2.6.0
-			 */
-			$uag_is_active        = false;
-			$current_post         = get_post( $post_id, OBJECT );
-			$uagb_helper_instance = UAGB_Helper::get_instance();
+					/**
+					 * Load UAG styles and scripts assets.
+					 *
+					 * @since 2.5.1
+					 */
+					if ( version_compare( UAGB_VER, '1.14.11', '>=' ) ) {
+						$uag_post_meta = get_post_meta( $post_id, 'uag_style_timestamp-css', true );
+					} else {
+						$uag_post_meta = get_post_meta( $post_id, 'uagb_style_timestamp-css', true );
+					}
 
-			if ( $uag_post_meta ) {
-				$uag_is_active = true;
-			} else {
-				$uag_helper_parse_func      = array( $uagb_helper_instance, 'parse' );
-				$uag_helper_get_assets_func = array( $uagb_helper_instance, 'get_assets' );
+					/**
+					 * Set flag to load UAG assets.
+					 *
+					 * Resolving this to manage "UAG styles not load in some cases for Custom Layouts".
+					 *
+					 * @since 2.6.0
+					 */
+					$uag_is_active        = false;
+					$current_post         = get_post( $post_id, OBJECT );
+					$uagb_helper_instance = UAGB_Helper::get_instance();
 
-				if ( is_callable( $uag_helper_parse_func ) && is_callable( $uag_helper_get_assets_func ) ) {
-
-					$post_blocks     = $uagb_helper_instance->parse( $current_post->post_content );
-					$post_uag_assets = $uagb_helper_instance->get_assets( $post_blocks );
-
-					if ( ! empty( $post_uag_assets['css'] ) ) {
-
+					if ( $uag_post_meta ) {
 						$uag_is_active = true;
+					} else {
+						$uag_helper_parse_func      = array( $uagb_helper_instance, 'parse' );
+						$uag_helper_get_assets_func = array( $uagb_helper_instance, 'get_assets' );
 
-						$active_gutenberg_blocks = parse_blocks( $current_post->post_content );
-						$used_uag_elements       = $this->get_active_uag_blocks( $active_gutenberg_blocks );
+						if ( is_callable( $uag_helper_parse_func ) && is_callable( $uag_helper_get_assets_func ) ) {
 
-						if ( ! empty( $used_uag_elements ) ) {
-							add_action(
-								'wp_enqueue_scripts',
-								function() use ( $current_post, $used_uag_elements ) {
+							$post_blocks     = $uagb_helper_instance->parse( $current_post->post_content );
+							$post_uag_assets = $uagb_helper_instance->get_assets( $post_blocks );
 
-									if ( has_blocks( $current_post ) ) {
+							if ( ! empty( $post_uag_assets['css'] ) ) {
 
-										$uag_blocks       = UAGB_Config::get_block_attributes();
-										$uag_block_assets = UAGB_Config::get_block_assets();
+								$uag_is_active = true;
 
-										foreach ( $used_uag_elements as $key => $curr_block_name ) {
+								$active_gutenberg_blocks = parse_blocks( $current_post->post_content );
+								$used_uag_elements       = $this->get_active_uag_blocks( $active_gutenberg_blocks );
 
-											$js_assets  = ( isset( $uag_blocks[ $curr_block_name ]['js_assets'] ) ) ? $uag_blocks[ $curr_block_name ]['js_assets'] : array();
-											$css_assets = ( isset( $uag_blocks[ $curr_block_name ]['css_assets'] ) ) ? $uag_blocks[ $curr_block_name ]['css_assets'] : array();
+								if ( ! empty( $used_uag_elements ) ) {
+									add_action(
+										'wp_enqueue_scripts',
+										function() use ( $current_post, $used_uag_elements ) {
 
-											// Script Assets.
-											foreach ( $js_assets as $asset_handle => $val ) {
-												wp_register_script(
-													$val, // Handle.
-													$uag_block_assets[ $val ]['src'],
-													$uag_block_assets[ $val ]['dep'],
-													UAGB_VER,
-													true
-												);
+											if ( has_blocks( $current_post ) ) {
 
-												wp_enqueue_script( $val );
+												$uag_blocks       = UAGB_Config::get_block_attributes();
+												$uag_block_assets = UAGB_Config::get_block_assets();
+
+												foreach ( $used_uag_elements as $key => $curr_block_name ) {
+
+													$js_assets  = ( isset( $uag_blocks[ $curr_block_name ]['js_assets'] ) ) ? $uag_blocks[ $curr_block_name ]['js_assets'] : array();
+													$css_assets = ( isset( $uag_blocks[ $curr_block_name ]['css_assets'] ) ) ? $uag_blocks[ $curr_block_name ]['css_assets'] : array();
+
+													// Script Assets.
+													foreach ( $js_assets as $asset_handle => $val ) {
+														wp_register_script(
+															$val, // Handle.
+															$uag_block_assets[ $val ]['src'],
+															$uag_block_assets[ $val ]['dep'],
+															UAGB_VER,
+															true
+														);
+
+														wp_enqueue_script( $val );
+													}
+
+													// Style Assets.
+													foreach ( $css_assets as $asset_handle => $val ) {
+														wp_register_style(
+															$val, // Handle.
+															$uag_block_assets[ $val ]['src'],
+															$uag_block_assets[ $val ]['dep'],
+															UAGB_VER
+														);
+
+														wp_enqueue_style( $val );
+													}
+												}
 											}
-
-											// Style Assets.
-											foreach ( $css_assets as $asset_handle => $val ) {
-												wp_register_style(
-													$val, // Handle.
-													$uag_block_assets[ $val ]['src'],
-													$uag_block_assets[ $val ]['dep'],
-													UAGB_VER
-												);
-
-												wp_enqueue_style( $val );
-											}
-										}
-									}
-								},
-								11
-							);
+										},
+										11
+									);
+								}
+							}
 						}
 					}
-				}
-			}
 
-			if ( $uag_is_active ) {
+					if ( $uag_is_active ) {
 
-				$uag_generated_stylesheet_func = array( $uagb_helper_instance, 'get_generated_stylesheet' );
+						$uag_generated_stylesheet_func = array( $uagb_helper_instance, 'get_generated_stylesheet' );
 
-				wp_enqueue_style(
-					'uagb-block-css', // UAG-Handle.
-					UAGB_URL . 'dist/blocks.style.css', // Block style CSS.
-					array(),
-					UAGB_VER
-				);
+						/**
+						 * As per UAG Team discussion they are going to keep this stylesheet for upcoming few updates, after their stable release UAGB_VER = v1.23.0. Later they are going to deprecate it.
+						 *
+						 * @since 3.5.0
+						 */
+						wp_enqueue_style(
+							'uagb-block-css', // UAG-Handle.
+							UAGB_URL . 'dist/blocks.style.css', // Block style CSS.
+							array(),
+							UAGB_VER
+						);
 
-				if ( is_callable( $uag_generated_stylesheet_func ) ) {
-					$uagb_helper_instance->get_generated_stylesheet( $current_post );
+						if ( is_callable( $uag_generated_stylesheet_func ) ) {
+							$uagb_helper_instance->get_generated_stylesheet( $current_post );
+						}
+					}
 				}
 			}
 		}

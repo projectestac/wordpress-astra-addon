@@ -99,42 +99,46 @@
 
 	astra_color_responsive_css( 'colors-background', 'astra-settings[primary-submenu-a-bg-color-responsive]', 'background-color', 	'.main-header-menu .sub-menu .menu-item.current-menu-item > .menu-link, .main-header-menu .sub-menu .menu-item.current-menu-ancestor > .menu-link, .ast-header-sections-navigation .sub-menu .menu-item.current-menu-item > .menu-link, .ast-header-break-point .main-header-menu .sub-menu .menu-item.current-menu-item > .menu-link' );
 
-	/**
-	 * Content background color
-	 */
-	if( jQuery( 'body' ).hasClass( 'ast-separate-container' ) && jQuery( 'body' ).hasClass( 'ast-two-container' )){
-		var dynamicSelector   = '.ast-separate-container .ast-article-single:not(.ast-related-post), .ast-separate-container .comment-respond,.ast-separate-container .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .ast-author-meta, .ast-separate-container .related-posts, .ast-separate-container .comments-area, .ast-separate-container .comments-count-wrapper, .ast-separate-container.ast-two-container #secondary .widget';
-		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'desktop' );
-		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'tablet' );
-		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'mobile' );
-	}
-	else if ( jQuery( 'body' ).hasClass( 'ast-separate-container' ) ) {
-		var dynamicSelector   = '.ast-separate-container .ast-article-single:not(.ast-related-post), .ast-separate-container .comment-respond,.ast-separate-container .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .ast-author-meta, .ast-separate-container .related-posts, .ast-separate-container .comments-area, .ast-separate-container .comments-count-wrapper';
-		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'desktop' );
-		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'tablet' );
-		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'mobile' );
-	}
-	else if ( jQuery( 'body' ).hasClass( 'ast-plain-container' ) && ( jQuery( 'body' ).hasClass( 'ast-box-layout' ) || jQuery( 'body' ).hasClass( 'ast-padded-layout' ) ) ) {
-		var dynamicSelector   = '.ast-box-layout.ast-plain-container .site-content, .ast-padded-layout.ast-plain-container .site-content';
-		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'desktop' );
-		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'tablet' );
-		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'mobile' );
+	if( astColors.is_content_bg_option_to_load ) {
+
+		/**
+		 * Content background color
+		 */
+		if( jQuery( 'body' ).hasClass( 'ast-separate-container' ) && jQuery( 'body' ).hasClass( 'ast-two-container' )){
+			var dynamicSelector   = '.ast-separate-container .ast-article-single:not(.ast-related-post), .ast-separate-container .comment-respond,.ast-separate-container .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .ast-author-meta, .ast-separate-container .related-posts, .ast-separate-container .comments-area, .ast-separate-container .comments-count-wrapper, .ast-separate-container.ast-two-container #secondary .widget';
+			astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'desktop' );
+			astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'tablet' );
+			astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'mobile' );
+		}
+		else if ( jQuery( 'body' ).hasClass( 'ast-separate-container' ) ) {
+			var dynamicSelector   = '.ast-separate-container .ast-article-single:not(.ast-related-post), .ast-separate-container .comment-respond,.ast-separate-container .ast-comment-list li, .ast-separate-container .ast-woocommerce-container, .ast-separate-container .error-404, .ast-separate-container .no-results, .single.ast-separate-container .ast-author-meta, .ast-separate-container .related-posts, .ast-separate-container .comments-area, .ast-separate-container .comments-count-wrapper';
+			astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'desktop' );
+			astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'tablet' );
+			astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'mobile' );
+		}
+		else if ( jQuery( 'body' ).hasClass( 'ast-plain-container' ) && ( jQuery( 'body' ).hasClass( 'ast-box-layout' ) || jQuery( 'body' ).hasClass( 'ast-padded-layout' ) ) ) {
+			var dynamicSelector   = '.ast-box-layout.ast-plain-container .site-content, .ast-padded-layout.ast-plain-container .site-content';
+			astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'desktop' );
+			astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'tablet' );
+			astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'mobile' );
+		}
+
+		var blog_grid = (typeof ( wp.customize._value['astra-settings[blog-grid]'] ) != 'undefined') ? wp.customize._value['astra-settings[blog-grid]']._value : 1;
+		var blog_layout = (typeof ( wp.customize._value['astra-settings[blog-layout]'] ) != 'undefined') ? wp.customize._value['astra-settings[blog-layout]']._value : 'blog-layout-1';
+
+		if( 'blog-layout-1' == blog_layout && 1 != blog_grid ) {
+			var dynamicSelector   = '.ast-separate-container .blog-layout-1, .ast-separate-container .blog-layout-2, .ast-separate-container .blog-layout-3';
+			astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'desktop' );
+			astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'tablet' );
+			astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'mobile' );
+		} else {
+			var dynamicSelector   = '.ast-separate-container .ast-article-post';
+			astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'desktop' );
+			astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'tablet' );
+			astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'mobile' );
+		}
 	}
 
-	var blog_grid = (typeof ( wp.customize._value['astra-settings[blog-grid]'] ) != 'undefined') ? wp.customize._value['astra-settings[blog-grid]']._value : 1;
-	var blog_layout = (typeof ( wp.customize._value['astra-settings[blog-layout]'] ) != 'undefined') ? wp.customize._value['astra-settings[blog-layout]']._value : 'blog-layout-1';
-
-	if( 'blog-layout-1' == blog_layout && 1 != blog_grid ) {
-		var dynamicSelector   = '.ast-separate-container .blog-layout-1, .ast-separate-container .blog-layout-2, .ast-separate-container .blog-layout-3';
-		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'desktop' );
-		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'tablet' );
-		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'mobile' );
-	} else {
-		var dynamicSelector   = '.ast-separate-container .ast-article-post';
-		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'desktop' );
-		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'tablet' );
-		astra_apply_responsive_background_css( 'astra-settings[content-bg-obj-responsive]', dynamicSelector, 'mobile' );
-	}
 	/**
 	 * Content background color
 	 */
@@ -265,51 +269,45 @@
 	var adv_account_selector = '.ast-advanced-headers .ast-header-account-wrap';
 
 	// Menu - Normal Color
-	astra_color_responsive_css(
-		'astra-account-menu-color-preview',
-		'astra-settings[header-account-menu-color-responsive]',
+	astra_css(
+		'astra-settings[header-account-menu-color]',
 		'color',
-		account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item > .menu-link'
+		account_selector + ' .ast-account-nav-menu .menu-item > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item > .menu-link'
 	);
 
 	// Menu - Hover Color
-	astra_color_responsive_css(
-		'astra-account-menu-h-color-preview',
-		'astra-settings[header-account-menu-h-color-responsive]',
+	astra_css(
+		'astra-settings[header-account-menu-h-color]',
 		'color',
-		account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item:hover > .menu-link, ' + account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item > .menu-link:hover, ' + account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active:hover > .menu-link, ' + account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active > .menu-link:hover, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item:hover > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item > .menu-link:hover, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active:hover > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active > .menu-link:hover'
+		account_selector + ' .ast-account-nav-menu .menu-item:hover > .menu-link, ' + account_selector + ' .ast-account-nav-menu .menu-item > .menu-link:hover, ' + account_selector + ' .ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active:hover > .menu-link, ' + account_selector + ' .ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active > .menu-link:hover, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item:hover > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item > .menu-link:hover, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active:hover > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active > .menu-link:hover'
 	);
 
 	// Menu - Active Color
-	astra_color_responsive_css(
-		'astra-account-menu-active-color-preview',
-		'astra-settings[header-account-menu-a-color-responsive]',
+	astra_css(
+		'astra-settings[header-account-menu-a-color]',
 		'color',
-		account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item.current-menu-item > .menu-link, ' + account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item.current-menu-item > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active > .menu-link'
+		account_selector + ' .ast-account-nav-menu .menu-item.current-menu-item > .menu-link, ' + account_selector + ' .ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item.current-menu-item > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active > .menu-link'
 	);
 
 	// Menu - Background
-	astra_color_responsive_css(
-		'astra-account-menu-bg-obj-preview',
-		'astra-settings[header-account-menu-bg-obj-responsive]',
+	astra_css(
+		'astra-settings[header-account-menu-bg-obj]',
 		'background',
-		account_selector + ' .account-main-navigation ul, ' + account_selector + ' .account-woo-navigation ul,' + account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item > .menu-link, ' + account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link .menu-link, ' + adv_account_selector + ' .account-main-navigation ul, ' + adv_account_selector + ' .account-woo-navigation ul,' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link .menu-link'
+		account_selector + ' .account-main-navigation ul, ' + account_selector + ' .account-woo-navigation ul,' + account_selector + ' .ast-account-nav-menu .menu-item > .menu-link, ' + account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link .menu-link, ' + adv_account_selector + ' .account-main-navigation ul, ' + adv_account_selector + ' .account-woo-navigation ul,' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link .menu-link'
 	);
 
 	// Menu - Hover Background
-	astra_color_responsive_css(
-		'astra-account-menu-bg-preview',
-		'astra-settings[header-account-menu-h-bg-color-responsive]',
+	astra_css(
+		'astra-settings[header-account-menu-h-bg-color]',
 		'background',
 		account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item:hover > .menu-link, ' + account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link:hover .menu-link, ' + account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active:hover > .menu-link, ' + account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active > .menu-link:hover, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item:hover > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link:hover .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active:hover > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active > .menu-link:hover'
 	);
 
 	// Menu - Active Background
-	astra_color_responsive_css(
-		'astra-account-menu',
-		'astra-settings[header-account-menu-a-bg-color-responsive]',
+	astra_css(
+		'astra-settings[header-account-menu-a-bg-color]',
 		'background',
-		account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item.current-menu-item > .menu-link, ' + account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active .menu-link, ' + account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item.current-menu-item > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active .menu-link'
+		account_selector + ' .ast-account-nav-menu .menu-item.current-menu-item > .menu-link, ' + account_selector + ' .ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active .menu-link, ' + account_selector + ' .ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item.current-menu-item > .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active .menu-link, ' + adv_account_selector + ' .main-header-menu.ast-account-nav-menu .woocommerce-MyAccount-navigation-link.is-active .menu-link'
 	);
 
 	astra_css(
@@ -589,7 +587,7 @@
 	astra_css(
 		'astra-settings[header-search-border-h-color]',
 		'border-color',
-		'.ast-header-search .ast-search-menu-icon .search-form:hover'
+		'.ast-header-search .ast-search-menu-icon .search-form:hover, .ast-search-icon:hover + .search-form'
 	);
 
 	// Seach Full Screen / Header Cover Overlay BG Color.

@@ -1,16 +1,12 @@
-(function ($) {
-
+(function () {
 	var total 			= parseInt( astra.infinite_total ) || '',
 		count 			= parseInt( astra.infinite_count ) || '',
-		ajax_url 		= astra.ajax_url || '',
-		infinite_nonce 	= astra.infinite_nonce || '',
-	
 		pagination 		= astra.pagination || '',
 		masonryEnabled  = astra.masonryEnabled || false,
 		loadStatus 		= true,
 		infinite_event 	= astra.infinite_scroll_event || '',
-		loader 			= jQuery('.ast-pagination-infinite .ast-loader'),
-		ast_post_type   = astra.astinfiniteposttype
+		loader 			= document.querySelector('.ast-pagination-infinite .ast-loader'),
+		astLoadMore		= document.querySelector('.ast-load-more');
 
 	//	Is 'infinite' pagination?
 	if( typeof pagination != '' && pagination == 'infinite' ) {
@@ -30,42 +26,48 @@
 		if(	typeof infinite_event != '' ) {
 			switch( infinite_event ) {
 				case 'click':
-					$('.ast-load-more').click(function(event) {
-						event.preventDefault();
-						//	For Click
-						if( count != 'undefined' && count != ''&& total != 'undefined' && total != '' ) {
-							if ( count > total )
-								return false;
-							NextloadArticles(count);
-							count++;
-						}
-					});
-				
-					break;
-				
-				case 'scroll':
-					$('.ast-load-more').hide();
-
-					if( $('#main').find('article:last').length > 0 ) {
-						var windowHeight50 = jQuery(window).outerHeight() / 1.25;
-						$(window).scroll(function () {
-
-							if( ( $(window).scrollTop() + windowHeight50 ) >= ( $('#main').find('article:last').offset().top ) ) {
-								if (count > total) {
-									return false;
-								} else {
-
-									//	Pause for the moment ( execute if post loaded )
-									if( loadStatus == true ) {
+							if( astLoadMore ){
+								astLoadMore.addEventListener('click',function(event) {
+								event.preventDefault();
+								//	For Click
+								if( count != 'undefined' && count != ''&& total != 'undefined' && total != '' ) {
+									if ( count > total )
+										return false;
 										NextloadArticles(count);
 										count++;
-										loadStatus = false;
 									}
-								}
+								});
 							}
-						});
-					}
-					
+					break;
+				case 'scroll':
+							var mainSelector = document.getElementById('main');
+							var rect = mainSelector.getBoundingClientRect();
+							var offset = {
+								top: rect.top + window.scrollY,
+								left: rect.left + window.scrollX,
+							};
+							if( astLoadMore ){
+									astLoadMore.classList.remove('active');
+							}
+							if( mainSelector.querySelectorAll('article:last-child').length > 0 ) {
+
+								var windowHeight50 = window.outerHeight / 1.25;
+								window.addEventListener('scroll', function() {
+									if( (window.scrollY + windowHeight50 ) >= ( offset.top ) ) {
+										if (count > total) {
+											return false;
+										} else {
+
+											//	Pause for the moment ( execute if post loaded )
+											if( loadStatus == true ) {
+												NextloadArticles(count);
+												count++;
+												loadStatus = false;
+											}
+										}
+									}
+								});
+							}
 					break;
 			}
 		}
@@ -76,57 +78,59 @@
 		 * Perform masonry operations.
 		 */
 		function NextloadArticles(pageNumber) {
-
-			$('.ast-load-more').removeClass('.active').hide();
-			loader.show();
-
-			var data = {
-				action : 'astra_pagination_infinite',
-				page_no	: pageNumber,
-				post_type : ast_post_type,
-				nonce: infinite_nonce,
-				query_vars: astra.query_vars,
-				astra_infinite: 'astra_pagination_ajax',
+			if( astLoadMore ){
+				astLoadMore.classList.remove('active');
 			}
+			var pageUrlSelector = document.querySelector('a.next.page-numbers');
+			var nextDestUrl = pageUrlSelector.getAttribute('href');
+			loader.style.display = 'block';
 
-			$.post( ajax_url, data, function( data ) {
+			var request = new XMLHttpRequest();
+				request.open('GET', nextDestUrl, true);
+				request.send();
+				request.onload = function() {
+					var string = request.response;
+					var data = new DOMParser().parseFromString(string, 'text/html');
+					var boxes = data.querySelectorAll( 'article.post' );
 
-				$( window ).trigger('astAddedAjaxPosts');
+					//	Disable loader
+					loader.style.display = 'none';
+					if( astLoadMore ){
+						astLoadMore.classList.add( 'active');
+					}
+					//	Append articles
+					for (var boxCount = 0; boxCount < boxes.length; boxCount++) {
+						document.querySelector('#main > .ast-row').append(boxes[boxCount]);
+					}
 
-				var boxes = $(data);
+					var grid_layout 	= astra.grid_layout || '3';
 
-				//	Disable loader
-				loader.hide();
-				$('.ast-load-more').addClass('active').show();
+					//	Append articles
+					if( 1 == masonryEnabled && grid_layout > 1 ) {
+						var grid = document.querySelector('#main > .ast-row');
+						var msnry = new Masonry( grid, {});
 
-				//	Append articles
-				$('#main > .ast-row').append( boxes );
+						imagesLoaded( document.querySelector('#main > .ast-row'), function() {
+							msnry.appended( boxes );
+							msnry.reloadItems();
+							msnry.layout();
+						});
+					}
 
-				var grid_layout 	= astra.grid_layout || '3';
+					//	Add grid classes
+					var msg 			= astra.no_more_post_message || '';
+					//	Show no more post message
+					if( count > total ) {
+						document.querySelector('.ast-pagination-infinite').innerHTML = '<span class="ast-load-more no-more active" style="display: inline-block;">' + msg + "</span>";
+					} else {
+						var newNextTargetUrl = nextDestUrl.replace(/\/page\/[0-9]+/, '/page/' + (pageNumber + 1));
+						pageUrlSelector.setAttribute('href', newNextTargetUrl);
+					}
 
-				//	Append articles
-				if( 1 == masonryEnabled && grid_layout > 1 ) {
-					$('#main > .ast-row').masonry('appended', boxes, true);
-					$('#main > .ast-row').imagesLoaded(function () {
-						$('#main > .ast-row').masonry('reload');
-					});
-					$('#main > .ast-row').trigger('masonryItemAdded');
+					//	Complete the process 'loadStatus'
+					loadStatus = true;
 				}
-
-				//	Add grid classes
-				var msg 			= astra.no_more_post_message || '';
-				
-				//	Show no more post message
-				if( count > total ) {
-					$('.ast-pagination-infinite').html( '<span class="ast-load-more no-more active" style="display: inline-block;">' + msg + "</span>" );
-				}
-
-				$( window ).trigger('astBlogProAjaxPostsAdded');
-
-				//	Complete the process 'loadStatus'
-				loadStatus = true;
-			});
 		}
 	}
 
-})(jQuery);
+})();

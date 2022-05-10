@@ -46,14 +46,23 @@ if ( ! class_exists( 'Astra_Addon_Background_Updater' ) ) {
 			'2.6.0' => array(
 				'astra_addon_header_css_optimizations',
 			),
-			'3.0.0' => array(
-				'astra_addon_clear_assets_cache',
+			'3.5.0' => array(
+				'astra_addon_page_headers_support_to_builder_layout',
 			),
-			'3.3.0' => array(
-				'astra_addon_clear_assets_cache',
+			'3.5.1' => array(
+				'astra_addon_headings_font_support',
+				'astra_addon_cart_color_not_working_in_old_header',
 			),
-			'3.3.2' => array(
-				'astra_addon_clear_assets_cache',
+			'3.5.7' => array(
+				'astra_addon_outline_cart_bg_color_support',
+				'astra_addon_remove_header_sections_deps_new_builder',
+				'astra_addon_swap_section_not_working_in_old_header',
+			),
+			'3.5.8' => array(
+				'astra_sticky_header_site_title_tagline_css',
+			),
+			'3.5.9' => array(
+				'astra_addon_remove_responsive_account_menu_colors_support',
 			),
 		);
 
@@ -166,13 +175,13 @@ if ( ! class_exists( 'Astra_Addon_Background_Updater' ) ) {
 			$doing_wp_cron = sprintf( '%.22F', microtime( true ) );
 
 			$cron_request = apply_filters(
-				'cron_request',
+				'cron_request', // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 				array(
 					'url'  => site_url( 'wp-cron.php?doing_wp_cron=' . $doing_wp_cron ),
 					'args' => array(
 						'timeout'   => 3,
 						'blocking'  => true,
-						'sslverify' => apply_filters( 'https_local_ssl_verify', $sslverify ),
+						'sslverify' => apply_filters( 'https_local_ssl_verify', $sslverify ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 					),
 				)
 			);
@@ -354,7 +363,6 @@ if ( ! class_exists( 'Astra_Addon_Background_Updater' ) ) {
 
 			// If equals then return.
 			if ( version_compare( $saved_version, ASTRA_EXT_VER, '=' ) ) {
-				do_action( 'astra_addon_update_after' );
 
 				// Get all customizer options.
 				$customizer_options = get_option( 'astra-settings' );

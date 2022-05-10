@@ -53,7 +53,7 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 			define( 'BSF_ANALYTICS_URI', $this->get_analytics_url( $analytics_path ) );
 
 			add_action( 'admin_init', array( $this, 'handle_optin_optout' ) );
-			add_action( 'admin_notices', array( $this, 'option_notice' ) );
+			add_action( 'admin_init', array( $this, 'option_notice' ) );
 			add_action( 'init', array( $this, 'maybe_track_analytics' ), 99 );
 
 			$this->set_actions();
@@ -366,7 +366,7 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 					'general',
 					'default',                   // Settings page slug.
 					array(
-						'type'           => Astra_Theme_Extension::$switch_control,
+						'type'           => 'checkbox',
 						'title'          => $author,
 						'name'           => $key . '_analytics_optin',
 						'label_for'      => $key . '-analytics-optin',

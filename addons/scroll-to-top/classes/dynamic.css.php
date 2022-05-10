@@ -5,7 +5,7 @@
  * @package Astra Addon
  */
 
-add_filter( 'astra_dynamic_css', 'astra_ext_scroll_to_top_dynamic_css' );
+add_filter( 'astra_addon_dynamic_css', 'astra_addon_scroll_to_top_dynamic_css' );
 
 /**
  * Dynamic CSS
@@ -14,7 +14,7 @@ add_filter( 'astra_dynamic_css', 'astra_ext_scroll_to_top_dynamic_css' );
  * @param  string $dynamic_css_filtered Astra Dynamic CSS Filters.
  * @return string
  */
-function astra_ext_scroll_to_top_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
+function astra_addon_scroll_to_top_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 
 	$link_color                    = astra_get_option( 'link-color' );
 	$scroll_to_top_icon_size       = astra_get_option( 'scroll-to-top-icon-size', 15 );
@@ -45,6 +45,16 @@ function astra_ext_scroll_to_top_dynamic_css( $dynamic_css, $dynamic_css_filtere
 
 	$scroll_css = astra_parse_css( $scroll_to_top );
 
+	if ( is_rtl() ) {
+		$scroll_to_top_rtl = array(
+			'#ast-scroll-top .ast-icon.icon-arrow svg' => array(
+				'margin-right' => '0px',
+			),
+		);
+
+		$scroll_css .= astra_parse_css( $scroll_to_top_rtl );
+	}
+
 	if ( false === Astra_Icons::is_svg_icons() ) {
 		$scroll_to_top_icon = array(
 			'.ast-scroll-top-icon::before' => array(
@@ -60,6 +70,18 @@ function astra_ext_scroll_to_top_dynamic_css( $dynamic_css, $dynamic_css_filtere
 
 		$scroll_css .= astra_parse_css( $scroll_to_top_icon );
 	}
+
+	// Only if responsive devices is selected.
+	$svg_width = array(
+		/**
+		 * Add spacing based on padded layout spacing
+		 */
+		'#ast-scroll-top .ast-icon.icon-arrow svg' => array(
+			'width' => '1em',
+		),
+	);
+
+	$scroll_css .= astra_parse_css( $svg_width, '', astra_addon_get_tablet_breakpoint() );
 
 	// Only if Padded layout is selected from Site Layout Addon.
 	if ( Astra_Ext_Extension::is_active( 'site-layouts' ) && 'ast-padded-layout' === $site_layout_padding ) {

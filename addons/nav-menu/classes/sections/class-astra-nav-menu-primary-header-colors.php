@@ -24,7 +24,10 @@ if ( ! class_exists( 'Astra_Nav_Menu_Primary_Header_Colors' ) ) {
 	/**
 	 * Register Mega Menu Customizer Configurations.
 	 */
+	// @codingStandardsIgnoreStart
 	class Astra_Nav_Menu_Primary_Header_Colors extends Astra_Customizer_Config_Base {
+ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+		// @codingStandardsIgnoreEnd
 
 		/**
 		 * Register Mega Menu Customizer Configurations.
@@ -81,7 +84,6 @@ if ( ! class_exists( 'Astra_Nav_Menu_Primary_Header_Colors' ) ) {
 						'control'   => Astra_Theme_Extension::$group_control,
 						'title'     => __( 'Mega Menu Heading', 'astra-addon' ),
 						'section'   => 'section-sticky-header',
-						'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
 						'transport' => 'postMessage',
 						'priority'  => 100,
 						'context'   => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?

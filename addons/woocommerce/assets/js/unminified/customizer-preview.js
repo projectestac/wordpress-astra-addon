@@ -15,7 +15,7 @@
 	 */
 	wp.customize( 'astra-settings[shop-product-align]', function( setting ) {
 		setting.bind( function( alignment ) {
-			
+
 			var products = $(document).find('.woocommerce-page .products .product, .woocommerce .products .product');
 			products.removeClass('align-left align-right align-center');
 			products.addClass( alignment );
@@ -27,7 +27,7 @@
 	 */
 	wp.customize( 'astra-settings[shop-product-shadow]', function( setting ) {
 		setting.bind( function( product_shadow ) {
-			
+
 			var products = $(document).find('.woocommerce-page .products .product, .woocommerce .products .product');
 			product_shadow = product_shadow > 5 ? 5 : ( product_shadow < 0 ? 0 : product_shadow );
 			products.removeClass('box-shadow-0 box-shadow-1 box-shadow-2 box-shadow-3 box-shadow-4 box-shadow-5');
@@ -43,7 +43,7 @@
 
 			var products = $(document).find('.woocommerce-page .products .product, .woocommerce .products .product');
 			product_shadow = product_shadow > 5 ? 5 : ( product_shadow < 0 ? 0 : product_shadow );
-			
+
 			products.removeClass('box-shadow-0-hover box-shadow-1-hover box-shadow-2-hover box-shadow-3-hover box-shadow-4-hover box-shadow-5-hover');
 			products.addClass( 'box-shadow-' + product_shadow + '-hover' );
 		} );
@@ -89,7 +89,7 @@
 	wp.customize( 'astra-settings[product-sale-style]', function( setting ) {
 		setting.bind( function( bubble_style ) {
 
-			var buttons = $(document).find('.woocommerce-page .products .product .onsale, .woocommerce .products .product .onsale, .woocommerce .product .onsale');	
+			var buttons = $(document).find('.woocommerce-page .products .product .onsale, .woocommerce .products .product .onsale, .woocommerce .product .onsale');
 			buttons.removeClass('circle square circle-outline square-outline');
 			buttons.addClass( bubble_style );
 		} );
@@ -102,7 +102,7 @@
 		setting.bind( function( pagination_style ) {
 
 			var body = $('body.woocommerce, body.woocommerce-page');
-			
+
 			body.removeClass('ast-woocommerce-pagination-default ast-woocommerce-pagination-circle ast-woocommerce-pagination-square');
 			body.addClass( 'ast-woocommerce-pagination-' + pagination_style );
 		} );
@@ -115,7 +115,7 @@
 		setting.bind( function( gallery_layout ) {
 
 			var product = $(document).find('.woocommerce-page.single .ast-woocommerce-container .product, .woocommerce.single .ast-woocommerce-container .product');
-			
+
 			product.removeClass('ast-product-gallery-layout-vertical ast-product-gallery-layout-horizontal');
 			product.addClass( 'ast-product-gallery-layout-' + gallery_layout );
 
@@ -155,7 +155,7 @@
 		setting.bind( function( grid ) {
 
 			var body = $('body.woocommerce.single-product, body.woocommerce-page.single-product');
-			
+
 			body.removeClass('rel-up-columns-1 rel-up-columns-2 rel-up-columns-3 rel-up-columns-4 rel-up-columns-5 rel-up-columns-6 tablet-rel-up-columns-1 tablet-rel-up-columns-2 tablet-rel-up-columns-3 tablet-rel-up-columns-4 tablet-rel-up-columns-5 tablet-rel-up-columns-6 mobile-rel-up-columns-1 mobile-rel-up-columns-2 mobile-rel-up-columns-3 mobile-rel-up-columns-4 mobile-rel-up-columns-5 mobile-rel-up-columns-6');
 			body.addClass( 'rel-up-columns-' + grid['desktop'] );
 			body.addClass( 'tablet-rel-up-columns-' + grid['tablet'] );
@@ -183,6 +183,16 @@
 	wp.customize( 'astra-settings[woo-header-cart-icon]', function( setting ) {
 		setting.bind( function( icon_type ) {
 			$( document.body ).trigger( 'wc_fragment_refresh' );
+		} );
+	} );
+
+	/**
+	 * Cart Count Color.
+	 */
+	wp.customize( 'astra-settings[woo-header-cart-product-count-color]', function( setting ) {
+		setting.bind( function( color ) {
+			var dynamicStyle = '.ast-site-header-cart .ast-addon-cart-wrap i.astra-icon:after { color: ' + color + '; } ';
+			astra_add_dynamic_css( 'woo-header-cart-product-count-color', dynamicStyle );
 		} );
 	} );
 
@@ -219,6 +229,11 @@
 	} );
 
 	/**
+	 * Cart Border Width.
+	 */
+	astra_css( 'astra-settings[woo-header-cart-border-width]', 'border-width', '.ast-menu-cart-outline .ast-addon-cart-wrap, .ast-theme-transparent-header .ast-menu-cart-outline .ast-addon-cart-wrap', 'px' );
+
+	/**
 	 * Button Border Radius
 	 */
 	wp.customize( 'astra-settings[woo-header-cart-icon-radius]', function( setting ) {
@@ -229,7 +244,7 @@
 
 		} );
 	} );
-	
+
 	/**
 	 * Cart icon color
 	 */
@@ -263,7 +278,7 @@
 	astra_generate_outside_font_family_css( 'astra-settings[font-family-shop-product-title]', '.woocommerce ul.products li.product .woocommerce-loop-product__title, .woocommerce-page ul.products li.product .woocommerce-loop-product__title' );
 
 	astra_css( 'astra-settings[font-weight-shop-product-title]', 'font-weight', '.woocommerce ul.products li.product .woocommerce-loop-product__title, .woocommerce-page ul.products li.product .woocommerce-loop-product__title' );
-	
+
 	astra_css( 'astra-settings[text-transform-shop-product-title]', 'text-transform', '.woocommerce ul.products li.product .woocommerce-loop-product__title, .woocommerce-page ul.products li.product .woocommerce-loop-product__title' );
 
 	astra_responsive_font_size( 'astra-settings[font-size-shop-product-title]', '.woocommerce ul.products li.product .woocommerce-loop-product__title, .woocommerce-page ul.products li.product .woocommerce-loop-product__title' );
@@ -274,7 +289,7 @@
 	astra_generate_outside_font_family_css( 'astra-settings[font-family-shop-product-price]', '.woocommerce ul.products li.product .price, .woocommerce-page ul.products li.product .price' );
 
 	astra_css( 'astra-settings[font-weight-shop-product-price]', 'font-weight', '.woocommerce ul.products li.product .price, .woocommerce-page ul.products li.product .price' );
-	
+
 	astra_responsive_font_size( 'astra-settings[font-size-shop-product-price]', '.woocommerce ul.products li.product .price, .woocommerce-page ul.products li.product .price' );
 
 	astra_css( 'astra-settings[line-height-shop-product-price]', 'line-height', '.woocommerce ul.products li.product .price, .woocommerce-page ul.products li.product .price' );
@@ -283,7 +298,7 @@
 	astra_generate_outside_font_family_css( 'astra-settings[font-family-shop-product-content]', '.woocommerce ul.products li.product .ast-woo-product-category, .woocommerce-page ul.products li.product .ast-woo-product-category, .woocommerce ul.products li.product .ast-woo-shop-product-description, .woocommerce-page ul.products li.product .ast-woo-shop-product-description' );
 
 	astra_css( 'astra-settings[font-weight-shop-product-content]', 'font-weight', '.woocommerce ul.products li.product .ast-woo-product-category, .woocommerce-page ul.products li.product .ast-woo-product-category, .woocommerce ul.products li.product .ast-woo-shop-product-description, .woocommerce-page ul.products li.product .ast-woo-shop-product-description' );
-	
+
 	astra_css( 'astra-settings[text-transform-shop-product-content]', 'text-transform', '.woocommerce ul.products li.product .ast-woo-product-category, .woocommerce-page ul.products li.product .ast-woo-product-category, .woocommerce ul.products li.product .ast-woo-shop-product-description, .woocommerce-page ul.products li.product .ast-woo-shop-product-description' );
 
 	astra_responsive_font_size( 'astra-settings[font-size-shop-product-content]', '.woocommerce ul.products li.product .ast-woo-product-category, .woocommerce-page ul.products li.product .ast-woo-product-category, .woocommerce ul.products li.product .ast-woo-shop-product-description, .woocommerce-page ul.products li.product .ast-woo-shop-product-description' );
@@ -294,7 +309,7 @@
 	astra_generate_outside_font_family_css( 'astra-settings[font-family-product-title]', '.single-product div.product .entry-title' );
 
 	astra_css( 'astra-settings[font-weight-product-title]', 'font-weight', '.single-product div.product .entry-title' );
-	
+
 	astra_css( 'astra-settings[text-transform-product-title]', 'text-transform', '.single-product div.product .entry-title' );
 
 	astra_responsive_font_size( 'astra-settings[font-size-product-title]', '.single-product div.product .entry-title' );
@@ -305,7 +320,7 @@
 	astra_generate_outside_font_family_css( 'astra-settings[font-family-product-price]', '.single-product div.product p.price, .single-product div.product span.price' );
 
 	astra_css( 'astra-settings[font-weight-product-price]', 'font-weight', '.single-product div.product p.price, .single-product div.product span.price' );
-	
+
 	astra_responsive_font_size( 'astra-settings[font-size-product-price]', '.single-product div.product p.price, .single-product div.product span.price' );
 
 	astra_css( 'astra-settings[line-height-product-price]', 'line-height', '.single-product div.product p.price, .single-product div.product span.price' );
@@ -314,7 +329,7 @@
 	astra_generate_outside_font_family_css( 'astra-settings[font-family-product-breadcrumb]', '.single-product div.product .woocommerce-breadcrumb' );
 
 	astra_css( 'astra-settings[font-weight-product-breadcrumb]', 'font-weight', '.single-product div.product .woocommerce-breadcrumb' );
-	
+
 	astra_css( 'astra-settings[text-transform-product-breadcrumb]', 'text-transform', '.single-product div.product .woocommerce-breadcrumb' );
 
 	astra_responsive_font_size( 'astra-settings[font-size-product-breadcrumb]', '.single-product div.product .woocommerce-breadcrumb' );
@@ -325,13 +340,13 @@
 	astra_generate_outside_font_family_css( 'astra-settings[font-family-product-content]', '.single-product div.product .woocommerce-product-details__short-description, .single-product div.product .product_meta, .single-product div.product .entry-content' );
 
 	astra_css( 'astra-settings[font-weight-product-content]', 'font-weight', '.single-product div.product .woocommerce-product-details__short-description, .single-product div.product .product_meta, .single-product div.product .entry-content' );
-	
+
 	astra_css( 'astra-settings[text-transform-product-content]', 'text-transform', '.single-product div.product .woocommerce-product-details__short-description, .single-product div.product .product_meta, .single-product div.product .entry-content' );
 
 	astra_responsive_font_size( 'astra-settings[font-size-product-content]', '.single-product div.product .woocommerce-product-details__short-description, .single-product div.product .product_meta, .single-product div.product .entry-content' );
 
 	astra_css( 'astra-settings[line-height-product-content]', 'line-height', '.single-product div.product .woocommerce-product-details__short-description, .single-product div.product .product_meta, .single-product div.product .entry-content' );
-	// 
+	//
 } )( jQuery );
 
 // Refresh cart icon sessionstorage for woocommerce cart fragments.

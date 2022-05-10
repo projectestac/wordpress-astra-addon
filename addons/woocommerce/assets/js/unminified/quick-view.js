@@ -53,10 +53,10 @@
 			$(document).on( 'click', '.ast-content-main-wrapper', AstraProQuickView._close_quick_view_on_overlay_click);
 			$(document).on( 'keyup', AstraProQuickView._close_quick_view_on_esc_keypress);
 		},
-		
+
 		/**
 		 * Open Quick View.
-		 * 
+		 *
 		 * @param  {[type]} e [description]
 		 * @return {[type]}   [description]
 		 */
@@ -129,7 +129,7 @@
 
 			// Initialize variable form.
 			if ( form_variation.length > 0 ) {
-				
+
 				// Trigger variation form actions.
 				form_variation.trigger( 'check_variations' );
 				form_variation.trigger( 'reset_image' );
@@ -145,9 +145,9 @@
 				image_slider_wrap.flexslider();
 			}
 
-			setTimeout(function() {			
+			setTimeout(function() {
 				AstraProQuickView._auto_set_content_height_by_image();
-				
+
 				// Add popup open class.
 				quick_view.removeClass('loading').addClass('open');
 				$('.ast-quick-view-bg').addClass('open');
@@ -159,7 +159,7 @@
 
 		/**
 		 * Auto set height to the content depends on the option.
-		 * 
+		 *
 		 * @return {[type]} [description]
 		 */
 		_auto_set_content_height_by_image: function() {
@@ -178,7 +178,7 @@
 
 				/**
 				 * Auto height to the content as per image height.
-				 * 
+				 *
 				 * @param  {[type]} AstraProQuickView.auto_popup_height_by_image [description]
 				 * @return {[type]}                                              [description]
 				 */
@@ -206,7 +206,7 @@
 
 				/**
 				 * Stick the Add to Cart Box.
-				 * 
+				 *
 				 * @param  {[type]} AstraProQuickView.stick_add_to_cart [description]
 				 * @return {[type]}                                     [description]
 				 */
@@ -221,7 +221,7 @@
 					// If Image height is large than the stick cart form
 					// Then calculate the sticky cart height and set the summery.
 					if( image_height > cart_height ) {
-						
+
 						// Stick Class.
 						quick_view.find('.cart').addClass('stick');
 
@@ -232,7 +232,7 @@
 						var summery_height = parseFloat(popup_height) - parseFloat(cart_height);
 
 						summary.css('max-height', parseFloat( summery_height ) );
-					
+
 					} else {
 
 						// If image height is less then popup/window height the set max height of `image` to the summery.
@@ -249,12 +249,11 @@
 
 		/**
 		 * Close box with esc key.
-		 * 
+		 *
 		 * @param  {[type]} e [description]
 		 * @return {[type]}   [description]
 		 */
 		_close_quick_view_on_esc_keypress: function( e ) {
-			e.preventDefault();
 			if( e.keyCode === 27 ) {
 				AstraProQuickView._close_quick_view();
 			}
@@ -262,7 +261,7 @@
 
 		/**
 		 * Close Quick View.
-		 * 
+		 *
 		 * @param  {[type]} e [description]
 		 * @return {[type]}   [description]
 		 */
@@ -285,7 +284,7 @@
 
 		/**
 		 * Close box by click overlay.
-		 * 
+		 *
 		 * @param  {[type]} e [description]
 		 * @return {[type]}   [description]
 		 */
@@ -297,19 +296,19 @@
 
 		/**
 		 * Get Scrollbar Width
-		 * 
+		 *
 		 * @return {[type]} [description]
 		 */
 		_get_scrollbar_width: function () {
 			// Append our div, do our calculation and then remove it.
-			var div = $('<div style="width:50px;height:50px;overflow:hidden;position:absolute;top:-200px;left:-200px;"><div style="height:100px;"></div>'); 
-			$('body').append(div); 
-			var w1 = $('div', div).innerWidth(); 
-			div.css('overflow-y', 'scroll'); 
-			var w2 = $('div', div).innerWidth(); 
+			var div = $('<div style="width:50px;height:50px;overflow:hidden;position:absolute;top:-200px;left:-200px;"><div style="height:100px;"></div>');
+			$('body').append(div);
+			var w1 = $('div', div).innerWidth();
+			div.css('overflow-y', 'scroll');
+			var w2 = $('div', div).innerWidth();
 			$(div).remove();
 
-			return (w1 - w2); 
+			return (w1 - w2);
 		}
 
 	};

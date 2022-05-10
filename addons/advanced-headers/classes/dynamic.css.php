@@ -5,7 +5,7 @@
  * @package Astra Addon
  */
 
-add_filter( 'astra_dynamic_css', 'astra_ext_advanced_headers_dynamic_css', 20 );
+add_filter( 'astra_addon_dynamic_css', 'astra_ext_advanced_headers_dynamic_css', 20 );
 
 /**
  * Dynamic CSS
@@ -234,6 +234,16 @@ function astra_ext_advanced_headers_dynamic_css( $dynamic_css, $dynamic_css_filt
 		),
 	);
 
+	if ( true == Astra_Addon_Builder_Helper::apply_flex_based_css() ) {
+
+		$flex_based_page_header_layout_2 = array(
+			'.ast-advanced-headers-layout.ast-advanced-headers-layout-2 .ast-container' => array(
+				'flex-direction' => 'column',
+			),
+		);
+		$parse_css                      .= astra_parse_css( $flex_based_page_header_layout_2 );
+	}
+
 	$parse_css .= astra_parse_css( $adv_header_logo_output );
 
 	if ( 'disable' !== $advanced_headers_layout ) {
@@ -389,7 +399,8 @@ function astra_ext_advanced_headers_dynamic_css( $dynamic_css, $dynamic_css_filt
 				);
 			}
 
-			$parse_css .= astra_parse_css( $merge_header_style );
+			$parse_css                                        .= astra_parse_css( $merge_header_style );
+			$is_page_headers_designs_compatible_builder_layout = apply_filters( 'astra_addon_page_header_options_compatibility', astra_get_option( 'can-update-page-header-compatibility-to-header-builder', false ) );
 
 			// Above Headder enabled.
 			if ( true === astra_addon_builder_helper()->is_header_footer_builder_active && Astra_Addon_Builder_Helper::is_row_empty( 'above', 'header', 'desktop' ) ) {
@@ -432,6 +443,12 @@ function astra_ext_advanced_headers_dynamic_css( $dynamic_css, $dynamic_css_filt
 						'color' => esc_attr( $above_header_submenu_text_link_a_fb_color ),
 					),
 				);
+
+				if ( $is_page_headers_designs_compatible_builder_layout ) {
+					$above_header_style['.ast-advanced-headers .ast-above-header .main-navigation .main-header-menu .menu-item > .menu-link, .ast-advanced-headers .ast-above-header .main-navigation .main-header-menu .menu-item > .menu-link:hover'] = array(
+						'background' => 'transparent',
+					);
+				}
 			} elseif ( $above_header_enabled ) {
 				/**
 				 * Above Heaader
@@ -520,6 +537,11 @@ function astra_ext_advanced_headers_dynamic_css( $dynamic_css, $dynamic_css_filt
 						'color' => esc_attr( $below_header_submenu_text_link_a_fb_color ),
 					),
 				);
+				if ( $is_page_headers_designs_compatible_builder_layout ) {
+					$below_header_style['.ast-advanced-headers .ast-below-header .main-navigation .main-header-menu .menu-item > .menu-link, .ast-advanced-headers .ast-below-header .main-navigation .main-header-menu .menu-item > .menu-link:hover'] = array(
+						'background' => 'transparent',
+					);
+				}
 			} elseif ( $below_header_enabled ) {
 				/**
 				 * Below Heaader

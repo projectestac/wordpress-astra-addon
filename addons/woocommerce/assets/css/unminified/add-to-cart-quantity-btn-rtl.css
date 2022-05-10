@@ -1,5 +1,9 @@
-.woocommerce .product .cart .quantity.buttons_added {
+.woocommerce div.product form.cart div.quantity {
   margin-bottom: 10px;
+}
+
+.woocommerce form .button.single_add_to_cart_button {
+  margin-right: 44px;
 }
 
 .woocommerce form .quantity.buttons_added {
@@ -7,8 +11,13 @@
   display: inline-flex;
 }
 
+.woocommerce form .quantity.buttons_added + .button.single_add_to_cart_button {
+  margin-right: unset;
+}
+
 .woocommerce form .quantity .qty {
   width: 2.631em;
+  margin-right: 38px;
 }
 
 .woocommerce form .quantity .minus,
@@ -25,6 +34,7 @@
 
 .woocommerce form .quantity .minus {
   border-left-width: 0;
+  margin-left: -38px;
 }
 
 .woocommerce form .quantity .plus {

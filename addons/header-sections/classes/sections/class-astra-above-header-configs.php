@@ -25,7 +25,10 @@ if ( ! class_exists( 'Astra_Above_Header_Configs' ) ) {
 	/**
 	 * Register Header Layout Customizer Configurations.
 	 */
+	// @codingStandardsIgnoreStart
 	class Astra_Above_Header_Configs extends Astra_Customizer_Config_Base {
+ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+		// @codingStandardsIgnoreEnd
 
 		/**
 		 * Register Header Layout Customizer Configurations.
@@ -742,7 +745,7 @@ if ( ! class_exists( 'Astra_Above_Header_Configs' ) ) {
 					),
 					'divider'  => array( 'ast_class' => 'ast-bottom-divider' ),
 					'section'  => 'section-above-header',
-					'default'  => astra_get_option( 'above-header-section-swap-mobile' ),
+					'default'  => astra_get_option( 'above-header-swap-mobile' ),
 					'title'    => __( 'Swap Sections on Mobile Devices', 'astra-addon' ),
 					'priority' => 101,
 				),

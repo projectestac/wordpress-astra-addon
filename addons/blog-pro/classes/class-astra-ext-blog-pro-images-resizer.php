@@ -13,7 +13,9 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Images_Resizer' ) ) {
 	 *
 	 * @since 1.5.0
 	 */
-	class Astra_Ext_Blog_Pro_Images_Resizer {
+	// @codingStandardsIgnoreStart
+	class Astra_Ext_Blog_Pro_Images_Resizer { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+		// @codingStandardsIgnoreEnd
 
 		/**
 		 * Member Variable
@@ -65,7 +67,7 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Images_Resizer' ) ) {
 		 */
 		public function customize_register( $wp_customize ) {
 
-			require_once ASTRA_EXT_BLOG_PRO_DIR . 'classes/sections/class-astra-customizer-blog-pro-image-resizer-configs.php';
+			require_once ASTRA_ADDON_EXT_BLOG_PRO_DIR . 'classes/sections/class-astra-customizer-blog-pro-image-resizer-configs.php';
 
 		}
 
@@ -172,10 +174,12 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Images_Resizer' ) ) {
 								array( $attributes['width'], $attributes['height'], $attributes['crop'] ),
 							),
 							sprintf(
-								astra_attr(
-									'article-image-blog-single-post',
-									array(
-										'class' => '',
+								str_replace(
+									'"',
+									'',
+									astra_attr(
+										'article-image-blog-single-post',
+										array( 'class' => '' )
 									)
 								)
 							)

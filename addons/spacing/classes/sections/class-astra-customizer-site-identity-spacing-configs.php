@@ -29,7 +29,10 @@ if ( ! class_exists( 'Astra_Customizer_Site_Identity_Spacing_Configs' ) ) {
 	/**
 	 * Register Site Identity Spacing Customizer Configurations.
 	 */
+	// @codingStandardsIgnoreStart
 	class Astra_Customizer_Site_Identity_Spacing_Configs extends Astra_Customizer_Config_Base {
+ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+		// @codingStandardsIgnoreEnd
 
 		/**
 		 * Register Site Identity Spacing Customizer Configurations.
@@ -41,78 +44,181 @@ if ( ! class_exists( 'Astra_Customizer_Site_Identity_Spacing_Configs' ) ) {
 		 */
 		public function register_configuration( $configurations, $wp_customize ) {
 
-			$_configs = array(
+			if ( astra_addon_check_theme_3_5_0_version() ) {
 
-				/**
-				 * Option: Divider
-				 */
-				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[divider-section-site-identity-spacing]',
-					'type'     => 'control',
-					'control'  => 'ast-heading',
-					'section'  => 'title_tagline',
-					'title'    => __( 'Spacing', 'astra-addon' ),
-					'context'  => array(
-						'relation' => 'AND',
-						astra_addon_builder_helper()->general_tab_config,
-						array(
-							'relation' => 'OR',
+				$_configs = array(
+
+					/**
+					 * Option: Divider
+					 */
+					array(
+						'name'     => ASTRA_THEME_SETTINGS . '[divider-section-site-identity-spacing]',
+						'type'     => 'control',
+						'control'  => 'ast-heading',
+						'section'  => 'title_tagline',
+						'title'    => __( 'Spacing', 'astra-addon' ),
+						'context'  => array(
+							'relation' => 'AND',
+							astra_addon_builder_helper()->general_tab_config,
 							array(
-								'setting'  => ASTRA_THEME_SETTINGS . '[display-site-title]',
-								'operator' => '!=',
-								'value'    => 0,
-							),
-							array(
-								'setting'  => 'custom_logo',
-								'operator' => '!=',
-								'value'    => '',
+								'relation' => 'OR',
+								array(
+									'setting'  => ASTRA_THEME_SETTINGS . '[display-site-title]',
+									'operator' => '!=',
+									'value'    => 0,
+								),
+								array(
+									'setting'  => 'custom_logo',
+									'operator' => '!=',
+									'value'    => '',
+								),
 							),
 						),
+						'priority' => 50,
+						'settings' => array(),
 					),
-					'priority' => 50,
-					'settings' => array(),
-				),
 
-				/**
-				 * Option - Header Space
-				 */
-				array(
-					'name'              => ASTRA_THEME_SETTINGS . '[site-identity-spacing]',
-					'default'           => astra_get_option( 'site-identity-spacing' ),
-					'type'              => 'control',
-					'transport'         => 'postMessage',
-					'control'           => 'ast-responsive-spacing',
-					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
-					'section'           => 'title_tagline',
-					'priority'          => 50,
-					'title'             => __( 'Site Identity Space', 'astra-addon' ),
-					'context'           => array(
-						'relation' => 'AND',
-						astra_addon_builder_helper()->general_tab_config,
-						array(
-							'relation' => 'OR',
+					/**
+					 * Option - Header Space
+					 */
+					array(
+						'name'              => ASTRA_THEME_SETTINGS . '[site-identity-spacing]',
+						'default'           => astra_get_option( 'site-identity-spacing' ),
+						'type'              => 'control',
+						'transport'         => 'postMessage',
+						'control'           => 'ast-responsive-spacing',
+						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+						'section'           => 'title_tagline',
+						'priority'          => 50,
+						'title'             => __( 'Site Identity Space', 'astra-addon' ),
+						'context'           => array(
+							'relation' => 'AND',
+							astra_addon_builder_helper()->general_tab_config,
 							array(
-								'setting'  => ASTRA_THEME_SETTINGS . '[display-site-title]',
-								'operator' => '!=',
-								'value'    => 0,
-							),
-							array(
-								'setting'  => 'custom_logo',
-								'operator' => '!=',
-								'value'    => '',
+								'relation' => 'OR',
+								array(
+									'setting'  => ASTRA_THEME_SETTINGS . '[display-site-title]',
+									'operator' => '!=',
+									'value'    => 0,
+								),
+								array(
+									'setting'  => 'custom_logo',
+									'operator' => '!=',
+									'value'    => '',
+								),
 							),
 						),
+						'linked_choices'    => true,
+						'unit_choices'      => array( 'px', 'em', '%' ),
+						'choices'           => array(
+							'top'    => __( 'Top', 'astra-addon' ),
+							'right'  => __( 'Right', 'astra-addon' ),
+							'bottom' => __( 'Bottom', 'astra-addon' ),
+							'left'   => __( 'Left', 'astra-addon' ),
+						),
 					),
-					'linked_choices'    => true,
-					'unit_choices'      => array( 'px', 'em', '%' ),
-					'choices'           => array(
-						'top'    => __( 'Top', 'astra-addon' ),
-						'right'  => __( 'Right', 'astra-addon' ),
-						'bottom' => __( 'Bottom', 'astra-addon' ),
-						'left'   => __( 'Left', 'astra-addon' ),
+				);
+
+			} else {
+				$_configs = array(
+
+					/**
+					 * Option: Divider
+					 */
+					array(
+						'name'     => ASTRA_THEME_SETTINGS . '[divider-section-site-identity-spacing]',
+						'type'     => 'control',
+						'control'  => 'ast-heading',
+						'section'  => 'title_tagline',
+						'title'    => __( 'Spacing', 'astra-addon' ),
+						'context'  => array(
+							'relation' => 'AND',
+							astra_addon_builder_helper()->general_tab_config,
+							array(
+								'relation' => 'OR',
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+									'setting-key' => 'desktop',
+									'operator'    => '!=',
+									'value'       => 0,
+								),
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+									'setting-key' => 'tablet',
+									'operator'    => '!=',
+									'value'       => 0,
+								),
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+									'setting-key' => 'mobile',
+									'operator'    => '!=',
+									'value'       => 0,
+								),
+								array(
+									'setting'  => 'custom_logo',
+									'operator' => '!=',
+									'value'    => '',
+								),
+							),
+						),
+						'priority' => 50,
+						'settings' => array(),
 					),
-				),
-			);
+
+					/**
+					 * Option - Header Space
+					 */
+					array(
+						'name'              => ASTRA_THEME_SETTINGS . '[site-identity-spacing]',
+						'default'           => astra_get_option( 'site-identity-spacing' ),
+						'type'              => 'control',
+						'transport'         => 'postMessage',
+						'control'           => 'ast-responsive-spacing',
+						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
+						'section'           => 'title_tagline',
+						'priority'          => 50,
+						'title'             => __( 'Site Identity Space', 'astra-addon' ),
+						'context'           => array(
+							'relation' => 'AND',
+							astra_addon_builder_helper()->general_tab_config,
+							array(
+								'relation' => 'OR',
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+									'setting-key' => 'desktop',
+									'operator'    => '!=',
+									'value'       => 0,
+								),
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+									'setting-key' => 'tablet',
+									'operator'    => '!=',
+									'value'       => 0,
+								),
+								array(
+									'setting'     => ASTRA_THEME_SETTINGS . '[display-site-title-responsive]',
+									'setting-key' => 'mobile',
+									'operator'    => '!=',
+									'value'       => 0,
+								),
+								array(
+									'setting'  => 'custom_logo',
+									'operator' => '!=',
+									'value'    => '',
+								),
+							),
+						),
+						'linked_choices'    => true,
+						'unit_choices'      => array( 'px', 'em', '%' ),
+						'choices'           => array(
+							'top'    => __( 'Top', 'astra-addon' ),
+							'right'  => __( 'Right', 'astra-addon' ),
+							'bottom' => __( 'Bottom', 'astra-addon' ),
+							'left'   => __( 'Left', 'astra-addon' ),
+						),
+					),
+				);
+			}
 
 			return array_merge( $configurations, $_configs );
 		}

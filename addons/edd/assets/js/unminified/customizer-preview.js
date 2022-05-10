@@ -15,7 +15,7 @@
 	 */
 	wp.customize( 'astra-settings[edd-archive-product-align]', function( setting ) {
 		setting.bind( function( alignment ) {
-			
+
 			var products = $(document).find('.ast-edd-archive-article, .edd_download');
 			products.removeClass('align-left align-right align-center');
 			products.addClass( alignment );
@@ -27,7 +27,7 @@
 	 */
 	wp.customize( 'astra-settings[edd-archive-product-shadow]', function( setting ) {
 		setting.bind( function( product_shadow ) {
-			
+
 			var products = $(document).find('.ast-edd-archive-article, .edd_download');
 			product_shadow = product_shadow > 5 ? 5 : ( product_shadow < 0 ? 0 : product_shadow );
 			products.removeClass('box-shadow-0 box-shadow-1 box-shadow-2 box-shadow-3 box-shadow-4 box-shadow-5');
@@ -43,7 +43,7 @@
 
 			var products = $(document).find('.ast-edd-archive-article, .edd_download');
 			product_shadow = product_shadow > 5 ? 5 : ( product_shadow < 0 ? 0 : product_shadow );
-			
+
 			products.removeClass('box-shadow-0-hover box-shadow-1-hover box-shadow-2-hover box-shadow-3-hover box-shadow-4-hover box-shadow-5-hover');
 			products.addClass( 'box-shadow-' + product_shadow + '-hover' );
 		} );
@@ -111,6 +111,16 @@
 	} );
 
 	/**
+	 * Cart Count Color.
+	 */
+	 wp.customize( 'astra-settings[edd-header-cart-product-count-color]', function( setting ) {
+		setting.bind( function( color ) {
+			var dynamicStyle = '.ast-edd-site-header-cart .ast-addon-cart-wrap span.astra-icon:after { color: ' + color + '; } ';
+			astra_add_dynamic_css( 'edd-header-cart-product-count-color', dynamicStyle );
+		} );
+	} );
+
+	/**
 	 * EDD Cart Button Color
 	 */
 	wp.customize( 'astra-settings[edd-header-cart-icon-color]', function( setting ) {
@@ -119,7 +129,7 @@
 				if( jQuery( '.ast-edd-site-header-cart' ).hasClass( 'ast-edd-menu-cart-outline' ) ) {
 					var dynamicStyle = '.ast-edd-menu-cart-outline .ast-addon-cart-wrap { border: 1px solid ' + cart_icon_color + '; color: ' + cart_icon_color + '; background: #ffffff;}';
 				}
-				else {	
+				else {
 					var dynamicStyle = '.ast-edd-site-header-cart.ast-edd-menu-cart-fill .ast-edd-cart-menu-wrap .count, .ast-edd-menu-cart-fill .ast-addon-cart-wrap, .ast-edd-menu-cart-fill .ast-addon-cart-wrap .ast-edd-header-cart-info-wrap, .ast-edd-menu-cart-fill .ast-addon-cart-wrap .ast-icon-shopping-cart { background-color: ' + cart_icon_color + '; color: #ffffff }';
 				}
 				astra_add_dynamic_css( 'primary-toggle-button-color', dynamicStyle );
@@ -127,6 +137,11 @@
 			wp.customize.preview.send( 'refresh' );
 		});
 	});
+
+	/**
+	 * Cart Border Width.
+	 */
+	astra_css( 'astra-settings[edd-header-cart-border-width]', 'border-width', '.ast-edd-menu-cart-outline .ast-addon-cart-wrap, .ast-theme-transparent-header .ast-edd-menu-cart-outline .ast-addon-cart-wrap', 'px' );
 
 	/**
 	 * Button Border Radius
@@ -151,7 +166,7 @@
 			var edd_checkout_content_max_width = wp.customize('astra-settings[edd-checkout-content-max-width]').get();
 
 			if ( 'custom' === value  && undefined !== astAddonTabletBreakpoint.value ) {
-				
+
 				dynamicStyle += '@media (min-width: ' + astAddonTabletBreakpoint.value + 'px) {'
 				dynamicStyle += '.edd-checkout #edd_checkout_wrap {';
 				dynamicStyle += 'max-width: ' + edd_checkout_content_max_width + 'px;';
@@ -175,7 +190,7 @@
 			var woo_checkout_content_max_width = wp.customize('astra-settings[checkout-content-max-width]').get();
 
 			if ( 'custom' === value  && undefined !== astAddonTabletBreakpoint.value ) {
-				
+
 				dynamicStyle += '@media (min-width: ' + astAddonTabletBreakpoint.value + 'px) {'
 				dynamicStyle += '.woocommerce-checkout form.checkout {';
 				dynamicStyle += 'max-width: ' + woo_checkout_content_max_width + 'px;';
@@ -222,15 +237,15 @@
 	astra_responsive_font_size( 'astra-settings[font-size-edd-archive-product-content]', '.ast-edd-archive-block-wrap .edd_download_excerpt p, .edd_downloads_list .edd_download_excerpt p' );
 	astra_css( 'astra-settings[line-height-edd-archive-product-content]', 'line-height', '.ast-edd-archive-block-wrap .edd_download_excerpt p, .edd_downloads_list .edd_download_excerpt p' );
 	astra_css( 'astra-settings[text-transform-edd-archive-product-content]', 'text-transform', '.ast-edd-archive-block-wrap .edd_download_excerpt p, .edd_downloads_list .edd_download_excerpt p' );
-	
+
 	// Single Product Colors.
 	astra_css( 'astra-settings[edd-single-product-title-color]', 'color', '.single-download .entry-title' );
 	astra_css( 'astra-settings[edd-single-product-content-color]', 'color', '.single-download .entry-content' );
 	astra_css( 'astra-settings[edd-single-product-navigation-color]', 'color', '.single-download .post-navigation a' );
-	
+
 	// Shop Colors.
 	astra_css( 'astra-settings[edd-archive-product-title-color]', 'color', '.ast-edd-archive-block-wrap .edd_download_title a, .edd_downloads_list .edd_download_title a' );
 	astra_css( 'astra-settings[edd-archive-product-price-color]', 'color', '.ast-edd-archive-block-wrap .edd_price, .edd_downloads_list .edd_price,.ast-edd-archive-block-wrap .edd_price_options, .edd_downloads_list .edd_price_options' );
 	astra_css( 'astra-settings[edd-archive-product-content-color]', 'color', '.ast-edd-archive-block-wrap .edd_download_excerpt p, .edd_downloads_list .edd_download_excerpt p' );
-	
+
 } )( jQuery );

@@ -24,7 +24,10 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 	/**
 	 * Register Sticky Header  ColorsCustomizer Configurations.
 	 */
+	// @codingStandardsIgnoreStart
 	class Astra_Sticky_Header_Colors_Bg_Configs extends Astra_Customizer_Config_Base {
+ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+		// @codingStandardsIgnoreEnd
 
 		/**
 		 * Register Sticky Header Colors Customizer Configurations.
@@ -192,24 +195,6 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 				),
 
 				/**
-				 * Option: Content Section Text color.
-				 */
-				array(
-					'name'       => 'sticky-header-content-section-text-color-responsive',
-					'default'    => astra_get_option( 'sticky-header-content-section-text-color-responsive' ),
-					'type'       => 'sub-control',
-					'tab'        => __( 'Normal', 'astra-addon' ),
-					'priority'   => 20,
-					'parent'     => ASTRA_THEME_SETTINGS . '[sticky-header-primary-outside-item-colors]',
-					'section'    => 'section-sticky-header',
-					'transport'  => 'postMessage',
-					'control'    => 'ast-responsive-color',
-					'title'      => __( 'Text Color', 'astra-addon' ),
-					'responsive' => true,
-					'rgba'       => true,
-				),
-
-				/**
 				 * Option: Content Section Link color.
 				 */
 				array(
@@ -221,7 +206,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 					'section'    => 'section-sticky-header',
 					'transport'  => 'postMessage',
 					'control'    => 'ast-responsive-color',
-					'title'      => __( 'Link', 'astra-addon' ),
+					'title'      => __( 'Normal', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
 					'connect'    => ASTRA_THEME_SETTINGS . '[sticky-header-content-section-link-color-responsive]',
@@ -239,7 +224,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Colors_Bg_Configs' ) ) {
 					'section'    => 'section-sticky-header',
 					'transport'  => 'postMessage',
 					'control'    => 'ast-responsive-color',
-					'title'      => __( 'Link Hover', 'astra-addon' ),
+					'title'      => __( 'Hover', 'astra-addon' ),
 					'responsive' => true,
 					'rgba'       => true,
 					'connect'    => ASTRA_THEME_SETTINGS . '[sticky-header-content-section-link-h-color-responsive]',

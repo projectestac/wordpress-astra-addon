@@ -5,7 +5,7 @@
  * @package Astra Addon
  */
 
-add_filter( 'astra_dynamic_css', 'astra_ext_mega_menu_dynamic_css' );
+add_filter( 'astra_addon_dynamic_css', 'astra_addon_mega_menu_dynamic_css' );
 
 /**
  * Dynamic CSS
@@ -14,7 +14,7 @@ add_filter( 'astra_dynamic_css', 'astra_ext_mega_menu_dynamic_css' );
  * @param  string $dynamic_css_filtered Astra Dynamic CSS Filters.
  * @return string
  */
-function astra_ext_mega_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
+function astra_addon_mega_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' ) {
 
 	$css = '';
 
@@ -45,7 +45,7 @@ function astra_ext_mega_menu_dynamic_css( $dynamic_css, $dynamic_css_filtered = 
 		);
 	} else {
 		$astra_font = array(
-			'.ast-header-break-point .menu-text + .icon-arrow, .ast-desktop .menu-link > .icon-arrow:first-child, .ast-header-break-point .main-header-menu > .menu-item > .menu-link .icon-arrow' => array(
+			'.ast-header-break-point .menu-text + .icon-arrow, .ast-desktop .menu-link > .icon-arrow:first-child, .ast-header-break-point .main-header-menu > .menu-item > .menu-link .icon-arrow, .ast-header-break-point .astra-mm-highlight-label + .icon-arrow' => array(
 				'display' => 'none',
 			),
 		);

@@ -72,7 +72,7 @@ if ( ! class_exists( 'Astra_Addon_Builder_UI_Controller' ) ) {
 						$show_tname = astra_get_option( $index . '-show-tname' );
 						$show_code  = astra_get_option( $index . '-show-code' );
 						$languages  = apply_filters(
-							'wpml_active_languages',
+							'wpml_active_languages', // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 							null,
 							array(
 								'skip_missing' => 0,
@@ -86,7 +86,7 @@ if ( ! class_exists( 'Astra_Addon_Builder_UI_Controller' ) ) {
 							<?php foreach ( $languages as $language ) { ?>
 								<li class="ast-builder-language-switcher-menu-item-<?php echo esc_attr( $builder_type ); ?>">
 
-									<?php if ( isset( $language['active'] ) ) { ?>
+									<?php if ( isset( $language['active'] ) && '1' === $language['active'] ) { ?>
 										<a href="<?php echo esc_url( $language['url'] ); ?>" class="ast-builder-language-switcher-item ast-builder-language-switcher-item__active">
 									<?php } else { ?>
 										<a href="<?php echo esc_url( $language['url'] ); ?>" class="ast-builder-language-switcher-item">
@@ -184,7 +184,7 @@ if ( ! class_exists( 'Astra_Addon_Builder_UI_Controller' ) ) {
 				ob_start();
 				include_once ASTRA_EXT_DIR . 'assets/flags/svgs.json'; // phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
 				self::$ast_flags = json_decode( ob_get_clean(), true );
-				self::$ast_flags = apply_filters( 'astra_flags_svg', self::$ast_flags );
+				self::$ast_flags = apply_filters( 'astra_addon_flags_svg', self::$ast_flags );
 				self::$ast_flags = self::$ast_flags;
 			}
 

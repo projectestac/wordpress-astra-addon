@@ -29,7 +29,10 @@ if ( ! class_exists( 'Astra_Customizer_Lifterlms_Course_Lesson_Configs' ) ) {
 	/**
 	 * Register Course Lesson Customizer Configurations.
 	 */
+	// @codingStandardsIgnoreStart
 	class Astra_Customizer_Lifterlms_Course_Lesson_Configs extends Astra_Customizer_Config_Base {
+ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+		// @codingStandardsIgnoreEnd
 
 		/**
 		 * Register Course Lesson Customizer Configurations.
@@ -54,7 +57,7 @@ if ( ! class_exists( 'Astra_Customizer_Lifterlms_Course_Lesson_Configs' ) ) {
 					'section'  => 'section-lifterlms-course-lesson',
 					'title'    => __( 'Enable Distraction Free Learning', 'astra-addon' ),
 					'divider'  => array(
-						'ast_class' => 'ast-top-divider ast-bottom-divider',
+						'ast_class' => 'ast-bottom-divider',
 						'ast_title' => __( 'Student View', 'astra-addon' ),
 					),
 					'priority' => 5,

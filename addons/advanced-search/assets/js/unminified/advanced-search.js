@@ -147,7 +147,7 @@
 	};
 
 	/* Search Header Cover & Full Screen Close */
-	var closes = document.getElementsByClassName( 'close' );
+	var closes = document.querySelectorAll( '.ast-search-box .close' );
 	for (var i = 0, len = closes.length; i < len; ++i) {
 		closes[i].onclick = function(evt){
 

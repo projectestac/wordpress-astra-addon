@@ -19,7 +19,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 3.0.0
  */
+// @codingStandardsIgnoreStart
 class Astra_Social_Component_Configs {
+ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+	// @codingStandardsIgnoreEnd
 
 	/**
 	 * Register Builder Customizer Configurations.
@@ -66,7 +69,6 @@ class Astra_Social_Component_Configs {
 					'context'    => astra_addon_builder_helper()->general_tab,
 					'renderAs'   => 'text',
 					'responsive' => false,
-					'divider'    => array( 'ast_class' => 'ast-bottom-divider' ),
 				),
 			);
 

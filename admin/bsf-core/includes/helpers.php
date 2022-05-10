@@ -10,14 +10,16 @@
  * BSF get API site.
  *
  * @param bool $prefer_unsecure Prefer unsecure.
+ * @param bool $is_rest_api use rest api base URL.
  * @return $bsf_api_site.
  */
-function bsf_get_api_site( $prefer_unsecure = false ) {
+function bsf_get_api_site( $prefer_unsecure = false, $is_rest_api = false ) {
+	$rest_api_endoint = ( true === $is_rest_api ) ? 'wp-json/bsf-products/v1/' : '';
 
 	if ( defined( 'BSF_API_URL' ) ) {
-		$bsf_api_site = BSF_API_URL;
+		$bsf_api_site = BSF_API_URL . $rest_api_endoint;
 	} else {
-		$bsf_api_site = 'http://support.brainstormforce.com/';
+		$bsf_api_site = 'http://support.brainstormforce.com/' . $rest_api_endoint;
 
 		if ( false === $prefer_unsecure && wp_http_supports( array( 'ssl' ) ) ) {
 			$bsf_api_site = set_url_scheme( $bsf_api_site, 'https' );
@@ -76,7 +78,7 @@ if ( ! function_exists( 'bsf_convert_core_path_to_relative' ) ) {
 	/**
 	 * Depracate bsf_convert_core_path_to_relative() to in favour of bsf_core_url()
 	 *
-	 * @param  $path $path depracated.
+	 * @param  $path $path deprecated.
 	 * @return String       URL of bsf-core directory.
 	 */
 	function bsf_convert_core_path_to_relative( $path ) {
@@ -123,14 +125,13 @@ if ( ! function_exists( 'get_brainstorm_product' ) ) {
 		$all_products = brainstorm_get_all_products();
 
 		foreach ( $all_products as $key => $product ) {
-
-			$product_id_bsf = isset( $product['id'] ) ? $product['id'] : '';
-
+			$product_id_bsf = isset( $product['id'] ) ? ( is_numeric( $product['id'] ) ? (int) $product['id'] : $product['id'] ) : '';
 			if ( $product_id === $product_id_bsf ) {
-
 				return $product;
 			}
 		}
+
+		return array();
 	}
 }
 
@@ -146,7 +147,7 @@ if ( ! function_exists( 'brainstorm_get_all_products' ) ) {
 	 * @return array All Products.
 	 */
 	function brainstorm_get_all_products( $skip_plugins = false, $skip_themes = false, $skip_bundled = false ) {
-
+		$all_products                = array();
 		$brainstrom_products         = get_option( 'brainstrom_products', array() );
 		$brainstrom_bundled_products = get_option( 'brainstrom_bundled_products', array() );
 		$brainstorm_plugins          = isset( $brainstrom_products['plugins'] ) ? $brainstrom_products['plugins'] : array();
@@ -328,4 +329,75 @@ function bsf_get_loaded_bsf_core_name() {
 	}
 
 	return $product_name;
+}
+
+/**
+ * Clear versions form trasinent.
+ *
+ * @param string $product_id Product ID.
+ */
+function bsf_clear_versions_cache( $product_id ) {
+	if ( false !== get_transient( 'bsf-product-versions-' . $product_id ) ) {
+		delete_transient( 'bsf-product-versions-' . $product_id );
+	}
+}
+/**
+ * Get white labled for product name.
+ *
+ * @param string $product_id Product ID.
+ * @param string $product_name Product Name.
+ *
+ * @return string Product name.
+ */
+function bsf_get_white_lable_product_name( $product_id, $product_name ) {
+	$white_label_name = apply_filters( "bsf_product_name_{$product_id}", $product_name );
+	return ! empty( $white_label_name ) ? $white_label_name : $product_name;
+}
+
+/**
+ * Get installed version of the product.
+ *
+ * @param string $type plugins/themes.
+ * @param string $product_id Product ID.
+ */
+function bsf_get_product_current_version( $type, $product_id ) {
+	$brainstrom_products = get_option( 'brainstrom_products' );
+	return isset( $brainstrom_products[ $type ][ $product_id ]['version'] ) ? $brainstrom_products[ $type ][ $product_id ]['version'] : '';
+}
+
+/**
+ * Check is user has permisson to view the product rollback version form.
+ *
+ * @param string $product_id Product ID.
+ *
+ * @return bool
+ */
+function bsf_display_rollback_version_form( $product_id ) {
+	if ( ! BSF_License_Manager::bsf_is_active_license( $product_id ) ) {
+		return false;
+	}
+
+	if ( is_multisite() && ! current_user_can( 'manage_network_plugins' ) ) {
+		return false;
+	}
+
+	if ( ! current_user_can( 'update_plugins' ) ) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Get installed PHP version.
+ *
+ * @return float|false PHP version.
+ * @since 1.0.0
+ */
+function bsf_get_php_version() {
+	if ( defined( 'PHP_MAJOR_VERSION' ) && defined( 'PHP_MINOR_VERSION' ) && defined( 'PHP_RELEASE_VERSION' ) ) { // phpcs:ignore
+		return PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION;
+	}
+
+	return phpversion();
 }

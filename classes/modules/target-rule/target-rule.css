@@ -103,3 +103,11 @@
 .ast-hidden {
     display: none !important;
 }
+
+.select2-selection .select2-selection__choice__remove {
+    float: right;
+    margin: 0px 2px 2px 3px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+    padding: 0 3px 0  5px;
+}

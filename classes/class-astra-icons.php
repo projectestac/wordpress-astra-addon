@@ -16,7 +16,10 @@ if ( ! class_exists( 'Astra_Icons' ) ) {
 	 *
 	 * @since 3.3.0
 	 */
-	class Astra_Icons {
+	// @codingStandardsIgnoreStart
+	class Astra_Icons { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+		// @codingStandardsIgnoreEnd
+
 		/**
 		 * Constructor function that initializes required actions and hooks
 		 */
@@ -39,7 +42,7 @@ if ( ! class_exists( 'Astra_Icons' ) ) {
 			$astra_settings                               = get_option( ASTRA_THEME_SETTINGS );
 			$astra_settings['can-update-astra-icons-svg'] = ( isset( $astra_settings['can-update-astra-icons-svg'] ) && false === $astra_settings['can-update-astra-icons-svg'] ) ? false : true;
 			if ( version_compare( ASTRA_THEME_VERSION, '3.3.0', '>=' ) ) {
-				return apply_filters( 'astra_is_svg_icons', $astra_settings['can-update-astra-icons-svg'] );
+				return apply_filters( 'astra_is_svg_icons', $astra_settings['can-update-astra-icons-svg'] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			}
 			return false;
 		}
@@ -75,9 +78,7 @@ if ( ! class_exists( 'Astra_Icons' ) ) {
 
 					case 'search':
 						$output = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="-888 480 142 142" enable-background="new -888 480 142 142" xml:space="preserve">
-					<title/>
-					<desc/>
-					<path id="Shape" d="M-787.4,568.7h-6.3l-2.4-2.4c7.9-8.7,12.6-20.5,12.6-33.1c0-28.4-22.9-51.3-51.3-51.3  c-28.4,0-51.3,22.9-51.3,51.3c0,28.4,22.9,51.3,51.3,51.3c12.6,0,24.4-4.7,33.1-12.6l2.4,2.4v6.3l39.4,39.4l11.8-11.8L-787.4,568.7  L-787.4,568.7z M-834.7,568.7c-19.7,0-35.5-15.8-35.5-35.5c0-19.7,15.8-35.5,35.5-35.5c19.7,0,35.5,15.8,35.5,35.5  C-799.3,553-815,568.7-834.7,568.7L-834.7,568.7z"/>
+					<path d="M-787.4,568.7h-6.3l-2.4-2.4c7.9-8.7,12.6-20.5,12.6-33.1c0-28.4-22.9-51.3-51.3-51.3  c-28.4,0-51.3,22.9-51.3,51.3c0,28.4,22.9,51.3,51.3,51.3c12.6,0,24.4-4.7,33.1-12.6l2.4,2.4v6.3l39.4,39.4l11.8-11.8L-787.4,568.7  L-787.4,568.7z M-834.7,568.7c-19.7,0-35.5-15.8-35.5-35.5c0-19.7,15.8-35.5,35.5-35.5c19.7,0,35.5,15.8,35.5,35.5  C-799.3,553-815,568.7-834.7,568.7L-834.7,568.7z"/>
 					</svg>';
 						break;
 
@@ -112,16 +113,16 @@ if ( ! class_exists( 'Astra_Icons' ) ) {
 
 				if ( $replace ) {
 					$output .= '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="18px" height="18px" viewBox="-63 -63 140 140" enable-background="new -63 -63 140 140" xml:space="preserve">
-					<path id="Shape" d="M75.133-47.507L61.502-61.133L7-6.625l-54.507-54.507l-13.625,13.625L-6.625,7l-54.507,54.503l13.625,13.63     L7,20.631l54.502,54.502l13.631-13.63L20.63,7L75.133-47.507z"/></svg>';
+					<path d="M75.133-47.507L61.502-61.133L7-6.625l-54.507-54.507l-13.625,13.625L-6.625,7l-54.507,54.503l13.625,13.63     L7,20.631l54.502,54.502l13.631-13.63L20.63,7L75.133-47.507z"/></svg>';
 				}
 			} else {
 				if ( 'menu-bars' === $icon ) {
-					$menu_icon = apply_filters( 'astra_' . $menu_location . '_menu_toggle_icon', 'menu-toggle-icon' );
+					$menu_icon = apply_filters( 'astra_' . $menu_location . '_menu_toggle_icon', 'menu-toggle-icon' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 					$output    = '<span class="' . esc_attr( $menu_icon ) . '"></span>';
 				}
 			}
 
-			$output = apply_filters( 'astra_svg_icon_element', $output, $icon );
+			$output = apply_filters( 'astra_svg_icon_element', $output, $icon ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 			$classes = array(
 				'ast-icon',
@@ -135,10 +136,10 @@ if ( ! class_exists( 'Astra_Icons' ) ) {
 			);
 
 			if ( ! $is_echo ) {
-				return apply_filters( 'astra_svg_icon', $output, $icon );
+				return apply_filters( 'astra_svg_icon', $output, $icon ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			}
 
-			echo apply_filters( 'astra_svg_icon', $output, $icon ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo apply_filters( 'astra_svg_icon', $output, $icon ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		}
 	}
 	new Astra_Icons();

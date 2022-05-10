@@ -25,7 +25,10 @@ if ( ! class_exists( 'Astra_Customizer_Notices_Configs' ) ) :
 	/**
 	 * The Customizer class.
 	 */
+	// @codingStandardsIgnoreStart
 	class Astra_Customizer_Notices_Configs extends Astra_Customizer_Config_Base {
+ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+		// @codingStandardsIgnoreEnd
 
 		/**
 		 * Register General Customizer Configurations.
@@ -42,115 +45,119 @@ if ( ! class_exists( 'Astra_Customizer_Notices_Configs' ) ) :
 
 				$_configs = array();
 
-				if ( $this->is_custom_layout_header() ) {
+				if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 
-					if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
+					$_configs = array(
 
-						$_configs = array(
+						/**
+						 * Notice for custom layout.
+						 */
+						array(
+							'name'            => ASTRA_THEME_SETTINGS . '[ast-callback-notice-custom-layout]',
+							'type'            => 'control',
+							'control'         => 'ast-description',
+							'section'         => 'section-header-builder-layout',
+							'priority'        => 1,
+							'active_callback' => array( $this, 'is_custom_layout_header' ),
+							'help'            => $this->get_help_text_notice( 'custom-header' ),
+						),
 
-							/**
-							 * Notice for custom layout.
-							 */
-							array(
-								'name'     => ASTRA_THEME_SETTINGS . '[ast-callback-notice-custom-layout]',
-								'type'     => 'control',
-								'control'  => 'ast-description',
-								'section'  => 'section-header-builder-layout',
-								'priority' => 1,
-								'help'     => $this->get_help_text_notice( 'custom-header' ),
-							),
+					);
 
-						);
+				} else {
+					$_configs = array(
 
-					} else {
-						$_configs = array(
+						/**
+						 * Notice for Above header created using custom layout.
+						 */
+						array(
+							'name'            => ASTRA_THEME_SETTINGS . '[header-custom-layout-above-header]',
+							'type'            => 'control',
+							'control'         => 'ast-description',
+							'section'         => 'section-above-header',
+							'priority'        => 1,
+							'active_callback' => array( $this, 'is_custom_layout_header' ),
+							'help'            => $this->get_help_text_notice( 'custom-header' ),
+						),
 
-							/**
-							 * Notice for Above header created using custom layout.
-							 */
-							array(
-								'name'     => ASTRA_THEME_SETTINGS . '[header-custom-layout-above-header]',
-								'type'     => 'control',
-								'control'  => 'ast-description',
-								'section'  => 'section-above-header',
-								'priority' => 1,
-								'help'     => $this->get_help_text_notice( 'custom-header' ),
-							),
+						/**
+						 * Notice for Below header created using custom layout.
+						 */
+						array(
+							'name'            => ASTRA_THEME_SETTINGS . '[header-custom-layout-below-header]',
+							'type'            => 'control',
+							'control'         => 'ast-description',
+							'section'         => 'section-below-header',
+							'priority'        => 1,
+							'active_callback' => array( $this, 'is_custom_layout_header' ),
+							'help'            => $this->get_help_text_notice( 'custom-header' ),
+						),
 
-							/**
-							 * Notice for Below header created using custom layout.
-							 */
-							array(
-								'name'     => ASTRA_THEME_SETTINGS . '[header-custom-layout-below-header]',
-								'type'     => 'control',
-								'control'  => 'ast-description',
-								'section'  => 'section-below-header',
-								'priority' => 1,
-								'help'     => $this->get_help_text_notice( 'custom-header' ),
-							),
+						/**
+						 * Notice for Primary header created using custom layout.
+						 */
+						array(
+							'name'            => ASTRA_THEME_SETTINGS . '[header-custom-layout-header]',
+							'type'            => 'control',
+							'control'         => 'ast-description',
+							'section'         => 'section-header',
+							'priority'        => 1,
+							'active_callback' => array( $this, 'is_custom_layout_header' ),
+							'help'            => $this->get_help_text_notice( 'custom-header' ),
+						),
 
-							/**
-							 * Notice for Primary header created using custom layout.
-							 */
-							array(
-								'name'     => ASTRA_THEME_SETTINGS . '[header-custom-layout-header]',
-								'type'     => 'control',
-								'control'  => 'ast-description',
-								'section'  => 'section-header',
-								'priority' => 1,
-								'help'     => $this->get_help_text_notice( 'custom-header' ),
-							),
+						/**
+						 * Notice for Sticky header created using custom layout.
+						 */
+						array(
+							'name'            => ASTRA_THEME_SETTINGS . '[header-custom-layout-sticky-header]',
+							'type'            => 'control',
+							'control'         => 'ast-description',
+							'section'         => 'section-sticky-header',
+							'priority'        => 1,
+							'active_callback' => array( $this, 'is_custom_layout_header' ),
+							'help'            => $this->get_help_text_notice( 'custom-header' ),
+						),
 
-							/**
-							 * Notice for Sticky header created using custom layout.
-							 */
-							array(
-								'name'     => ASTRA_THEME_SETTINGS . '[header-custom-layout-sticky-header]',
-								'type'     => 'control',
-								'control'  => 'ast-description',
-								'section'  => 'section-sticky-header',
-								'priority' => 1,
-								'help'     => $this->get_help_text_notice( 'custom-header' ),
-							),
+						/**
+						 * Notice for Transparent header created using custom layout.
+						 */
+						array(
+							'name'            => ASTRA_THEME_SETTINGS . '[header-custom-layout-transparent-header]',
+							'type'            => 'control',
+							'control'         => 'ast-description',
+							'section'         => 'section-transparent-header',
+							'priority'        => 1,
+							'active_callback' => array( $this, 'is_custom_layout_header' ),
+							'help'            => $this->get_help_text_notice( 'custom-header' ),
+						),
 
-							/**
-							 * Notice for Transparent header created using custom layout.
-							 */
-							array(
-								'name'     => ASTRA_THEME_SETTINGS . '[header-custom-layout-transparent-header]',
-								'type'     => 'control',
-								'control'  => 'ast-description',
-								'section'  => 'section-transparent-header',
-								'priority' => 1,
-								'help'     => $this->get_help_text_notice( 'custom-header' ),
-							),
+						/**
+						 * Notice for Colors - Primary header created using custom layout.
+						 */
+						array(
+							'name'            => ASTRA_THEME_SETTINGS . '[header-custom-color-primary-header]',
+							'type'            => 'control',
+							'control'         => 'ast-description',
+							'section'         => 'section-colors-primary-menu',
+							'priority'        => 1,
+							'active_callback' => array( $this, 'is_custom_layout_header' ),
+							'help'            => $this->get_help_text_notice( 'custom-header' ),
+						),
 
-							/**
-							 * Notice for Colors - Primary header created using custom layout.
-							 */
-							array(
-								'name'     => ASTRA_THEME_SETTINGS . '[header-custom-color-primary-header]',
-								'type'     => 'control',
-								'control'  => 'ast-description',
-								'section'  => 'section-colors-primary-menu',
-								'priority' => 1,
-								'help'     => $this->get_help_text_notice( 'custom-header' ),
-							),
-
-							/**
-							 * Notice for Title & Tagline section when header is created using custom layout.
-							 */
-							array(
-								'name'     => ASTRA_THEME_SETTINGS . '[header-custom-title_tagline]',
-								'type'     => 'control',
-								'control'  => 'ast-description',
-								'section'  => 'title_tagline',
-								'priority' => 1,
-								'help'     => $this->get_help_text_notice( 'custom-header' ),
-							),
-						);
-
-					}
+						/**
+						 * Notice for Title & Tagline section when header is created using custom layout.
+						 */
+						array(
+							'name'            => ASTRA_THEME_SETTINGS . '[header-custom-title_tagline]',
+							'type'            => 'control',
+							'control'         => 'ast-description',
+							'section'         => 'title_tagline',
+							'priority'        => 1,
+							'active_callback' => array( $this, 'is_custom_layout_header' ),
+							'help'            => $this->get_help_text_notice( 'custom-header' ),
+						),
+					);
 				}
 
 				$configurations = array_merge( $configurations, $_configs );
@@ -209,9 +216,10 @@ if ( ! class_exists( 'Astra_Customizer_Notices_Configs' ) ) :
 			$advanced_hooks = Astra_Target_Rules_Fields::get_instance()->get_posts_by_conditions( ASTRA_ADVANCED_HOOKS_POST_TYPE, $option );
 
 			foreach ( $advanced_hooks as $post_id => $post_data ) {
-				$layout = get_post_meta( $post_id, 'ast-advanced-hook-layout', false );
+				$custom_post_enable = get_post_meta( $post_id, 'ast-advanced-hook-enabled', true );
+				$layout             = get_post_meta( $post_id, 'ast-advanced-hook-layout', false );
 
-				if ( isset( $layout[0] ) && 'header' == $layout[0] ) {
+				if ( isset( $layout[0] ) && 'header' === $layout[0] && 'no' !== $custom_post_enable ) {
 					return true;
 				}
 			}

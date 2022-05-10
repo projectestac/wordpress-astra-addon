@@ -24,7 +24,10 @@ if ( ! class_exists( 'Astra_Woocommerce_General_Configs' ) ) {
 	/**
 	 * Register Woocommerce General Layout Configurations.
 	 */
+	// @codingStandardsIgnoreStart
 	class Astra_Woocommerce_General_Configs extends Astra_Customizer_Config_Base {
+ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+		// @codingStandardsIgnoreEnd
 
 		/**
 		 * Register Woocommerce General Layout Configurations.
@@ -39,6 +42,8 @@ if ( ! class_exists( 'Astra_Woocommerce_General_Configs' ) ) {
 			$_section = ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ? 'section-header-woo-cart' : 'section-woo-general';
 
 			$context = ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ? astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab;
+
+			$cart_outline_width_context = ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ? astra_addon_builder_helper()->design_tab_config : astra_addon_builder_helper()->general_tab_config;
 
 			$_configs = array(
 
@@ -135,6 +140,63 @@ if ( ! class_exists( 'Astra_Woocommerce_General_Configs' ) ) {
 						'basket'  => __( 'Basket', 'astra-addon' ),
 					),
 					'context'   => astra_addon_builder_helper()->general_tab,
+				),
+
+				/**
+				 * Option: Cart Count color
+				 */
+				array(
+					'name'              => ASTRA_THEME_SETTINGS . '[woo-header-cart-product-count-color]',
+					'default'           => astra_get_option( 'woo-header-cart-product-count-color' ),
+					'type'              => 'control',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'title'             => __( 'Count Color', 'astra-addon' ),
+					'context'           => array(
+						Astra_Builder_Helper::$design_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[woo-header-cart-icon]',
+							'operator' => '!=',
+							'value'    => 'default',
+						),
+					),
+					'section'           => $_section,
+					'priority'          => 45,
+				),
+
+				/**
+				 * Option: Border Width
+				 */
+				array(
+					'name'        => ASTRA_THEME_SETTINGS . '[woo-header-cart-border-width]',
+					'default'     => astra_get_option( 'woo-header-cart-border-width' ),
+					'type'        => 'control',
+					'transport'   => 'postMessage',
+					'section'     => $_section,
+					'context'     => array(
+						$cart_outline_width_context,
+						'relation' => 'AND',
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[woo-header-cart-icon-style]',
+							'operator' => '==',
+							'value'    => 'outline',
+						),
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[woo-header-cart-icon]',
+							'operator' => '!=',
+							'value'    => 'default',
+						),
+					),
+					'title'       => __( 'Border Width', 'astra-addon' ),
+					'control'     => 'ast-slider',
+					'suffix'      => 'px',
+					'priority'    => 46,
+					'input_attrs' => array(
+						'min'  => 0,
+						'step' => 1,
+						'max'  => 20,
+					),
 				),
 			);
 

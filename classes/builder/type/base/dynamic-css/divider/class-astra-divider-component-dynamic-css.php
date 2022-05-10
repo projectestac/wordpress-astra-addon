@@ -24,7 +24,10 @@ if ( class_exists( 'Astra_Divider_Component_Dynamic_CSS' ) ) {
  *
  * @since 3.0.0
  */
+// @codingStandardsIgnoreStart
 class Astra_Divider_Component_Dynamic_CSS {
+ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+	// @codingStandardsIgnoreEnd
 
 	/**
 	 * Dynamic CSS
@@ -106,6 +109,9 @@ class Astra_Divider_Component_Dynamic_CSS {
 					'margin-bottom' => astra_responsive_spacing( $margin, 'bottom', 'desktop' ),
 					'margin-left'   => astra_responsive_spacing( $margin, 'left', 'desktop' ),
 					'margin-right'  => astra_responsive_spacing( $margin, 'right', 'desktop' ),
+				),
+				'.ast-container[data-section="section-above-header-builder"],.ast-container[data-section="section-primary-header-builder"],.ast-container[data-section="section-below-header-builder"],.ast-container[data-section="section-above-header-builder"] .site-header-above-section-left,.ast-container[data-section="section-above-header-builder"] .site-header-above-section-center,.ast-container[data-section="section-above-header-builder"] .site-header-above-section-right,.ast-container[data-section="section-primary-header-builder"] .site-header-primary-section-left,.ast-container[data-section="section-primary-header-builder"] .site-header-primary-section-center,.ast-container[data-section="section-primary-header-builder"] .site-header-primary-section-right,.ast-container[data-section="section-below-header-builder"] .site-header-below-section-left,.ast-container[data-section="section-below-header-builder"] .site-header-below-section-center,.ast-container[data-section="section-below-header-builder"] .site-header-below-section-right' => array(
+					'position' => 'relative',
 				),
 			);
 

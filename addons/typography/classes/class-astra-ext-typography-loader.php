@@ -13,7 +13,10 @@ if ( ! class_exists( 'Astra_Ext_Typography_Loader' ) ) {
 	 *
 	 * @since 1.0.0
 	 */
+	// @codingStandardsIgnoreStart
 	class Astra_Ext_Typography_Loader {
+ // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+		// @codingStandardsIgnoreEnd
 
 		/**
 		 * Member Variable
@@ -106,29 +109,32 @@ if ( ! class_exists( 'Astra_Ext_Typography_Loader' ) ) {
 			$font_weight_footer_content = astra_get_option( 'font-weight-footer-content' );
 			Astra_Fonts::add_font( $font_family_footer_content, $font_weight_footer_content );
 
-			$font_family_h1 = astra_get_option( 'font-family-h1' );
-			$font_weight_h1 = astra_get_option( 'font-weight-h1' );
-			Astra_Fonts::add_font( $font_family_h1, $font_weight_h1 );
+			if ( astra_addon_has_gcp_typo_preset_compatibility() ) {
 
-			$font_family_h2 = astra_get_option( 'font-family-h2' );
-			$font_weight_h2 = astra_get_option( 'font-weight-h2' );
-			Astra_Fonts::add_font( $font_family_h2, $font_weight_h2 );
+				$font_family_h1 = astra_get_option( 'font-family-h1' );
+				$font_weight_h1 = astra_get_option( 'font-weight-h1' );
+				Astra_Fonts::add_font( $font_family_h1, $font_weight_h1 );
 
-			$font_family_h3 = astra_get_option( 'font-family-h3' );
-			$font_weight_h3 = astra_get_option( 'font-weight-h3' );
-			Astra_Fonts::add_font( $font_family_h3, $font_weight_h3 );
+				$font_family_h2 = astra_get_option( 'font-family-h2' );
+				$font_weight_h2 = astra_get_option( 'font-weight-h2' );
+				Astra_Fonts::add_font( $font_family_h2, $font_weight_h2 );
 
-			$font_family_h4 = astra_get_option( 'font-family-h4' );
-			$font_weight_h4 = astra_get_option( 'font-weight-h4' );
-			Astra_Fonts::add_font( $font_family_h4, $font_weight_h4 );
+				$font_family_h3 = astra_get_option( 'font-family-h3' );
+				$font_weight_h3 = astra_get_option( 'font-weight-h3' );
+				Astra_Fonts::add_font( $font_family_h3, $font_weight_h3 );
 
-			$font_family_h5 = astra_get_option( 'font-family-h5' );
-			$font_weight_h5 = astra_get_option( 'font-weight-h5' );
-			Astra_Fonts::add_font( $font_family_h5, $font_weight_h5 );
+				$font_family_h4 = astra_get_option( 'font-family-h4' );
+				$font_weight_h4 = astra_get_option( 'font-weight-h4' );
+				Astra_Fonts::add_font( $font_family_h4, $font_weight_h4 );
 
-			$font_family_h6 = astra_get_option( 'font-family-h6' );
-			$font_weight_h6 = astra_get_option( 'font-weight-h6' );
-			Astra_Fonts::add_font( $font_family_h6, $font_weight_h6 );
+				$font_family_h5 = astra_get_option( 'font-family-h5' );
+				$font_weight_h5 = astra_get_option( 'font-weight-h5' );
+				Astra_Fonts::add_font( $font_family_h5, $font_weight_h5 );
+
+				$font_family_h6 = astra_get_option( 'font-family-h6' );
+				$font_weight_h6 = astra_get_option( 'font-weight-h6' );
+				Astra_Fonts::add_font( $font_family_h6, $font_weight_h6 );
+			}
 
 			$font_family_button = astra_get_option( 'font-family-button' );
 			$font_weight_button = astra_get_option( 'font-weight-button' );
@@ -149,8 +155,8 @@ if ( ! class_exists( 'Astra_Ext_Typography_Loader' ) ) {
 				 * Header - Account
 				 */
 				if ( Astra_Addon_Builder_Helper::is_component_loaded( 'account', 'header' ) ) {
-					$account_font_family = astra_get_option( 'font-family-section-header-account' );
-					$account_font_weight = astra_get_option( 'font-weight-section-header-account' );
+					$account_font_family = astra_get_option( 'section-header-account-menu-font-family' );
+					$account_font_weight = astra_get_option( 'section-header-account-menu-font-weight' );
 					Astra_Fonts::add_font( $account_font_family, $account_font_weight );
 				}
 
@@ -186,39 +192,6 @@ if ( ! class_exists( 'Astra_Ext_Typography_Loader' ) ) {
 					$html_font_family = astra_get_option( 'font-family-' . $_prefix );
 					$html_font_weight = astra_get_option( 'font-weight-' . $_prefix );
 					Astra_Fonts::add_font( $html_font_family, $html_font_weight );
-				}
-
-				/**
-				 * Footer - Button
-				 */
-				$num_of_footer_button = astra_addon_builder_helper()->num_of_footer_button;
-				for ( $index = 1; $index <= $num_of_footer_button; $index++ ) {
-					if ( ! Astra_Addon_Builder_Helper::is_component_loaded( 'button-' . $index, 'footer' ) ) {
-						continue;
-					}
-
-					$_prefix = 'button' . $index;
-
-					$btn_font_family = astra_get_option( 'footer-' . $_prefix . '-font-family' );
-					$btn_font_weight = astra_get_option( 'footer-' . $_prefix . '-font-weight' );
-					Astra_Fonts::add_font( $btn_font_family, $btn_font_weight );
-				}
-
-				/**
-				 * Header - Button
-				 */
-				$num_of_header_button = astra_addon_builder_helper()->num_of_header_button;
-				for ( $index = 1; $index <= $num_of_header_button; $index++ ) {
-
-					if ( ! Astra_Addon_Builder_Helper::is_component_loaded( 'button-' . $index, 'header' ) ) {
-						continue;
-					}
-
-					$_prefix = 'button' . $index;
-
-					$btn_font_family = astra_get_option( 'header-' . $_prefix . '-font-family' );
-					$btn_font_weight = astra_get_option( 'header-' . $_prefix . '-font-weight' );
-					Astra_Fonts::add_font( $btn_font_family, $btn_font_weight );
 				}
 
 				/**
@@ -519,23 +492,25 @@ if ( ! class_exists( 'Astra_Ext_Typography_Loader' ) ) {
 			$defaults['text-transform-h3'] = '';
 			$defaults['line-height-h3']    = '';
 
-			// Header <H4>.
-			$defaults['font-family-h4']    = 'inherit';
-			$defaults['font-weight-h4']    = 'inherit';
-			$defaults['text-transform-h4'] = '';
-			$defaults['line-height-h4']    = '';
+			if ( astra_addon_has_gcp_typo_preset_compatibility() ) {
+				// Header <H4>.
+				$defaults['font-family-h4']    = 'inherit';
+				$defaults['font-weight-h4']    = 'inherit';
+				$defaults['text-transform-h4'] = '';
+				$defaults['line-height-h4']    = '';
 
-			// Header <H5>.
-			$defaults['font-family-h5']    = 'inherit';
-			$defaults['font-weight-h5']    = 'inherit';
-			$defaults['text-transform-h5'] = '';
-			$defaults['line-height-h5']    = '';
+				// Header <H5>.
+				$defaults['font-family-h5']    = 'inherit';
+				$defaults['font-weight-h5']    = 'inherit';
+				$defaults['text-transform-h5'] = '';
+				$defaults['line-height-h5']    = '';
 
-			// Header <H6>.
-			$defaults['font-family-h6']    = 'inherit';
-			$defaults['font-weight-h6']    = 'inherit';
-			$defaults['text-transform-h6'] = '';
-			$defaults['line-height-h6']    = '';
+				// Header <H6>.
+				$defaults['font-family-h6']    = 'inherit';
+				$defaults['font-weight-h6']    = 'inherit';
+				$defaults['text-transform-h6'] = '';
+				$defaults['line-height-h6']    = '';
+			}
 
 			// Outside Menu Item.
 			$defaults['outside-menu-font-size']   = array(
@@ -608,36 +583,9 @@ if ( ! class_exists( 'Astra_Ext_Typography_Loader' ) ) {
 			$component_limit = astra_addon_builder_helper()->component_limit;
 			for ( $index = 1; $index <= $component_limit; $index++ ) {
 				$defaults = $this->prepare_social_icons_defaults( $defaults, $index );
-				$defaults = $this->prepare_button_defaults( $defaults, $index );
 			}
 
 			return $defaults;
-		}
-
-		/**
-		 * Prepare Button Defaults.
-		 *
-		 * @param array   $defaults defaults.
-		 * @param integer $index index.
-		 * @return array
-		 * @since 3.1.0
-		 */
-		public function prepare_button_defaults( $defaults, $index ) {
-
-			$defaults[ 'header-button' . $index . '-font-family' ]    = 'inherit';
-			$defaults[ 'header-button' . $index . '-font-weight' ]    = 'inherit';
-			$defaults[ 'header-button' . $index . '-text-transform' ] = '';
-			$defaults[ 'header-button' . $index . '-line-height' ]    = '';
-			$defaults[ 'header-button' . $index . '-letter-spacing' ] = '';
-
-			$defaults[ 'footer-button' . $index . '-font-family' ]    = 'inherit';
-			$defaults[ 'footer-button' . $index . '-font-weight' ]    = 'inherit';
-			$defaults[ 'footer-button' . $index . '-text-transform' ] = '';
-			$defaults[ 'footer-button' . $index . '-line-height' ]    = '';
-			$defaults[ 'footer-button' . $index . '-letter-spacing' ] = '';
-
-			return $defaults;
-
 		}
 
 		/**
@@ -668,18 +616,18 @@ if ( ! class_exists( 'Astra_Ext_Typography_Loader' ) ) {
 			/**
 			 * Register Sections & Panels
 			 */
-			require_once ASTRA_EXT_TYPOGRAPHY_DIR . 'classes/class-astra-typo-panel-section-configs.php';
-			require_once ASTRA_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-archive-advanced-typo-configs.php';
-			require_once ASTRA_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-content-advanced-typo-configs.php';
-			require_once ASTRA_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-site-header-typo-configs.php';
+			require_once ASTRA_ADDON_EXT_TYPOGRAPHY_DIR . 'classes/class-astra-typo-panel-section-configs.php';
+			require_once ASTRA_ADDON_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-archive-advanced-typo-configs.php';
+			require_once ASTRA_ADDON_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-content-advanced-typo-configs.php';
+			require_once ASTRA_ADDON_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-site-header-typo-configs.php';
 			if ( astra_addon_existing_header_footer_configs() ) {
-				require_once ASTRA_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-primary-menu-typo-configs.php';
-				require_once ASTRA_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-footer-typo-configs.php';
+				require_once ASTRA_ADDON_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-primary-menu-typo-configs.php';
+				require_once ASTRA_ADDON_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-footer-typo-configs.php';
 			}
-			require_once ASTRA_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-sidebar-typo-configs.php';
-			require_once ASTRA_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-single-advanced-typo-configs.php';
-			require_once ASTRA_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-builder-menu-configs.php';
-			require_once ASTRA_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-header-builder-typo-configs.php';
+			require_once ASTRA_ADDON_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-sidebar-typo-configs.php';
+			require_once ASTRA_ADDON_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-single-advanced-typo-configs.php';
+			require_once ASTRA_ADDON_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-builder-menu-configs.php';
+			require_once ASTRA_ADDON_EXT_TYPOGRAPHY_DIR . 'classes/sections/class-astra-header-builder-typo-configs.php';
 		}
 
 		/**
@@ -688,17 +636,18 @@ if ( ! class_exists( 'Astra_Ext_Typography_Loader' ) ) {
 		public function preview_scripts() {
 
 			if ( SCRIPT_DEBUG ) {
-				wp_enqueue_script( 'astra-ext-typography-customize-preview-js', ASTRA_EXT_TYPOGRAPHY_URI . 'assets/js/unminified/customizer-preview.js', array( 'customize-preview', 'astra-customizer-preview-js' ), ASTRA_EXT_VER, true );
+				wp_enqueue_script( 'astra-ext-typography-customize-preview-js', ASTRA_ADDON_EXT_TYPOGRAPHY_URI . 'assets/js/unminified/customizer-preview.js', array( 'customize-preview', 'astra-customizer-preview-js' ), ASTRA_EXT_VER, true );
 			} else {
-				wp_enqueue_script( 'astra-ext-typography-customize-preview-js', ASTRA_EXT_TYPOGRAPHY_URI . 'assets/js/minified/customizer-preview.min.js', array( 'customize-preview', 'astra-customizer-preview-js' ), ASTRA_EXT_VER, true );
+				wp_enqueue_script( 'astra-ext-typography-customize-preview-js', ASTRA_ADDON_EXT_TYPOGRAPHY_URI . 'assets/js/minified/customizer-preview.min.js', array( 'customize-preview', 'astra-customizer-preview-js' ), ASTRA_EXT_VER, true );
 			}
 
 			$localize_array = array(
 				'includeAnchorsInHeadindsCss'         => astra_addon_typography_anchors_in_css_selectors_heading(),
-				'addon_page_builder_button_style_css' => page_builder_addon_button_style_css(),
+				'addon_page_builder_button_style_css' => Astra_Addon_Update_Filter_Function::page_builder_addon_button_style_css(),
 				'component_limit'                     => astra_addon_builder_helper()->component_limit,
 				'is_flex_based_css'                   => Astra_Addon_Builder_Helper::apply_flex_based_css(),
 				'astra_not_updated'                   => version_compare( ASTRA_THEME_VERSION, '3.2.0', '<' ),
+				'font_weight_support_widget_title'    => Astra_Addon_Update_Filter_Function::support_addon_font_css_to_widget_and_in_editor(),
 			);
 
 			wp_localize_script( 'astra-ext-typography-customize-preview-js', 'astTypography', $localize_array );

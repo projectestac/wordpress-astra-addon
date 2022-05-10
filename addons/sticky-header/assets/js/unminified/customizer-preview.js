@@ -52,9 +52,9 @@
 		} );
 	} );
 
-		var sticky_header_style = astraAddon.sticky_header_style || '';
-		var sticky_hide_on_scroll = astraAddon.sticky_hide_on_scroll || '';
-		var isHeaderBuilderActive = astraAddon.header_builder_active || false;
+		var sticky_header_style = astSticky.sticky_header_style || '';
+		var sticky_hide_on_scroll = astSticky.sticky_hide_on_scroll || '';
+		var isHeaderBuilderActive = astSticky.header_builder_active || false;
 
 		if( isHeaderBuilderActive ) {
 			// Site Identity preview styles.
@@ -62,7 +62,7 @@
 			astra_css( 'astra-settings[sticky-header-builder-site-title-h-color]', 'color', '[CLASS*="-sticky-header-active"] #ast-fixed-header.ast-header-sticked .site-title a:hover, [CLASS*="-sticky-header-active"] .ast-header-sticked .site-title a:hover' );
 			astra_css( 'astra-settings[sticky-header-builder-site-tagline-color]', 'color', '[CLASS*="-sticky-header-active"] #ast-fixed-header.ast-header-sticked .ast-site-identity .site-description, [CLASS*="-sticky-header-active"] .ast-header-sticked .ast-site-identity .site-description' );
 
-			for ( var index = 1; index <= astraAddon.component_limit; index++ ) {
+			for ( var index = 1; index <= astSticky.component_limit; index++ ) {
 
 				// Menu color preview styles.
 				astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu'+ index +'-color-responsive]', 'color', '[CLASS*="-sticky-header-active"] .ast-builder-menu-'+ index +' #ast-hf-menu-'+ index +' > .menu-item > .menu-link' );
@@ -76,7 +76,7 @@
 
 				// Submenu color preview styles.
 				astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu'+ index +'-submenu-color-responsive]', 'color', '[CLASS*="-sticky-header-active"] .ast-builder-menu-'+ index +' #ast-hf-menu-'+ index +' .sub-menu .menu-link' );
-				astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu'+ index +'-submenu-bg-color-responsive]', 'background-color', '[CLASS*="-sticky-header-active"] .ast-builder-menu-'+ index +' #ast-hf-menu-'+ index +' .sub-menu' );
+				astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu'+ index +'-submenu-bg-color-responsive]', 'background-color', '.ast-header-sticked .ast-builder-menu-'+ index +' #ast-hf-menu-'+ index +' .sub-menu, .ast-header-sticked .ast-builder-menu-'+ index +' #ast-hf-menu-'+ index +' .sub-menu .menu-link' );
 
 				astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu'+ index +'-submenu-h-color-responsive]', 'color', '[CLASS*="-sticky-header-active"] .ast-builder-menu-'+ index +' #ast-hf-menu-'+ index +' .sub-menu .menu-item > .menu-link:hover, [CLASS*="-sticky-header-active"] .ast-builder-menu-'+ index +' #ast-hf-menu-'+ index +' .sub-menu .menu-item:hover > .menu-link' );
 				astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu'+ index +'-submenu-h-bg-color-responsive]', 'background-color', '[CLASS*="-sticky-header-active"] .ast-builder-menu-'+ index +' #ast-hf-menu-'+ index +' .sub-menu .menu-item > .menu-link:hover, [CLASS*="-sticky-header-active"] .ast-builder-menu-'+ index +' #ast-hf-menu-'+ index +' .sub-menu .menu-item:hover > .menu-link' );
@@ -111,7 +111,7 @@
 			astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-bg-color-responsive]','background', '.ast-transparent-header.ast-primary-sticky-header-active .main-header-bar, .ast-primary-sticky-header-active .ast-main-header-wrap .main-header-bar, .ast-primary-sticky-header-active.ast-header-break-point .main-header-bar, .ast-primary-sticky-enabled .ast-main-header-wrap .main-header-bar.ast-header-sticked' );
 
 			// Sticky -- Primary Menu.
-			astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu-bg-color-responsive]','background-color', '.ast-primary-sticky-header-active .main-header-bar-navigation .main-header-menu, .ast-header-break-point.ast-primary-sticky-header-active .main-header-menu, .ast-header-break-point.ast-primary-sticky-header-active .main-header-bar-navigation #site-navigation, .ast-fullscreen-menu-enable.ast-header-break-point .main-header-bar-navigation #site-navigation' );
+			astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu-bg-color-responsive]','background-color', '.ast-primary-sticky-header-active .main-header-bar-navigation .main-header-menu, .ast-header-break-point.ast-primary-sticky-header-active .main-header-menu, .ast-header-break-point.ast-primary-sticky-header-active .main-header-bar-navigation .site-navigation, .ast-fullscreen-menu-enable.ast-header-break-point .main-header-bar-navigation .site-navigation' );
 			astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu-color-responsive]','color', '.ast-primary-sticky-header-active .main-header-menu, .ast-primary-sticky-header-active .main-header-menu .menu-link, .ast-primary-sticky-header-active .ast-builder-menu-1 .main-header-menu .menu-item > .menu-link, .ast-primary-sticky-header-active .ast-builder-menu-2 .main-header-menu .menu-item > .menu-link, .ast-primary-sticky-header-active .ast-header-custom-item, .ast-header-custom-item a, .ast-primary-sticky-header-active li.ast-masthead-custom-menu-items, .ast-primary-sticky-header-active li.ast-masthead-custom-menu-items a, .ast-primary-sticky-header-active .ast-masthead-custom-menu-items .ast-inline-search form' );
 			astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu-h-color-responsive]','color', '.ast-primary-sticky-header-active .main-header-menu .menu-item.current-menu-item > .menu-link, .ast-primary-sticky-header-active .main-header-menu .menu-item.current-menu-ancestor > .menu-link, .ast-primary-sticky-header-active .main-header-menu, .ast-primary-sticky-header-active .ast-builder-menu-1 .main-header-menu .menu-item > .menu-link:hover, .ast-primary-sticky-header-active .main-header-menu, .ast-primary-sticky-header-active .ast-builder-menu-2 .main-header-menu .menu-item > .menu-link:hover, .ast-header-custom-item a:hover, .ast-primary-sticky-header-active .main-header-menu .menu-item:hover > .menu-link, .ast-primary-sticky-header-active .main-header-menu .menu-item.focus > .menu-link, .ast-primary-sticky-header-active .main-header-menu .ast-masthead-custom-menu-items a:hover, .ast-primary-sticky-header-active .main-header-menu .menu-item:hover > .ast-menu-toggle, .ast-primary-sticky-header-active .main-header-menu .menu-item.focus > .ast-menu-toggle' );
 			astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu-h-a-bg-color-responsive]','background-color', '.ast-primary-sticky-header-active .main-header-menu .menu-item.current-menu-item > .menu-link, .ast-primary-sticky-header-active .main-header-menu .menu-item.current-menu-ancestor > .menu-link,.ast-primary-sticky-header-active .main-header-menu .menu-link:hover, .ast-header-custom-item a:hover, .ast-primary-sticky-header-active .main-header-menu .menu-item:hover > .menu-link, .ast-primary-sticky-header-active .main-header-menu .menu-item.focus > .menu-link' );
@@ -192,7 +192,7 @@
 			astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-bg-color-responsive]','background', '.ast-transparent-header #ast-fixed-header .main-header-bar, #ast-fixed-header .main-header-bar, #ast-fixed-header .ast-masthead-custom-menu-items .ast-inline-search .search-field, #ast-fixed-header .ast-masthead-custom-menu-items .ast-inline-search .search-field:focus' );
 
 			// Sticky -- Primary Menu.
-			astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu-bg-color-responsive]','background-color', '#ast-fixed-header .main-header-menu, .ast-header-break-point.ast-primary-sticky-header-active .main-header-bar-navigation #site-navigation, .ast-fullscreen-menu-enable.ast-header-break-point .main-header-bar-navigation #site-navigation' );
+			astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu-bg-color-responsive]','background-color', '#ast-fixed-header .main-header-menu, .ast-header-break-point.ast-primary-sticky-header-active .main-header-bar-navigation .site-navigation, .ast-fullscreen-menu-enable.ast-header-break-point .main-header-bar-navigation .site-navigation' );
 			astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu-color-responsive]','color', '#ast-fixed-header .main-header-menu, #ast-fixed-header .main-header-menu .menu-link, #ast-fixed-header .ast-header-custom-item, .ast-header-custom-item a, #ast-fixed-header li.ast-masthead-custom-menu-items, #ast-fixed-header li.ast-masthead-custom-menu-items a, #ast-fixed-header .ast-masthead-custom-menu-items .ast-inline-search form' );
 			astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu-h-color-responsive]','color', '#ast-fixed-header .main-header-menu .menu-item.current-menu-item > .menu-link, #ast-fixed-header .main-header-menu .menu-link:hover, .ast-header-custom-item a:hover, #ast-fixed-header .main-header-menu .menu-item:hover > .menu-link, #ast-fixed-header .main-header-menu .menu-item.focus > .menu-link, #ast-fixed-header .main-header-menu .ast-masthead-custom-menu-items a:hover, #ast-fixed-header .main-header-menu .menu-item:hover > .ast-menu-toggle, #ast-fixed-header .main-header-menu .menu-item.focus > .ast-menu-toggle' );
 			astra_color_responsive_css('sticky-header', 'astra-settings[sticky-header-menu-h-a-bg-color-responsive]','background-color', '#ast-fixed-header .main-header-menu .menu-item.current-menu-item > .menu-link,#ast-fixed-header .main-header-menu .menu-link:hover, .ast-header-custom-item a:hover, #ast-fixed-header .main-header-menu .menu-item:hover > .menu-link, #ast-fixed-header .main-header-menu .menu-item.focus > .menu-link' );
@@ -539,14 +539,14 @@
 	astra_css(
 		'astra-settings[sticky-header-search-icon-color]',
 		'color',
-		selector + ' .astra-search-icon, ' + selector + ' .search-field::placeholder'
+		selector + ' .astra-search-icon, ' + selector + ' .search-field::placeholder,' + selector + ' .ast-icon'
 	);
 
 	// Box icon hover Color.
 	astra_css(
 		'astra-settings[sticky-header-search-icon-h-color]',
 		'color',
-		selector + ' .astra-search-icon:hover'
+		selector + ' .astra-search-icon:hover,' + selector + ' .ast-icon:hover'
 	);
 
 	// search text Color.
@@ -646,7 +646,7 @@
 			if( ! color ) {
 				color = 'inherit';
 			}
-			var dynamicStyle =  account_selector + ' .ast-header-account-type-icon .ahfb-svg-iconset svg path, ' + account_selector + ' .ast-header-account-type-icon .ahfb-svg-iconset svg circle {';
+			var dynamicStyle =  account_selector + ' .ast-header-account-type-icon .ahfb-svg-iconset svg path:not(.ast-hf-account-unfill), ' + account_selector + ' .ast-header-account-type-icon .ahfb-svg-iconset svg circle {';
 			dynamicStyle += 'fill: ' + color + ';';
 			dynamicStyle += '} ';
 			astra_add_dynamic_css( 'sticky-header-account-icon-color', dynamicStyle );
@@ -661,51 +661,45 @@
 	);
 
 	// Menu - Normal Color
-	astra_color_responsive_css(
-		'sticky-astra-account-menu-color-preview',
-		'astra-settings[sticky-header-account-menu-color-responsive]',
+	astra_css(
+		'astra-settings[sticky-header-account-menu-color]',
 		'color',
 		account_selector + ' .main-header-menu .menu-item > .menu-link'
 	);
 
 	// Menu - Hover Color
-	astra_color_responsive_css(
-		'sticky-astra-account-menu-h-color-preview',
-		'astra-settings[sticky-header-account-menu-h-color-responsive]',
+	astra_css(
+		'astra-settings[sticky-header-account-menu-h-color]',
 		'color',
 		account_selector + ' .menu-item:hover > .menu-link'
 	);
 
 	// Menu - Active Color
-	astra_color_responsive_css(
-		'sticky-astra-account-menu-active-color-preview',
-		'astra-settings[sticky-header-account-menu-a-color-responsive]',
+	astra_css(
+		'astra-settings[sticky-header-account-menu-a-color]',
 		'color',
 		account_selector + ' .menu-item.current-menu-item > .menu-link'
 	);
 
-	// Menu - Hover Background
-	astra_color_responsive_css(
-		'sticky-astra-account-menu-bg-preview',
-		'astra-settings[sticky-header-account-menu-bg-obj-responsive]',
+	// Menu - Background
+	astra_css(
+		'astra-settings[sticky-header-account-menu-bg-obj]',
 		'background',
-		account_selector + ' .account-main-navigation ul'
+		account_selector + ' .account-main-navigation ul, ' + account_selector + ' .account-woo-navigation ul,' + account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item > .menu-link'
 	);
 
 	// Menu - Hover Background
-	astra_color_responsive_css(
-		'sticky-astra-account-menu-bg-preview',
-		'astra-settings[sticky-header-account-menu-h-bg-color-responsive]',
+	astra_css(
+		'astra-settings[sticky-header-account-menu-h-bg-color]',
 		'background',
-		account_selector + ' .menu-item:hover > .menu-link'
+		account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item:hover > .menu-link'
 	);
 
 	// Menu - Active Background
-	astra_color_responsive_css(
-		'sticky-astra-account-menu',
-		'astra-settings[sticky-header-account-menu-a-bg-color-responsive]',
+	astra_css(
+		'astra-settings[sticky-header-account-menu-a-bg-color]',
 		'background',
-		account_selector + ' .menu-item.current-menu-item > .menu-link'
+		account_selector + ' .main-header-menu.ast-account-nav-menu .menu-item.current-menu-item > .menu-link'
 	);
 
 	/**
