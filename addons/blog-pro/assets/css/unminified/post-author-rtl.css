@@ -18,7 +18,7 @@
   display: inline-block;
   margin-top: 2em;
   width: 100%;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--ast-border-color);
 }
 
 .single .ast-author-meta {
@@ -54,7 +54,6 @@
 }
 
 .single.ast-separate-container .ast-author-meta {
-  background-color: #fff;
   background-color: #fff;
   padding: 4em 6.67em;
 }

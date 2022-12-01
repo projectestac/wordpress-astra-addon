@@ -47,6 +47,22 @@ if ( ! class_exists( 'Astra_Customizer_Single_Post_Spacing_Configs' ) ) {
 			$_configs = array(
 
 				/**
+				 * Option: Divider
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[section-blog-single-spacing-divider]',
+					'section'  => 'section-blog-single',
+					'title'    => __( 'Container Spacing', 'astra-addon' ),
+					'type'     => 'control',
+					'control'  => 'ast-heading',
+					'priority' => 24,
+					'divider'  => array( 'ast_class' => 'ast-bottom-spacing' ),
+					'context'  => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
+						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
+					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
+				),
+
+				/**
 				 * Option: Single Post Spacing
 				 */
 				array(
@@ -56,7 +72,7 @@ if ( ! class_exists( 'Astra_Customizer_Single_Post_Spacing_Configs' ) ) {
 					'control'           => 'ast-responsive-spacing',
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
 					'section'           => 'section-blog-single',
-					'title'             => __( 'Outside Container Spacing', 'astra-addon' ),
+					'title'             => __( 'Outside', 'astra-addon' ),
 					'linked_choices'    => true,
 					'transport'         => 'postMessage',
 					'unit_choices'      => array( 'px', 'em', '%' ),
@@ -67,7 +83,7 @@ if ( ! class_exists( 'Astra_Customizer_Single_Post_Spacing_Configs' ) ) {
 						'left'   => __( 'Left', 'astra-addon' ),
 					),
 					'priority'          => 25,
-					'divider'           => array( 'ast_class' => 'ast-top-divider ast-bottom-divider' ),
+					'divider'           => array( 'ast_class' => 'ast-section-spacing ast-bottom-section-divider' ),
 					'context'           => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
 						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),
@@ -82,7 +98,7 @@ if ( ! class_exists( 'Astra_Customizer_Single_Post_Spacing_Configs' ) ) {
 					'control'           => 'ast-responsive-spacing',
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
 					'section'           => 'section-blog-single',
-					'title'             => __( 'Inside Container Spacing', 'astra-addon' ),
+					'title'             => __( 'Inside', 'astra-addon' ),
 					'linked_choices'    => true,
 					'transport'         => 'postMessage',
 					'unit_choices'      => array( 'px', 'em', '%' ),
@@ -93,6 +109,7 @@ if ( ! class_exists( 'Astra_Customizer_Single_Post_Spacing_Configs' ) ) {
 						'left'   => __( 'Left', 'astra-addon' ),
 					),
 					'priority'          => 30,
+					'divider'           => array( 'ast_class' => 'ast-top-dotted-divider' ),
 					'context'           => ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ?
 						astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab,
 				),

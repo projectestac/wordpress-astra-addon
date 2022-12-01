@@ -1,3 +1,118 @@
+v3.9.3
+- New: Header Builder - Menu - Filter to add mega menu compatibility with registered nav menus. ( https://wpastra.com/docs/mega-menu-support-for-all-builder-menus/ )
+- New: Custom Layout - Custom action hook support added to trigger layout content or snippet on a specific location.
+- New: WooCommerce - Single Product - Recently viewed product feature.
+- New: WooCommerce - Checkout - Back to cart button feature.
+- Improvement: Custom Layout - Redesigned admin posts list & editor meta settings with better UI/UX.
+- Improvement: WooCommerce - Removed jQuery dependency from Quick View addon.
+- Improvement: Introduced action 'astra_checkout_login_field_before' to trigger custom snippet before WooCommerce checkout's login fields.
+- Improvement: Introduced action 'astra_checkout_login_field_after' to trigger custom snippet after WooCommerce checkout's login fields.
+- Improvement: Added notice to install Astra theme if plugin directly starts. (Props - https://gist.github.com/mattyza)
+- Improvement: WooCommerce - Single Product - Selected active variant style design updated via filter 'astra_addon_update_wc_variant_style'.
+- Improvement: Page Header - Repeated target rule error notice type changed to warning notice type with disabling the trigger.
+- Fix: WooCommerce - Single Product - Payment list styling is broken inside the quick view popup.
+- Fix: WooCommerce - My Account - Placeholder added if product image is not available on the order and download section.
+- Fix: WooCommerce - Composite product plugin compatibility on a single product.
+- Fix: WooCommerce - Updated Related and Upsell products sub-option dependency.
+- Fix: WooCommerce - Border removed on single product gallery sliders.
+- Fix: Custom layout content before not working with the WPML targeted pages.
+- Fix: WooCommerce - Quick view console error on all pages.
+- Fix: Header Builder - Menu - Megamenu container get hides when hovering in between Top Offset spacing.
+- Fix: W3 validation - WooCommerce - Quick view and Checkout's Apply Coupon text having accessibility issues.
+- Fix: Fatal error 'Uncaught TypeError in Count function' for invalid argument issue on the frontend for cache files, in some rare cases.
+- Fix: WooCommerce - Checkout - Password required when guest checkout is active.
+- Fix: Header Builder - Menu - Active colour from sticky header options not applying to menu items.
+- Fix: Custom Layout - Inside post/page content displays multiple times with entry content hooks used.
+- Fix: WooCommerce - Remove product icon misalignment issue on the cart page with the safari browser.
+- Fix: Builder - Account Element - Changed direction for submenu opening does not work for account menu. (https://wpastra.com/docs/change-the-direction-for-submenu-opening/)
+- Fix: WooCommerce - Single Product - The product gallery looks improper when a single product layout builds using a theme builder layout and the first image large gallery option selected from the customizer setting.
+- Fix: Footer Builder - Divider Element - Hide on Desktop option is not working.
+- Fix: WooCommerce - Off-Canvas Sidebar Filters - Close link trigger is not crawlable due to javascript:void(0) href.
+- Fix: Header Builder - Menu - Sub-menu background colour overrides the border-radius of the submenu in the customizer.
+
+v3.9.2
+- New: WooCommerce - Checkout - Order summary & payment box background color options.
+- Improvement: Introduced filter 'astra_addon_override_single_product_layout' to enable/disable vertical & horizontal slider gallery layout in case if Single Product layout built using any page builder themer.
+- Improvement: Action 'astra_addon_woo_quick_view_before' for firing before Quick View popup trigger.
+- Improvement: WooCommerce - Introduced new JavaScript event 'astraInfinitePaginationLoaded' after shop infinite pagination loaded.
+- Fix: WooCommerce - Single Product - Default variation option not working with Change Dropdown to Buttons option in variable type product.
+- Fix: WooCommerce - Single Product - Gallery thumbnail slider not in sync when product variations changes.
+- Fix: WooCommerce - Checkout - String 'Customer information' is not translatable.
+- Fix: WooCommerce - Checkout - Email validation not working for non admin users when trying to login through the checkout page when the modern layout is active.
+- Fix: WooCommerce - My Account - Download items UI gets messed up in modern layout.
+- Fix: WooCommerce - Checkout - Login button font-size does not match with their surrounding label in modern checkout style.
+- Fix: WooCommerce - Checkout - Country/Region misalignment in checkout form on single country selection when modern input style enabled.
+- Fix: WooCommerce - Single Product - Misalignment with quantity updater when vertical style is applied.
+- Fix: WooCommerce - Shop - Product cards box shadow not working when old header footer is active.
+- Fix: WooCommerce - Single Product - Product gallery missing when single product layout build using theme builder layouts.
+- Fix: WooCommerce - Removing white background color being added to minicart icon when style is selected as outline.
+- Fix: WooCommerce - 'View Cart' secondary link is hidden when product added to that cart from the single product page.
+- Fix: WooCommerce - Shop - Active filter misalignment on the frontend.
+- Fix: WooCommerce - Modern Checkout layout support for Germanized for WooCommerce plugin.
+- Fix: Showing deprecated function warning on frontend after installing Elementor with theme.
+- Fix: Customizer range slider control not accepting decimal values for 'em' unit.
+- Fix: Need to double click for dropdown menu to open sub-menus on desktop in rare cases.
+- Fix: Blog - Infinite scroll is not working with Custom Post types.
+- Fix: W3 validation - aria-label attribute is missing for button in Full search style.
+- Fix: Updated product columns option dependency on individual Related and Upsell enable setting.
+
+v3.9.1
+- Fix: Mobile menu flyout mode not working properly when old Header layout is active.
+- Fix: WooCommerce - Button variation is displaying the old deleted product attributes on single product.
+- Fix: WooCommerce - Shop active filter toggle not working properly due to incorrect customizer option handle.
+- Fix: Theme version rollback does not work on the initial page load of Astra Options.
+
+v3.9.0
+- New: Redesigned the entire customizer UI for better user experience.
+- New: WooCommerce - General - Quantity Plus Minus Button Options With Multiple Designs.
+- New: WooCommerce - General - Modern Input skin type.
+- New: WooCommerce - General - Ajax based quantity selector.
+- New: WooCommerce - General - Introduced Color and background option for Sale badge.
+- New: WooCommerce - Shop - Added new modern view option for shop style.
+- New: WooCommerce - Shop - Introduced unique filter panel design.
+- New: WooCommerce - Shop - Introduced sticky shop filter sidebar option.
+- New: WooCommerce - Shop - Added accordion compatibility for WooCommerce filter widgets.
+- New: WooCommerce - Shop - Added Flyout and Collapsible option for WooCommerce filters panel.
+- New: WooCommerce - Single Product - Added sticky add to cart on single product.
+- New: WooCommerce - Single Product - Product tabs heading - Product tabs heading - Added normal, hover, and active text color support.
+- New: WooCommerce - Single Product - Added Color and Typography options for Category text.
+- New: WooCommerce - Single Product - Added Enable/Disable Quantity Plus-Minus sign option.
+- New: WooCommerce - Single Product - Added Option to Add Extra Product Description.
+- New: WooCommerce - Single Product - Introduced tab style presets for product details. ( Accordion / Distributed ).
+- New: WooCommerce - Single Product - Introduced previous-next product preview option on navigation hover.
+- New: WooCommerce - Single Product - Payment options list in single product structure.
+- New: WooCommerce - Single Product - Introduced sticky product summary option.
+- New: WooCommerce - Single Product - Toggle to Convert Variation select dropdown to buttons UI on Single Product page.
+- New: WooCommerce - Added Multistep Navigation for Cart, Checkout and Order Received pages.
+- New: WooCommerce - Cart - Modern Cart Layout.
+- New: WooCommerce - Cart - Sticky Cart total on scroll on WooCommerce cart page.
+- New: WooCommerce - Checkout - Modern Layout.
+- Improvement: Single Product - Option to Show/Hide Category on WooCommerce single product page.
+- Improvement: Single Product - Product gallery Layout options ( First Image Large / Vertical Slider / Horizontal Slider ).
+- Improvement: Single Product - Product Navigation color options ( Normal & Hover ).
+- Fix: Related Products & Upsell columns not working on responsive devices.
+
+v3.6.11
+- Fix: Custom layout styling not loading on front-end.
+
+v3.6.10
+- Improvement: Moved Single Post and Page spacing option to theme.
+- Fix: Translated Taxonomies not listed under the target specific rule for Custom Layout with Polylang plugin.
+- Fix: Custom Layouts - Inside post/page content displays multiple time with entry_after hooks used.
+- Fix: Small space appearing between the Sticky Above and Primary header in the Beaver Builder editor.
+- Fix: Primary submenus not expandable on mobile when toggle button element is not added.
+- Fix: "Header Button" heading added to separate out Sticky Header options in old header.
+- Fix: Accessibility - LifterLMS profile link is missing aria-label and role attribute.
+- Fix: Fixed display Products from Same Category with Navigation. ( https://wpastra.com/docs/products-from-same-directed-category-with-navigation/ )
+
+v3.6.9
+- Fix: Improvements as per WordPress coding standards.
+- Fix: Header - Menus - Box Shadow not applying for submenus from customizer options
+- Fix: Single Product Quantity not working for decimal numbers.
+- Fix: Elementor page with Motion effect jerks on scroll when header is set to sticky and animation is None.
+- Fix: Submenu items expanded initially in offcanvas, when Toggle Button being used for desktop header.
+- Fix: Astra theme version number missing in Rollback section.
+
 v3.6.8
 - Improvement: Compatibility for enhancing block editor experience. ( https://wpastra.com/docs/improved-block-editor-experience/ )
 - Fix: Builder - Search - Search markup is loaded even when the search element is not added.
