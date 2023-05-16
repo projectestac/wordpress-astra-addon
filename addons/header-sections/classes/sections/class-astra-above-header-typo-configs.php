@@ -3,8 +3,6 @@
  * Above Header - Typography Options for our theme.
  *
  * @package     Astra Addon
- * @author      Brainstorm Force
- * @copyright   Copyright (c) 2020, Brainstorm Force
  * @link        https://www.brainstormforce.com
  * @since       1.0.0
  */
@@ -54,7 +52,7 @@ if ( ! class_exists( 'Astra_Above_Header_Typo_Configs' ) ) {
 					'control'   => 'ast-font',
 					'font_type' => 'ast-font-family',
 					'default'   => astra_get_option( 'above-header-font-family' ),
-					'title'     => __( 'Family', 'astra-addon' ),
+					'title'     => __( 'Font Family', 'astra-addon' ),
 					'connect'   => ASTRA_THEME_SETTINGS . '[above-header-font-weight]',
 				),
 
@@ -68,15 +66,21 @@ if ( ! class_exists( 'Astra_Above_Header_Typo_Configs' ) ) {
 					'transport'   => 'postMessage',
 					'type'        => 'sub-control',
 					'section'     => 'section-above-header',
-					'control'     => 'ast-responsive',
 					'default'     => astra_get_option( 'above-header-font-size' ),
-					'title'       => __( 'Size', 'astra-addon' ),
+					'title'       => __( 'Font Size', 'astra-addon' ),
+					'control'     => 'ast-responsive-slider',
+					'suffix'      => array( 'px', 'em' ),
 					'input_attrs' => array(
-						'min' => 0,
-					),
-					'units'       => array(
-						'px' => 'px',
-						'em' => 'em',
+						'px' => array(
+							'min'  => 0,
+							'step' => 1,
+							'max'  => 100,
+						),
+						'em' => array(
+							'min'  => 0,
+							'step' => 0.01,
+							'max'  => 20,
+						),
 					),
 				),
 
@@ -93,7 +97,7 @@ if ( ! class_exists( 'Astra_Above_Header_Typo_Configs' ) ) {
 					'section'           => 'section-above-header',
 					'control'           => 'ast-font',
 					'font_type'         => 'ast-font-weight',
-					'title'             => __( 'Weight', 'astra-addon' ),
+					'title'             => __( 'Font Weight', 'astra-addon' ),
 					'connect'           => 'above-header-font-family',
 				),
 
@@ -130,7 +134,7 @@ if ( ! class_exists( 'Astra_Above_Header_Typo_Configs' ) ) {
 					'section'   => 'section-above-header',
 					'control'   => 'ast-font',
 					'font_type' => 'ast-font-family',
-					'title'     => __( 'Family', 'astra-addon' ),
+					'title'     => __( 'Font Family', 'astra-addon' ),
 					'default'   => astra_get_option( 'font-family-above-header-dropdown-menu' ),
 					'connect'   => ASTRA_THEME_SETTINGS . '[font-weight-above-header-dropdown-menu]',
 				),
@@ -145,15 +149,21 @@ if ( ! class_exists( 'Astra_Above_Header_Typo_Configs' ) ) {
 					'transport'   => 'postMessage',
 					'type'        => 'sub-control',
 					'section'     => 'section-above-header',
-					'control'     => 'ast-responsive',
-					'title'       => __( 'Size', 'astra-addon' ),
+					'title'       => __( 'Font Size', 'astra-addon' ),
 					'default'     => astra_get_option( 'font-size-above-header-dropdown-menu' ),
+					'control'     => 'ast-responsive-slider',
+					'suffix'      => array( 'px', 'em' ),
 					'input_attrs' => array(
-						'min' => 0,
-					),
-					'units'       => array(
-						'px' => 'px',
-						'em' => 'em',
+						'px' => array(
+							'min'  => 0,
+							'step' => 1,
+							'max'  => 100,
+						),
+						'em' => array(
+							'min'  => 0,
+							'step' => 0.01,
+							'max'  => 20,
+						),
 					),
 				),
 
@@ -170,7 +180,7 @@ if ( ! class_exists( 'Astra_Above_Header_Typo_Configs' ) ) {
 					'font_type'         => 'ast-font-weight',
 					'default'           => astra_get_option( 'font-weight-above-header-dropdown-menu' ),
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_font_weight' ),
-					'title'             => __( 'Weight', 'astra-addon' ),
+					'title'             => __( 'Font Weight', 'astra-addon' ),
 					'connect'           => 'font-family-above-header-dropdown-menu',
 				),
 
@@ -208,7 +218,7 @@ if ( ! class_exists( 'Astra_Above_Header_Typo_Configs' ) ) {
 					'section'   => 'section-above-header',
 					'font_type' => 'ast-font-family',
 					'parent'    => ASTRA_THEME_SETTINGS . '[above-header-content-typography-styling]',
-					'title'     => __( 'Family', 'astra-addon' ),
+					'title'     => __( 'Font Family', 'astra-addon' ),
 					'connect'   => 'font-weight-above-header-content',
 				),
 
@@ -221,15 +231,21 @@ if ( ! class_exists( 'Astra_Above_Header_Typo_Configs' ) ) {
 					'transport'   => 'postMessage',
 					'default'     => astra_get_option( 'font-size-above-header-content' ),
 					'parent'      => ASTRA_THEME_SETTINGS . '[above-header-content-typography-styling]',
-					'title'       => __( 'Size', 'astra-addon' ),
-					'control'     => 'ast-responsive',
+					'title'       => __( 'Font Size', 'astra-addon' ),
 					'section'     => 'section-above-header',
+					'control'     => 'ast-responsive-slider',
+					'suffix'      => array( 'px', 'em' ),
 					'input_attrs' => array(
-						'min' => 0,
-					),
-					'units'       => array(
-						'px' => 'px',
-						'em' => 'em',
+						'px' => array(
+							'min'  => 0,
+							'step' => 1,
+							'max'  => 100,
+						),
+						'em' => array(
+							'min'  => 0,
+							'step' => 0.01,
+							'max'  => 20,
+						),
 					),
 				),
 
@@ -245,7 +261,7 @@ if ( ! class_exists( 'Astra_Above_Header_Typo_Configs' ) ) {
 					'section'           => 'section-above-header',
 					'font_type'         => 'ast-font-weight',
 					'parent'            => ASTRA_THEME_SETTINGS . '[above-header-content-typography-styling]',
-					'title'             => __( 'Weight', 'astra-addon' ),
+					'title'             => __( 'Font Weight', 'astra-addon' ),
 					'connect'           => 'font-family-above-header-content',
 				),
 

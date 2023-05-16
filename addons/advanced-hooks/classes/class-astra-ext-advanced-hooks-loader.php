@@ -14,7 +14,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 	 * @since 1.0.0
 	 */
 	// @codingStandardsIgnoreStart
-	class Astra_Ext_Advanced_Hooks_Loader { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+	class Astra_Ext_Advanced_Hooks_Loader {
 		// @codingStandardsIgnoreEnd
 
 		/**
@@ -32,6 +32,13 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 		public static $_action = 'advanced-hooks'; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
 		/**
+		 * Member Variable
+		 *
+		 * @var $meta_hooks
+		 */
+		public static $meta_hooks = null;
+
+		/**
 		 *  Initiator
 		 */
 		public static function get_instance() {
@@ -45,9 +52,175 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 		 *  Constructor
 		 */
 		public function __construct() {
-
+			self::$meta_hooks = array(
+				'astra_html_before'                        => __( 'Before HTML', 'astra-addon' ),
+				'astra_head_top'                           => __( 'Head Top', 'astra-addon' ),
+				'astra_head_bottom'                        => __( 'Head Bottom', 'astra-addon' ),
+				'wp_head'                                  => __( 'WP Head', 'astra-addon' ),
+				'astra_body_top'                           => __( 'Body Top', 'astra-addon' ),
+				'astra_header_before'                      => __( 'Before Header', 'astra-addon' ),
+				'astra_masthead_top'                       => __( 'Masthead Top', 'astra-addon' ),
+				'astra_main_header_bar_top'                => __( 'Main Header Bar Top', 'astra-addon' ),
+				'astra_masthead_content'                   => __( 'Masthead Content', 'astra-addon' ),
+				'astra_masthead_toggle_buttons_before'     => __( 'Before Masthead Toggle Buttons', 'astra-addon' ),
+				'astra_masthead_toggle_buttons_after'      => __( 'After Masthead Toggle Buttons', 'astra-addon' ),
+				'astra_main_header_bar_bottom'             => __( 'Main Header Bar Bottom', 'astra-addon' ),
+				'astra_masthead_bottom'                    => __( 'Masthead Bottom', 'astra-addon' ),
+				'astra_header_after'                       => __( 'After Header', 'astra-addon' ),
+				'astra_content_before'                     => __( 'Before Content', 'astra-addon' ),
+				'astra_content_top'                        => __( 'Content Top', 'astra-addon' ),
+				'astra_primary_content_top'                => __( 'Primary Content Top', 'astra-addon' ),
+				'astra_content_loop'                       => __( 'Content Loop', 'astra-addon' ),
+				'astra_template_parts_content_none'        => __( 'Template Parts Content None', 'astra-addon' ),
+				'astra_content_while_before'               => __( 'Before Content While', 'astra-addon' ),
+				'astra_template_parts_content_top'         => __( 'Template Parts Content Top', 'astra-addon' ),
+				'astra_template_parts_content'             => __( 'Template Parts Content', 'astra-addon' ),
+				'astra_entry_before'                       => __( 'Before Entry', 'astra-addon' ),
+				'astra_entry_top'                          => __( 'Entry Top', 'astra-addon' ),
+				'astra_single_header_before'               => __( 'Before Single Header', 'astra-addon' ),
+				'astra_single_header_top'                  => __( 'Single Header Top', 'astra-addon' ),
+				'astra_single_post_banner_breadcrumb_before' => __( 'Before Single Post Breadcrumb', 'astra-addon' ),
+				'astra_single_post_banner_breadcrumb_after' => __( 'After Single Post Breadcrumb', 'astra-addon' ),
+				'astra_single_post_banner_title_before'    => __( 'Before Single Post Title', 'astra-addon' ),
+				'astra_single_post_banner_title_after'     => __( 'After Single Post Title', 'astra-addon' ),
+				'astra_single_post_banner_excerpt_before'  => __( 'Before Single Post Excerpt', 'astra-addon' ),
+				'astra_single_post_banner_excerpt_after'   => __( 'After Single Post Excerpt', 'astra-addon' ),
+				'astra_single_post_banner_meta_before'     => __( 'Before Single Post Meta', 'astra-addon' ),
+				'astra_single_post_banner_meta_after'      => __( 'After Single Post Meta', 'astra-addon' ),
+				'astra_blog_single_featured_image_before'  => __( 'Before Single Post Featured Image', 'astra-addon' ),
+				'astra_blog_single_featured_image_after'   => __( 'After Single Post Featured Image', 'astra-addon' ),
+				'astra_blog_archive_title_before'          => __( 'Before Blog Banner Title', 'astra-addon' ),
+				'astra_blog_archive_title_after'           => __( 'After Blog Banner Title', 'astra-addon' ),
+				'astra_blog_archive_breadcrumb_before'     => __( 'Before Blog Banner Breadcrumb', 'astra-addon' ),
+				'astra_blog_archive_breadcrumb_after'      => __( 'After Blog Banner Breadcrumb', 'astra-addon' ),
+				'astra_blog_archive_description_before'    => __( 'Before Blog Banner Description', 'astra-addon' ),
+				'astra_blog_archive_description_after'     => __( 'After Blog Banner Description', 'astra-addon' ),
+				'astra_single_header_bottom'               => __( 'Single Header Bottom', 'astra-addon' ),
+				'astra_single_header_after'                => __( 'After Single Header', 'astra-addon' ),
+				'astra_entry_content_before'               => __( 'Before Entry Content', 'astra-addon' ),
+				'astra_entry_content_after'                => __( 'After Entry Content', 'astra-addon' ),
+				'astra_entry_bottom'                       => __( 'Entry Bottom', 'astra-addon' ),
+				'astra_entry_after'                        => __( 'After Entry', 'astra-addon' ),
+				'astra_template_parts_content_bottom'      => __( 'Template Parts Content Bottom', 'astra-addon' ),
+				'astra_primary_content_bottom'             => __( 'Primary Content Bottom', 'astra-addon' ),
+				'astra_content_while_after'                => __( 'After Content While', 'astra-addon' ),
+				'astra_content_bottom'                     => __( 'Content Bottom', 'astra-addon' ),
+				'astra_content_after'                      => __( 'After Content', 'astra-addon' ),
+				'astra_comments_before'                    => __( 'Before Comments', 'astra-addon' ),
+				'astra_comments_after'                     => __( 'After Comments', 'astra-addon' ),
+				'astra_sidebars_before'                    => __( 'Before Sidebars', 'astra-addon' ),
+				'astra_sidebars_after'                     => __( 'After Sidebars', 'astra-addon' ),
+				'astra_footer_before'                      => __( 'Before Footer', 'astra-addon' ),
+				'astra_footer_content_top'                 => __( 'Footer Content Top', 'astra-addon' ),
+				'astra_footer_inside_container_top'        => __( 'Footer Inside Container Top', 'astra-addon' ),
+				'astra_footer_inside_container_bottom'     => __( 'Footer Inside Container Bottom', 'astra-addon' ),
+				'astra_footer_content_bottom'              => __( 'Footer Content Bottom', 'astra-addon' ),
+				'astra_footer_after'                       => __( 'After Footer', 'astra-addon' ),
+				'astra_body_bottom'                        => __( 'Body Bottom', 'astra-addon' ),
+				'wp_footer'                                => __( 'WP Footer', 'astra-addon' ),
+				'woocommerce_before_main_content'          => __( 'Before Main Content', 'astra-addon' ),
+				'woocommerce_after_main_content'           => __( 'After Main Content', 'astra-addon' ),
+				'woocommerce_sidebar'                      => __( 'Sidebar', 'astra-addon' ),
+				'woocommerce_breadcrumb'                   => __( 'Breadcrumb', 'astra-addon' ),
+				'woocommerce_before_template_part'         => __( 'Before Template Part', 'astra-addon' ),
+				'woocommerce_after_template_part'          => __( 'After Template Part', 'astra-addon' ),
+				'woocommerce_archive_description'          => __( 'Archive Description', 'astra-addon' ),
+				'woocommerce_before_shop_loop'             => __( 'Before Shop Loop', 'astra-addon' ),
+				'woocommerce_before_shop_loop_item_title'  => __( 'Before Shop Loop Item Title', 'astra-addon' ),
+				'woocommerce_after_shop_loop_item_title'   => __( 'After Shop Loop Item Title', 'astra-addon' ),
+				'astra_woo_shop_category_before'           => __( 'Before Woo Shop Category', 'astra-addon' ),
+				'astra_woo_shop_category_after'            => __( 'After Woo Shop Category', 'astra-addon' ),
+				'astra_woo_shop_title_before'              => __( 'Before Woo Shop Title', 'astra-addon' ),
+				'astra_woo_shop_title_after'               => __( 'After Woo Shop Title', 'astra-addon' ),
+				'astra_woo_shop_rating_before'             => __( 'Before Woo Shop Rating', 'astra-addon' ),
+				'astra_woo_shop_rating_after'              => __( 'After Woo Shop Rating', 'astra-addon' ),
+				'astra_woo_shop_price_before'              => __( 'Before Woo Shop Price', 'astra-addon' ),
+				'astra_woo_shop_price_after'               => __( 'After Woo Shop Price', 'astra-addon' ),
+				'astra_woo_shop_add_to_cart_before'        => __( 'Before Woo Shop Add To Cart', 'astra-addon' ),
+				'astra_woo_shop_add_to_cart_after'         => __( 'After Woo Shop Add To Cart', 'astra-addon' ),
+				'woocommerce_after_shop_loop'              => __( 'After Shop Loop', 'astra-addon' ),
+				'woocommerce_before_single_product'        => __( 'Before Single Product', 'astra-addon' ),
+				'woocommerce_before_single_product_summary' => __( 'Before Single Product Summary', 'astra-addon' ),
+				'woocommerce_single_product_summary'       => __( 'Single Product Summary', 'astra-addon' ),
+				'woocommerce_after_single_product_summary' => __( 'After Single Product Summary', 'astra-addon' ),
+				'woocommerce_simple_add_to_cart'           => __( 'Simple Add To Cart', 'astra-addon' ),
+				'woocommerce_before_add_to_cart_form'      => __( 'Before Add To Cart Form', 'astra-addon' ),
+				'woocommerce_before_add_to_cart_button'    => __( 'Before Add To Cart Button', 'astra-addon' ),
+				'woocommerce_before_add_to_cart_quantity'  => __( 'Before Add To Cart Quantity', 'astra-addon' ),
+				'woocommerce_after_add_to_cart_quantity'   => __( 'After Add To Cart Quantity', 'astra-addon' ),
+				'woocommerce_after_add_to_cart_button'     => __( 'After Add To Cart Button', 'astra-addon' ),
+				'woocommerce_after_add_to_cart_form'       => __( 'After Add To Cart Form', 'astra-addon' ),
+				'woocommerce_product_meta_start'           => __( 'Product Meta Start', 'astra-addon' ),
+				'woocommerce_product_meta_end'             => __( 'Product Meta End', 'astra-addon' ),
+				'woocommerce_share'                        => __( 'Share', 'astra-addon' ),
+				'woocommerce_after_single_product'         => __( 'After Single Product', 'astra-addon' ),
+				'woocommerce_check_cart_items'             => __( 'Check Cart Items', 'astra-addon' ),
+				'woocommerce_cart_reset'                   => __( 'Cart Reset', 'astra-addon' ),
+				'woocommerce_cart_updated'                 => __( 'Cart Updated', 'astra-addon' ),
+				'woocommerce_cart_is_empty'                => __( 'Cart Is Empty', 'astra-addon' ),
+				'woocommerce_before_calculate_totals'      => __( 'Before Calculate Totals', 'astra-addon' ),
+				'woocommerce_cart_calculate_fees'          => __( 'Cart Calculate Fees', 'astra-addon' ),
+				'woocommerce_after_calculate_totals'       => __( 'After Calculate Totals', 'astra-addon' ),
+				'woocommerce_before_cart'                  => __( 'Before Cart', 'astra-addon' ),
+				'woocommerce_before_cart_table'            => __( 'Before Cart Table', 'astra-addon' ),
+				'woocommerce_before_cart_contents'         => __( 'Before Cart Contents', 'astra-addon' ),
+				'woocommerce_cart_contents'                => __( 'Cart Contents', 'astra-addon' ),
+				'woocommerce_after_cart_contents'          => __( 'After Cart Contents', 'astra-addon' ),
+				'woocommerce_cart_coupon'                  => __( 'Cart Coupon', 'astra-addon' ),
+				'woocommerce_cart_actions'                 => __( 'Cart Actions', 'astra-addon' ),
+				'woocommerce_after_cart_table'             => __( 'After Cart Table', 'astra-addon' ),
+				'woocommerce_cart_collaterals'             => __( 'Cart Collaterals', 'astra-addon' ),
+				'woocommerce_before_cart_totals'           => __( 'Before Cart Totals', 'astra-addon' ),
+				'woocommerce_cart_totals_before_order_total' => __( 'Cart Totals Before Order Total', 'astra-addon' ),
+				'woocommerce_cart_totals_after_order_total' => __( 'Cart Totals After Order Total', 'astra-addon' ),
+				'woocommerce_proceed_to_checkout'          => __( 'Proceed To Checkout', 'astra-addon' ),
+				'woocommerce_after_cart_totals'            => __( 'After Cart Totals', 'astra-addon' ),
+				'woocommerce_after_cart'                   => __( 'After Cart', 'astra-addon' ),
+				'woocommerce_before_checkout_form'         => __( 'Before Checkout Form', 'astra-addon' ),
+				'woocommerce_checkout_before_customer_details' => __( 'Checkout Before Customer Details', 'astra-addon' ),
+				'woocommerce_checkout_after_customer_details' => __( 'Checkout After Customer Details', 'astra-addon' ),
+				'woocommerce_checkout_billing'             => __( 'Checkout Billing', 'astra-addon' ),
+				'woocommerce_before_checkout_billing_form' => __( 'Before Checkout Billing Form', 'astra-addon' ),
+				'woocommerce_after_checkout_billing_form'  => __( 'After Checkout Billing Form', 'astra-addon' ),
+				'woocommerce_before_order_notes'           => __( 'Before Order Notes', 'astra-addon' ),
+				'woocommerce_after_order_notes'            => __( 'After Order Notes', 'astra-addon' ),
+				'woocommerce_checkout_shipping'            => __( 'Checkout Shipping', 'astra-addon' ),
+				'woocommerce_checkout_before_order_review' => __( 'Checkout Before Order Review', 'astra-addon' ),
+				'woocommerce_checkout_order_review'        => __( 'Checkout Order Review', 'astra-addon' ),
+				'woocommerce_review_order_before_cart_contents' => __( 'Review Order Before Cart Contents', 'astra-addon' ),
+				'woocommerce_review_order_after_cart_contents' => __( 'Review Order After Cart Contents', 'astra-addon' ),
+				'woocommerce_review_order_before_order_total' => __( 'Review Order Before Order Total', 'astra-addon' ),
+				'woocommerce_review_order_after_order_total' => __( 'Review Order After Order Total', 'astra-addon' ),
+				'woocommerce_review_order_before_payment'  => __( 'Review Order Before Payment', 'astra-addon' ),
+				'woocommerce_review_order_before_submit'   => __( 'Review Order Before Submit', 'astra-addon' ),
+				'woocommerce_review_order_after_submit'    => __( 'Review Order After Submit', 'astra-addon' ),
+				'woocommerce_review_order_after_payment'   => __( 'Review Order After Payment', 'astra-addon' ),
+				'woocommerce_checkout_after_order_review'  => __( 'Checkout After Order Review', 'astra-addon' ),
+				'woocommerce_after_checkout_form'          => __( 'After Checkout Form', 'astra-addon' ),
+				'astra_woo_checkout_masthead_top'          => __( 'Woo Checkout Masthead Top', 'astra-addon' ),
+				'astra_woo_checkout_main_header_bar_top'   => __( 'Astra Woo Checkout Main Header Bar Top', 'astra-addon' ),
+				'astra_woo_checkout_main_header_bar_bottom' => __( 'Astra Woo Checkout Main Header Bar Bottom', 'astra-addon' ),
+				'astra_woo_checkout_masthead_bottom'       => __( 'Woo Checkout Masthead Bottom', 'astra-addon' ),
+				'astra_woo_checkout_footer_content_top'    => __( 'Woo Checkout Footer Content Top', 'astra-addon' ),
+				'astra_woo_checkout_footer_content_bottom' => __( 'Woo Checkout Footer Content Bottom', 'astra-addon' ),
+				'woocommerce_before_account_navigation'    => __( 'Before Account Navigation', 'astra-addon' ),
+				'woocommerce_account_navigation'           => __( 'Account Navigation', 'astra-addon' ),
+				'woocommerce_after_account_navigation'     => __( 'After Account Navigation', 'astra-addon' ),
+				'astra_header_above_container_before'      => __( 'Before Header Above Container', 'astra-addon' ),
+				'astra_header_above_container_after'       => __( 'After Header Above Container After', 'astra-addon' ),
+				'astra_header_primary_container_before'    => __( 'Header Primary Container Before', 'astra-addon' ),
+				'astra_header_primary_container_after'     => __( 'After Header Primary Container', 'astra-addon' ),
+				'astra_header_below_container_before'      => __( 'Before Header Below Container', 'astra-addon' ),
+				'astra_header_below_container_after'       => __( 'After Header Below Container', 'astra-addon' ),
+				'astra_footer_above_container_before'      => __( 'Footer Above Container Before', 'astra-addon' ),
+				'astra_footer_above_container_after'       => __( 'After Footer Above Container', 'astra-addon' ),
+				'astra_footer_primary_container_before'    => __( 'Before Footer Primary Container', 'astra-addon' ),
+				'astra_footer_primary_container_after'     => __( 'After Footer Primary Container', 'astra-addon' ),
+				'astra_footer_below_container_before'      => __( 'Before Footer Below Container', 'astra-addon' ),
+				'astra_footer_below_container_after'       => __( 'After Footer Below Container', 'astra-addon' ),
+				'custom_hook'                              => __( 'Custom Hook', 'astra-addon' ),
+			);
 			add_action( 'init', array( $this, 'advanced_hooks_post_type' ) );
-			add_action( 'admin_menu', array( $this, 'register_admin_menu' ), 100 );
 			add_action( 'astra_addon_activated', array( $this, 'astra_addon_activated_callback' ) );
 			add_filter( 'postbox_classes_ ' . ASTRA_ADVANCED_HOOKS_POST_TYPE . ' -advanced-hook-settings', array( $this, 'add_class_to_metabox' ) );
 
@@ -60,9 +233,6 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 				// Filters.
 				add_filter( 'manage_' . ASTRA_ADVANCED_HOOKS_POST_TYPE . '_posts_columns', array( $this, 'column_headings' ) );
 			}
-
-			// Custom layout tabs based on type.
-			add_filter( 'views_edit-' . ASTRA_ADVANCED_HOOKS_POST_TYPE, array( $this, 'admin_print_tabs' ) );
 
 			// Show only active tab posts in custom layout.
 			add_action( 'parse_query', array( $this, 'admin_query_filter_types' ) );
@@ -97,73 +267,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 			add_action( 'wp_ajax_ast_advanced_layout_quick_preview', array( $this, 'ast_advanced_layout_quick_preview' ) );
 
 			add_action( 'admin_footer', array( $this, 'layout_preview_template' ) );
-		}
-
-		/**
-		 * Print admin tabs.
-		 *
-		 * Used to output the custom layouts on basis of their types.
-		 *
-		 * Fired by `views_edit-astra-advanced-hook` filter.
-		 *
-		 * @since 3.6.4
-		 * @access public
-		 *
-		 * @param array $views An array of available list table views.
-		 *
-		 * @return array An updated array of available list table views.
-		 */
-		public function admin_print_tabs( $views ) {
-
-			$current_type = '';
-			$active_class = ' nav-tab-active';
-			$current_tab  = $this->get_active_tab();
-
-			if ( ! empty( $_REQUEST['layout_type'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				$current_type = $_REQUEST['layout_type']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				$active_class = '';
-			}
-
-			$url_args = array(
-				'post_type'   => ASTRA_ADVANCED_HOOKS_POST_TYPE,
-				'layout_type' => $current_tab,
-			);
-
-			$custom_layout_types = array(
-				'header'   => __( 'Header', 'astra-addon' ),
-				'footer'   => __( 'Footer', 'astra-addon' ),
-				'hooks'    => __( 'Hooks', 'astra-addon' ),
-				'404-page' => __( '404 Page', 'astra-addon' ),
-				'content'  => __( 'Page Content', 'astra-addon' ),
-			);
-
-			$baseurl = add_query_arg( $url_args, admin_url( 'edit.php' ) );
-
-			?>
-				<div class="nav-tab-wrapper ast-custom-layout-tabs-wrapper">
-					<a class="nav-tab<?php echo esc_attr( $active_class ); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . ASTRA_ADVANCED_HOOKS_POST_TYPE ) ); ?>">
-						<?php
-							echo esc_html__( 'All', 'astra-addon' );
-						?>
-					</a>
-					<?php
-					foreach ( $custom_layout_types as $type => $title ) {
-						$type_url     = esc_url( add_query_arg( 'layout_type', $type, $baseurl ) );
-						$active_class = ( $current_type === $type ) ? ' nav-tab-active' : '';
-
-						?>
-								<a class="nav-tab<?php echo esc_attr( $active_class ); ?>" href="<?php echo esc_url( $type_url ); ?>">
-								<?php
-									echo esc_attr( $title );
-								?>
-								</a>
-							<?php
-					}
-					?>
-				</div>
-			<?php
-
-			return $views;
+			add_action( 'in_admin_header', array( $this, 'ast_advanced_admin_top_header' ) );
 		}
 
 		/**
@@ -177,7 +281,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 			$current_tab = $default;
 
 			if ( ! empty( $_REQUEST['layout_type'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				$current_tab = $_REQUEST['layout_type']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$current_tab = sanitize_text_field( $_REQUEST['layout_type'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			}
 
 			return $current_tab;
@@ -191,7 +295,6 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 		 * Fired by `parse_query` action.
 		 *
 		 * @since 3.6.4
-		 * @access public
 		 *
 		 * @param WP_Query $query The `WP_Query` instance.
 		 */
@@ -213,7 +316,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 			}
 
 			$query->query_vars['meta_key']   = 'ast-advanced-hook-layout';
-			$query->query_vars['meta_value'] = $current_tab;
+			$query->query_vars['meta_value'] = $current_tab; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- It is in admin side and we needed that for fetching posts for particular meta value.
 		}
 
 		/**
@@ -226,7 +329,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 
 			unset( $columns['date'] );
 
-			$columns['advanced_hook_action']     = __( 'Action', 'astra-addon' );
+			$columns['advanced_hook_action']     = __( 'Placement', 'astra-addon' );
 			$columns['advanced_hook_shortcode']  = __( 'Shortcode', 'astra-addon' ) . '<i class="ast-advanced-hook-heading-help dashicons dashicons-editor-help" title="' . esc_attr__( 'Make sure to set display rule to post/page where you will be adding the Shortcode.', 'astra-addon' ) . '"></i>';
 			$columns['advanced_hook_quick_view'] = __( 'Quick View', 'astra-addon' );
 			$columns['enable_disable']           = __( 'Enable/Disable', 'astra-addon' );
@@ -248,10 +351,11 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 					$layout = get_post_meta( $post_id, 'ast-advanced-hook-layout', true );
 					if ( 'hooks' === $layout ) {
 						$action = get_post_meta( $post_id, 'ast-advanced-hook-action', true );
+						$action = ! empty( self::$meta_hooks[ $action ] ) ? self::$meta_hooks[ $action ] : $action;
 					} else {
 						$action = $layout;
 					}
-					echo apply_filters( 'astra_advanced_hooks_list_action_column', $action ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo esc_html( apply_filters( 'astra_advanced_hooks_list_action_column', ucfirst( $action ) ) );
 					break;
 				case 'advanced_hook_shortcode':
 					echo '<div> <label class="layout-status"> <span class="ast-layout-' . esc_attr( $post_id ) . '">[astra_custom_layout id=' . esc_attr( $post_id ) . ']</span> </label> <a href="javascript:void(0)" class="ast-copy-layout-shortcode" title="' . esc_attr__( 'Copy to Clipboard', 'astra-addon' ) . '" data-linked_span="ast-layout-' . esc_attr( $post_id ) . '"> <span class="dashicons dashicons-admin-page"></span> </a> </div>';
@@ -305,7 +409,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 
 			$ruleset_markup = '<ul class="ast-layout-visibility-list">';
 			foreach ( $location_label as $key => $rule ) {
-				$ruleset_markup .= '<li class="layout-list-item">' . esc_attr( $rule ) . '</li>';
+				$ruleset_markup .= '<li class="layout-list-item">' . esc_html( $rule ) . '</li>';
 			}
 			$ruleset_markup .= '</ul>';
 
@@ -317,7 +421,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 		 */
 		public function astra_addon_activated_callback() {
 			$this->advanced_hooks_post_type();
-			flush_rewrite_rules();
+			flush_rewrite_rules(); //phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.flush_rewrite_rules_flush_rewrite_rules -- Used for specific cases and kept to minimal use.
 		}
 
 		/**
@@ -359,7 +463,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 			$rest_support = true;
 
 			// Rest support false if it is a old post with post meta code_editor set.
-			if ( isset( $_GET['code_editor'] ) || ( isset( $_GET['post'] ) && 'code_editor' === get_post_meta( $_GET['post'], 'editor_type', true ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( isset( $_GET['code_editor'] ) || ( isset( $_GET['post'] ) && 'code_editor' === get_post_meta( sanitize_text_field( $_GET['post'] ), 'editor_type', true ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				$rest_support = false;
 			}
 
@@ -383,25 +487,6 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 			);
 
 			register_post_type( ASTRA_ADVANCED_HOOKS_POST_TYPE, apply_filters( 'astra_advanced_hooks_post_type_args', $args ) );
-		}
-
-		/**
-		 * Register the admin menu for Custom Layouts
-		 *
-		 * @since  1.2.1
-		 *         Moved the menu under Appearance -> Custom Layouts
-		 */
-		public function register_admin_menu() {
-
-			$custom_layouts_capability = apply_filters( 'astra_custom_layouts_capability', 'edit_theme_options' );
-
-			add_submenu_page(
-				'themes.php',
-				__( 'Custom Layouts', 'astra-addon' ),
-				__( 'Custom Layouts', 'astra-addon' ),
-				$custom_layouts_capability,
-				'edit.php?post_type=' . ASTRA_ADVANCED_HOOKS_POST_TYPE
-			);
 		}
 
 		/**
@@ -436,7 +521,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 					ASTRA_EXT_VER
 				);
 
-				// Scripts.
+				// Scripts & Styles.
 				if ( SCRIPT_DEBUG ) {
 					wp_enqueue_style( 'advanced-hook-admin-edit', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/css/unminified/astra-advanced-hooks-admin-edit.css', null, ASTRA_EXT_VER );
 					wp_enqueue_script( 'advanced-hook-admin-edit', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/js/unminified/advanced-hooks.js', array( 'jquery', 'jquery-ui-tooltip' ), ASTRA_EXT_VER, false );
@@ -444,9 +529,44 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 					wp_enqueue_style( 'advanced-hook-admin-edit', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/css/minified/astra-advanced-hooks-admin-edit.min.css', null, ASTRA_EXT_VER );
 					wp_enqueue_script( 'advanced-hook-admin-edit', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/js/minified/advanced-hooks.min.js', array( 'jquery', 'jquery-ui-tooltip' ), ASTRA_EXT_VER, false );
 				}
+
+				$white_labelled_icon = Astra_Ext_White_Label_Markup::get_whitelabel_string( 'astra', 'icon' );
+				if ( false !== $white_labelled_icon ) {
+					$dark_active_variation = $white_labelled_icon;
+					if ( false !== strpos( $white_labelled_icon, 'whitelabel-branding.svg' ) ) {
+						$white_labelled_icon = ASTRA_EXT_URI . 'admin/core/assets/images/whitelabel-branding-dark.svg';
+					}
+					wp_add_inline_style(
+						'advanced-hook-admin-edit',
+						'.components-button svg[data-ast-logo] * {
+							display: none;
+						}
+						.components-button svg[data-ast-logo] {
+							background-image: url( ' . esc_url( $white_labelled_icon ) . ' ) !important;
+							background-size: 24px 24px;
+							background-repeat: no-repeat;
+							background-position: center;
+						}
+						button.components-button.is-pressed svg[data-ast-logo] {
+							background-image: url( ' . esc_url( $dark_active_variation ) . ' ) !important;
+						}'
+					);
+				}
+
+				wp_localize_script(
+					'advanced-hook-admin-edit',
+					'astraCustomHookVars',
+					apply_filters(
+						'astra_addon_custom_hook_edit_localization',
+						array(
+							'home_slug'           => apply_filters( 'astra_theme_page_slug', 'astra' ),
+							'is_complete_package' => ASTRA_WITH_EXTENDED_FUNCTIONALITY,
+						)
+					)
+				);
 			}
 
-			if ( isset( $_GET['post_type'] ) && 'astra-advanced-hook' === $_GET['post_type'] ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( ASTRA_ADVANCED_HOOKS_POST_TYPE == $screen->post_type && 'edit.php' === $pagenow ) {
 				if ( SCRIPT_DEBUG ) {
 					wp_enqueue_script( 'advanced-hook-admin-list', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/js/unminified/advanced-hooks-list-page.js', array( 'wp-util' ), ASTRA_EXT_VER, false );
 					wp_enqueue_style( 'advanced-hook-admin-list', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/css/unminified/astra-advanced-hooks-admin-list.css', null, ASTRA_EXT_VER );
@@ -454,6 +574,14 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 					wp_enqueue_script( 'advanced-hook-admin-list', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/js/minified/advanced-hooks-list-page.min.js', array( 'wp-util' ), ASTRA_EXT_VER, false );
 					wp_enqueue_style( 'advanced-hook-admin-list', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/css/minified/astra-advanced-hooks-admin-list.min.css', null, ASTRA_EXT_VER );
 				}
+
+				wp_enqueue_style( 'astra-admin-font', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap', array(), ASTRA_EXT_VER ); // Styles.
+
+				if ( defined( 'ASTRA_THEME_ADMIN_URL' ) && ASTRA_THEME_ADMIN_URL ) {
+					wp_enqueue_style( 'astra-admin-dashboard-app', ASTRA_THEME_ADMIN_URL . 'assets/build/dashboard-app.css', null, ASTRA_EXT_VER );
+				}
+				wp_enqueue_style( 'astra-addon-admin-dashboard-app', ASTRA_EXT_URI . 'admin/core/assets/css/admin-custom.css', null, ASTRA_EXT_VER );
+
 				wp_localize_script(
 					'advanced-hook-admin-list',
 					'astHooksData',
@@ -1135,6 +1263,23 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 		}
 
 		/**
+		 * HTML Template for custom layout header preview.
+		 *
+		 * @since 4.0.0
+		 */
+		public function ast_advanced_admin_top_header() {
+			$screen = get_current_screen();
+			global $pagenow;
+			if ( ASTRA_ADVANCED_HOOKS_POST_TYPE === $screen->post_type && 'edit.php' === $pagenow ) {
+				$title       = __( 'Custom Layouts', 'astra-addon' );
+				$tabs        = true;
+				$button_url  = '/post-new.php?post_type=astra-advanced-hook';
+				$kb_docs_url = 'https://wpastra.com/docs-category/astra-pro-modules/custom-layouts-module/?utm_source=wp&utm_medium=dashboard';
+				Astra_Addon_Admin_Loader::admin_dashboard_header( $title, $tabs, $button_url, $kb_docs_url );
+			}
+		}
+
+		/**
 		 * Get Custom Layout details to send to the AJAX endpoint for quick-preview.
 		 *
 		 * @param  int $layout_id Custom Layout ID.
@@ -1182,13 +1327,13 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 				foreach ( $display_devices as $display_device ) {
 					switch ( $display_device ) {
 						case 'desktop':
-							$display_devices_rules .= '<li class="ast-desktop">' . esc_attr( __( 'Desktop', 'astra-addon' ) ) . '</li>';
+							$display_devices_rules .= '<li class="ast-desktop">' . esc_html( __( 'Desktop', 'astra-addon' ) ) . '</li>';
 							break;
 						case 'tablet':
-							$display_devices_rules .= '<li class="ast-tablet">' . esc_attr( __( 'Tablet', 'astra-addon' ) ) . '</li>';
+							$display_devices_rules .= '<li class="ast-tablet">' . esc_html( __( 'Tablet', 'astra-addon' ) ) . '</li>';
 							break;
 						case 'mobile':
-							$display_devices_rules .= '<li class="ast-mobile">' . esc_attr( __( 'Mobile', 'astra-addon' ) ) . '</li>';
+							$display_devices_rules .= '<li class="ast-mobile">' . esc_html( __( 'Mobile', 'astra-addon' ) ) . '</li>';
 							break;
 					}
 				}
@@ -1200,15 +1345,15 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 			$time_duration      = get_post_meta( $layout_id, 'ast-advanced-time-duration', true );
 			if ( isset( $time_duration ) && is_array( $time_duration ) && isset( $time_duration['enabled'] ) ) {
 				$time_duration_rule  = '<div class="ast-advanced-hook-time-duration-wrap ast-advanced-hook-wrap">';
-				$time_duration_rule .= '<strong>' . esc_attr( __( 'Visibility', 'astra-addon' ) ) . ': </strong>';
+				$time_duration_rule .= '<strong>' . esc_html( __( 'Visibility', 'astra-addon' ) ) . ': </strong>';
 
 				if ( ! Astra_Ext_Advanced_Hooks_Markup::get_time_duration_eligibility( $layout_id ) ) {
-					$time_duration_rule .= '<p class="ast-advance-hook-visibility-icon">' . esc_attr( __( 'Not visible', 'astra-addon' ) ) . '<span style=' . esc_attr( $icon_style ) . ' class="dashicons dashicons-no"></span></p>';
+					$time_duration_rule .= '<p class="ast-advance-hook-visibility-icon">' . esc_html( __( 'Not visible', 'astra-addon' ) ) . '<span style=' . esc_attr( $icon_style ) . ' class="dashicons dashicons-no"></span></p>';
 				} else {
 					$start_dt = isset( $time_duration['start-dt'] ) ? gmdate( 'F j, Y, g:i a', strtotime( $time_duration['start-dt'] ) ) : '—';
 					$end_dt   = isset( $time_duration['end-dt'] ) ? gmdate( 'F j, Y, g:i a', strtotime( $time_duration['end-dt'] ) ) : '—';
 
-					$time_duration_rule .= '<p class="ast-advance-hook-visibility-icon">' . esc_attr( __( 'Visible', 'astra-addon' ) ) . '<span style=' . esc_attr( $icon_style ) . ' class="dashicons dashicons-yes-alt"></span></p>';
+					$time_duration_rule .= '<p class="ast-advance-hook-visibility-icon">' . esc_html( __( 'Visible', 'astra-addon' ) ) . '<span style=' . esc_attr( $icon_style ) . ' class="dashicons dashicons-yes-alt"></span></p>';
 					$time_duration_rule .= '<p class="layout-time-field start"><strong>' . __( 'Start Date: ', 'astra-addon' ) . '</strong>' . $start_dt . '</p>';
 					$time_duration_rule .= '<p class="layout-time-field end"><strong>' . __( 'End Date: ', 'astra-addon' ) . '</strong>' . $end_dt . '</p>';
 				}

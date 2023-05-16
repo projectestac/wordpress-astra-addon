@@ -3,8 +3,6 @@
  * Mega Menu Options configurations.
  *
  * @package     Astra Addon
- * @author      Brainstorm Force
- * @copyright   Copyright (c) 2020, Brainstorm Force
  * @link        https://www.brainstormforce.com
  * @since       1.6.0
  */
@@ -78,7 +76,7 @@ if ( ! class_exists( 'Astra_Nav_Menu_Above_Header_Typography' ) ) {
 					'section'   => 'section-above-header',
 					'font_type' => 'ast-font-family',
 					'default'   => astra_get_option( 'above-header-megamenu-heading-font-family' ),
-					'title'     => __( 'Family', 'astra-addon' ),
+					'title'     => __( 'Font Family', 'astra-addon' ),
 					'connect'   => ASTRA_THEME_SETTINGS . '[above-header-megamenu-heading-font-weight]',
 				),
 
@@ -87,18 +85,24 @@ if ( ! class_exists( 'Astra_Nav_Menu_Above_Header_Typography' ) ) {
 					'name'        => 'above-header-megamenu-heading-font-size',
 					'parent'      => ASTRA_THEME_SETTINGS . '[above-header-typography-megamenu-styling]',
 					'transport'   => 'postMessage',
-					'title'       => __( 'Size', 'astra-addon' ),
+					'title'       => __( 'Font Size', 'astra-addon' ),
 					'type'        => 'sub-control',
 					'responsive'  => false,
-					'control'     => 'ast-responsive',
 					'section'     => 'section-above-header',
 					'default'     => astra_get_option( 'above-header-megamenu-heading-font-size' ),
+					'control'     => 'ast-responsive-slider',
+					'suffix'      => array( 'px', 'em' ),
 					'input_attrs' => array(
-						'min' => 0,
-					),
-					'units'       => array(
-						'px' => 'px',
-						'em' => 'em',
+						'px' => array(
+							'min'  => 0,
+							'step' => 1,
+							'max'  => 100,
+						),
+						'em' => array(
+							'min'  => 0,
+							'step' => 0.01,
+							'max'  => 20,
+						),
 					),
 				),
 
@@ -112,7 +116,7 @@ if ( ! class_exists( 'Astra_Nav_Menu_Above_Header_Typography' ) ) {
 					'font_type'         => 'ast-font-weight',
 					'default'           => astra_get_option( 'above-header-megamenu-heading-font-weight' ),
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_font_weight' ),
-					'title'             => __( 'Weight', 'astra-addon' ),
+					'title'             => __( 'Font Weight', 'astra-addon' ),
 					'connect'           => 'above-header-megamenu-heading-font-family',
 				),
 

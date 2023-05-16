@@ -3,8 +3,6 @@
  * Sticky Header - Account options for our theme.
  *
  * @package     Astra Addon
- * @author      Brainstorm Force
- * @copyright   Copyright (c) 2020, Brainstorm Force
  * @link        https://www.brainstormforce.com
  * @since       3.0.0
  */
@@ -80,7 +78,6 @@ if ( ! class_exists( 'Astra_Sticky_Header_Account_Configs' ) ) {
 							),
 						),
 					),
-					'divider'  => array( 'ast_class' => 'ast-section-spacing' ),
 				),
 
 				/**
@@ -94,6 +91,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Account_Configs' ) ) {
 					'priority'          => 130,
 					'transport'         => 'postMessage',
 					'control'           => 'ast-color',
+					'divider'           => array( 'ast_class' => 'ast-bottom-spacing ast-section-spacing' ),
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
 					'title'             => __( 'Icon Color', 'astra-addon' ),
 					'context'           => array(
@@ -125,6 +123,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Account_Configs' ) ) {
 					'priority'          => 131,
 					'transport'         => 'postMessage',
 					'control'           => 'ast-color',
+					'divider'           => array( 'ast_class' => 'ast-bottom-spacing' ),
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
 					'title'             => __( 'Text Color', 'astra-addon' ),
 					'context'           => array(
@@ -176,6 +175,7 @@ if ( ! class_exists( 'Astra_Sticky_Header_Account_Configs' ) ) {
 					'section'    => $_section,
 					'transport'  => 'postMessage',
 					'priority'   => 140,
+					'divider'    => array( 'ast_class' => 'ast-bottom-spacing' ),
 					'context'    => array(
 						astra_addon_builder_helper()->design_tab_config,
 						array(

@@ -3,8 +3,6 @@
  * LearnDash General Options for our theme.
  *
  * @package     Astra Addon
- * @author      Brainstorm Force
- * @copyright   Copyright (c) 2020, Brainstorm Force
  * @link        https://www.brainstormforce.com
  * @since       1.4.3
  */
@@ -86,7 +84,7 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Typo_Configs' ) ) {
 					'type'      => 'sub-control',
 					'parent'    => ASTRA_THEME_SETTINGS . '[learndash-header-typography-group]',
 					'font_type' => 'ast-font-family',
-					'title'     => __( 'Family', 'astra-addon' ),
+					'title'     => __( 'Font Family', 'astra-addon' ),
 					'connect'   => ASTRA_THEME_SETTINGS . '[font-weight-learndash-table-heading]',
 					'priority'  => 15,
 				),
@@ -102,7 +100,7 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Typo_Configs' ) ) {
 					'parent'            => ASTRA_THEME_SETTINGS . '[learndash-header-typography-group]',
 					'control'           => 'ast-font',
 					'font_type'         => 'ast-font-weight',
-					'title'             => __( 'Weight', 'astra-addon' ),
+					'title'             => __( 'Font Weight', 'astra-addon' ),
 					'connect'           => 'font-family-learndash-table-heading',
 					'priority'          => 20,
 				),
@@ -136,15 +134,21 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Typo_Configs' ) ) {
 					'default'     => astra_get_option( 'font-size-learndash-table-heading' ),
 					'type'        => 'sub-control',
 					'parent'      => ASTRA_THEME_SETTINGS . '[learndash-header-typography-group]',
-					'control'     => 'ast-responsive',
 					'transport'   => 'postMessage',
-					'title'       => __( 'Size', 'astra-addon' ),
+					'title'       => __( 'Font Size', 'astra-addon' ),
+					'control'     => 'ast-responsive-slider',
+					'suffix'      => array( 'px', 'em' ),
 					'input_attrs' => array(
-						'min' => 0,
-					),
-					'units'       => array(
-						'px' => 'px',
-						'em' => 'em',
+						'px' => array(
+							'min'  => 0,
+							'step' => 1,
+							'max'  => 100,
+						),
+						'em' => array(
+							'min'  => 0,
+							'step' => 0.01,
+							'max'  => 20,
+						),
 					),
 					'priority'    => 16,
 				),
@@ -159,7 +163,7 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Typo_Configs' ) ) {
 					'parent'    => ASTRA_THEME_SETTINGS . '[learndash-content-typography-group]',
 					'control'   => 'ast-font',
 					'font_type' => 'ast-font-family',
-					'title'     => __( 'Family', 'astra-addon' ),
+					'title'     => __( 'Font Family', 'astra-addon' ),
 					'connect'   => ASTRA_THEME_SETTINGS . '[font-weight-learndash-table-content]',
 					'priority'  => 40,
 				),
@@ -175,7 +179,7 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Typo_Configs' ) ) {
 					'parent'            => ASTRA_THEME_SETTINGS . '[learndash-content-typography-group]',
 					'control'           => 'ast-font',
 					'font_type'         => 'ast-font-weight',
-					'title'             => __( 'Weight', 'astra-addon' ),
+					'title'             => __( 'Font Weight', 'astra-addon' ),
 					'connect'           => 'font-family-learndash-table-content',
 					'priority'          => 45,
 				),
@@ -210,14 +214,20 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Typo_Configs' ) ) {
 					'type'        => 'sub-control',
 					'parent'      => ASTRA_THEME_SETTINGS . '[learndash-content-typography-group]',
 					'transport'   => 'postMessage',
-					'title'       => __( 'Size', 'astra-addon' ),
-					'control'     => 'ast-responsive',
+					'title'       => __( 'Font Size', 'astra-addon' ),
+					'control'     => 'ast-responsive-slider',
+					'suffix'      => array( 'px', 'em' ),
 					'input_attrs' => array(
-						'min' => 0,
-					),
-					'units'       => array(
-						'px' => 'px',
-						'em' => 'em',
+						'px' => array(
+							'min'  => 0,
+							'step' => 1,
+							'max'  => 100,
+						),
+						'em' => array(
+							'min'  => 0,
+							'step' => 0.01,
+							'max'  => 20,
+						),
 					),
 					'priority'    => 41,
 				),

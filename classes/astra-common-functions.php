@@ -177,11 +177,21 @@ if ( ! function_exists( 'astra_get_background_obj' ) ) {
 					break;
 
 				case 'image':
-					if ( '' !== $bg_img && '' !== $bg_color && ( ! is_numeric( strpos( $bg_color, 'linear-gradient' ) ) && ! is_numeric( strpos( $bg_color, 'radial-gradient' ) ) ) ) {
-						$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $bg_color . ', ' . $bg_color . '), url(' . $bg_img . ');';
-					}
-					if ( '' === $bg_color || is_numeric( strpos( $bg_color, 'linear-gradient' ) ) || is_numeric( strpos( $bg_color, 'radial-gradient' ) ) && '' !== $bg_img ) {
-						$gen_bg_css['background-image'] = 'url(' . $bg_img . ');';
+					$overlay_type  = isset( $bg_obj['overlay-type'] ) ? $bg_obj['overlay-type'] : 'none';
+					$overlay_color = isset( $bg_obj['overlay-color'] ) ? $bg_obj['overlay-color'] : '';
+					$overlay_grad  = isset( $bg_obj['overlay-gradient'] ) ? $bg_obj['overlay-gradient'] : '';
+					if ( '' !== $bg_img ) {
+						if ( 'none' !== $overlay_type ) {
+							if ( 'classic' === $overlay_type && '' !== $overlay_color ) {
+								$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $overlay_color . ', ' . $overlay_color . '), url(' . $bg_img . ');';
+							} elseif ( 'gradient' === $overlay_type && '' !== $overlay_grad ) {
+								$gen_bg_css['background-image'] = $overlay_grad . ', url(' . $bg_img . ');';
+							} else {
+								$gen_bg_css['background-image'] = 'url(' . $bg_img . ');';
+							}
+						} else {
+							$gen_bg_css['background-image'] = 'url(' . $bg_img . ');';
+						}
 					}
 					break;
 
@@ -280,11 +290,26 @@ if ( ! function_exists( 'astra_get_responsive_background_obj' ) ) {
 					break;
 
 				case 'image':
-					if ( '' !== $bg_img && '' !== $bg_color && ( ! is_numeric( strpos( $bg_color, 'linear-gradient' ) ) && ! is_numeric( strpos( $bg_color, 'radial-gradient' ) ) ) ) {
-						$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $bg_color . ', ' . $bg_color . '), url(' . $bg_img . ');';
-					}
-					if ( '' === $bg_color || is_numeric( strpos( $bg_color, 'linear-gradient' ) ) || is_numeric( strpos( $bg_color, 'radial-gradient' ) ) && '' !== $bg_img ) {
-						$gen_bg_css['background-image'] = 'url(' . $bg_img . ');';
+					/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+					$overlay_type = isset( $bg_obj['overlay-type'] ) ? $bg_obj['overlay-type'] : 'none';
+					/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+					$overlay_color = isset( $bg_obj['overlay-color'] ) ? $bg_obj['overlay-color'] : '';
+					/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+					$overlay_grad = isset( $bg_obj['overlay-gradient'] ) ? $bg_obj['overlay-gradient'] : '';
+					/** @psalm-suppress PossiblyUndefinedStringArrayOffset */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
+
+					if ( '' !== $bg_img ) {
+						if ( 'none' !== $overlay_type ) {
+							if ( 'classic' === $overlay_type && '' !== $overlay_color ) {
+								$gen_bg_css['background-image'] = 'linear-gradient(to right, ' . $overlay_color . ', ' . $overlay_color . '), url(' . $bg_img . ');';
+							} elseif ( 'gradient' === $overlay_type && '' !== $overlay_grad ) {
+								$gen_bg_css['background-image'] = $overlay_grad . ', url(' . $bg_img . ');';
+							} else {
+								$gen_bg_css['background-image'] = 'url(' . $bg_img . ');';
+							}
+						} else {
+							$gen_bg_css['background-image'] = 'url(' . $bg_img . ');';
+						}
 					}
 					break;
 
@@ -341,9 +366,9 @@ if ( ! function_exists( 'astra_addon_get_search_form' ) ) :
 		$form = '<form role="search" method="get" class="search-form" action="' . esc_url( home_url( '/' ) ) . '">
 			<label>
 				<span class="screen-reader-text">' . _x( 'Search for:', 'label', 'astra-addon' ) . '</span>
-				<input type="search" class="search-field" placeholder="' . esc_html( $astra_search_input_placeholder ) . '" value="' . get_search_query() . '" name="s" />
+				<input type="search" class="search-field" placeholder="' . esc_attr( $astra_search_input_placeholder ) . '" value="' . get_search_query() . '" name="s" />
 			</label>
-			<button type="submit" class="search-submit" value="' . esc_html__( 'Search', 'astra-addon' ) . '" aria-label= "' . esc_attr__( 'Search', 'astra-addon' ) . '"><i class="astra-search-icon"> ' . Astra_Icons::get_icons( 'search' ) . ' </i></button>
+			<button type="submit" class="search-submit" value="' . esc_attr__( 'Search', 'astra-addon' ) . '" aria-label= "' . esc_attr__( 'Search', 'astra-addon' ) . '"><i class="astra-search-icon"> ' . Astra_Icons::get_icons( 'search' ) . ' </i></button>
 		</form>';
 
 		/**
@@ -358,7 +383,7 @@ if ( ! function_exists( 'astra_addon_get_search_form' ) ) :
 		}
 
 		if ( $echo ) {
-			echo $result; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo wp_kses( $result, Astra_Addon_Kses::astra_addon_form_with_post_kses_protocols() );
 		} else {
 			return $result;
 		}
@@ -461,11 +486,63 @@ function astra_addon_get_megamenu_spacing_css( $spacing_obj ) {
 }
 
 /**
- * Check the Astra 3.5.0 version is using or not.
- * As this is major update and frequently we used version_compare, added a function for this for easy maintenance.
+ * Check whether blogs post structure title & meta is disabled or not.
  *
- * @since  3.5.0
+ * @since 4.0.0
+ * @return bool True if blogs post structure title & meta is disabled else false.
  */
-function astra_addon_check_theme_3_5_0_version() {
-	return version_compare( ASTRA_THEME_VERSION, '3.5.0', '<' );
+function astra_addon_is_blog_title_meta_disabled() {
+	$blog_title_meta = astra_get_option( 'blog-post-structure' );
+	if ( is_array( $blog_title_meta ) && ! in_array( 'title-meta', $blog_title_meta ) ) {
+		return true;
+	}
+	return false;
+}
+
+/**
+ * Function which will return CSS for font-extras control.
+ * It includes - line-height, letter-spacing, text-decoration, font-style.
+ *
+ * @param array  $config contains extra font settings.
+ * @param string $setting basis on this setting will return.
+ * @param mixed  $unit Unit.
+ *
+ * @since 4.0.0
+ */
+function astra_addon_get_font_extras( $config, $setting, $unit = false ) {
+	$css = isset( $config[ $setting ] ) ? $config[ $setting ] : '';
+
+	if ( $unit && $css ) {
+		$css .= isset( $config[ $unit ] ) ? $config[ $unit ] : '';
+	}
+
+	return $css;
+}
+
+/**
+ * Function which will return CSS array for font specific props for further parsing CSS.
+ * It includes - font-family, font-weight, font-size, line-height, text-transform, letter-spacing, text-decoration, color (optional).
+ *
+ * @param string $font_family Font family.
+ * @param string $font_weight Font weight.
+ * @param array  $font_size Font size.
+ * @param string $font_extras contains all font controls.
+ * @param string $color In most of cases color is also added, so included optional param here.
+ *
+ * @return array
+ *
+ * @since 4.0.0
+ */
+function astra_addon_get_font_array_css( $font_family, $font_weight, $font_size, $font_extras, $color = '' ) {
+	$font_extras_ast_option = astra_get_option( $font_extras );
+	return array(
+		'color'           => esc_attr( $color ),
+		'font-family'     => astra_get_css_value( $font_family, 'font' ),
+		'font-weight'     => astra_get_css_value( $font_weight, 'font' ),
+		'font-size'       => ! empty( $font_size ) ? astra_responsive_font( $font_size, 'desktop' ) : '',
+		'line-height'     => astra_addon_get_font_extras( $font_extras_ast_option, 'line-height', 'line-height-unit' ),
+		'text-transform'  => astra_addon_get_font_extras( $font_extras_ast_option, 'text-transform' ),
+		'letter-spacing'  => astra_addon_get_font_extras( $font_extras_ast_option, 'letter-spacing', 'letter-spacing-unit' ),
+		'text-decoration' => astra_addon_get_font_extras( $font_extras_ast_option, 'text-decoration' ),
+	);
 }

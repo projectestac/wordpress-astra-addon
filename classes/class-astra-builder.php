@@ -53,7 +53,7 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 			add_filter( 'astra_header_mobile_items', array( $this, 'update_header_builder_mobile_items' ) );
 			add_filter( 'astra_footer_desktop_items', array( $this, 'update_footer_builder_desktop_items' ) );
 
-			add_action( 'astra_render_header_components', array( $this, 'render_header_components' ) );
+			add_action( 'astra_render_header_components', array( $this, 'render_header_components' ), 10, 2 );
 			add_action( 'astra_render_footer_components', array( $this, 'render_footer_dynamic_components' ) );
 		}
 
@@ -196,18 +196,20 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 		 * Render header component.
 		 *
 		 * @param string $slug component slug.
+		 * @param string $device device.
 		 */
-		public function render_header_components( $slug ) {
+		public function render_header_components( $slug, $device = '' ) {
 
-			$this->render_header_dynamic_components( $slug );
+			$this->render_header_dynamic_components( $slug, $device );
 		}
 
 		/**
 		 * Render header dynamic components.
 		 *
 		 * @param string $slug slug.
+		 * @param string $device device.
 		 */
-		public function render_header_dynamic_components( $slug ) {
+		public function render_header_dynamic_components( $slug, $device ) {
 
 			if ( 0 === strpos( $slug, 'html' ) ) {
 				?>
@@ -231,11 +233,13 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 				?>
 				<aside
 					<?php
-					echo astra_attr(
-						'header-widget-area-inner',
-						array(
-							'class'        => 'header-widget-area widget-area site-header-focus-item',
-							'data-section' => 'sidebar-widgets-header-' . esc_attr( $slug ),
+					echo wp_kses_post(
+						astra_attr(
+							'header-widget-area-inner',
+							array(
+								'class'        => 'header-widget-area widget-area site-header-focus-item',
+								'data-section' => 'sidebar-widgets-header-' . esc_attr( $slug ),
+							)
 						)
 					);
 					?>
@@ -244,9 +248,24 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 					if ( is_customize_preview() && class_exists( 'Astra_Builder_UI_Controller' ) ) {
 						Astra_Builder_UI_Controller::render_customizer_edit_button();
 					}
-					echo function_exists( 'astra_markup_open' ) ? astra_markup_open( 'header-widget-div', array( 'echo' => false ) ) : '<div class="header-widget-area-inner site-info-inner">'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+					if ( function_exists( 'astra_markup_open' ) ) {
+						astra_markup_open( 'header-widget-div', array( 'echo' => true ) );
+					} else {
+						?>
+							<div class="header-widget-area-inner site-info-inner">
+						<?php
+					}
+
 					astra_get_sidebar( 'header-' . str_replace( '_', '-', $slug ) );
-					echo function_exists( 'astra_markup_close' ) ? astra_markup_close( 'header-widget-div', array( 'echo' => false ) ) : '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+					if ( function_exists( 'astra_markup_close' ) ) {
+						astra_markup_close( 'header-widget-div', array( 'echo' => true ) );
+					} else {
+						?>
+							</div>
+						<?php
+					}
 					?>
 				</aside>
 				<?php
@@ -255,7 +274,7 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 				<div class="ast-builder-<?php echo esc_attr( $slug ); ?> ast-builder-menu ast-builder-<?php echo esc_attr( $slug ); ?>-focus-item ast-builder-layout-element site-header-focus-item" data-section="section-hb-<?php echo esc_attr( $slug ); ?>">
 					<?php
 					$action_name = 'astra_header_' . str_replace( '-', '_', $slug );
-					do_action( $action_name );
+					do_action( $action_name, $device );
 					?>
 				</div>
 				<?php
@@ -322,19 +341,35 @@ if ( ! class_exists( 'Astra_Builder' ) ) {
 				?>
 				<aside
 				<?php
-				echo astra_attr(
-					'footer-widget-area-inner',
-					array(
-						'class'        => 'footer-widget-area widget-area site-footer-focus-item',
-						'data-section' => 'sidebar-widgets-footer-' . esc_attr( $slug ),
+				echo wp_kses_post(
+					astra_attr(
+						'footer-widget-area-inner',
+						array(
+							'class'        => 'footer-widget-area widget-area site-footer-focus-item',
+							'data-section' => 'sidebar-widgets-footer-' . esc_attr( $slug ),
+						)
 					)
 				);
 				?>
 				>
 				<?php
-					echo function_exists( 'astra_markup_open' ) ? astra_markup_open( 'footer-widget-div', array( 'echo' => false ) ) : '<div class="footer-widget-area-inner site-info-inner">'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				if ( function_exists( 'astra_markup_open' ) ) {
+					astra_markup_open( 'footer-widget-div', array( 'echo' => true ) );
+				} else {
+					?>
+						<div class="footer-widget-area-inner site-info-inner">
+					<?php
+				}
+
 					astra_get_sidebar( 'footer-' . str_replace( '_', '-', $slug ) );
-					echo function_exists( 'astra_markup_close' ) ? astra_markup_close( 'footer-widget-div', array( 'echo' => false ) ) : '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+				if ( function_exists( 'astra_markup_close' ) ) {
+					astra_markup_close( 'footer-widget-div', array( 'echo' => true ) );
+				} else {
+					?>
+						</div>
+					<?php
+				}
 				?>
 				</aside>
 				<?php

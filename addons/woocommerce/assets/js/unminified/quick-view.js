@@ -23,9 +23,9 @@
 			/**
 			 * Set Max Height Width For Wrappers.
 			 */
-			const maxWidthWrappers = parseFloat(window.innerWidth) - 120,
-			 maxHeightWrappers   = parseFloat(window.innerHeight) - 120;
-			 const quickViewContent = document.getElementById('ast-quick-view-content');
+			 const maxWidthWrappers = parseFloat(window.innerWidth) - 120,
+			    maxHeightWrappers   = parseFloat(window.innerHeight) - 120,
+			    quickViewContent = document.getElementById('ast-quick-view-content');
 
 			 if( quickViewContent ) {
 				quickViewContent.style.maxWidth = maxWidthWrappers + 'px';
@@ -127,6 +127,12 @@
 					}
 				}
 			}
+			
+			const closeCart = document.querySelector('.astra-cart-drawer-close');
+
+			if( closeCart && astra.woo_cart_empty_featured_product ) {
+				document.querySelector('.astra-cart-drawer-close').click();
+			}
 		},
 
 		/**
@@ -162,24 +168,32 @@
 					$html.classList.add('ast-quick-view-is-open');
 				}
 
+				// Here we use Jquery intentionally because of some critical cases
+				let quick_view_box = jQuery(document).find('#ast-quick-view-modal');
+				// Initialize variable form.
+				if ( quick_view_box.length > 0 ) {
 
-			// Initialize variable form.
-			if ( form_variation.length > 0 ) {
+					// Trigger variation form actions.
+					quick_view_box.find('.variations_form').trigger( 'check_variations' );
+					quick_view_box.find('.variations_form').trigger( 'reset_image' );
 
-				// Trigger variation form actions.
-				form_variation.trigger( 'check_variations' );
-				form_variation.trigger( 'reset_image' );
+					// Trigger variation form.
+					quick_view_box.find('.variations_form').wc_variation_form();
+					quick_view_box.find('.variations_form select').change();
 
-				// Trigger variation form.
-				form_variation.wc_variation_form();
-				form_variation.querySelector('select').change();
-			}
+					// Initialize flex slider.
+					const image_slider_wrap = quick_view_box.find('.ast-qv-image-slider');
+					if ( image_slider_wrap.find('li').length > 1 ) {
+						image_slider_wrap.flexslider();
 
-			// Initialize flex slider.
-			const image_slider_wrap = quick_view.querySelector('.ast-qv-image-slider');
-			if ( image_slider_wrap.querySelector('li').length > 1 ) {
-				image_slider_wrap.flexslider();
-			}
+						try {
+								productVariation(image_slider_wrap);
+						}
+						catch(err) {
+						}
+
+					}
+				}
 
 			setTimeout(function() {
 				AstraProQuickView._auto_set_content_height_by_image();
@@ -373,5 +387,22 @@
 	domReady(function() {
 		AstraProQuickView.init();
 	});
+
+	const cart_flyout = document.getElementById('astra-mobile-cart-drawer');
+
+	document.addEventListener( 'astra_on_slide_In_cart_open', function() {
+		if( astra.woo_cart_empty_featured_product && cart_flyout && cart_flyout.classList.contains( 'active' ) ) {
+			AstraProQuickView.init(); 
+		}
+	})
+	
+	document.addEventListener( 'astra_on_slide_in_cart_empty', function() {
+		if( astra.woo_cart_empty_featured_product && cart_flyout && cart_flyout.classList.contains( 'active' ) ) {
+			AstraProQuickView.init(); 
+		}
+	});
+	document.addEventListener( 'astraInfinitePaginationLoaded' , function() {
+		AstraProQuickView.init();
+	})
 
 })();

@@ -3,8 +3,6 @@
  * Blog Pro General Options for our theme.
  *
  * @package     Astra Addon
- * @author      Brainstorm Force
- * @copyright   Copyright (c) 2020, Brainstorm Force
  * @link        https://www.brainstormforce.com
  * @since       1.4.3
  */
@@ -30,7 +28,7 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Content' ) ) {
 	 * Register General Customizer Configurations.
 	 */
 	// @codingStandardsIgnoreStart
-	class Astra_Customizer_Colors_Content extends Astra_Customizer_Config_Base { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+	class Astra_Customizer_Colors_Content extends Astra_Customizer_Config_Base {
 		// @codingStandardsIgnoreEnd
 
 		/**
@@ -120,23 +118,6 @@ if ( ! class_exists( 'Astra_Customizer_Colors_Content' ) ) {
 				),
 
 			);
-
-			if ( astra_addon_has_gcp_typo_preset_compatibility() ) {
-
-				// Option: Content Background Color.
-				$content_bg_option = array(
-					'name'      => ASTRA_THEME_SETTINGS . '[content-bg-obj-responsive]',
-					'default'   => astra_get_option( 'content-bg-obj-responsive' ),
-					'type'      => 'control',
-					'control'   => 'ast-responsive-background',
-					'label'     => __( 'Background', 'astra-addon' ),
-					'section'   => 'section-colors-content',
-					'transport' => 'postMessage',
-					'divider'   => array( 'ast_class' => 'ast-bottom-divider' ),
-				);
-
-				array_unshift( $_configs, $content_bg_option );
-			}
 
 			return array_merge( $configurations, $_configs );
 		}

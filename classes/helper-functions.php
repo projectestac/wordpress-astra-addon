@@ -194,7 +194,7 @@ if ( ! function_exists( 'astra_check_is_ie' ) ) :
 	function astra_check_is_ie() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 
 		$is_ie      = false;
-		$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : false;
+		$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ) : false;
 		$ua         = htmlentities( $user_agent, ENT_QUOTES, 'UTF-8' );
 		if ( strpos( $ua, 'Trident/7.0' ) !== false ) {
 			$is_ie = true;
@@ -349,8 +349,6 @@ if ( ! function_exists( 'astra_get_prop' ) ) :
 	 * Provide a default value if you want to return a specific value if the property is not set.
 	 *
 	 * @since  1.4.0
-	 * @access public
-	 * @author Gravity Forms - Easiest Tool to Create Advanced Forms for Your WordPress-Powered Website.
 	 * @link  https://www.gravityforms.com/
 	 *
 	 * @param array  $array   Array from which the property's value should be retrieved.
@@ -406,7 +404,7 @@ function astra_addon_is_breadcrumb_trail( $echo = true ) {
 		astra_breadcrumb();
 		return ob_get_clean();
 	}
-	echo astra_breadcrumb(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo wp_kses_post( astra_breadcrumb() );
 }
 
 /**
@@ -481,119 +479,6 @@ function astra_addon_get_mobile_breakpoint( $min = '', $max = '' ) {
  */
 function astra_addon_existing_header_footer_configs() {
 	return apply_filters( 'astra_addon_existing_header_footer_configs', true );
-}
-
-/*
- * BSF Analytics.
- */
-if ( ! class_exists( 'BSF_Analytics_Loader' ) ) {
-	require_once ASTRA_EXT_DIR . 'admin/bsf-analytics/class-bsf-analytics-loader.php';
-}
-
-$astra_addon_bsf_analytics = BSF_Analytics_Loader::get_instance();
-
-$astra_addon_bsf_analytics->set_entity(
-	array(
-		'bsf' => array(
-			'product_name'    => 'Astra Pro',
-			'path'            => ASTRA_EXT_DIR . 'admin/bsf-analytics',
-			'author'          => 'Brainstorm Force',
-			'time_to_display' => '+24 hours',
-		),
-	)
-);
-
-/**
- * Prepare Astra's megamenu data to pass BSF-Analytics.
- *
- * @since 3.9.3
- *
- * @return void
- */
-function astra_addon_get_addon_usage() {
-
-	$all_menus               = wp_get_nav_menus();
-	$megamenu_analytics_data = array();
-
-	if ( ! is_array( $all_menus ) && empty( $all_menus ) ) {
-		return;
-	}
-
-	foreach ( $all_menus as $key => $menu_term ) {
-		$menu_items = wp_get_nav_menu_items( $menu_term->term_id );
-		foreach ( $menu_items as $menu_item ) {
-			// Enable Megamenu.
-			$is_enable = isset( $menu_item->megamenu ) ? $menu_item->megamenu : '';
-			if ( 'megamenu' === $is_enable ) {
-				$megamenu_analytics_data['megamenu-is-enabled'][] = 'yes';
-			}
-
-			// Width type.
-			$width_type = isset( $menu_item->megamenu_width ) ? $menu_item->megamenu_width : '';
-			if ( '' !== $width_type ) {
-				$megamenu_analytics_data['menu-container-types'][] = $width_type;
-			}
-
-			// Content source.
-			$content_source = isset( $menu_item->megamenu_content_src ) ? $menu_item->megamenu_content_src : '';
-			if ( '' !== $content_source ) {
-				$megamenu_analytics_data['sub-menus-content-source'][] = $content_source;
-			}
-
-			// Enabled heading.
-			$enabled_heading = isset( $menu_item->megamenu_enable_heading ) ? $menu_item->megamenu_enable_heading : '';
-			if ( '' !== $enabled_heading ) {
-				$megamenu_analytics_data['sub-menus-heading-enabled'][] = $enabled_heading;
-			}
-		}
-	}
-
-	update_option( 'ast_extension_data', $megamenu_analytics_data );
-}
-
-add_action( 'astra_addon_get_addon_usage', 'astra_addon_get_addon_usage' );
-
-/**
- * Run scheduled job for BSF-Analytics.
- *
- * @since 3.9.3
- * @return void
- */
-function astra_addon_run_scheduled_analytic_job() {
-	if ( ! wp_next_scheduled( 'astra_addon_get_addon_usage' ) && ! wp_installing() ) {
-		wp_schedule_event( time(), 'daily', 'astra_addon_get_addon_usage' );
-	}
-}
-
-add_filter( 'init', 'astra_addon_run_scheduled_analytic_job' );
-
-/**
- * Pass addon specific stats to BSF analytics.
- *
- * @since 2.6.4
- * @param array $default_stats Default stats array.
- * @return array $default_stats Default stats with addon specific stats array.
- */
-function astra_addon_get_specific_stats( $default_stats ) {
-	$default_stats['astra_settings'] = array(
-		'astra-addon-version' => ASTRA_EXT_VER,
-		'astra-theme-version' => ASTRA_THEME_VERSION,
-		'breadcrumb-position' => astra_get_option( 'breadcrumb-position', false ),
-		'mega-menu-details'   => get_option( 'ast_extension_data', array() ),
-	);
-	return $default_stats;
-}
-
-add_filter( 'bsf_core_stats', 'astra_addon_get_specific_stats' );
-
-/**
- * Check compatibility for content background and typography options.
- *
- * @since 3.6.0
- * @return bool if astra theme version is less than 3.7.0, true else false.
- */
-function astra_addon_has_gcp_typo_preset_compatibility() {
-	return version_compare( ASTRA_THEME_VERSION, '3.7.0', '<' );
 }
 
 /**

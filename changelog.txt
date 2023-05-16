@@ -1,3 +1,96 @@
+*** Astra Pro Changelog ***
+
+2023-05-09 - version 4.1.5
+* Improvement - Nav menu - Optimized number of database call to fetch megamenu item details.
+* Fix: WooCommerce - Console error from horizontal slider & vertical slider product gallery.
+* Fix: LearnDash - "Enable Distraction Free Learning" option missing from the customizer General settings.
+* Fix: Custom Layout - PHP code snippet with function calls throws PHP error "can not redeclare the function".
+* Fix: Single Post: Apply Custom Sizes option missing from Customizer > Blog > Single Post section.
+* Fix: Single Post: Custom featured image size is not working with dynamic post banner area.
+* Fix: Spectra block dynamic styles missing on auto loaded previous posts.
+* Fix: WooCommerce - Enabling filter with flyout produce eventlistner error on console.
+* Fix: Sidebar title font is not working for product page.
+* Fix: Fixed lost password link for multilingual sites by using wp_lostpassword_url() function.
+* Fix: Header Search - Placeholder text appears twice in full screen search & header cover search style.
+
+2023-04-06 - version 4.1.4
+* Fix: Header Builder - Site Logo becomes too small for the sticky header.
+* Fix: Custom Layout - Code editor strips out the code while saving and not working properly on frontend too.
+* Fix: Search - Inline search box misaligned with respect it's search icon position.
+
+2023-03-30 - version 4.1.3
+* Fix: WooCommerce & WordPress marketplace users getting subscription notification when plugin purchased from Brainstorm Force store.
+
+2023-03-29 - version 4.1.2
+* Fix: Backward managing cron run into infinite loop which exhausted CPU usage on server.
+* Fix: PHP notice "Uncaught error array_map() requires 2nd parameter as array" while saving code editor from Custom Layout.
+* Fix: PHP error "Uncaught Error: Call to a member function is_type() on string" for WooCommerce product.
+* Fix: PHP error for "Uncaught Error: class Astra_Notices not found" in some cases.
+
+2023-03-28 - version 4.1.1
+* Fix: PHP error "Uncaught Error: Access to undeclared static property" for clonned header builder button's padding.
+
+2023-03-28 - version 4.1.0
+* New: Single Post - Social Sharing feature. ( https://wpastra.com/docs/social-sharing/ )
+* New: WooCommerce - Introducing new add to cart trigger actions for shop and single product pages. ( https://wpastra.com/docs/introducing-new-add-to-cart-trigger-actions-for-shop-and-single-product-pages/ )
+* New: Header Builder - Cart - Showcase featured products in the cart instead of showing it empty when no products added into it. ( https://wpastra.com/docs/showcase-featured-products-in-the-cart-instead-of-showing-it-empty-when-no-products-are-added/ )
+* New: Header Builder - Sticky header - Blur background options for above, primary and below header. ( https://wpastra.com/docs/sticky-header-blur-background/ )
+* New: WooCommerce - Added option to change strings for WooCommerce special pages like shop, cart, checkout, my-account.
+* Improvement: Hardened the security.
+* Improvement: Compatibility with PHP-8.1.
+* Improvement: Compatibility with WordPress-6.2.
+* Improvement: Single Post - Moved author info box before post navigation.
+* Improvement: Accessibility for header mega menu navigation.
+* Improvement: Button - Slider input field for sticky header's border-radius control changed to spacing control to manage all direction sizes easily.
+* Improvement: Custom Layout - Provided actions support of banner title area for single post & archive.
+* Fix: Login popup issue when Sticky header with slide animation is enabled.
+* Fix: Sidebar design tab in customizer does not show up when "Colors & Background" addon is disabled.
+* Fix: W3 validation - Builder - Menu - Duplicate IDs for responsive devices.
+* Fix: WooCommerce - Stripe Google pay button is not working on two-column checkout layout page.
+* Fix: Custom Layout - Specific selection rule not working correctly if multiple specific selections added in rule engine.
+* Fix: Sticky logo width option is not working with Enable Shrink Effect.
+* Fix: Custom Layout - content_top and content_bottom hook's layout misaligned on the frontend.
+* Fix: WooCommerce - Quick view does not work with infinite scroll.
+* Fix: Page Header showing author HTML markup on frontend on author archive page.
+* Fix: Page Header - Showing PHP notice for 'Function astra_addon_get_template was called incorrectly' on WooCommerce single products.
+* Fix: Select option hidden when dropdown to button option is active for a WooCommerce Composite Product.
+* Fix: WooCommerce - Shop - Sorting Filters not working with Shop Card Design Layout 2 on Mobile View.
+* Fix: Custom Layout & Page Headers admin - Edit content list posts gets overlapped with WordPress admin footer.
+* Fix: Inside container spacing for single posts affecting the related posts section.
+* Fix: WooCommerce - Variation button does not work in Quick View modal.
+
+v4.0.0
+- New: Redesigned the entire admin area with better user experience. ( https://wpastra.com/updates/astra-4 )
+- New: Redesigned the entire mega menu area with better user experience. ( https://wpastra.com/docs/nav-menu-module/ )
+- New: White Label - Agency icon field for re-branding software.
+- New: Introduced admin bar quick links for easy navigation to edit Custom Layout & Page Header posts.
+- New: Nav Menu - Custom icon & position support for mega menu items.
+- New: Nav Menu - Enhanced options to customize the color and the background inside the mega menu.
+- New: Nav Menu - Introducing divider color and styles for mega menu items.
+- Fix: Sidebar design tab in customizer does not show up when Colors & Background is disabled.
+- Fix: Custom Layout - Specific selection rule not working correctly if multiple specific selections added in rule engine.
+- Fix: WooCommerce - Shop - Content inside filter clipping when filter accordion is enabled.
+- Fix: Single post - Top-Bottom inside container spacing is not work on mobile devices.
+- Fix: Header Builder - Menu - Dropdown Menu on mobile device is not scrollable when Sticky Header is activated.
+- Fix: PHP error when bsf-analytics data submitted for breadcrumb-position.
+- Fix: Site title and tagline not displaying on Sticky Header after uploading different logo for sticky header.
+- Fix: Blog/Archive - Enable/disable for Blog title & post meta does not work for blog layout 2 & 3.
+- Fix: Scroll to top trigger position gets misaligned with padded layout.
+- Fix: Sticky Header - Due to assigned custom margin to header, it gets misaligned.
+- Fix: WooCommerce - Product catalog filter is not showing properly on mobile devices when modern layout is active.
+- Fix: When WPML Multilingual CMS plugin is active custom Page Headers are not visible/working.
+- Fix: WooCommerce - Variable product is not working with quick view.
+- Fix: WooCommerce - Product gallery is not working in quick view.
+- Fix: WooCommerce - Getting console error on product category pages when infinite scroll pagination-type is selected.
+- Fix: WooCommerce - Username validation error on login form in modern checkout page.
+- Fix: Header Builder - Account - Text font family not working on the frontend.
+- Fix: Custom Layout - Nested custom layouts not working on the frontend.
+
+v3.9.4
+- Fix: WooCommerce - Variable product is not working with quick view.
+- Fix: WooCommerce - Product gallery is not working in quick view.
+- Fix: Custom Layout - When WPML Multilingual CMS plugin is active custom header/footers are not working. ( Props - https://wpml.org/errata/astra-pro-3-9-3-enabling-custom-layouts-blocks-loading-scripts-added-in-the-header-or-footer/ )
+
 v3.9.3
 - New: Header Builder - Menu - Filter to add mega menu compatibility with registered nav menus. ( https://wpastra.com/docs/mega-menu-support-for-all-builder-menus/ )
 - New: Custom Layout - Custom action hook support added to trigger layout content or snippet on a specific location.
@@ -15,6 +108,7 @@ v3.9.3
 - Fix: WooCommerce - Composite product plugin compatibility on a single product.
 - Fix: WooCommerce - Updated Related and Upsell products sub-option dependency.
 - Fix: WooCommerce - Border removed on single product gallery sliders.
+- Fix: Search - In 'Full Screen' style search icon missing when Astra SVG icons available on site.
 - Fix: Custom layout content before not working with the WPML targeted pages.
 - Fix: WooCommerce - Quick view console error on all pages.
 - Fix: Header Builder - Menu - Megamenu container get hides when hovering in between Top Offset spacing.

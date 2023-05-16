@@ -11,7 +11,7 @@
  * @since 1.0
  */
 // @codingStandardsIgnoreStart
-final class Astra_Ext_Extension {  // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+final class Astra_Ext_Extension {
 	// @codingStandardsIgnoreEnd
 
 	/**
@@ -50,7 +50,6 @@ final class Astra_Ext_Extension {  // phpcs:ignore WordPress.NamingConventions.P
 			'site-layouts'          => array(),
 			'spacing'               => array(),
 			'sticky-header'         => array(),
-			'scroll-to-top'         => array(),
 			'transparent-header'    => array(),
 			'typography'            => array(),
 			'woocommerce'           => array(),
