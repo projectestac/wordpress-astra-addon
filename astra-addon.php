@@ -51,7 +51,13 @@ if ( 'astra' !== get_template() ) {
 		<?php
 	}
 
+    // XTEC ************ ESBORRAT - Hidden ad messages to all users.
+    // 2024.06.06 @aginard
+    /*
 	add_action( 'admin_notices', 'astra_addon_theme_requirement_notice' );
+    */
+    // ************ FI
+
 	return;
 }
 

@@ -205,6 +205,11 @@ if ( ! class_exists( 'BSF_Analytics' ) ) {
 		 */
 		public function option_notice() {
 
+            // XTEC ************ AFEGIT - Remove remove admin notices.
+            // 2024.06.06 @aginard
+            return;
+            // ************ FI
+
 			if ( ! current_user_can( 'manage_options' ) ) {
 				return;
 			}
