@@ -84,6 +84,14 @@ class BSF_Analytics_Loader {
 	 * @return void
 	 */
 	public function load_analytics() {
+
+        // XTEC ************ AFEGIT - Hide option to track site usage.
+        // 2024.06.17 @aginard
+        if (!is_xtec_super_admin()) {
+            return;
+        }
+        // ************ FI
+
 		$unique_entities = array();
 
 		if ( ! empty( $this->entities ) ) {
