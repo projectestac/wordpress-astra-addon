@@ -202,6 +202,25 @@
 	} );
 
 	/**
+	 * Single Product: Sticky Image Top Offset
+	 */
+	wp.customize( 'astra-settings[single-product-sticky-product-image-top-offset]', function( setting ) {
+		setting.bind( function( topOffset ) {
+
+			if ( !!topOffset ) {
+				const productImage = document.querySelector('.woocommerce-product-gallery');
+
+				if (productImage) {
+					productImage.style.top = `${topOffset}px`;
+				}
+			}
+			else{
+				wp.customize.preview.send( 'refresh' );
+			}
+		});
+	} );
+
+	/**
 	 * Single Product: Image Width
 	 */
 	wp.customize( 'astra-settings[single-product-image-width]', function( setting ) {
@@ -369,6 +388,17 @@
 		} );
 	} );
 
+	// Filter Flyout Background color.
+	wp.customize( 'astra-settings[filter-background-color]', function( setting ) {
+		setting.bind( function( color ) {
+			var dynamicStyle = '.woocommerce .astra-off-canvas-sidebar-wrapper .astra-off-canvas-sidebar, .woocommerce-page .astra-off-canvas-sidebar-wrapper .astra-off-canvas-sidebar { background-color: ' + color + ' } ';
+			astra_add_dynamic_css( 'global-color-palette', dynamicStyle );
+		} );
+	} );
+
+	// Quick View Background color.
+	astra_css( 'astra-settings[quick-view-background-color]', 'background-color', '#ast-quick-view-content, .ast-separate-container #ast-quick-view-content .ast-article-post' );
+
 	// Order Summary Background color.
 	wp.customize( 'astra-settings[order-summary-background-color]', function( setting ) {
 		setting.bind( function( color ) {
@@ -410,9 +440,9 @@
 	astra_css( 'astra-settings[single-product-rating-color]', 'color', '.woocommerce .star-rating, .woocommerce .comment-form-rating .stars a, .woocommerce .star-rating::before' );
 
 	// General Sale Color.
-	astra_css( 'astra-settings[product-sale-color]', 'color', '.woocommerce ul.products li.product .onsale, .woocommerce-page ul.products li.product .onsale,.woocommerce span.onsale, .woocommerce div.product .onsale.circle-outline, .woocommerce div.product .onsale.square-outline, .woocommerce ul.products li.product .onsale.square-outline, .woocommerce ul.products li.product .onsale.circle-outline' );
-	astra_css( 'astra-settings[product-sale-bg-color]', 'background-color', '.woocommerce ul.products li.product .onsale, .woocommerce-page ul.products li.product .onsale, .woocommerce span.onsale' );
-	astra_css( 'astra-settings[product-sale-bg-color]', 'border-color', '.woocommerce ul.products li.product .onsale.circle-outline, .woocommerce ul.products li.product .onsale.square-outline, .woocommerce div.product .onsale.circle-outline, .woocommerce div.product .onsale.square-outline' );
+	astra_css( 'astra-settings[product-sale-color]', 'color', '.woocommerce ul.products li.product .onsale, .woocommerce-page ul.products li.product .onsale,.woocommerce span.onsale, .woocommerce div.product .onsale.circle-outline, .woocommerce div.product .onsale.square-outline, .woocommerce ul.products li.product .onsale.square-outline, .woocommerce ul.products li.product .onsale.circle-outline, .ast-onsale-card' );
+	astra_css( 'astra-settings[product-sale-bg-color]', 'background-color', '.woocommerce ul.products li.product .onsale, .woocommerce-page ul.products li.product .onsale, .woocommerce span.onsale, .ast-onsale-card' );
+	astra_css( 'astra-settings[product-sale-bg-color]', 'border-color', '.woocommerce ul.products li.product .onsale.circle-outline, .woocommerce ul.products li.product .onsale.square-outline, .woocommerce div.product .onsale.circle-outline, .woocommerce div.product .onsale.square-outline, .ast-onsale-card' );
 
 	// Shop Product Title Typography
 	astra_generate_outside_font_family_css( 'astra-settings[font-family-shop-product-title]', '.woocommerce ul.products li.product .woocommerce-loop-product__title, .woocommerce-page ul.products li.product .woocommerce-loop-product__title' );

@@ -1,5 +1,216 @@
 *** Astra Pro Changelog ***
 
+2024-07-01 - version 4.7.2
+* Improvement: WooCommerce - Cart - Improved the vertical quantity updater style for a better user experience.
+* Improvement: Site Builder - Additional capabilities and options introduced on the dashboard's Site Builder page for better user experience.
+* Fix: Header Builder - Toggle for Desktop - Showing two menus on the desktop when sticky header animation is enabled.
+* Fix: Header Builder - Offcanvas - There was a glitch while closing the flyout in the responsive devices.
+* Fix: Blog Pro - Reveal effect conflicts with the Themify plugin filters.
+* Fix: Blog Pro - Blog post filter clashes when file generation option is enabled.
+* Fix: Mega menu not working with the secondary menu, when the primary menu is not set.
+
+2024-06-18 - version 4.7.1
+* Fix: Blog Pro - The blog's pagination buttons loads the new posts but it does not scroll to the top of the page.
+* Fix: Sticky Header - Sticky menu and submenu colors being overridden by Transparent Header colors.
+* Fix: Sticky Header - Logo disappear when Sticky Logo Width is not set manually.
+
+2024-06-04 - version 4.7.0
+* New: Header Builder - Added Sticky Header color options for "Logo SVG Icon". ( https://wpastra.com/docs/logo-svg-icon/ )
+* Improvement: File Generation code improved for better PHP exceptions & error handling edge cases.
+* Improvement: Social share icon positions (left and right) now apply only to desktop to avoid overlapping with content issue on responsive devices.
+* Fix: Issue with 'astra_addon_woo_account_user_welcome_message' filter hook for WooCommerce account navigation.
+* Fix: WooCommerce - Ensure Attribute button state updates automatically when switching valid variation without additional clicks.
+* Fix: Site Builder - PHP Error with undefined property WP_Post_Type::$taxonomy from location ruleset engine.
+
+2024-05-23 - version 4.6.10
+* New: WooCommerce - Introduce new background color option for filter flyout.
+* Fix: Changing the logo width increase the logo height inside the customizer settings.
+* Fix: Site Builder - Layouts duplicating when multiple layouts are added on the page in some conditions.
+* Fix: Blog archive post filter issues with title and pagination.
+* Fix: Sticky Header - When UABB is activated and on window scrolling there is a glitch between site header and UABB created post grid layout.
+* Fix: WooCommerce - Fixed an issue causing the page to freeze when selecting product variations and ensured smoother image updates on product pages.
+* Fix: WooCommerce - Attribute button state updates automatically when switching valid variation without additional clicks.
+* Fix: PHP Error with undefined function bsf_extract_product_id in some edge cases.
+
+2024-05-08 - version 4.6.9
+* Improvement: Corrected Dashboard link navigation from Site Builder's UI breadcrumb.
+* Improvement: Duplicate navigation menu markup rendering for sticky header.
+* Fix: WooCommerce - Product gallery horizontal and vertical sliders not displaying variation images.
+* Fix: Legacy Header: Search widget is not visible on mobile device as last item menu with "Full Screen" and "Header Cover" options.
+* Fix: Shop Off-Canvas is not opening the product category dropdown.
+
+2024-04-25 - version 4.6.8
+* Improvement: Header Builder - Language Switcher - Improved accessibility by adding aria-labels.
+* Improvement: Spacing Addon - Code optimization to reduce extra conditions load & improve performance.
+* Fix: Sticky Header - Transition effect of headers and Account element's Login Popup alignment issue when Shrink Effect is enabled.
+* Fix: WooCommerce - Using "Use Labels as Placeholders" in the Checkout produces inconsistent results for required fields.
+* Fix: Old header menu styling conflicting with new header builder's header structure.
+* Fix: WooCommerce - Infinite scroll does not showing all products on the shop page.
+* Fix: Site Builder - Custom Template's headings don't have bottom spacing on the frontend.
+* Fix: Sticky Header - On window scrolling there is a glitch between site header and Spectra's gallery block.
+* Fix: Sticky Header - On window scrolling there is glitch between site header and Spectra's gallery block.
+* Fix: WooCommerce - Sticky Product Image is breaking UI on responsive devices.
+
+2024-04-11 - version 4.6.5
+* New: WooCommerce - Introduced "Sticky Product Image" option: This option allows the featured image on single WooCommerce product pages to remain visible as users scroll down the page.
+* Improvement: WooCommerce - Refactor header account login popup form.
+* Fix: Sticky Header - Transition issue with the Sticky header when the option "Hide when scrolling down" is enabled.
+* Fix: WooCommerce - Sticky cart color & hover styling is not working for cart price.
+* Fix: WooCommerce - With infinite scroll product load only when scrolling down to bottom of the site.
+* Fix: WooCommerce - The lost Password page form doesn't look similar for logged-in and non logged-in user with modern layout.
+* Fix: Mega Menu not working properly between 922px - 938px screen width.
+* Fix: LifterLMS - Profile link was not working properly.
+
+2024-02-12 - version 4.6.4
+* Improvement: Improved accessibility of advanced headers by removing incorrect role="img" attribute.
+* Fix: Live Search - Browser autocomplete disabled when a live search is enabled to avoid search result overlapping issues.
+* Fix: WooCommerce - Infinite Scroll & page is not working when Elementor template is used.
+* Fix: WooCommerce - Pro addon conflicting with Essential Addon's Product Carousel transition property.
+* Fix: White Label - Help link present in the theme builder even after white label is enabled.
+* Fix: LifterLMS - Enable Course Meta option not working properly with the LifterLMS Blocks.
+
+2024-01-24 - version 4.6.3
+* Fix: Mega Menu - Page Builder templates looses their styling when used as mega menu content in v4.6.2.
+
+2024-01-23 - version 4.6.2
+* Improvement: Header-Footer Buttons - Added new option "Inherit" to Size to inherit global button stylings.
+* Fix: Single Post - Social sharing design customizer options has dependency of "Enable Author Box" option.
+* New: Introducing new "rem" unit support for font-size in customizer typography settings.
+* Fix: Performance - Slow query issue when too many menu items are used.
+* Fix: WooCommerce - Related product column setting not working for mobile devices when Up sell product section is disabled.
+
+2024-01-09 - version 4.6.1
+* Improvement: Page Header - Restricted the banner title area with layout-2 with page header.
+* Fix: Page Header - "Override the image with the featured image" option not working for single layouts.
+* Fix: Fatal error showing from addon side because user is using older Astra version and updated Astra Addon.
+
+2024-01-04 - version 4.6.0
+* BLOG IMPROVEMENTS (https://wpastra.com/docs/blog-archive-improvements/)
+* New: Blog - Introducing elegant Reveal Effect for posts appearance on archive & search results page.
+* New: WooCommerce - Introducing a new option to Reveal Effect for product archives.
+* SINGLE LAYOUT IMPROVEMENTS (https://wpastra.com/docs/single-post-improvements/)
+* New: Single - Author Box - Introduced new controls like Alignment, Background, Border, and Spacing for improvising the author box.
+* New: Single - Author Box - Introduced new Section placement and social Share option support.
+* New: Single - Post Navigation - Introducing new badge style for better visual appearance.
+* Improvement: Single - Moved the Author Box, and Social Sharing settings from the Single Post section to the new sub-sections under the Single Post section.
+* Improvement: Added customizer section shortcut link to Author Box section to quick access for better user experience.
+* Improvement: Author Box - Introduced new filter "astra_addon_author_box_heading_tag" to change the heading tag of the author box section.
+* Improvement: Author Box - Introduced new filter "astra_addon_author_title_heading_tag" to change the heading tag of the author name.
+* MISCELLANEOUS
+* Improvement: Performance - Removed legacy CSS for the spacing addon & managed spacing with the new spacing options.
+* Improvement: WooCommerce - Added a new customization option for the color of the cart icon when the sticky header is enabled.
+* Fix: Social Icons - Horizontal alignment does not work if Stack-On is selected.
+* Fix: Sticky Header - Background is not blurry on iOS devices.
+* Fix: Page Header - Background Image is not working on a single post.
+* Fix: Nav Menu - Menu items hover color not working as expected.
+* Fix: WooCommerce - Horizontal product gallery slider resizes in landscape mode for mobile devices.
+* Fix: Site Builder - Header Shrink effect does not work in Site Builder header layouts.
+* Fix: Site Builder layouts and page headers with untitled showing empty title space on front end admin-bar menu dropdown.
+* Fix: Site Builder - Issue with hooks not showing up in full width with Beaver Builder on the editor page.
+* Fix: WooCommerce - Unable to login with modern checkout when the password contains some specific symbols such as ampersand.
+* Fix: WooCommerce - On shop page sidebar collides when it's moved to the top of the screen on responsive devices.
+* Fix: WooCommerce - Quick view background color not applying to entire product details section when sticky add to cart button is enabled.
+* Fix: Nav Menu - Menu layout breaks on responsive devices due to default spacing added.
+* Fix: Page Header - Getting str_contains() deprecated notice from custom header with PHP 8.x.
+* Fix: WooCommerce - The Off-canvas Sidebar does not close with an outside click or ESC key.
+* Fix: PHP error for "Uncaught Error: class FLThemeBuilderLayoutData not found" when Beaver Themer is active.
+* Fix: Sticky Header - Sticky header active menu color is not working when the submenu is added.
+
+2023-12-12 - version 4.5.2
+* New: Introducing new "vw" unit support for font-size in customizer typography settings.
+* Improvement: Added a new filter 'astra_fullscreen_modal_heading_tag' to change the Full-Screen search style heading tag.
+* Fix: WooCommerce - Checkout - In modern checkout place order button missing a thousand separators.
+* Fix: Fatal error 'Attempt to read property taxonomy & name' from addon cache files in some rare cases.
+* Fix: Site Builder - Single templates get shrink due to flex-based CSS on the ast-container wrapper.
+* Fix: WooCommerce - Product Catalog - Quick View Background option not working with Boxed layout.
+* Fix: Site Builder - Custom layout appearing on the frontend if any hook action is set but the layout is not of 'hooks' type.
+
+2023-11-21 - version 4.5.1
+* Improvement: WooCommerce - Declared HPOS Compatibility across the plugin to avoid incompatibility notice when WooCommerce Addon Module is disabled.
+* Fix: WooCommerce - Checkout - Form labels get hidden for Stripe payment method.
+* Fix: Mega Menu - Mega menu heading color option is not working on frontend.
+* Fix: Blog Filter - Banner visibility glitch with 'Post Filter' and 'Banner Layout 2'
+* Fix: WP CLI - PHP Fatal error 'Uncaught TypeError: call_user_func()' while running WP CLI commands.
+* Fix: Submenu border width of old header footer builder causing site crashing issue.
+
+2023-11-14 - version 4.5.0
+* New: Introducing Site Builder (formerly known as Custom Layout).
+* New: WooCommerce - Product Catalog - Quick View Background option.
+* Improvement: Custom Layout & Page Header meta data saving code improvements.
+* Improvement: Updated select2 library to 4.0.13.
+* Fix: Mega Menu - Links should not be crawlable when 'Disable Link' option is set.
+* Fix: Date-Box - Date Box stick at the corner of a post instead of the featured image which breaks blog UI.
+* Fix: Mega Menu - Mega menu heading normal and hover color is not working.
+* Fix: Top Border color & width not applied when mega menu width set to full width/full width stretched.
+
+2023-10-23 - version 4.4.0
+* New: Blog Pro - Blog Filter to filter categories and tags. ( https://wpastra.com/docs/post-filter/ )
+* New: Header Builder - Search - Option to switch Light or Dark modal design for Full Screen style.
+* New: WooCommerce - Introducing a new cart shortcode 'astra_woo_slide_in_cart', which adds support for a slide-in cart feature.
+* New: Editor - Introducing Page Level Background Settings (Page Background & Content Background). ( https://wpastra.com/docs/page-level-background-settings/ )
+* Improvement: Added a new filter 'astra_social_rel_attribute' to change Social Share's "rel" attribute inside the post.
+* Fix: Blog - Social sharing icons were incorrectly linking to Twitter for all platforms.
+* Fix: Header-Footer Builder - Social Icon - Text decoration typography style for labels not working.
+* Fix: Custom Layout - Embed/YouTube block not working inside nested blocks.
+* Fix: Sticky Header - Menu color gets overridden by normal header primary menu color.
+* Fix: WPML conflicting with Profile language for translation.
+* Fix: WooCommerce - UAE Woo Product module conflicting with Astra infinite pagination.
+
+2023-09-26 - version 4.3.3
+* Fix: Custom Layout - Layouts missing on the frontend for logged-out users with update v4.3.2.
+
+2023-09-22 - version 4.3.2
+* Improved codebase for improved security. (Props - Patchstack)
+* Fix: Blog - Social sharing icons were incorrectly linking to Twitter for all platforms.
+
+2023-09-11 - version 4.3.1
+* New: Custom Layout - Option for dynamic content preview in single/archive template editor.
+* New: Header Builder - Account - Introducing new option for Account menu expansion "Hover" or "Click".
+* Improvement: Introducing filter 'astra_addon_cl_ast_container_fullwidth' to make flex based ast-container full-width to resolve edge cases like Custom Template shrinks on archive pages.
+* Fix: Header Builder - Account - PHP warning 'Undefined variable $css_output_desktop' while generating dynamic CSS.
+* Fix: Mailchimp for WooCommerce radio select option is not clickable when Modern Input Fields is enabled.
+* Fix: Custom Layout - Meta options modal's UI adding extra space after WordPress-6.3.
+* Fix: Custom Layout - Archive templates get shrink due to flex-based CSS on the ast-container wrapper.
+
+2023-08-30 - version 4.3.0
+* New: Custom Layout - Ability to create custom single & archive layouts like theme builder.
+* New: Introduced option to change Header logo color while sticky.
+* Improvement: Accessibility improvements for WooCommerce Pages.
+* Improvement: WooCommerce - HPOS Compatibility.
+* Improvement: WooCommerce - New Product Editor Compatibility.
+* Improvement: Introducing new admin notice for incompatibility of the theme.
+* Fix: Custom Layout - Spectra's dynamic CSS-JS assets loading even though the layout is disabled from the edit list.
+* Fix: Custom Layout - Layout hooked at 'After Single Product Summary' overlaps on the single product image and summary box.
+* Fix: Custom Layout - FILTER_SANITIZE_STRING deprecated notice.
+* Fix: WooCommerce - Elementor Pro's Mini Cart Widget Conflicts With Astra Mini Cart Widget.
+* Fix: Header Builder - Menu - Parsing duplicate ID error for 'primary-site-navigation' and 'ast-hf-menu-x'.
+* Fix: Header Builder - Account Login Popup's UI breaking when Sticky Header is active with Hide on Scroll option.
+* Fix: Header-Footer Builder - Divider elements missing from the settings when old astra-settings getting imported.
+* Fix: File Generation - PHP warning while accessing cache files on some servers.
+* Fix: Compatibility with WooCommerce Min/Max Quantities plugin.
+* Fix: Compatibility with YITH Composite Products for Single Product Real Time Add to Cart.
+
+2023-08-10 - version 4.1.7
+* Improvement: Compatibility with WordPress-6.3.
+
+2023-07-05 - version 4.1.6
+* New: WooCommerce - Added Sale badge color change option for shop card modern design.
+* Improvement: Updated the license deactivation setting notification icon from admin panel.
+* Improvement: Loaded WP admin-bar related compatibility css only if user is logged in.
+* Improvement: Added a new filter 'astra_font_line_height_unit' to adjust the unit for line height. ( https://wpastra.com/docs/how-to-fix-the-line-height-unit-being-converted-to-em/ )
+* Improvement: Custom Layout - Improvised layout editor icons with better UI.
+* Improvement: Added font-size support till 200px in customizer typography options.
+* Fix: WooCommerce - Column setting not working on single product page for display recently viewed products.
+* Fix: Mega menu icon styling is not applying on tablet/mobile.
+* Fix: WooCommerce - Console error on checkout order review page.
+* Fix: WooCommerce - Checkout Order Review Page Does not Appear for Mobile/Tablet when the Modern Checkout is enabled.
+* Fix: Custom Layout - Edit layout Screen does not work with Beaver Builder when classic editor is active.
+* Fix: Custom Layout - Embed video block not working on front end.
+* Fix: Nav Menu - Mega menu not working with RTL language setup on the frontend.
+* Fix: License activation link not working on admin Custom Layout & Page Headers page.
+* Fix: Console warning regarding the incorrect use of <label> element and improved compatibility with accessibility tools.
+* Fix: WooCommerce - Fatal Error on Modern Checkout Page after Adding New Field with YITH WooCommerce Checkout Manager Plugin
+
 2023-05-09 - version 4.1.5
 * Improvement - Nav menu - Optimized number of database call to fetch megamenu item details.
 * Fix: WooCommerce - Console error from horizontal slider & vertical slider product gallery.

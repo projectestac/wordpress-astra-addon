@@ -45,9 +45,11 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 			add_action( 'astra_addon_get_js_files', array( $this, 'add_scripts' ) );
 			add_action( 'astra_addon_get_css_files', array( $this, 'add_styles' ), 1 );
 			add_action( 'wp_head', array( $this, 'blog_customization' ) );
+
 			add_filter( 'astra_blog_post_featured_image_after', array( $this, 'date_box' ), 10, 1 );
 			add_filter( 'astra_related_post_featured_image_after', array( $this, 'date_box' ), 10, 1 );
 			add_action( 'astra_entry_after', array( $this, 'author_info_markup' ), 9 );
+			add_action( 'astra_entry_bottom', array( $this, 'author_box_within_container' ) );
 			add_action( 'astra_entry_after', array( $this, 'single_post_navigation_markup' ), 9 );
 
 			add_filter( 'astra_theme_js_localize', array( $this, 'blog_js_localize' ) );
@@ -66,7 +68,11 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 
 			// Social Sharing.
 			add_action( 'wp', array( $this, 'astra_social_sharing' ) );
+
+			// Blog Post filter.
+			add_action( 'wp', array( $this, 'blog_post_filter' ) );
 		}
+
 
 		/**
 		 * Infinite Posts Show on scroll
@@ -79,26 +85,27 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 
 			global $wp_query;
 
-			$pagination_enabled         = apply_filters( 'astra_pagination_enabled', true );
-			$blog_masonry               = astra_get_option( 'blog-masonry' );
-			$blog_pagination            = ( $pagination_enabled ) ? astra_get_option( 'blog-pagination' ) : '';
-			$blog_infinite_scroll_event = astra_get_option( 'blog-infinite-scroll-event' );
-			$blog_grid                  = astra_get_option( 'blog-grid' );
-			$blog_grid_layout           = astra_get_option( 'blog-grid-layout' );
-			$blog_layout                = astra_get_option( 'blog-layout' );
-			$grid_layout                = ( 'blog-layout-1' == $blog_layout ) ? $blog_grid : $blog_grid_layout;
-
-			$localize['edit_post_url']         = admin_url( 'post.php?post={{id}}&action=edit' );
-			$localize['ajax_url']              = admin_url( 'admin-ajax.php' );
-			$localize['infinite_count']        = 2;
-			$localize['infinite_total']        = $wp_query->max_num_pages;
-			$localize['pagination']            = $blog_pagination;
-			$localize['infinite_scroll_event'] = $blog_infinite_scroll_event;
-			$localize['no_more_post_message']  = apply_filters( 'astra_blog_no_more_post_text', __( 'No more posts to show.', 'astra-addon' ) );
-			$localize['grid_layout']           = $grid_layout;
-			$localize['site_url']              = get_site_url();
-
-			$localize['show_comments'] = __( 'Show Comments', 'astra-addon' );
+			$pagination_enabled                 = apply_filters( 'astra_pagination_enabled', true );
+			$blog_masonry                       = astra_get_option( 'blog-masonry' );
+			$blog_pagination                    = ( $pagination_enabled ) ? astra_get_option( 'blog-pagination' ) : '';
+			$blog_infinite_scroll_event         = astra_get_option( 'blog-infinite-scroll-event' );
+			$blog_grid                          = astra_get_option( 'blog-grid' );
+			$blog_grid_layout                   = astra_get_option( 'blog-grid-layout' );
+			$blog_layout                        = astra_addon_get_blog_layout();
+			$grid_layout                        = ( 'blog-layout-1' == $blog_layout || 'blog-layout-4' == $blog_layout || 'blog-layout-6' == $blog_layout ) ? $blog_grid : $blog_grid_layout;
+			$localize['revealEffectEnable']     = astra_addon_check_reveal_effect_condition( 'blog' ) || ( astra_addon_check_reveal_effect_condition( 'cpt' ) && ( is_archive() || is_tax() ) );
+			$localize['edit_post_url']          = admin_url( 'post.php?post={{id}}&action=edit' );
+			$localize['ajax_url']               = admin_url( 'admin-ajax.php' );
+			$localize['infinite_count']         = 2;
+			$localize['infinite_total']         = $wp_query->max_num_pages;
+			$localize['pagination']             = $blog_pagination;
+			$localize['infinite_scroll_event']  = $blog_infinite_scroll_event;
+			$localize['no_more_post_message']   = apply_filters( 'astra_blog_no_more_post_text', __( 'No more posts to show.', 'astra-addon' ) );
+			$localize['grid_layout']            = $grid_layout;
+			$localize['site_url']               = get_site_url();
+			$localize['blogArchiveTitleLayout'] = astra_get_option( 'ast-dynamic-archive-post-layout' );
+			$localize['blogArchiveTitleOn']     = astra_get_option( 'ast-dynamic-archive-post-banner-on-blog' );
+			$localize['show_comments']          = __( 'Show Comments', 'astra-addon' );
 
 			// If woocommerce page template.
 			if ( function_exists( 'is_woocommerce' ) && is_woocommerce() ) {
@@ -131,27 +138,34 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 			}
 
 			if ( 'infinite' == $pagination ) {
+				ob_start();
+				?>
+				<div class="ast-ajax-pagination-wrapper">
+				<?php
 				if ( $wp_query->max_num_pages > 1 ) {
-					ob_start();
+
 					?>
-					<nav class="ast-pagination-infinite">
-						<div class="ast-loader">
-								<div class="ast-loader-1"></div>
-								<div class="ast-loader-2"></div>
-								<div class="ast-loader-3"></div>
-						</div>
-						<?php if ( 'click' == $infinite_event ) { ?>
-							<span class="ast-load-more active">
-								<?php
-									$load_more_text = apply_filters( 'astra_load_more_text', $load_more_text );
-									echo esc_html( $load_more_text );
-								?>
-							</span>
-						<?php } ?>
-					</nav>
+						<nav class="ast-pagination-infinite" data-page="<?php echo esc_attr( 2 ); ?>" data-total="<?php echo esc_attr( $wp_query->max_num_pages ); ?>">
+							<div class="ast-loader">
+									<div class="ast-loader-1"></div>
+									<div class="ast-loader-2"></div>
+									<div class="ast-loader-3"></div>
+							</div>
+							<?php if ( 'click' == $infinite_event ) { ?>
+								<span class="ast-load-more active">
+									<?php
+										$load_more_text = apply_filters( 'astra_load_more_text', $load_more_text );
+										echo esc_html( $load_more_text );
+									?>
+								</span>
+							<?php } ?>
+						</nav>
 					<?php
-					$output .= ob_get_clean();
 				}
+				?>
+				</div>
+				<?php
+				$output .= ob_get_clean();
 			}
 
 			return $output;
@@ -161,8 +175,20 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 		 * Function to get author info for default post only
 		 */
 		public function author_info_markup() {
+			$author_box_placement = astra_get_option( 'author-box-placement', 'outside' );
+			if ( astra_get_option( 'ast-author-info' ) && 'outside' === $author_box_placement && is_singular( 'post' ) ) {
+				astra_addon_get_template( 'blog-pro/template/author-info.php' );
+			}
+		}
 
-			if ( astra_get_option( 'ast-author-info' ) && is_singular( 'post' ) ) {
+		/**
+		 * Function to get author info box within the post container.
+		 *
+		 * @since 4.6.0
+		 */
+		public function author_box_within_container() {
+			$author_box_placement = astra_get_option( 'author-box-placement', 'outside' );
+			if ( astra_get_option( 'ast-author-info' ) && 'inside' === $author_box_placement && is_singular( 'post' ) ) {
 				astra_addon_get_template( 'blog-pro/template/author-info.php' );
 			}
 		}
@@ -193,6 +219,11 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 		 * @return string content.
 		 */
 		public function date_box( $output ) {
+
+			$blog_layout = astra_addon_get_blog_layout();
+			if ( 'astra_blog_post_featured_image_after' === current_filter() && ( 'blog-layout-4' === $blog_layout || 'blog-layout-6' === $blog_layout || 'blog-layout-5' === $blog_layout ) ) {
+				return $output;
+			}
 
 			$enable_date_box = astra_get_option( 'blog-date-box' );
 			$date_box_style  = astra_get_option( 'blog-date-box-style' );
@@ -278,6 +309,7 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 			if ( ! $display_date_box ) {
 				$classes[] = 'ast-no-date-box';
 			}
+
 			return $classes;
 		}
 
@@ -286,9 +318,9 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 		 */
 		public function blog_customization() {
 
-			$blog_layout = astra_get_option( 'blog-layout' );
+			$blog_layout = astra_addon_get_blog_layout();
 
-			if ( 'blog-layout-1' !== $blog_layout ) {
+			if ( ( 'blog-layout-2' === $blog_layout ) || ( 'blog-layout-3' === $blog_layout ) ) {
 				remove_action( 'astra_entry_content_blog', 'astra_entry_content_blog_template' );
 				add_action( 'astra_entry_content_blog', array( $this, 'blog_template' ) );
 			}
@@ -298,7 +330,7 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 		 * Blog Template Markup
 		 */
 		public function blog_template() {
-			astra_addon_get_template( 'blog-pro/template/' . esc_attr( astra_get_option( 'blog-layout' ) ) . '.php' );
+			astra_addon_get_template( 'blog-pro/template/' . esc_attr( astra_addon_get_blog_layout() ) . '.php' );
 		}
 
 		/**
@@ -314,8 +346,8 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 
 				$blog_grid        = astra_get_option( 'blog-grid' );
 				$blog_grid_layout = astra_get_option( 'blog-grid-layout' );
-				$blog_layout      = astra_get_option( 'blog-layout' );
-				if ( 'blog-layout-1' == $blog_layout ) {
+				$blog_layout      = astra_addon_get_blog_layout();
+				if ( 'blog-layout-1' === $blog_layout || 'blog-layout-4' === $blog_layout || 'blog-layout-6' === $blog_layout ) {
 					$classes[] = 'ast-grid-' . esc_attr( $blog_grid );
 				} else {
 					$classes[] = 'ast-grid-' . esc_attr( $blog_grid_layout );
@@ -343,7 +375,7 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 
 				$blog_grid        = astra_get_option( 'blog-grid' );
 				$blog_grid_layout = astra_get_option( 'blog-grid-layout' );
-				$blog_layout      = astra_get_option( 'blog-layout' );
+				$blog_layout      = astra_addon_get_blog_layout();
 
 				$first_post_full_width = astra_get_option( 'first-post-full-width' );
 				$blog_masonry          = astra_get_option( 'blog-masonry' );
@@ -356,7 +388,7 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 					$classes[] = 'ast-article-post';
 				}
 
-				if ( 'blog-layout-1' == $blog_layout ) {
+				if ( 'blog-layout-1' == $blog_layout || 'blog-layout-4' == $blog_layout || 'blog-layout-6' == $blog_layout ) {
 
 					if ( $remove_featured_padding ) {
 						$classes[] = 'remove-featured-img-padding';
@@ -380,6 +412,7 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 				} else {
 
 					if ( $blog_grid_layout > 1 && $first_post_full_width && ! $blog_masonry && 0 == $wp_query->current_post && 1 == $paged ) {
+
 						// Feature Post.
 						$classes[] = 'ast-col-md-12';
 						$classes[] = 'ast-featured-post';
@@ -393,9 +426,13 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 				if ( $blog_space_bet_posts ) {
 					$classes[] = 'ast-separate-posts';
 				}
+
+				if ( astra_addon_check_reveal_effect_condition( 'blog' ) || ( astra_addon_check_reveal_effect_condition( 'cpt' ) && ( is_archive() || is_tax() ) ) ) {
+					$classes[] = 'ast-fade-up';
+				}
 			} elseif ( is_singular() ) {
 
-				$blog_layout             = astra_get_option( 'blog-layout' );
+				$blog_layout             = astra_addon_get_blog_layout();
 				$remove_featured_padding = astra_get_option( 'single-featured-image-padding' );
 
 				if ( 'blog-layout-1' == $blog_layout && $remove_featured_padding ) {
@@ -417,7 +454,7 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 			if ( is_archive() || is_home() || is_search() ) {
 
 				global $wp_query;
-				$blog_layout      = astra_get_option( 'blog-layout' );
+				$blog_layout      = astra_addon_get_blog_layout();
 				$blog_masonry     = astra_get_option( 'blog-masonry' );
 				$blog_grid        = astra_get_option( 'blog-grid' );
 				$blog_grid_layout = astra_get_option( 'blog-grid-layout' );
@@ -429,7 +466,7 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 				}
 
 				// Blog layout.
-				if ( 'blog-layout-1' == $blog_layout ) {
+				if ( 'blog-layout-1' == $blog_layout || 'blog-layout-4' == $blog_layout || 'blog-layout-5' == $blog_layout || 'blog-layout-6' == $blog_layout ) {
 					$classes[] = 'ast-blog-grid-' . esc_attr( $blog_grid );
 				} else {
 					$classes[] = 'ast-blog-grid-' . esc_attr( $blog_grid_layout );
@@ -465,6 +502,8 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 
 			$author_info          = astra_get_option( 'ast-author-info' );
 			$enable_related_posts = astra_get_option( 'enable-related-posts' );
+			$blog_layout          = astra_addon_get_blog_layout();
+			$blog_layout_path     = '';
 
 			/*** Start Path Logic */
 
@@ -509,11 +548,16 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 			}
 
 			/* Blog Layouts */
-			$blog_layout = astra_get_option( 'blog-layout' );
 			if ( true === Astra_Addon_Builder_Helper::apply_flex_based_css() && ( 'blog-layout-2' == $blog_layout || 'blog-layout-3' == $blog_layout ) ) {
-				$blog_layout = $blog_layout . '-flex';
+				$blog_layout_path = $blog_layout . '-flex';
+			} else {
+				$blog_layout_path = $blog_layout;
 			}
-			Astra_Minify::add_css( $gen_path . $blog_layout . $file_prefix . '.css' );
+
+			if ( 'blog-layout-1' == $blog_layout || 'blog-layout-2' == $blog_layout || 'blog-layout-3' == $blog_layout ) {
+				Astra_Minify::add_css( $gen_path . $blog_layout_path . $file_prefix . '.css' );
+			}
+
 		}
 
 		/**
@@ -543,6 +587,7 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 			$js_uri = $uri . $dir_name . '/';
 			$js_dir = $path . $dir_name . '/';
 
+
 			if ( defined( 'ASTRA_THEME_HTTP2' ) && ASTRA_THEME_HTTP2 ) {
 				$gen_path = $js_uri;
 			} else {
@@ -551,12 +596,13 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 
 			/*** End Path Logic */
 
-			$blog_layout        = astra_get_option( 'blog-layout' );
+			$blog_layout        = astra_addon_get_blog_layout();
 			$blog_grid          = astra_get_option( 'blog-grid' );
 			$blog_grid_layout   = astra_get_option( 'blog-grid-layout' );
 			$astra_blog_masonry = astra_get_option( 'blog-masonry' );
+			$blog_filter        = astra_get_option( 'blog-filter' );
 
-			if ( ( 'blog-layout-1' == $blog_layout && 1 != $blog_grid ) || ( 'blog-layout-1' != $blog_layout && 1 != $blog_grid_layout ) ) {
+			if ( ( ( 'blog-layout-1' == $blog_layout && 1 != $blog_grid ) || ( 'blog-layout-1' != $blog_layout && 1 != $blog_grid_layout ) ) || ( 'blog-layout-4' == $blog_layout && 1 != $blog_grid ) || ( 'blog-layout-6' == $blog_layout && 1 != $blog_grid ) ) {
 				// Enqueue scripts.
 				if ( $astra_blog_masonry ) {
 					Astra_Minify::add_dependent_js( 'jquery' );
@@ -564,6 +610,10 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 
 					Astra_Minify::add_js( $gen_path . 'ast-ext-blog-pro' . $file_prefix . '.js' );
 				}
+			}
+
+			if ( $blog_filter ) {
+				Astra_Minify::add_js( $gen_path . 'filter' . $file_prefix . '.js' );
 			}
 		}
 
@@ -607,7 +657,10 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 
 			}
 
+
 		}
+
+
 
 		/**
 		 * Calculate reading time.
@@ -805,6 +858,81 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 		}
 
 		/**
+		 * Render Author Box sharing.
+		 *
+		 * @since 4.6.0
+		 * @return mixed HTML markup
+		 */
+		public function astra_render_author_box_sharing() {
+			$is_author_box_enabled  = astra_get_option( 'ast-author-info' );
+			$social_sharing_enabled = astra_get_option( 'author-box-socials' );
+			if ( ! is_single() || ! $is_author_box_enabled || ! $social_sharing_enabled ) {
+				return;
+			}
+
+			$prefix     = 'author-box';
+			$title      = get_the_title();
+			$show_label = false;
+			$items      = astra_get_option( 'author-box-social-icon-list' );
+
+			$items                 = isset( $items['items'] ) ? $items['items'] : array();
+			$post_categories       = wp_strip_all_tags( get_the_category_list( ',' ) );
+			$post_title            = $title;
+			$post_link             = urlencode( get_the_permalink() ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.urlencode_urlencode
+			$email_title           = str_replace( '&', '%26', $title );
+			$enable_heading        = astra_get_option( 'single-post-social-sharing-heading-enable' );
+			$heading_text          = astra_get_option( 'single-post-social-sharing-heading-text' );
+			$heading_position      = astra_get_option( 'single-post-social-sharing-heading-position' );
+			$show_label            = $show_label;
+			$show_label_class      = $show_label ? 'social-show-label-true' : 'social-show-label-false';
+			$color_type            = astra_get_option( 'single-post-social-sharing-icon-color-type' );
+			$label_position        = astra_get_option( 'single-post-social-sharing-icon-label-position' );
+			$social_icon_condition = array( 'facebook', 'pinterest', 'linkedin', 'reddit', 'whatsapp', 'sms' );
+
+			$markup = '<div class="ast-author-box-sharing"> <div class="ast-social-inner-wrap element-social-inner-wrap ' . esc_attr( $show_label_class ) . ' ast-social-color-type-' . esc_attr( $color_type ) . '">';
+
+			if ( is_array( $items ) && ! empty( $items ) ) {
+				foreach ( $items as $item ) {
+					if ( $item['enabled'] ) {
+						$link = $item['url'];
+						switch ( $item['id'] ) {
+							case 'phone':
+								$link = 'tel:' . $item['url'];
+								break;
+
+							case 'email':
+								$link = 'mailto:' . $item['url'];
+								break;
+
+							case 'whatsapp':
+								$link = 'https://api.whatsapp.com/send?phone=' . $item['url'];
+								break;
+						}
+
+						$link = apply_filters( 'astra_addon_author_social_sharing_link', $link, $item['id'] );
+
+						$aria_label        = $item['label'] ? $item['label'] : $item['id'];
+						$is_phone_or_email = 'phone' === $item['id'] || 'email' === $item['id'];
+						$add_target        = $is_phone_or_email ? '' : '_blank';
+						$add_rel           = $is_phone_or_email ? '' : 'noopener noreferrer';
+
+						$icon_color            = ! empty( $item['color'] ) ? $item['color'] : '#3a3a3a';
+						$icon_background_color = ! empty( $item['background'] ) ? $item['background'] : 'transparent';
+
+						$markup .= '<a href="' . esc_url( $link ) . '" aria-label="' . esc_attr( $aria_label ) . '" target="' . esc_attr( $add_target ) . '" rel="' . esc_attr( $add_rel ) . '" class="ast-inline-flex ast-social-icon-a">
+								<div style="--color: ' . esc_attr( $icon_color ) . '; --background-color:' . esc_attr( $icon_background_color ) . ';" class="ast-social-element ast-' . esc_attr( $item['id'] ) . '-social-item">
+									' . Astra_Builder_UI_Controller::fetch_svg_icon( in_array( $item['icon'], $social_icon_condition ) ? $item['icon'] . '-fill' : $item['icon'] ) . '
+								</div>
+							</a>';
+					}
+				}
+			}
+
+			$markup .= '</div></div>';
+			return $markup;
+		}
+
+		/**
 		 * Render social sharing.
 		 *
 		 * @since 4.1.0
@@ -853,6 +981,7 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 												);
 												break;
 											case 'twitter':
+											case 'twitter-x':
 												$link = add_query_arg(
 													array(
 														'url'      => $post_link,
@@ -897,7 +1026,7 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 										$aria_label        = $item['label'] ? $item['label'] : $item['id'];
 										$is_phone_or_email = 'phone' === $item['id'] || 'email' === $item['id'];
 										$add_target        = $is_phone_or_email ? '' : '_blank';
-										$add_rel           = $is_phone_or_email ? '' : 'noopener noreferrer';
+										$add_rel           = $is_phone_or_email ? '' : apply_filters( 'astra_social_rel_attribute', 'noopener noreferrer' );
 										?>
 											<a href="<?php echo esc_url( $link ); ?>" aria-label="<?php echo esc_attr( $aria_label ); ?>" target="<?php echo esc_attr( $add_target ); ?>" rel="<?php echo esc_attr( $add_rel ); ?>" class="ast-inline-flex ast-social-icon-a">
 											<?php
@@ -930,6 +1059,139 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Markup' ) ) {
 					</div>
 				<?php
 				echo do_shortcode( ob_get_clean() );
+			}
+		}
+
+		/**
+		 * Blog Post Filter.
+		 *
+		 * @since 4.4.0
+		 * @return void
+		 */
+		public function blog_post_filter() {
+			$post_filter = astra_get_option( 'blog-filter' );
+
+			if ( ! $post_filter ) {
+				return;
+			}
+
+			if ( is_home() || is_category() || is_tag() ) {
+				add_action( 'astra_primary_content_top', array( $this, 'blog_post_filter_markup' ), 100 );
+			}
+		}
+
+		/**
+		 * Blog Post Filter.
+		 *
+		 * @since 4.4.0
+		 * @return mixed
+		 */
+		public function blog_post_filter_markup() {
+			$blog_filter_layout     = astra_get_option( 'blog-filter-layout' );
+			$blog_filter_by         = astra_get_option( 'blog-filter-by' );
+			$category_include       = astra_get_option( 'blog-filter-category-exclude' );
+			$tag_include            = astra_get_option( 'blog-filter-tag-exclude' );
+			$category_include_array = array();
+			$tag_include_array      = array();
+
+			if ( $category_include ) {
+				if ( strpos( $category_include, ',' ) !== false ) {
+					$category_include_array = explode( ',', $category_include );
+				} else {
+					$category_include_array = array( $category_include );
+				}
+			}
+
+			if ( $tag_include ) {
+				if ( strpos( $tag_include, ',' ) !== false ) {
+					$tag_include_array = explode( ',', $tag_include );
+				} else {
+					$tag_include_array = array( $tag_include );
+				}
+			}
+
+			if ( is_category() || ( is_home() && 'categories' === $blog_filter_by ) ) {
+				$taxonomy_name = 'category';
+				if ( isset( $category_include ) ) {
+					$term_args = array(
+						'hide_empty' => true,
+					);
+				} else {
+					$term_args = array(
+						'hide_empty' => true,
+					);
+				}
+			}
+
+			if ( is_tag() || ( is_home() && 'tags' === $blog_filter_by ) ) {
+				$taxonomy_name = 'post_tag';
+				if ( isset( $tag_include ) ) {
+					$term_args = array(
+						'hide_empty' => true,
+					);
+				} else {
+					$term_args = array(
+						'hide_empty' => true,
+					);
+				}
+			}
+
+
+			$terms = get_terms( $taxonomy_name, $term_args ); // Get all terms of a taxonomy.
+
+			if ( $terms && ! is_wp_error( $terms ) ) {
+
+				if ( is_category() && 'tags' === $blog_filter_by ) {
+					return false;
+				}
+
+				if ( is_tag() && 'categories' === $blog_filter_by ) {
+					return false;
+				}
+
+				if ( is_category() && in_array( get_queried_object_id(), $category_include_array ) ) {
+					return false;
+				}
+
+				if ( is_tag() && in_array( get_queried_object_id(), $tag_include_array ) ) {
+					return false;
+				}
+
+				ob_start();
+				?>
+				<div class="ast-post-filter">
+					<ul>
+					<?php
+						$blog_filter_layout_2_classes = 'blog-filter-layout-2' === $blog_filter_layout ? 'ast-button' : '';
+						$category_tag_page_classes    = ( ! ( is_category() || is_tag() ) ) ? 'active' : '';
+						$add_spacing                  = $category_tag_page_classes ? ' ' : '';
+						$classes                      = $blog_filter_layout_2_classes || $category_tag_page_classes ? ' ' . $blog_filter_layout_2_classes . $add_spacing . $category_tag_page_classes : '';
+					?>
+					<li class="ast-post-filter-single<?php echo esc_attr( $classes ); ?>" value="all" data-filter="<?php echo esc_attr( get_post_type_archive_link( 'post' ) ); ?>" ><?php echo esc_html( __( 'All', 'astra-addon' ) ); ?></li>
+						<?php
+						foreach ( $terms as $term ) {
+								$term_name = isset( $term->name ) ? $term->name : '';
+								$term_id   = isset( $term->term_id ) ? $term->term_id : '';
+
+							$active_category_tag = '';
+							if ( is_tag() || is_category() ) {
+								$active_category_tag = ( get_queried_object_id() && get_queried_object_id() === $term_id ) ? 'active' : '';
+								$add_spacing         = $active_category_tag ? ' ' : '';
+							}
+							$classes = $blog_filter_layout_2_classes || $active_category_tag ? ' ' . $blog_filter_layout_2_classes . $add_spacing . $active_category_tag : '';
+
+							if ( ( 'categories' === $blog_filter_by && isset( $category_include_array ) && ! in_array( $term_id, $category_include_array ) ) || ( 'tags' === $blog_filter_by && isset( $tag_include_array ) && ! in_array( $term_id, $tag_include_array ) ) ) {
+								?>
+								<li class="ast-post-filter-single<?php echo esc_attr( $classes ); ?>" value="<?php echo esc_attr( $term_id ); ?>" data-filter="<?php echo esc_attr( get_category_link( $term_id ) ); ?>" ><?php echo esc_html( $term_name ); ?></li>
+
+								<?php
+							}
+						}
+						?>
+					</ul>
+				</div>
+				<?php
+				echo wp_kses_post( ob_get_clean() );
 			}
 		}
 	}

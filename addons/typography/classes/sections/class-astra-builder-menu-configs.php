@@ -123,16 +123,26 @@ if ( ! class_exists( 'Astra_Builder_Menu_Configs' ) ) {
 						'priority'          => 30,
 						'title'             => __( 'Font Size', 'astra-addon' ),
 						'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
-						'suffix'            => array( 'px', 'em' ),
+						'suffix'            => array( 'px', 'em', 'vw', 'rem' ),
 						'input_attrs'       => array(
-							'px' => array(
+							'px'  => array(
 								'min'  => 0,
 								'step' => 1,
-								'max'  => 100,
+								'max'  => 200,
 							),
-							'em' => array(
+							'em'  => array(
 								'min'  => 0,
 								'step' => 0.01,
+								'max'  => 20,
+							),
+							'vw'  => array(
+								'min'  => 0,
+								'step' => 0.1,
+								'max'  => 25,
+							),
+							'rem' => array(
+								'min'  => 0,
+								'step' => 0.1,
 								'max'  => 20,
 							),
 						),
@@ -236,16 +246,26 @@ if ( ! class_exists( 'Astra_Builder_Menu_Configs' ) ) {
 							'control'           => 'ast-responsive-slider',
 							'priority'          => 20,
 							'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
-							'suffix'            => array( 'px', 'em' ),
+							'suffix'            => array( 'px', 'em', 'vw', 'rem' ),
 							'input_attrs'       => array(
-								'px' => array(
+								'px'  => array(
 									'min'  => 0,
 									'step' => 1,
-									'max'  => 100,
+									'max'  => 200,
 								),
-								'em' => array(
+								'em'  => array(
 									'min'  => 0,
 									'step' => 0.01,
+									'max'  => 20,
+								),
+								'vw'  => array(
+									'min'  => 0,
+									'step' => 0.1,
+									'max'  => 25,
+								),
+								'rem' => array(
+									'min'  => 0,
+									'step' => 0.1,
 									'max'  => 20,
 								),
 							),
@@ -417,16 +437,26 @@ if ( ! class_exists( 'Astra_Builder_Menu_Configs' ) ) {
 					'transport'         => 'postMessage',
 					'priority'          => 29,
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_slider' ),
-					'suffix'            => array( 'px', 'em' ),
+					'suffix'            => array( 'px', 'em', 'vw', 'rem' ),
 					'input_attrs'       => array(
-						'px' => array(
+						'px'  => array(
 							'min'  => 0,
 							'step' => 1,
-							'max'  => 100,
+							'max'  => 200,
 						),
-						'em' => array(
+						'em'  => array(
 							'min'  => 0,
 							'step' => 0.01,
+							'max'  => 20,
+						),
+						'vw'  => array(
+							'min'  => 0,
+							'step' => 0.1,
+							'max'  => 25,
+						),
+						'rem' => array(
+							'min'  => 0,
+							'step' => 0.1,
 							'max'  => 20,
 						),
 					),

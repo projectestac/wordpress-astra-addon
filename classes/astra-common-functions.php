@@ -360,15 +360,19 @@ if ( ! function_exists( 'astra_addon_get_search_form' ) ) :
 	 */
 	function astra_addon_get_search_form( $echo = true ) {
 
+		// Check if live search is enabled & accordingly disabling browser search suggestion.
+		$live_search       = astra_get_option( 'live-search' );
+		$autocomplete_attr = $live_search ? 'autocomplete="off"' : '';
+
 		// get customizer placeholder field value.
 		$astra_search_input_placeholder = isset( $args['input_placeholder'] ) ? $args['input_placeholder'] : astra_default_strings( 'string-search-input-placeholder', false );
 
 		$form = '<form role="search" method="get" class="search-form" action="' . esc_url( home_url( '/' ) ) . '">
 			<label>
 				<span class="screen-reader-text">' . _x( 'Search for:', 'label', 'astra-addon' ) . '</span>
-				<input type="search" class="search-field" placeholder="' . esc_attr( $astra_search_input_placeholder ) . '" value="' . get_search_query() . '" name="s" />
+				<input type="search" class="search-field" placeholder="' . esc_attr( $astra_search_input_placeholder ) . '" value="' . get_search_query() . '" name="s" ' . $autocomplete_attr . ' />
 			</label>
-			<button type="submit" class="search-submit" value="' . esc_attr__( 'Search', 'astra-addon' ) . '" aria-label= "' . esc_attr__( 'Search', 'astra-addon' ) . '"><i class="astra-search-icon"> ' . Astra_Icons::get_icons( 'search' ) . ' </i></button>
+			<button type="submit" class="search-submit normal-search" value="' . esc_attr__( 'Search', 'astra-addon' ) . '" aria-label= "' . esc_attr__( 'Search', 'astra-addon' ) . '"><i class="astra-search-icon"> ' . Astra_Icons::get_icons( 'search' ) . ' </i></button>
 		</form>';
 
 		/**
@@ -513,7 +517,9 @@ function astra_addon_get_font_extras( $config, $setting, $unit = false ) {
 	$css = isset( $config[ $setting ] ) ? $config[ $setting ] : '';
 
 	if ( $unit && $css ) {
-		$css .= isset( $config[ $unit ] ) ? $config[ $unit ] : '';
+		$unit_val = isset( $config[ $unit ] ) ? $config[ $unit ] : '';
+		$unit_val = 'line-height-unit' === $unit ? apply_filters( 'astra_font_line_height_unit', $unit_val ) : $unit_val; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		$css     .= $unit_val;
 	}
 
 	return $css;
@@ -545,4 +551,51 @@ function astra_addon_get_font_array_css( $font_family, $font_weight, $font_size,
 		'letter-spacing'  => astra_addon_get_font_extras( $font_extras_ast_option, 'letter-spacing', 'letter-spacing-unit' ),
 		'text-decoration' => astra_addon_get_font_extras( $font_extras_ast_option, 'text-decoration' ),
 	);
+}
+
+/**
+ * Checks reveal effect option for blog , WooCommerce and for custom post type.
+ *
+ * @param string $type - Type of condition.
+ * @return bool
+ *
+ * @since 4.6.0
+ */
+function astra_addon_check_reveal_effect_condition( $type = '' ) {
+	$supported_post_types    = class_exists( 'Astra_Posts_Structure_Loader' ) && is_callable( 'Astra_Posts_Structure_Loader::get_supported_post_types' ) ? Astra_Posts_Structure_Loader::get_supported_post_types() : array( 'post' );
+	$post_type               = strval( get_post_type() );
+	$blog_layout             = astra_addon_get_blog_layout();
+	$blog_list_layout        = ( 'blog-layout-2' === $blog_layout || 'blog-layout-3' === $blog_layout || 'blog-layout-5' === $blog_layout );
+	$woo_reveal_condition    = ( function_exists( 'is_woocommerce' ) && is_woocommerce() && ( is_shop() || is_product_taxonomy() ) && astra_get_option( 'shop-reveal-effect' ) );
+	$blog_reveal_condition   = ( ( ( is_front_page() && 'posts' === get_option( 'show_on_front' ) ) || is_category() || is_tag() || is_home() ) && astra_get_option( 'blog-reveal-effect' ) && ( $blog_list_layout || ! astra_get_option( 'blog-masonry' ) ) );
+	$search_reveal_condition = ( is_search() && astra_get_option( 'blog-reveal-effect' ) );
+	$custom_post_reveal      = in_array( $post_type, $supported_post_types ) && astra_get_option( 'archive-' . $post_type . '-ast-reveal-effect', false );
+	$condition               = '';
+
+	if ( '' === $type || 'all' === $type ) {
+		$condition = $woo_reveal_condition || $blog_reveal_condition || $search_reveal_condition || $custom_post_reveal;
+	}
+
+	if ( 'blog' === $type ) {
+		$condition = $blog_reveal_condition || $search_reveal_condition;
+	}
+
+	if ( 'woocommerce' === $type ) {
+		$condition = $woo_reveal_condition;
+	}
+
+	if ( 'cpt' === $type ) {
+		$condition = $custom_post_reveal;
+	}
+
+	return $condition;
+}
+
+/**
+ * Check Astra with modern blog setup.
+ *
+ * @since 4.6.0
+ */
+function astra_addon_4_6_0_compatibility() {
+	return is_callable( 'Astra_Dynamic_CSS::astra_4_6_0_compatibility' ) ? Astra_Dynamic_CSS::astra_4_6_0_compatibility() : false;
 }

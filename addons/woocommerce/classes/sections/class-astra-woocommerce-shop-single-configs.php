@@ -156,6 +156,52 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Single_Configs' ) ) {
 				),
 
 				/**
+				 * Option: Handles Single Product Sticky Product Image.
+				 *
+				 * @since 4.6.5
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[single-product-sticky-product-image]',
+					'default'  => astra_get_option( 'single-product-sticky-product-image' ),
+					'type'     => 'control',
+					'section'  => 'section-woo-shop-single',
+					'title'    => __( 'Enable Sticky Product Image', 'astra-addon' ),
+					'priority' => 5,
+					'control'  => Astra_Theme_Extension::$switch_control,
+					'divider'  => array( 'ast_class' => 'ast-top-dotted-divider' ),
+				),
+
+				/**
+				 * Option: Sticky Image Top Offset.
+				 *
+				 * @since 4.6.5
+				 */
+				array(
+					'name'        => ASTRA_THEME_SETTINGS . '[single-product-sticky-product-image-top-offset]',
+					'default'     => astra_get_option( 'single-product-sticky-product-image-top-offset' ),
+					'type'        => 'control',
+					'transport'   => 'postMessage',
+					'control'     => 'ast-slider',
+					'section'     => 'section-woo-shop-single',
+					'title'       => __( 'Sticky Image Top Offset', 'astra-addon' ),
+					'suffix'      => 'px',
+					'priority'    => 5,
+					'input_attrs' => array(
+						'min'  => 0,
+						'step' => 1,
+						'max'  => 500,
+					),
+					'context'     => array(
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[single-product-sticky-product-image]',
+							'operator' => '==',
+							'value'    => true,
+						),
+					),
+					'divider'     => array( 'ast_class' => 'ast-top-dotted-divider' ),
+				),
+
+				/**
 				 * Option: Product Image Width
 				 */
 				array(
@@ -184,7 +230,7 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Single_Configs' ) ) {
 					'default'     => astra_get_option( 'single-product-sticky-summary' ),
 					'type'        => 'control',
 					'section'     => 'section-woo-shop-single',
-					'title'       => __( 'Enable Sticky Product Summary', 'astra-addon' ),
+					'title'       => __( 'Sticky Product Summary', 'astra-addon' ),
 					'description' => __( 'Sticks the product summary on the top while scrolling.', 'astra-addon' ),
 					'priority'    => 16,
 					'control'     => Astra_Theme_Extension::$switch_control,
@@ -475,7 +521,7 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Single_Configs' ) ) {
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[woo-single-product-tab-color-divider]',
 					'section'  => 'section-woo-shop-single',
-					'title'    => __( 'Product Description Colors', 'astra-addon' ),
+					'title'    => __( 'Description Colors', 'astra-addon' ),
 					'type'     => 'control',
 					'control'  => 'ast-heading',
 					'priority' => 81,
@@ -617,7 +663,7 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Single_Configs' ) ) {
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[single-product-related-divider]',
 					'section'  => 'section-woo-shop-single',
-					'title'    => __( 'Related, Recently & Up Sell', 'astra-addon' ),
+					'title'    => __( 'Related, Recent & Up Sell', 'astra-addon' ),
 					'type'     => 'control',
 					'control'  => 'ast-heading',
 					'priority' => 60,
@@ -646,7 +692,7 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Single_Configs' ) ) {
 					'default'  => astra_get_option( 'single-product-recently-viewed-display' ),
 					'type'     => 'control',
 					'section'  => 'section-woo-shop-single',
-					'title'    => __( 'Display Recently Viewed Products', 'astra-addon' ),
+					'title'    => __( 'Recently Viewed Products', 'astra-addon' ),
 					'control'  => Astra_Theme_Extension::$switch_control,
 					'priority' => 65,
 				),

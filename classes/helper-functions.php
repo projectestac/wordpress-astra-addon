@@ -494,18 +494,6 @@ function astra_addon_has_widgets_block_editor() {
 	return false;
 }
 
-/**
- * Check whther to display or hide sticky header widget design options.
- *
- * @since 3.5.8
- * @return boolean
- */
-function astra_addon_remove_widget_design_options() {
-	if ( function_exists( 'astra_remove_widget_design_options' ) ) {
-		return astra_remove_widget_design_options();
-	}
-	return false;
-}
 
 /**
  * Regenerate Theme and Addon cache files.
@@ -538,4 +526,15 @@ function astra_addon_check_elementor_pro_3_5_version() {
 		return true;
 	}
 	return false;
+}
+
+/**
+ * Get Astra blog layout design.
+ * Search / Blog.
+ *
+ * @return string $blog_layout.
+ * @since 4.6.0
+ */
+function astra_addon_get_blog_layout() {
+	return is_callable( 'astra_get_blog_layout' ) ? astra_get_blog_layout() : astra_get_option( 'blog-layout' );
 }

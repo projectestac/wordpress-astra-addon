@@ -95,6 +95,7 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Loader' ) ) {
 			$defaults['sticky-header-builder-site-title-color']   = '';
 			$defaults['sticky-header-builder-site-title-h-color'] = '';
 			$defaults['sticky-header-builder-site-tagline-color'] = '';
+			$defaults['sticky-header-builder-logo-color']         = '';
 
 			$component_limit = astra_addon_builder_helper()->component_limit;
 			for ( $index = 1; $index <= $component_limit; $index++ ) {
@@ -405,6 +406,14 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Loader' ) ) {
 
 			$defaults['sticky-header-language-switcher-color'] = '';
 
+			/**
+			 * Woo cart colors on sticky headers.
+			 *
+			 * @since 4.6.0
+			 */
+			$defaults['sticky-header-woo-cart-color']       = '';
+			$defaults['sticky-header-woo-cart-hover-color'] = '';
+
 			return $defaults;
 		}
 
@@ -448,10 +457,8 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Loader' ) ) {
 				// HTML Sticky Configs.
 				require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-html-configs.php';
 
-				if ( ! astra_addon_remove_widget_design_options() ) {
-					// Widget Sticky Configs.
-					require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-widget-configs.php';
-				}
+				// Widget Sticky Configs.git
+				require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-widget-configs.php';
 
 				// Divider Sticky Configs.
 				require_once ASTRA_ADDON_EXT_STICKY_HEADER_DIR . 'classes/sections/class-astra-sticky-header-divider-configs.php';

@@ -65,6 +65,16 @@ class Astra_Addon_Update_Filter_Function {
 	}
 
 	/**
+	 * Astra update default font size and font weight.
+	 *
+	 * @since 4.6.0
+	 * @return boolean
+	 */
+	public static function astra_update_default_font_styling_addon() {
+		return is_callable( 'Astra_Woocommerce::astra_update_default_font_styling' ) ? Astra_Woocommerce::astra_update_default_font_styling() : false;
+
+	}
+	/**
 	 * Remove 'Header Sections' addon dependency
 	 *
 	 * @since 3.5.7
@@ -86,5 +96,77 @@ class Astra_Addon_Update_Filter_Function {
 		$astra_settings                                    = get_option( ASTRA_THEME_SETTINGS );
 		$astra_settings['can-update-variant-active-style'] = isset( $astra_settings['can-update-variant-active-style'] ) ? false : true;
 		return apply_filters( 'astra_addon_update_wc_variant_style', $astra_settings['can-update-variant-active-style'] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+	}
+
+	/**
+	 * Support sale badge background color for design 2.
+	 *
+	 * @since 4.1.6
+	 * @return boolean false if it is an existing user, true if not.
+	 */
+	public static function astra_addon_sale_badge_background_color() {
+		$astra_settings = get_option( ASTRA_THEME_SETTINGS );
+		$astra_settings['apply-modern-layout-sale-badge-styles'] = isset( $astra_settings['apply-modern-layout-sale-badge-styles'] ) ? false : true;
+		return apply_filters( 'astra_addon_apply_sale_badge_styles_modern_layout', $astra_settings['apply-modern-layout-sale-badge-styles'] );
+	}
+
+	/**
+	 * Improve full screen search Submit button style.
+	 *
+	 * @since 4.4.0
+	 * @return boolean false if it is an existing user, true if not.
+	 */
+	public static function astra_addon_upgrade_fullscreen_search_submit_style() {
+		$astra_settings                           = get_option( ASTRA_THEME_SETTINGS );
+		$astra_settings['v4-4-0-backward-option'] = isset( $astra_settings['v4-4-0-backward-option'] ) ? false : true;
+		return apply_filters( 'astra_addon_upgrade_fullscreen_search_submit_style', $astra_settings['v4-4-0-backward-option'] );
+	}
+
+	/**
+	 * Sub menu broken arrow icon for tablet and mobile.
+	 *
+	 * @since 4.6.0
+	 * @return boolean false if it is an existing user, true if not.
+	 */
+	public static function astra_addon_update_default_menu_styling() {
+		$astra_settings                                      = get_option( ASTRA_THEME_SETTINGS, array() );
+		$astra_settings['update-default-spacing-for-header'] = isset( $astra_settings['update-default-spacing-for-header'] ) ? false : true;
+		return apply_filters( 'astra_addon_update_legacy_menu_spacing', $astra_settings['update-default-spacing-for-header'] );
+	}
+
+	/**
+	 * Restrict banner area with page header.
+	 *
+	 * @since 4.6.1
+	 * @return boolean false if it is an existing user, true if not.
+	 */
+	public static function astra_addon_restrict_banner_area_with_page_header() {
+		$astra_settings = get_option( ASTRA_THEME_SETTINGS, array() );
+		$astra_settings['restrict-banner-layout-with-page-header'] = isset( $astra_settings['restrict-banner-layout-with-page-header'] ) ? false : true;
+		return apply_filters( 'astra_addon_page_header_with_banner', $astra_settings['restrict-banner-layout-with-page-header'] );
+	}
+
+	/**
+	 * Restrict site builder templates heading spacing.
+	 *
+	 * @since 4.6.8
+	 * @return boolean false if it is an existing user, true if not.
+	 */
+	public static function astra_addon_update_site_templates_headings_space() {
+		$astra_settings = get_option( ASTRA_THEME_SETTINGS, array() );
+		$astra_settings['site-builder-templates-headings-space'] = isset( $astra_settings['site-builder-templates-headings-space'] ) ? false : true;
+		return apply_filters( 'astra_get_option_site-builder-templates-headings-space', $astra_settings['site-builder-templates-headings-space'] );
+	}
+
+	/**
+	 * Hiding Social share post icon left and right side option.
+	 *
+	 * @since 4.7.0
+	 * @return boolean false if it is an existing user, true if not.
+	 */
+	public static function astra_addon_hide_social_share_icon_position() {
+		$astra_settings                                      = get_option( ASTRA_THEME_SETTINGS, array() );
+		$astra_settings['hiding_social_share_icon_position'] = isset( $astra_settings['hiding_social_share_icon_position'] ) ? false : true;
+		return apply_filters( 'astra_addon_hide_left_right_social_icon_responsive_positions', $astra_settings['hiding_social_share_icon_position'] );
 	}
 }

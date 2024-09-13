@@ -58,28 +58,223 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Loader' ) ) {
 		 */
 		public function theme_defaults( $defaults ) {
 
+			$improve_blog = astra_addon_4_6_0_compatibility();
+
 			// Blog / Archive.
 			$defaults['blog-masonry']               = false;
 			$defaults['blog-date-box']              = false;
+			$defaults['blog-excerpt-count']         = $improve_blog ? 20 : 55;
 			$defaults['blog-date-box-style']        = 'square';
 			$defaults['first-post-full-width']      = false;
-			$defaults['blog-space-bet-posts']       = false;
-			$defaults['blog-grid']                  = 1;
+			$defaults['blog-equal-grid']            = true;
+			$defaults['blog-space-bet-posts']       = $improve_blog ? true : false;
+			$defaults['blog-grid']                  = $improve_blog ? 3 : 1;
 			$defaults['blog-grid-layout']           = 1;
-			$defaults['blog-layout']                = 'blog-layout-1';
 			$defaults['blog-pagination']            = 'number';
 			$defaults['blog-pagination-style']      = 'default';
 			$defaults['blog-infinite-scroll-event'] = 'scroll';
+			$defaults['blog-infinite-scroll-event'] = 'scroll';
 
-			$defaults['blog-excerpt-count']          = 55;
-			$defaults['blog-read-more-text']         = __( 'Read More »', 'astra-addon' );
-			$defaults['blog-read-more-as-button']    = false;
-			$defaults['blog-load-more-text']         = __( 'Load More', 'astra-addon' );
-			$defaults['blog-featured-image-padding'] = false;
+			$defaults['blog-read-more-text']                  = $improve_blog ? __( 'Read Post »', 'astra-addon' ) : __( 'Read More »', 'astra-addon' );
+			$defaults['blog-read-more-as-button']             = false;
+			$defaults['blog-load-more-text']                  = __( 'Load More', 'astra-addon' );
+			$defaults['blog-featured-image-padding']          = $improve_blog ? true : false;
+			$defaults['blog-meta-author-avatar']              = false;
+			$defaults['blog-meta-author-avatar-size']         = 25;
+			$defaults['blog-meta-author-avatar-prefix-label'] = astra_default_strings( 'string-blog-meta-author-by', false );
+			$defaults['blog-item-box-shadow-control']         = array(
+				'x'      => '0',
+				'y'      => '6',
+				'blur'   => '15',
+				'spread' => '-2',
+			);
+			$defaults['blog-item-box-shadow-color']           = 'rgba(16, 24, 40, 0.05)';
+			$defaults['blog-item-box-shadow-position']        = 'outline';
+			$defaults['post-per-page-res']                    = array(
+				'desktop' => '',
+				'tablet'  => '',
+				'mobile'  => '',
+			);
+			$defaults['post-per-page2-non-res']               = '';
+
+			// Blog filter.
+			$defaults['blog-post-filter']                       = false;
+			$defaults['blog-filter-layout']                     = 'blog-filter-layout-1';
+			$defaults['blog-filter-by']                         = 'categories';
+			$defaults['blog-filter-category-exclude']           = '';
+			$defaults['blog-filter-tag-exclude']                = '';
+			$defaults['font-family-blog-filter-taxonomy']       = 'inherit';
+			$defaults['font-weight-blog-filter-taxonomy']       = 'inherit';
+			$defaults['font-extras-blog-filter-taxonomy']       = array(
+				'line-height'         => '',
+				'line-height-unit'    => 'em',
+				'letter-spacing'      => '',
+				'letter-spacing-unit' => 'px',
+				'text-transform'      => '',
+				'text-decoration'     => '',
+			);
+			$defaults['font-size-blog-filter-taxonomy']         = array(
+				'desktop'      => '',
+				'tablet'       => '',
+				'mobile'       => '',
+				'desktop-unit' => 'px',
+				'tablet-unit'  => 'px',
+				'mobile-unit'  => 'px',
+			);
+			$defaults['blog-filter-taxonomy-bg-normal-color']   = '';
+			$defaults['blog-filter-taxonomy-bg-hover-color']    = '';
+			$defaults['blog-filter-taxonomy-bg-active-color']   = '';
+			$defaults['blog-filter-taxonomy-text-normal-color'] = '';
+			$defaults['blog-filter-taxonomy-text-hover-color']  = '';
+			$defaults['blog-filter-taxonomy-text-active-color'] = '';
+			$defaults['blog-filter-outer-parent-spacing']       = array(
+				'desktop'      => array(
+					'top'    => '',
+					'right'  => '',
+					'bottom' => '',
+					'left'   => '',
+				),
+				'tablet'       => array(
+					'top'    => '',
+					'right'  => '',
+					'bottom' => '',
+					'left'   => '',
+				),
+				'mobile'       => array(
+					'top'    => '',
+					'right'  => '',
+					'bottom' => '',
+					'left'   => '',
+				),
+				'desktop-unit' => 'px',
+				'tablet-unit'  => 'px',
+				'mobile-unit'  => 'px',
+			);
+			$defaults['blog-filter-outside-spacing']            = array(
+				'desktop'      => array(
+					'top'    => '',
+					'right'  => '',
+					'bottom' => '',
+					'left'   => '',
+				),
+				'tablet'       => array(
+					'top'    => '',
+					'right'  => '',
+					'bottom' => '',
+					'left'   => '',
+				),
+				'mobile'       => array(
+					'top'    => '',
+					'right'  => '',
+					'bottom' => '',
+					'left'   => '',
+				),
+				'desktop-unit' => 'px',
+				'tablet-unit'  => 'px',
+				'mobile-unit'  => 'px',
+			);
+			$defaults['blog-filter-inside-spacing']             = array(
+				'desktop'      => array(
+					'top'    => '',
+					'right'  => '',
+					'bottom' => '',
+					'left'   => '',
+				),
+				'tablet'       => array(
+					'top'    => '',
+					'right'  => '',
+					'bottom' => '',
+					'left'   => '',
+				),
+				'mobile'       => array(
+					'top'    => '',
+					'right'  => '',
+					'bottom' => '',
+					'left'   => '',
+				),
+				'desktop-unit' => 'px',
+				'tablet-unit'  => 'px',
+				'mobile-unit'  => 'px',
+			);
+			$defaults['blog-filter-border-radius']              = array(
+				'desktop'      => array(
+					'top_left'     => '',
+					'top_right'    => '',
+					'bottom_right' => '',
+					'bottom_left'  => '',
+				),
+				'tablet'       => array(
+					'top_left'     => '',
+					'top_right'    => '',
+					'bottom_right' => '',
+					'bottom_left'  => '',
+				),
+				'mobile'       => array(
+					'top_left'     => '',
+					'top_right'    => '',
+					'bottom_right' => '',
+					'bottom_left'  => '',
+				),
+				'desktop-unit' => 'px',
+				'tablet-unit'  => 'px',
+				'mobile-unit'  => 'px',
+			);
+
+			$defaults['blog-filter-alignment'] = array(
+				'desktop' => 'center',
+				'tablet'  => 'center',
+				'mobile'  => 'center',
+			);
+
+			$defaults['responsive-blog-filter-visibility'] = array(
+				'desktop' => 1,
+				'tablet'  => 1,
+				'mobile'  => 1,
+			);
 
 			// Single.
 			$defaults['ast-author-info']               = false;
+			$defaults['author-box-placement']          = 'outside';
+			$defaults['author-box-alignment']          = $improve_blog ? 'center' : 'left';
+			$defaults['author-box-in-new-tab']         = false;
+			$defaults['author-box-socials']            = $improve_blog ? true : false;
+			$defaults['author-box-social-icon-list']   = array(
+				'items' =>
+					array(
+						array(
+							'id'         => 'facebook',
+							'enabled'    => true,
+							'source'     => 'icon',
+							'url'        => '',
+							'color'      => '#557dbc',
+							'background' => 'transparent',
+							'icon'       => 'facebook',
+							'label'      => __( 'Facebook', 'astra-addon' ),
+						),
+						array(
+							'id'         => 'twitter-x',
+							'enabled'    => true,
+							'source'     => 'icon',
+							'url'        => '',
+							'color'      => '#000000',
+							'background' => 'transparent',
+							'icon'       => 'twitter-x',
+							'label'      => __( 'Twitter / X', 'astra-addon' ),
+						),
+						array(
+							'id'         => 'linkedin',
+							'enabled'    => true,
+							'source'     => 'icon',
+							'url'        => '',
+							'color'      => '#1c86c6',
+							'background' => 'transparent',
+							'icon'       => 'linkedin',
+							'label'      => __( 'Linkedin', 'astra-addon' ),
+						),
+					),
+			);
 			$defaults['ast-single-post-navigation']    = false;
+			$defaults['single-post-navigation-style']  = 'default';
 			$defaults['ast-auto-prev-post']            = false;
 			$defaults['single-featured-image-padding'] = false;
 
@@ -87,7 +282,6 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Loader' ) ) {
 			$defaults['single-post-social-sharing-heading-enable']   = false;
 			$defaults['single-post-social-sharing-heading-position'] = 'above';
 			$defaults['single-post-social-sharing-heading-text']     = __( 'Share your love', 'astra-addon' );
-			$defaults['single-post-social-sharing-heading-position'] = 'above';
 
 			$defaults['single-post-social-sharing-icon-list'] = array(
 				'items' =>
@@ -196,9 +390,9 @@ if ( ! class_exists( 'Astra_Ext_Blog_Pro_Loader' ) ) {
 			);
 
 			$defaults['single-post-social-sharing-icon-size'] = array(
-				'desktop' => '30',
-				'tablet'  => '30',
-				'mobile'  => '30',
+				'desktop' => '20',
+				'tablet'  => '20',
+				'mobile'  => '20',
 			);
 
 			$defaults['single-post-social-sharing-icon-radius'] = array(

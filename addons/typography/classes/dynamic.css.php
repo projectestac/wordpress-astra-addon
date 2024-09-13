@@ -37,7 +37,10 @@ function astra_typography_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' 
 	$archive_page_title_letter_spacing  = astra_addon_get_font_extras( astra_get_option( 'font-extras-page-title' ), 'letter-spacing', 'letter-spacing-unit' );
 	$archive_page_title_text_decoration = astra_addon_get_font_extras( astra_get_option( 'font-extras-page-title' ), 'text-decoration' );
 
-	$post_meta_font_size = astra_get_option( 'font-size-post-meta' );
+	$post_meta_font_size      = astra_get_option( 'font-size-post-meta' );
+	$post_tax_font_size       = astra_get_option( 'font-size-post-tax' );
+	$post_excerpt_font_size   = astra_get_option( 'font-size-post-excerpt' );
+	$post_read_more_font_size = astra_get_option( 'font-size-post-read-more' );
 
 	$post_pagination_font_size      = astra_get_option( 'font-size-post-pagination' );
 	$post_pagination_text_transform = astra_get_option( 'text-transform-post-pagination' );
@@ -143,7 +146,22 @@ function astra_typography_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' 
 		/**
 		 * Post Meta
 		 */
-		'.entry-meta, .read-more'                     => astra_addon_get_font_array_css( astra_get_option( 'font-family-post-meta' ), astra_get_option( 'font-weight-post-meta' ), $post_meta_font_size, 'font-extras-post-meta' ),
+		'.ast-blog-meta-container'                    => astra_addon_get_font_array_css( astra_get_option( 'font-family-post-meta' ), astra_get_option( 'font-weight-post-meta' ), '', 'font-extras-post-meta' ),
+
+		/**
+		 * Post Tax
+		 */
+		'.ast-blog-single-element.ast-taxonomy-container a' => astra_addon_get_font_array_css( astra_get_option( 'font-family-post-tax' ), astra_get_option( 'font-weight-post-tax' ), '', 'font-extras-post-tax' ),
+
+		/**
+		 * Post Read More
+		 */
+		'.ast-read-more-container a'                  => astra_addon_get_font_array_css( astra_get_option( 'font-family-post-read-more' ), astra_get_option( 'font-weight-post-read-more' ), $post_read_more_font_size, 'font-extras-post-read-more' ),
+
+		/**
+		 * Post Excerpt
+		 */
+		'.ast-excerpt-container'                      => astra_addon_get_font_array_css( astra_get_option( 'font-family-post-excerpt' ), astra_get_option( 'font-weight-post-excerpt' ), $post_excerpt_font_size, 'font-extras-post-excerpt' ),
 
 		/**
 		 * Pagination
@@ -353,6 +371,13 @@ function astra_typography_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' 
 		'.ast-masthead-custom-menu-items, .ast-masthead-custom-menu-items *' => array(
 			'font-size' => astra_get_font_css_value( $outside_menu_item_font['tablet'], $outside_menu_item_font['tablet-unit'] ),
 		),
+
+		'.ast-read-more-container a'                => array(
+			'font-size' => astra_get_font_css_value( $post_read_more_font_size['tablet'], $post_read_more_font_size['tablet-unit'] ),
+		),
+		'.ast-excerpt-container'                    => array(
+			'font-size' => astra_get_font_css_value( $post_excerpt_font_size['tablet'], $post_excerpt_font_size['tablet-unit'] ),
+		),
 	);
 
 	/* Parse CSS from array() */
@@ -401,6 +426,13 @@ function astra_typography_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' 
 
 		'.ast-masthead-custom-menu-items, .ast-masthead-custom-menu-items *' => array(
 			'font-size' => astra_get_font_css_value( $outside_menu_item_font['mobile'], $outside_menu_item_font['mobile-unit'] ),
+		),
+
+		'.ast-read-more-container a'                => array(
+			'font-size' => astra_get_font_css_value( $post_read_more_font_size['mobile'], $post_read_more_font_size['mobile-unit'] ),
+		),
+		'.ast-excerpt-container'                    => array(
+			'font-size' => astra_get_font_css_value( $post_excerpt_font_size['mobile'], $post_excerpt_font_size['mobile-unit'] ),
 		),
 	);
 
@@ -613,9 +645,8 @@ function astra_typography_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' 
 			 * Typography CSS.
 			 */
 			$css_output_desktop = array(
-				$selector . ' .widget-title' => astra_addon_get_font_array_css( astra_get_option( 'header-widget-' . $index . '-font-family', 'inherit' ), astra_get_option( 'header-widget-' . $index . '-font-weight', 'inherit' ), array(), 'header-widget-' . $index . '-font-extras' ),
+				$selector . ' .widget-title, ' . $selector . ' .wp-block-heading, ' . $selector . ' h1, ' . $selector . ' .widget-area h1, ' . $selector . ' h2, ' . $selector . ' .widget-area h2, ' . $selector . ' h3, ' . $selector . ' .widget-area h3, ' . $selector . ' h4, ' . $selector . ' .widget-area h4, ' . $selector . ' h5, ' . $selector . ' .widget-area h5, ' . $selector . ' h6, ' . $selector . ' .widget-area h6' => astra_addon_get_font_array_css( astra_get_option( 'header-widget-' . $index . '-font-family', 'inherit' ), astra_get_option( 'header-widget-' . $index . '-font-weight', 'inherit' ), array(), 'header-widget-' . $index . '-font-extras' ),
 			);
-
 			if ( Astra_Addon_Builder_Helper::apply_flex_based_css() ) {
 				$header_widget_selector = $selector . '.header-widget-area-inner';
 			} else {
@@ -644,7 +675,7 @@ function astra_typography_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' 
 			 * Typography CSS.
 			 */
 			$css_output_desktop = array(
-				$selector . ' .widget-title' => astra_addon_get_font_array_css( astra_get_option( 'footer-widget-' . $index . '-font-family', 'inherit' ), astra_get_option( 'footer-widget-' . $index . '-font-weight', 'inherit' ), array(), 'footer-widget-' . $index . '-font-extras' ),
+				$selector . ' .widget-title, ' . $selector . ' .wp-block-heading, ' . $selector . ' h1, ' . $selector . ' .widget-area h1, ' . $selector . ' h2, ' . $selector . ' .widget-area h2, ' . $selector . ' h3, ' . $selector . ' .widget-area h3, ' . $selector . ' h4, ' . $selector . ' .widget-area h4, ' . $selector . ' h5, ' . $selector . ' .widget-area h5, ' . $selector . ' h6, ' . $selector . ' .widget-area h6' => astra_addon_get_font_array_css( astra_get_option( 'footer-widget-' . $index . '-font-family', 'inherit' ), astra_get_option( 'footer-widget-' . $index . '-font-weight', 'inherit' ), array(), 'footer-widget-' . $index . '-font-extras' ),
 			);
 
 			if ( Astra_Addon_Builder_Helper::apply_flex_based_css() ) {
@@ -696,7 +727,7 @@ function astra_typography_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' 
 			}
 
 			$_section = 'section-hb-social-icons-' . $index;
-			$selector = '.ast-builder-layout-element .ast-header-social-' . $index . '-wrap';
+			$selector = '.ast-builder-layout-element .ast-header-social-' . $index . '-wrap .social-item-label';
 
 			/**
 			 * Typography CSS.
@@ -720,7 +751,7 @@ function astra_typography_dynamic_css( $dynamic_css, $dynamic_css_filtered = '' 
 			}
 
 			$_section = 'section-fb-social-icons-' . $index;
-			$selector = '.ast-builder-layout-element .ast-footer-social-' . $index . '-wrap';
+			$selector = '.ast-builder-layout-element .ast-footer-social-' . $index . '-wrap .social-item-label';
 
 			/**
 			 * Typography CSS.

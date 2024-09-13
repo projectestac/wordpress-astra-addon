@@ -82,6 +82,9 @@ class Astra_Addon_Admin_Loader {
 
 		add_action( 'after_setup_theme', array( $this, 'init_admin_settings' ), 99 );
 		add_action( 'admin_init', array( $this, 'settings_admin_scripts' ) );
+
+		// Let WooCommerce know, Astra Pro is compatible with HPOS & New Product Editor.
+		add_action( 'before_woocommerce_init', array( $this, 'declare_woo_compatibility' ) );
 	}
 
 	/**
@@ -196,7 +199,7 @@ class Astra_Addon_Admin_Loader {
 			$rollback_versions = Astra_Rollback_version::get_theme_all_versions();
 
 			if ( 'astra-addon' === $product ) {
-				$product_id        = bsf_extract_product_id( ASTRA_EXT_DIR );
+				$product_id        = is_callable( 'bsf_extract_product_id' ) ? bsf_extract_product_id( ASTRA_EXT_DIR ) : '';
 				$product_details   = get_brainstorm_product( $product_id );
 				$installed_version = isset( $product_details['version'] ) ? $product_details['version'] : '';
 				$product_versions  = BSF_Rollback_Version::bsf_get_product_versions( $product_id ); // Get Remote versions
@@ -305,7 +308,7 @@ class Astra_Addon_Admin_Loader {
 
 		wp_style_add_data( $handle, 'rtl', 'replace' );
 
-		$product_id = ASTRA_ADDON_BSF_PACKAGE ? bsf_extract_product_id( ASTRA_EXT_DIR ) : '';
+		$product_id = ASTRA_ADDON_BSF_PACKAGE && is_callable( 'bsf_extract_product_id' ) ? bsf_extract_product_id( ASTRA_EXT_DIR ) : '';
 
 		$white_label_markup_instance = Astra_Ext_White_Label_Markup::get_instance();
 		$rollback_version            = isset( self::astra_get_rollback_versions( 'astra-addon' )[0] ) ? self::astra_get_rollback_versions( 'astra-addon' )[0] : ''; // phpcs:ignore PHPCompatibility.Syntax.NewFunctionArrayDereferencing.Found
@@ -407,12 +410,10 @@ class Astra_Addon_Admin_Loader {
 									<?php
 									if ( ASTRA_ADDON_BSF_PACKAGE ) {
 										$highlight_class     = BSF_License_Manager::bsf_is_active_license( bsf_extract_product_id( ASTRA_EXT_DIR ) ) ? 'text-[#4AB866]' : '';
-										$license_status_text = BSF_License_Manager::bsf_is_active_license( bsf_extract_product_id( ASTRA_EXT_DIR ) ) ? __( 'License activated', 'astra-addon' ) : __( 'License not activated', 'astra-addon' );
-										?>
-										<div class="pl-3 font-inter <?php echo esc_attr( $highlight_class ); ?>">
-											<?php echo esc_attr( $license_status_text ); ?>
-										</div>
-									<?php } ?>
+										$license_status_text = BSF_License_Manager::bsf_is_active_license( bsf_extract_product_id( ASTRA_EXT_DIR ) ) ? '<span class="pl-3 ' . esc_attr( $highlight_class ) . '">' . __( 'License activated', 'astra-addon' ) . '</span>' : '<a href="' . esc_url( admin_url( 'admin.php?page=astra&path=settings' ) ) . '" class="hover:text-astra text-slate-400 ml-3">' . __( 'License not activated', 'astra-addon' ) . '</a>';
+										echo wp_kses_post( $license_status_text );
+									}
+									?>
 								</div>
 								<?php
 								if ( Astra_Ext_White_Label_Markup::show_branding() ) {
@@ -433,7 +434,7 @@ class Astra_Addon_Admin_Loader {
 					$active_class = ' text-astra border-astra';
 					$current_tab  = self::get_active_tab();
 
-					if ( ! empty( $_REQUEST['layout_type'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+					if ( ! empty( $_REQUEST['layout_type'] ) && 'all' !== $current_tab ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 						$current_type = sanitize_text_field( $_REQUEST['layout_type'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 						$active_class = '';
 					}
@@ -449,13 +450,15 @@ class Astra_Addon_Admin_Loader {
 						'hooks'    => __( 'Hooks', 'astra-addon' ),
 						'404-page' => __( '404 Page', 'astra-addon' ),
 						'content'  => __( 'Page Content', 'astra-addon' ),
+						'template' => __( 'Custom Template', 'astra-addon' ),
 					);
 
-					$baseurl = add_query_arg( $url_args, admin_url( 'edit.php' ) );
+					$baseurl         = add_query_arg( $url_args, admin_url( 'edit.php' ) );
+					$all_layouts_url = add_query_arg( 'layout_type', 'all', admin_url( 'edit.php?post_type=' . ASTRA_ADVANCED_HOOKS_POST_TYPE ) );
 					?>
 
 					<div class="bg-white border-b border-slate-200 flex flex-wrap items-center -mb-0.5">
-						<a class="text-sm font-medium ml-2 px-5 py-4 border-b-2 <?php echo esc_attr( $active_class ); ?>" href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . ASTRA_ADVANCED_HOOKS_POST_TYPE ) ); ?>">
+						<a class="text-sm font-medium ml-2 px-5 py-4 border-b-2 border-white <?php echo esc_attr( $active_class ); ?>" href="<?php echo esc_url( $all_layouts_url ); ?>">
 							<?php
 								echo esc_html__( 'All', 'astra-addon' );
 							?>
@@ -476,6 +479,20 @@ class Astra_Addon_Admin_Loader {
 			</div>
 		<?php
 	}
+
+	/**
+	 *  Declare Woo HPOS & New Product Editor Compatibility.
+	 *
+	 * @since 4.5.1
+	 * @return void
+	 */
+	public function declare_woo_compatibility() {
+		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', ASTRA_EXT_FILE, true );
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'product_block_editor', ASTRA_EXT_FILE, true );
+		}
+	}
+
 }
 
 Astra_Addon_Admin_Loader::get_instance();

@@ -26,60 +26,29 @@ if ( ! class_exists( 'Astra_Addon_Background_Updater' ) ) {
 		 * @var array
 		 */
 		private static $db_updates = array(
-			'2.2.0' => array(
-				'astra_addon_page_builder_button_color_compatibility',
-			),
-			'2.3.0' => array(
-				'astra_addon_page_header_parallax_device',
-			),
-			'2.3.3' => array(
-				'astra_addon_css_gen_multi_site_fix',
-			),
-			'2.4.0' => array(
-				'astra_responsive_content_background_option',
-				'astra_addon_update_theme_tablet_breakpoint',
-			),
-			'2.5.0' => array(
-				'custom_layout_compatibility_having_code_posts',
-				'astra_addon_page_header_submenu_color_options',
-			),
-			'2.6.0' => array(
-				'astra_addon_header_css_optimizations',
-			),
-			'3.5.0' => array(
-				'astra_addon_page_headers_support_to_builder_layout',
-			),
-			'3.5.1' => array(
-				'astra_addon_headings_font_support',
-				'astra_addon_cart_color_not_working_in_old_header',
-			),
-			'3.5.7' => array(
-				'astra_addon_outline_cart_bg_color_support',
-				'astra_addon_remove_header_sections_deps_new_builder',
-				'astra_addon_swap_section_not_working_in_old_header',
-			),
-			'3.5.8' => array(
-				'astra_sticky_header_site_title_tagline_css',
-			),
-			'3.5.9' => array(
-				'astra_addon_remove_responsive_account_menu_colors_support',
-			),
-			'3.9.0' => array(
-				'astra_addon_responsive_shop_button_padding',
-				'astra_addon_shop_box_shadow_migration',
-				'astra_addon_update_product_gallery_layout',
-				'astra_addon_update_woocommerce_cart_icons',
-				'astra_addon_update_toolbar_seperations',
-				'astra_addon_apply_modern_ecommerce_setup',
-			),
-			'3.9.3' => array(
-				'astra_addon_update_variant_active_state',
-			),
 			'4.0.0' => array(
 				'astra_addon_background_updater_4_0_0',
 			),
 			'4.1.0' => array(
 				'astra_addon_background_updater_4_1_0',
+			),
+			'4.1.6' => array(
+				'astra_addon_background_updater_4_1_6',
+			),
+			'4.4.0' => array(
+				'astra_addon_background_updater_4_4_0',
+			),
+			'4.6.0' => array(
+				'astra_addon_background_updater_4_6_0',
+			),
+			'4.6.1' => array(
+				'astra_addon_background_updater_4_6_1',
+			),
+			'4.6.8' => array(
+				'astra_addon_background_updater_4_6_8',
+			),
+			'4.7.0' => array(
+				'astra_addon_background_updater_4_7_0',
 			),
 		);
 
@@ -280,11 +249,15 @@ if ( ! class_exists( 'Astra_Addon_Background_Updater' ) ) {
 				return false;
 			}
 
+			$versions = array_keys( $updates );
+			$latest   = $versions[ count( $versions ) - 1 ];
+
 			$customizer_options = get_option( 'astra-settings' );
 
 			$addon_auto_version = ( isset( $customizer_options['astra-addon-auto-version'] ) && '' !== $customizer_options['astra-addon-auto-version'] ) ? $customizer_options['astra-addon-auto-version'] : null;
 
-			return ! is_null( $addon_auto_version ) && version_compare( $addon_auto_version, max( array_keys( $updates ) ), '<' );
+			return ! is_null( $addon_auto_version ) && version_compare( $addon_auto_version, $latest, '<' );
+
 		}
 
 		/**
@@ -306,7 +279,11 @@ if ( ! class_exists( 'Astra_Addon_Background_Updater' ) ) {
 
 			$current_db_version = Astra_Addon_Update::astra_addon_stored_version();
 
-			error_log( 'Astra Addon: Batch Process Started!' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			// Check if the error_log function exists before calling it.
+			if ( function_exists( 'error_log' ) ) {
+				error_log( 'Astra Addon: Batch Process Started!' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			}
+
 			if ( count( $this->get_db_update_callbacks() ) > 0 ) {
 				foreach ( $this->get_db_update_callbacks() as $version => $update_callbacks ) {
 					if ( version_compare( $current_db_version, $version, '<' ) ) {
@@ -314,7 +291,10 @@ if ( ! class_exists( 'Astra_Addon_Background_Updater' ) ) {
 							if ( $fallback ) {
 								call_user_func( $update_callback );
 							} else {
-								error_log( sprintf( 'Astra Addon: Queuing %s - %s', $version, $update_callback ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+								// Check if the error_log function exists before calling it.
+								if ( function_exists( 'error_log' ) ) {
+									error_log( sprintf( 'Astra Addon: Queuing %s - %s', $version, $update_callback ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+								}
 								self::$background_updater->push_to_queue( $update_callback );
 							}
 						}
@@ -322,7 +302,10 @@ if ( ! class_exists( 'Astra_Addon_Background_Updater' ) ) {
 				}
 
 				if ( $fallback ) {
-					error_log( 'Astra Addon: Running migration without batch processing.' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+					// Check if the error_log function exists before calling it.
+					if ( function_exists( 'error_log' ) ) {
+						error_log( 'Astra Addon: Running migration without batch processing.' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+					}
 					self::update_db_version();
 				} else {
 					$customizer_options = get_option( 'astra-settings' );
@@ -414,9 +397,9 @@ if ( ! class_exists( 'Astra_Addon_Background_Updater' ) ) {
 
 			// Update auto saved version number.
 			update_option( 'astra-settings', $astra_options );
-
-			error_log( 'Astra Addon: DB version updated!' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-
+			if ( function_exists( 'error_log' ) ) {
+				error_log( 'Astra Addon: DB version updated!' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			}
 			// Update variables.
 			Astra_Theme_Options::refresh();
 

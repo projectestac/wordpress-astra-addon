@@ -21,10 +21,8 @@ class Astra_Addon_Gutenberg_Compatibility extends Astra_Addon_Page_Builder_Compa
 	 * @since 2.5.1
 	 */
 	public function render_content( $post_id ) {
-
 		$output       = '';
 		$current_post = get_post( $post_id, OBJECT );
-
 		if ( has_blocks( $current_post ) ) {
 			$blocks = parse_blocks( $current_post->post_content );
 			foreach ( $blocks as $block ) {
@@ -33,7 +31,6 @@ class Astra_Addon_Gutenberg_Compatibility extends Astra_Addon_Page_Builder_Compa
 		} else {
 			$output = $current_post->post_content;
 		}
-
 		ob_start();
 		echo do_shortcode( $output );
 		echo do_shortcode( ob_get_clean() );
@@ -52,8 +49,10 @@ class Astra_Addon_Gutenberg_Compatibility extends Astra_Addon_Page_Builder_Compa
 
 		if ( defined( 'UAGB_VER' ) ) {
 			if ( version_compare( UAGB_VER, '1.23.0', '>=' ) && class_exists( 'UAGB_Post_Assets' ) ) {
-				$post_assets = new UAGB_Post_Assets( $post_id );
-				$post_assets->enqueue_scripts();
+				if ( 'no' !== get_post_meta( $post_id, 'ast-advanced-hook-enabled', true ) ) {
+					$post_assets = new UAGB_Post_Assets( $post_id );
+					$post_assets->enqueue_scripts();
+				}
 			} else {
 				/**
 				 * We can keep this compatibility for some releases and after few releases we need to remove it.

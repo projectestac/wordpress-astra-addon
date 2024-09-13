@@ -44,6 +44,7 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Markup' ) ) {
 			/* Fixed header markup */
 			add_action( 'astra_header', array( $this, 'none_header_markup' ), 5 );
 			add_action( 'astra_sticky_header_markup', array( $this, 'fixed_header_markup' ) );
+			add_action( 'wp_footer', array( $this, 'render_header_svg_mask' ) );
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 			add_action( 'astra_addon_get_css_files', array( $this, 'add_styles' ) );
@@ -145,6 +146,16 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Markup' ) ) {
 		}
 
 		/**
+		 * Method to return string 'disabled'.
+		 *
+		 * @return string Returns 'disabled' string literal.
+		 * @since 4.6.9
+		 */
+		public function disabled() {
+			return 'disabled';
+		}
+
+		/**
 		 * Site Header - <header>
 		 *
 		 * @since 1.0.0
@@ -189,15 +200,51 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Markup' ) ) {
 
 				add_filter( 'astra_show_site_title_h1_tag', '__return_false' );
 
-				?>
+				// Filters to make header & component ID unique.
+				add_filter( 'astra_header_site_navigation_id', array( $this, 'update_navigation_id' ), 10, 1 );
+				add_filter( 'astra_header_menu_ul_id', array( $this, 'update_menu_ul_id' ), 10, 1 );
 
+				// Check if globally enabled or specific post/page enabled.
+				$disable_above_markup = ! $above_stick && ! ( 'enabled' == $sticky_header_meta && ( 'on' === $sticky_above_header_meta || 'disabled' === $sticky_above_header_meta ) );
+				$disable_main_markup  = ! $main_stick && ! ( 'enabled' == $sticky_header_meta && ( 'on' == $sticky_primary_header_meta || 'disabled' === $sticky_primary_header_meta ) );
+				$disable_below_markup = ! $below_stick && ! ( 'enabled' == $sticky_header_meta && ( 'on' == $sticky_below_header_meta || 'disabled' === $sticky_below_header_meta ) );
+
+				?>
 				<header id="ast-fixed-header" <?php astra_header_classes(); ?> style="visibility: hidden;" data-type="fixed-header">
+
+					<?php
+					// Render above sticky header markup only if enabled.
+					if ( $disable_above_markup ) {
+						add_filter( 'astra_above_header_display', array( $this, 'disabled' ) );
+					}
+					// Render main sticky header markup only if enabled.
+					if ( $disable_main_markup ) {
+						add_filter( 'astra_main_header_display', array( $this, 'disabled' ) );
+					}
+					// Render below sticky header markup only if enabled.
+					if ( $disable_below_markup ) {
+						add_filter( 'astra_below_header_display', array( $this, 'disabled' ) );
+					}
+					?>
 
 					<?php astra_masthead_top(); ?>
 
 					<?php astra_masthead(); ?>
 
 					<?php astra_masthead_bottom(); ?>
+
+					<?php
+					// Remove filters.
+					if ( $disable_above_markup ) {
+						remove_filter( 'astra_above_header_display', array( $this, 'disabled' ) );
+					}
+					if ( $disable_main_markup ) {
+						remove_filter( 'astra_main_header_display', array( $this, 'disabled' ) );
+					}
+					if ( $disable_below_markup ) {
+						remove_filter( 'astra_below_header_display', array( $this, 'disabled' ) );
+					}
+					?>
 
 				</header><!-- #astra-fixed-header -->
 
@@ -212,7 +259,49 @@ if ( ! class_exists( 'Astra_Ext_Sticky_Header_Markup' ) ) {
 				}
 
 				remove_filter( 'astra_show_site_title_h1_tag', '__return_false' );
+
+				// Filters to make header & component ID unique.
+				remove_filter( 'astra_header_site_navigation_id', array( $this, 'update_navigation_id' ), 10, 1 );
+				remove_filter( 'astra_header_menu_ul_id', array( $this, 'update_menu_ul_id' ), 10, 1 );
 			}
+		}
+
+
+
+		/**
+		 * Render Svg Mask for Header logo
+		 *
+		 * @since 4.3.0
+		 * @return void
+		 */
+		public function render_header_svg_mask() {
+
+			$header_sticky_logo_color = astra_get_option( 'sticky-header-builder-logo-color' );
+
+			if ( $header_sticky_logo_color && 'unset' !== $header_sticky_logo_color ) {
+				astra_render_svg_mask( 'ast-img-color-filter-3', 'sticky_header_logo_color', $header_sticky_logo_color );
+			}
+		}
+
+
+		/**
+		 * Update Navigation ID
+		 *
+		 * @param string $id Navigation ID.
+		 * @return string
+		 */
+		public function update_navigation_id( $id ) {
+			return $id . '-sticky';
+		}
+
+		/**
+		 * Update Menu UL ID
+		 *
+		 * @param string $id Menu UL ID.
+		 * @return string
+		 */
+		public function update_menu_ul_id( $id ) {
+			return $id . '-sticky';
 		}
 
 		/**

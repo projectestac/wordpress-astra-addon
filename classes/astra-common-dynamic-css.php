@@ -35,6 +35,9 @@ function astra_addon_blog_pro_dynamic_css( $dynamic_css, $dynamic_css_filtered =
 			'opacity'    => '0',
 			'visibility' => 'hidden',
 		),
+		'.blog-layout-2'                            => array(
+			'position' => 'relative',
+		),
 		'.single .ast-author-details .author-title' => array(
 			'color' => esc_attr( $link_color ),
 		),
@@ -46,6 +49,15 @@ function astra_addon_blog_pro_dynamic_css( $dynamic_css, $dynamic_css_filtered =
 		);
 		$desktop_max_css['.single.ast-separate-container .ast-author-meta']          = array(
 			'padding' => '3em',
+		);
+	}
+
+	if ( astra_addon_check_reveal_effect_condition() ) {
+		$desktop_max_css['.ast-fade-up, .woocommerce ul.products li.product.ast-fade-up, .woocommerce-page ul.products li.product.ast-fade-up'] = array(
+			'opacity'             => '0',
+			'transition-property' => 'opacity,transform',
+			'transform'           => 'translate3d(0,100px,0)',
+			'transition-duration' => '1s',
 		);
 	}
 
@@ -169,13 +181,6 @@ function astra_addon_blog_pro_dynamic_css( $dynamic_css, $dynamic_css_filtered =
 		'.ast-separate-container .ast-grid-2 .ast-article-post.ast-separate-posts, .ast-separate-container .ast-grid-3 .ast-article-post.ast-separate-posts, .ast-separate-container .ast-grid-4 .ast-article-post.ast-separate-posts' => array(
 			'border-bottom' => 0,
 		),
-		'.ast-separate-container .ast-grid-2 > .site-main > .ast-row, .ast-separate-container .ast-grid-3 > .site-main > .ast-row, .ast-separate-container .ast-grid-4 > .site-main > .ast-row' => array(
-			'margin-left'  => esc_attr( $margin_space ),
-			'margin-right' => esc_attr( $margin_space ),
-			'display'      => 'flex',
-			'flex-flow'    => 'row wrap',
-			'align-items'  => 'stretch',
-		),
 		'.ast-separate-container .ast-grid-2 > .site-main > .ast-row:before, .ast-separate-container .ast-grid-2 > .site-main > .ast-row:after, .ast-separate-container .ast-grid-3 > .site-main > .ast-row:before, .ast-separate-container .ast-grid-3 > .site-main > .ast-row:after, .ast-separate-container .ast-grid-4 > .site-main > .ast-row:before, .ast-separate-container .ast-grid-4 > .site-main > .ast-row:after' => array(
 			'flex-basis' => 0,
 			'width'      => 0,
@@ -202,6 +207,25 @@ function astra_addon_blog_pro_dynamic_css( $dynamic_css, $dynamic_css_filtered =
 			'margin-bottom' => '2.5em',
 		),
 	);
+
+
+	if ( 'blog-layout-1' === astra_addon_get_blog_layout() || astra_get_option( 'blog-equal-grid' ) ) {
+		$tablet_min_css['.ast-separate-container .ast-grid-2 > .site-main > .ast-row, .ast-separate-container .ast-grid-3 > .site-main > .ast-row, .ast-separate-container .ast-grid-4 > .site-main > .ast-row'] = array(
+			'margin-left'  => esc_attr( $margin_space ),
+			'margin-right' => esc_attr( $margin_space ),
+			'display'      => 'flex',
+			'flex-flow'    => 'row wrap',
+			'align-items'  => 'stretch',
+		);
+	} else {
+		$tablet_min_css['.ast-separate-container .ast-grid-2 > .site-main > .ast-row, .ast-separate-container .ast-grid-3 > .site-main > .ast-row, .ast-separate-container .ast-grid-4 > .site-main > .ast-row'] = array(
+			'margin-left'  => esc_attr( $margin_space ),
+			'margin-right' => esc_attr( $margin_space ),
+			'display'      => 'flex',
+			'flex-flow'    => 'row wrap',
+			'align-items'  => 'flex-start',
+		);
+	}
 
 	if ( true === astra_get_option( 'customizer-default-layout-update', true ) ) {
 		$tablet_min_css['.single .ast-author-meta .ast-author-details'] = array(

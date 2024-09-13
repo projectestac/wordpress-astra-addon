@@ -13,7 +13,7 @@
  * @since  1.0.0
  */
 
-;(function ( $, window, undefined ) {
+ ;(function ( $, window, undefined ) {
 
 	var pluginName    = 'astExtSticky',
 		document      = window.document,
@@ -178,7 +178,7 @@
 							'top'            : stickyHeaderFlag ? aboveHeaderSelectorValue : 'unset',
 						});
 
-						selector.parent().css( 'min-height', 'unset' );
+						selector.parent().css("min-height", selector.outerHeight());
 					}
 
 					selector.addClass( 'ast-sticky-shrunk' ).stop();

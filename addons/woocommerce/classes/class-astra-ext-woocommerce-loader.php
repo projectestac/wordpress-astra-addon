@@ -46,6 +46,7 @@ if ( ! class_exists( 'Astra_Ext_Woocommerce_Loader' ) ) {
 			add_filter( 'astra_woo_shop_hover_style', array( $this, 'woo_shop_hover_style_callback' ) );
 
 			add_filter( 'wc_add_to_cart_message_html', array( $this, 'disable_woo_cart_msg' ), 10, 2 );
+
 		}
 
 		/**
@@ -138,6 +139,7 @@ if ( ! class_exists( 'Astra_Ext_Woocommerce_Loader' ) ) {
 			$defaults['shop-breadcrumb-display']     = true;
 			$defaults['shop-filter-list-to-buttons'] = true;
 			$defaults['shop-active-filters-display'] = true;
+			$defaults['shop-reveal-effect']          = false;
 
 			// Off Canvas.
 			$defaults['shop-off-canvas-trigger-type']       = 'link';
@@ -236,25 +238,27 @@ if ( ! class_exists( 'Astra_Ext_Woocommerce_Loader' ) ) {
 			$defaults['shop-load-more-text']        = __( 'Load More', 'astra-addon' );
 
 			// Single product page.
-			$defaults['single-product-related-display']         = true;
-			$defaults['single-product-recently-viewed-display'] = false;
-			$defaults['single-product-recently-viewed-text']    = __( 'Recently Viewed Products', 'astra-addon' );
-			$defaults['single-product-image-zoom-effect']       = true;
-			$defaults['single-product-add-to-cart-action']      = 'default';
-			$defaults['single-product-related-upsell-grid']     = array(
+			$defaults['single-product-related-display']                 = true;
+			$defaults['single-product-recently-viewed-display']         = false;
+			$defaults['single-product-recently-viewed-text']            = __( 'Recently Viewed Products', 'astra-addon' );
+			$defaults['single-product-image-zoom-effect']               = true;
+			$defaults['single-product-sticky-product-image']            = false;
+			$defaults['single-product-sticky-product-image-top-offset'] = 0;
+			$defaults['single-product-add-to-cart-action']              = 'default';
+			$defaults['single-product-related-upsell-grid']             = array(
 				'desktop' => 4,
 				'tablet'  => 3,
 				'mobile'  => 2,
 			);
-			$defaults['single-product-select-variations']       = false;
-			$defaults['single-product-related-upsell-per-page'] = 4;
-			$defaults['single-product-image-width']             = 50;
-			$defaults['single-product-gallery-layout']          = 'horizontal-slider';
-			$defaults['product-gallery-thumbnail-columns']      = 2;
-			$defaults['astra-product-gallery-layout-flag']      = true;
-			$defaults['single-product-sticky-summary']          = false;
-			$defaults['single-product-extras-text']             = __( 'Free shipping on orders over $50!', 'astra-addon' );
-			$defaults['single-product-extras-list']             = array(
+			$defaults['single-product-select-variations']               = false;
+			$defaults['single-product-related-upsell-per-page']         = 4;
+			$defaults['single-product-image-width']                     = 50;
+			$defaults['single-product-gallery-layout']                  = 'horizontal-slider';
+			$defaults['product-gallery-thumbnail-columns']              = 2;
+			$defaults['astra-product-gallery-layout-flag']              = true;
+			$defaults['single-product-sticky-summary']                  = false;
+			$defaults['single-product-extras-text']                     = __( 'Free shipping on orders over $50!', 'astra-addon' );
+			$defaults['single-product-extras-list']                     = array(
 				'items' =>
 					array(
 						array(

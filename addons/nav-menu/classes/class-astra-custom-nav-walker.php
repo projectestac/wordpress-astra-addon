@@ -70,6 +70,12 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 				}
 
 				$megamenu_divider_class = '';
+				$megamenu_class         = '';
+
+				$megamenu_width = array( 'full-stretched', 'full' );
+				if ( in_array( $this->megamenu_width, $megamenu_width ) ) {
+					$megamenu_class = '.astra-full-megamenu-wrapper';
+				}
 
 				if ( isset( $this->megamenu_top_border_width ) && '' != $this->megamenu_top_border_width ) {
 					$style[ '.ast-desktop li.astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-megamenu' ] = array(
@@ -77,8 +83,14 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 					);
 				}
 
+				if ( isset( $this->megamenu_top_border_width ) && '' !== $this->megamenu_top_border_width ) {
+					$style[ '.ast-desktop li.astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' ' . $megamenu_class ] = array(
+						'border-top-width' => $this->megamenu_top_border_width . 'px',
+					);
+				}
+
 				if ( isset( $this->megamenu_column_divider_width ) && '' != $this->megamenu_column_divider_width ) {
-					$style[ '.ast-desktop li.astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-megamenu > .menu-item' ] = array(
+					$style[ '.ast-desktop li.astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' ' . $megamenu_class . ' .astra-megamenu > .menu-item' ] = array(
 						'border-right-width' => $this->megamenu_column_divider_width . 'px',
 					);
 				}
@@ -87,17 +99,21 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 					$style[ '.ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-megamenu' ] = array(
 						'border-color' => $this->megamenu_top_border_color,
 					);
+
+					$style[ '.ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' ' . $megamenu_class ] = array(
+						'border-color' => $this->megamenu_top_border_color,
+					);
 				}
 
 				if ( isset( $this->megamenu_column_divider_color ) && '' != $this->megamenu_column_divider_color ) {
 					$megamenu_divider_class = ' astra-megamenu-has-divider';
-					$style[ '.ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-megamenu > .menu-item' ] = array(
+					$style[ '.ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' ' . $megamenu_class . ' .astra-megamenu > .menu-item' ] = array(
 						'border-right' => '1px solid ' . $this->megamenu_column_divider_color,
 					);
 				}
 
 				if ( isset( $this->megamenu_divider_style ) && '' != $this->megamenu_divider_style ) {
-					$style[ '.ast-desktop li.astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-megamenu, .ast-desktop li.astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-megamenu > .menu-item' ] = array(
+					$style[ '.ast-desktop li.astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' ' . $megamenu_class . ' .astra-megamenu, .ast-desktop li.astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-megamenu > .menu-item' ] = array(
 						'border-style' => $this->megamenu_divider_style,
 					);
 				}
@@ -110,6 +126,8 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 
 				if ( isset( $this->megamenu_heading_color_group ) && '' != $this->megamenu_heading_color_group ) {
 
+					$this->megamenu_heading_color_group = maybe_unserialize( $this->megamenu_heading_color_group );
+					
 					if ( isset( $this->megamenu_heading_color_group['normal'] ) && $this->megamenu_heading_color_group['normal'] ) {
 
 						$style[ '.ast-desktop li.astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .menu-item-heading > .menu-link' ] = array(
@@ -265,7 +283,7 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 				// Row divider.
 				$this->megamenu_row_divider_width = $this->get_post_meta( $post_meta, '_menu_item_megamenu_row_divider_width' );
 
-				$this->megamenu_heading_color_group = $this->get_post_meta( $post_meta, '_menu_item_megamenu_heading_color_group' );
+				$this->megamenu_heading_color_group = Astra_Ext_Nav_Menu_Loader::get_megamenu_default( 'heading_color', $item->ID );
 
 				$this->num_of_columns = 0;
 
@@ -446,12 +464,14 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 			// Wrap menu text in a span tag.
 			$title = '<span class="menu-text">' . $title . '</span>';
 
-			$item_output .= '<a' . $attributes . ' class="' . $atts['class'] . '">';
+			$mega_menu_tag = 'disable-link' === $item->megamenu_disable_link ? 'span' : 'a';
+
+			$item_output .= '<' . $mega_menu_tag . $attributes . ' class="' . $atts['class'] . '">';
 
 			if ( isset( $item->megamenu_highlight_label ) && '' != $item->megamenu_highlight_label ) {
 
 				$style = array(
-					'.ast-desktop .menu-item-' . $item->ID . ' .astra-mm-highlight-label' => array(
+					'.ast-desktop .menu-item-' . $item->ID . ' .astra-mm-highlight-label, .ast-header-break-point .menu-item-' . $item->ID . ' .astra-mm-highlight-label' => array(
 						'color'            => $item->megamenu_label_color,
 						'background-color' => $item->megamenu_label_bg_color,
 					),
@@ -487,12 +507,15 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 					$mm_image = $mm_megamenu_image ? '<img src="' . $mm_megamenu_image . '" alt="mm-ast-icon">' : '';
 				}
 
-				$icon_array_slug       = '.ast-desktop .menu-item-' . $item->ID . ' .astra-mm-icon-label.icon-item-' . $item->ID;
-				$icon_array_slug_image = '.ast-desktop .menu-item-' . $item->ID . ' .astra-mm-icon-label.icon-item-' . $item->ID . ' > img';
-				$icon_array_slug_svg   = '.ast-desktop .menu-item-' . $item->ID . ' .astra-mm-icon-label.icon-item-' . $item->ID . ' svg';
-				$icon_style            = array();
-				$icon_tablet_style     = array();
-				$icon_mobile_style     = array();
+				$icon_array_slug        = '.ast-desktop .menu-item-' . $item->ID . ' .astra-mm-icon-label.icon-item-' . $item->ID;
+				$icon_array_slug       .= ',  .ast-header-break-point .menu-item-' . $item->ID . ' .astra-mm-icon-label.icon-item-' . $item->ID;
+				$icon_array_slug_image  = '.ast-desktop .menu-item-' . $item->ID . ' .astra-mm-icon-label.icon-item-' . $item->ID . ' > img';
+				$icon_array_slug_image .= ',  .ast-header-break-point .menu-item-' . $item->ID . ' .astra-mm-icon-label.icon-item-' . $item->ID . ' > img';
+				$icon_array_slug_svg    = '.ast-desktop .menu-item-' . $item->ID . ' .astra-mm-icon-label.icon-item-' . $item->ID . ' svg';
+				$icon_array_slug_svg   .= ',  .ast-header-break-point .menu-item-' . $item->ID . ' .astra-mm-icon-label.icon-item-' . $item->ID . ' svg';
+				$icon_style             = array();
+				$icon_tablet_style      = array();
+				$icon_mobile_style      = array();
 
 				$icon_style[ $icon_array_slug ]['display']        = esc_attr( 'inline-block' );
 				$icon_style[ $icon_array_slug ]['vertical-align'] = esc_attr( 'middle' );
@@ -638,7 +661,7 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 				$item_output .= '<span class="sub-arrow"></span>';
 			}
 
-			$item_output .= '</a>';
+			$item_output .= '</' . $mega_menu_tag . '>';
 
 			if ( '' != $this->megamenu && isset( $item->megamenu_content_src ) && 'default' != $item->megamenu_content_src ) {
 

@@ -184,6 +184,52 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Configs' ) ) {
 					'context'           => array(
 						astra_addon_builder_helper()->design_tab_config,
 					),
+				),
+
+				/**
+				 * Shop Quick View Background
+				 */
+				array(
+					'name'              => ASTRA_THEME_SETTINGS . '[quick-view-background-color]',
+					'default'           => astra_get_option( 'quick-view-background-color' ),
+					'type'              => 'control',
+					'section'           => 'woocommerce_product_catalog',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'title'             => __( 'Quick View Background', 'astra-addon' ),
+					'priority'          => 228.5,
+					'context'           => array(
+						astra_addon_builder_helper()->design_tab_config,
+					),
+				),
+
+				/**
+				 * Filter flyout background color
+				 */
+				array(
+					'name'              => ASTRA_THEME_SETTINGS . '[filter-background-color]',
+					'default'           => astra_get_option( 'filter-background-color' ),
+					'type'              => 'control',
+					'section'           => 'woocommerce_product_catalog',
+					'control'           => 'ast-color',
+					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_alpha_color' ),
+					'transport'         => 'postMessage',
+					'title'             => __( 'Filter Background', 'astra-addon' ),
+					'priority'          => 228.6,
+					'context'           => array(
+						astra_addon_builder_helper()->design_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[shop-filter-position]', 
+							'operator' => 'contains',
+							'value'    => 'shop-filter-flyout',
+						),
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[shop-toolbar-structure]', 
+							'operator' => 'contains',
+							'value'    => 'filters',
+						),
+					),
 					'divider'           => array( 'ast_class' => 'ast-bottom-spacing' ),
 				),
 
@@ -631,6 +677,19 @@ if ( ! class_exists( 'Astra_Woocommerce_Shop_Configs' ) ) {
 					'section'  => 'woocommerce_product_catalog',
 					'title'    => __( 'Enable Filter Accordion', 'astra-addon' ),
 					'control'  => Astra_Theme_Extension::$switch_control,
+					'priority' => 29,
+				),
+
+				/**
+				 * Option: Blog Reveal Effect.
+				 */
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[shop-reveal-effect]',
+					'default'  => astra_get_option( 'shop-reveal-effect' ),
+					'type'     => 'control',
+					'control'  => Astra_Theme_Extension::$switch_control,
+					'section'  => 'woocommerce_product_catalog',
+					'title'    => __( 'Reveal Effect', 'astra-addon' ),
 					'priority' => 29,
 				),
 

@@ -137,16 +137,26 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Typo_Configs' ) ) {
 					'transport'   => 'postMessage',
 					'title'       => __( 'Font Size', 'astra-addon' ),
 					'control'     => 'ast-responsive-slider',
-					'suffix'      => array( 'px', 'em' ),
+					'suffix'      => array( 'px', 'em', 'vw', 'rem' ),
 					'input_attrs' => array(
-						'px' => array(
+						'px'  => array(
 							'min'  => 0,
 							'step' => 1,
-							'max'  => 100,
+							'max'  => 200,
 						),
-						'em' => array(
+						'em'  => array(
 							'min'  => 0,
 							'step' => 0.01,
+							'max'  => 20,
+						),
+						'vw'  => array(
+							'min'  => 0,
+							'step' => 0.1,
+							'max'  => 25,
+						),
+						'rem' => array(
+							'min'  => 0,
+							'step' => 0.1,
 							'max'  => 20,
 						),
 					),
@@ -216,16 +226,26 @@ if ( ! class_exists( 'Astra_Customizer_Learndash_Typo_Configs' ) ) {
 					'transport'   => 'postMessage',
 					'title'       => __( 'Font Size', 'astra-addon' ),
 					'control'     => 'ast-responsive-slider',
-					'suffix'      => array( 'px', 'em' ),
+					'suffix'      => array( 'px', 'em', 'vw', 'rem' ),
 					'input_attrs' => array(
-						'px' => array(
+						'px'  => array(
 							'min'  => 0,
 							'step' => 1,
-							'max'  => 100,
+							'max'  => 200,
 						),
-						'em' => array(
+						'em'  => array(
 							'min'  => 0,
 							'step' => 0.01,
+							'max'  => 20,
+						),
+						'vw'  => array(
+							'min'  => 0,
+							'step' => 0.1,
+							'max'  => 25,
+						),
+						'rem' => array(
+							'min'  => 0,
+							'step' => 0.1,
 							'max'  => 20,
 						),
 					),

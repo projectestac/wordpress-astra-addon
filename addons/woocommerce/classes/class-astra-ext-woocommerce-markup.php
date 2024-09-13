@@ -91,6 +91,11 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 			add_action( 'wp_ajax_astra_add_cart_single_product_quantity', array( $this, 'astra_add_cart_single_product_quantity' ) );
 			add_action( 'wp_ajax_nopriv_astra_add_cart_single_product_quantity', array( $this, 'astra_add_cart_single_product_quantity' ) );
 
+			if ( defined( 'WC_MIN_MAX_QUANTITIES' ) && apply_filters( 'astra_define_cart_constant', true ) ) {
+				// Cart constant required for slide in cart when WooCommerce Min/Max Quantities is enabled.
+				add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'define_cart_constant' ), 1 );
+			}
+
 			// Register Off Canvas Sidebars / Shop Filters.
 			if ( is_customize_preview() ) {
 				add_action( 'widgets_init', array( $this, 'shop_filters_sidebar' ), 99 );
@@ -109,6 +114,8 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 			add_filter( 'astra_advanced_headers_title_bar_bg', array( $this, 'category_featured_image' ), 10, 2 );
 
 			add_shortcode( 'astra_woo_mini_cart', array( $this, 'astra_woo_mini_cart_markup' ) );
+
+			add_shortcode( 'astra_woo_slide_in_cart', array( $this, 'astra_woo_slide_in_cart_markup' ) );
 
 			// Woocommerce single product sticky.
 			add_action( 'wp', array( $this, 'woo_single_product_sticky' ), 99 );
@@ -137,6 +144,9 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 			// Check if user exist.
 			add_action( 'wp_ajax_nopriv_astra_woo_check_user_exist', array( $this, 'astra_check_user_exist' ) );
 
+			// Localize single product gallery variables.
+			add_filter( 'astra_addon_js_localize', array( $this, 'single_product_gallery_js_localize' ) );
+
 			// Localize cart variables.
 			add_filter( 'astra_addon_js_localize', array( $this, 'cart_js_localize' ) );
 
@@ -153,6 +163,12 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 			add_action( 'template_redirect', array( $this, 'recently_viewed' ), 1 );
 
 			add_action( 'wp', array( $this, 'woocommerce_init' ), 99 );
+
+			// Modify default WooCommerce checkout fields placeholders.
+			add_filter( 'woocommerce_get_country_locale_default', array( $this, 'default_fields_customization' ) );
+
+			// Modify default WooCommerce checkout form fields arguments.
+			add_filter( 'woocommerce_form_field_args', array( $this, 'checkout_form_fields_args_customization' ), 10, 3 );
 		}
 
 		/**
@@ -370,7 +386,28 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 
 			return $output;
 		}
+		/**
+		 * Slide in Cart feature shortcode for WooCommerce cart.
+		 *
+		 * @since 4.4.0
+		 * @return void
+		 */
+		public function astra_woo_slide_in_cart_markup() {
 
+			if ( 'flyout' === astra_get_option( 'woo-header-cart-click-action' ) ) {
+				$output                     = '';
+				$astra_woocommerce_instance = Astra_Woocommerce::get_instance();
+
+				if ( method_exists( $astra_woocommerce_instance, 'woo_mini_cart_markup' ) ) {
+
+					$output  = '<div class="ast-woo-mini-cart-wrapper ast-slidein-cart">';
+					$output .= $astra_woocommerce_instance->woo_mini_cart_markup();
+					$output .= '</div>';
+				}
+
+				return $output;
+			}
+		}
 		/**
 		 * Get Off Canvas Sidebar
 		 *
@@ -469,7 +506,21 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 			$localize['checkout_url']                    = apply_filters( 'astra_woocommerce_checkout_redirect', wc_get_checkout_url() );
 			$localize['add_to_cart_options_single']      = $rt_add_to_cart;
 			$localize['is_astra_pro']                    = astra_has_pro_woocommerce_addon();
+			$localize['shopRevealEffectEnable']          = astra_addon_check_reveal_effect_condition( 'woocommerce' );
 
+			return $localize;
+		}
+
+		/**
+		 * Cart localize
+		 *
+		 * @since 4.6.5
+		 * @param array $localize   JS localize variables.
+		 * @return array
+		 */
+		public function single_product_gallery_js_localize( $localize ) {
+			$localize['single_product_sticky_product_image']            = astra_get_option( 'single-product-sticky-product-image' );
+			$localize['single_product_sticky_product_image_top_offset'] = astra_get_option( 'single-product-sticky-product-image-top-offset' );
 			return $localize;
 		}
 
@@ -676,6 +727,15 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 				$single_product_ajax_add_to_cart = astra_get_option( 'single-product-add-to-cart-action' );
 				$shop_quick_view_enable          = astra_get_option( 'shop-quick-view-enable' );
 				if ( ( $single_product_ajax_add_to_cart && 'default' !== $single_product_ajax_add_to_cart ) || $shop_quick_view_enable ) {
+
+					// Disable Ajax Add to Cart for Composite Products on Single Product Page.
+					if ( defined( 'YITH_WCP' ) && is_singular( array( 'product' ) ) ) {
+						global $post;
+						$product = wc_get_product( $post->ID );
+						if ( ! ( $product->is_type( 'simple' ) || $product->is_type( 'subscription' ) || $product->is_type( 'variable' ) || $product->is_type( 'variable-subscription' ) ) ) {
+							return;
+						}
+					}
 					wp_enqueue_script( 'astra-single-product-ajax-cart', $js_gen_path . 'single-product-ajax-cart' . $file_prefix . '.js', array( 'jquery', 'astra-addon-js' ), ASTRA_EXT_VER, true );
 				}
 			}
@@ -1413,6 +1473,10 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 					$classes[] = 'ast-product-tabs-layout-' . astra_get_option( 'single-product-tabs-layout' );
 				}
 
+				if ( astra_addon_check_reveal_effect_condition( 'woocommerce' ) ) {
+					$classes[] = 'ast-fade-up';
+				}
+
 				$qv_enable = astra_get_option( 'shop-quick-view-enable' );
 
 				if ( 'disabled' !== $qv_enable ) {
@@ -1782,6 +1846,10 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 				Astra_Minify::add_js( $gen_path . 'single-product-gallery' . $file_prefix . '.js' );
 			}
 
+			if ( astra_get_option( 'single-product-sticky-product-image' ) ) {
+				Astra_Minify::add_js( $gen_path . 'sticky-product-image' . $file_prefix . '.js' );
+			}
+
 			if ( astra_get_option( 'shop-filter-accordion' ) ) {
 				Astra_Minify::add_js( $gen_path . 'shop-filters' . $file_prefix . '.js' );
 			}
@@ -2125,8 +2193,13 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 				}
 			}
 
-			// Beaver Builder themer layout.
-			if ( class_exists( 'FLThemeBuilderLoader' ) || class_exists( 'FLThemeBuilderLayoutData' ) ) {
+			// Beaver Builder themer layout.			
+			if ( class_exists( 'FLThemeBuilderLoader' ) ) {
+
+				if ( ! class_exists( 'FLThemeBuilderLayoutData' ) ) {
+					return;
+				}
+				
 				$template_ids = FLThemeBuilderLayoutData::get_current_page_content_ids();
 				if ( ! empty( $template_ids ) ) {
 					$template_id   = $template_ids[0];
@@ -2307,6 +2380,18 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 				10,
 				3
 			);
+		}
+
+		/**
+		 * Define cart constants.
+		 *
+		 * @since 4.3.0
+		 * @param array $fragments Fragments to refresh via AJAX.
+		 * @return array.
+		 */
+		public function define_cart_constant( $fragments ) {
+			wc_maybe_define_constant( 'WOOCOMMERCE_CART', true );
+			return $fragments;
 		}
 
 		/**
@@ -2866,6 +2951,9 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 				if ( isset( $woocommerce->cart->total ) && astra_get_option( 'checkout-modern-checkout-button-price' ) ) {
 					$cart_total             = $woocommerce->cart->total;
 					$cart_total_with_symbol = ' ' . get_woocommerce_currency_symbol() . $cart_total;
+					$formatted_cart_total   = wc_price( $cart_total );
+					$cart_total_with_symbol = ' ' . strip_tags( $formatted_cart_total );
+
 				}
 
 				$is_custom_text = astra_get_option( 'checkout-place-order-text' );
@@ -2879,7 +2967,6 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 
 			return $button_text;
 		}
-
 
 		/**
 		 * Display Payment heading field after coupon code fields.
@@ -3142,7 +3229,12 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 
 							// Remove screen-reader-text class from labels.
 							if ( isset( $fields[ $type ][ $key ]['label_class'] ) ) {
-								$fields[ $type ][ $key ]['label_class'] = array_diff( $fields[ $type ][ $key ]['label_class'], array( 'screen-reader-text' ) );
+								$label_class = $fields[ $type ][ $key ]['label_class'];
+								if ( is_array( $label_class ) ) {
+									$fields[ $type ][ $key ]['label_class'] = array_diff( $label_class, array( 'screen-reader-text' ) );
+								} elseif ( is_string( $label_class ) ) {
+									$fields[ $type ][ $key ]['label_class'] = str_replace( 'screen-reader-text', '', $label_class );
+								}
 							}
 						}
 					}
@@ -3150,6 +3242,50 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 			}
 
 			return $fields;
+		}
+
+		/**
+		 * Modify billing address placeholder.
+		 *
+		 * @param array $fields Checkout fields.
+		 * @since 4.6.8
+		 * @return array
+		 */
+		public function default_fields_customization( $fields ) {
+			if ( is_checkout() && ! is_wc_endpoint_url( 'order-received' ) && 'yes' === get_option( 'woocommerce_checkout_highlight_required_fields' ) && ( astra_get_option( 'checkout-labels-as-placeholders' ) || 'modern' === astra_get_option( 'woo-input-style-type' ) ) ) {
+				if ( isset( $fields['address_1'] ) && $fields['address_1']['required'] ) {
+					$fields['address_1']['placeholder'] .= ' *';
+				}
+
+				if ( isset( $fields['address_2'] ) && $fields['address_2']['required'] ) {
+					$fields['address_2']['placeholder'] .= ' *';
+				}
+			}
+
+			return $fields;
+		}
+
+		/**
+		 * Modify billing country & state placeholder.
+		 *
+		 * @param array $args  Checkout form field arguments.
+		 * @param array $key   Checkout form field key.
+		 * @param array $value Checkout form field value.
+		 * @since 4.6.8
+		 * @return array
+		 */
+		public function checkout_form_fields_args_customization( $args, $key, $value ) {
+			if ( is_checkout() && ! is_wc_endpoint_url( 'order-received' ) && 'yes' === get_option( 'woocommerce_checkout_highlight_required_fields' ) && ( astra_get_option( 'checkout-labels-as-placeholders' ) || 'default' === astra_get_option( 'woo-input-style-type' ) ) ) {
+				if ( 'country' === $args['type'] && 'billing_country' === $key ) {
+					$args['placeholder'] = $args['placeholder'] ? $args['placeholder'] . ' *' : esc_attr__( 'Select a country / region&hellip; *', 'astra-addon' );
+				}
+
+				if ( 'state' === $args['type'] && 'billing_state' === $key ) {
+					$args['placeholder'] = $args['placeholder'] ? $args['placeholder'] . ' *' : esc_attr__( 'Select an option&hellip; *', 'astra-addon' );
+				}
+			}
+
+			return $args;
 		}
 
 		/**
@@ -3256,11 +3392,11 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 				$coupon_apply_text = astra_get_option( 'woo-coupon-apply-text' );
 				?>
 			<div id="ast-checkout-coupon">
-				<p id="ast-coupon-trigger"><?php echo esc_html( $coupon_text ); ?></p>
+				<p id="ast-coupon-trigger" tabindex="0" ><?php echo esc_html( $coupon_text ); ?></p>
 				<div class="coupon">
 				<label class="ast-coupon-label" for="ast-coupon-code" ><?php esc_html_e( 'coupon:', 'astra-addon' ); ?></label>
-					<input type="text" name="ast-coupon-code" id="ast-coupon-code" value="" placeholder="<?php echo esc_attr( $coupon_input_text ); ?>" />
-					<a class="button" id="ast-apply-coupon" name="ast-apply-coupon" value="<?php echo esc_attr( $coupon_apply_text ); ?>">
+					<input type="text" name="ast-coupon-code" id="ast-coupon-code" tabindex="0" value="" placeholder="<?php echo esc_attr( $coupon_input_text ); ?>" />
+					<a class="button" id="ast-apply-coupon" tabindex="0" name="ast-apply-coupon" value="<?php echo esc_attr( $coupon_apply_text ); ?>">
 						<?php echo esc_html( $coupon_apply_text ); ?>
 					</a>
 				</div>
@@ -3579,6 +3715,8 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 
 			$number_of_products      = astra_get_option( 'single-product-related-upsell-per-page' );
 			$recently_viewed_heading = astra_get_option( 'single-product-recently-viewed-text' );
+			$number_of_columns       = astra_get_option( 'single-product-related-upsell-grid' );
+			$number_of_columns       = ! empty( $number_of_columns['desktop'] ) ? $number_of_columns['desktop'] : 4;
 
 			if ( empty( $_COOKIE['woocommerce_recently_viewed'] ) ) {
 				$viewed_products = array();
@@ -3599,7 +3737,7 @@ if ( ! class_exists( 'ASTRA_Ext_WooCommerce_Markup' ) ) {
 			$title       = '<h2>' . esc_html( $recently_viewed_heading ) . '</h2>';
 			$product_ids = implode( ',', array_reverse( $viewed_products ) );
 
-			echo do_shortcode( $title . "[products ids='$product_ids' orderby='post__in' limit='$number_of_products']" );
+			echo do_shortcode( '<section class="related products">' . $title . "[products ids='$product_ids' orderby='post__in' limit='$number_of_products' columns='$number_of_columns']" . '</section>' );
 		}
 
 		/**
