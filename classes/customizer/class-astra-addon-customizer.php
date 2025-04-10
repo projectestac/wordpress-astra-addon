@@ -6,7 +6,7 @@
  * @since 1.0.0
  */
 
-if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
+if ( ! class_exists( 'Astra_Addon_Customizer' ) ) {
 
 	/**
 	 * Astra_Addon_Customizer
@@ -14,7 +14,6 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 	 * @since 1.0.0
 	 */
 	class Astra_Addon_Customizer {
-
 		/**
 		 * Instance
 		 *
@@ -44,11 +43,14 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 		 * @since 1.4.0
 		 */
 		public function __construct() {
+			// Bail early if it is not astra customizer.
+			if ( is_callable( 'Astra_Customizer::is_astra_customizer()' ) && ! Astra_Customizer::is_astra_customizer() ) {
+				return;
+			}
 
 			add_action( 'customize_register', array( $this, 'customize_register' ) );
 			add_action( 'customize_controls_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 			add_action( 'customize_register', array( $this, 'customize_register_new' ), 3 );
-
 		}
 
 		/**
@@ -60,7 +62,6 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 		public function customize_register_new( $wp_customize ) {
 
 			require ASTRA_EXT_DIR . 'classes/customizer/class-astra-customizer-notices-configs.php';
-
 		}
 
 		/**
@@ -89,7 +90,6 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 
 			// Control Class files.
 			require ASTRA_EXT_DIR . 'classes/customizer/controls/class-astra-control-customizer-refresh.php';
-
 		}
 
 		/**
@@ -252,9 +252,7 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 		 */
 		public function enqueue_scripts() {
 
-			$dir_name    = ( SCRIPT_DEBUG ) ? 'unminified' : 'minified';
-			$file_prefix = ( SCRIPT_DEBUG ) ? '' : '.min';
-			$js_uri      = ASTRA_EXT_URI . 'classes/customizer/assets/js/';
+			$js_uri = ASTRA_EXT_URI . 'classes/customizer/assets/js/';
 
 			wp_enqueue_style( 'ast-ext-admin-settings', ASTRA_EXT_URI . 'admin/assets/css/customizer-controls.css', array(), ASTRA_EXT_VER );
 
@@ -287,6 +285,7 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 				);
 
 				wp_enqueue_script( 'astra-addon-custom-control-react-script', ASTRA_EXT_URI . 'classes/customizer/extend-controls/build/index.js', $custom_controls_react_deps, ASTRA_EXT_VER, true );
+				wp_set_script_translations( 'astra-addon-custom-control-react-script', 'astra-addon' );
 			}
 		}
 	}
@@ -296,4 +295,4 @@ if ( ! class_exists( 'Astra_Addon_Customizer' ) ) :
 	 */
 	Astra_Addon_Customizer::get_instance();
 
-endif;
+}

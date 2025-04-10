@@ -10,7 +10,7 @@
 		astShopLoadMore			= document.querySelector('.ast-shop-load-more');
 
 	//	Is 'infinite' pagination?
-	if( typeof pagination != '' && pagination == 'infinite' ) {
+	if ( typeof pagination === 'string' && pagination === 'infinite' ) {
 
 		var in_customizer = false;
 
@@ -24,23 +24,22 @@
 			}
 		}
 
-		if(	typeof infinite_event != '' ) {
+		if ( typeof infinite_event === 'string' ) {
 			switch( infinite_event ) {
 				case 'click':
-					if(astShopLoadMore){
-						astShopLoadMore.addEventListener('click',function(event) {
+					document.body.addEventListener('click',function(event) {
+						if (event.target && event.target.classList.contains('ast-shop-load-more')) {
 							event.preventDefault();
-							//	For Click
+							// Added check if count and total are properly defined.
 							if( count != 'undefined' && count != ''&& total != 'undefined' && total != '' ) {
-								if ( count > total )
+								if ( count > total ) {
 									return false;
-									NextloadArticles(count);
-									count++;
 								}
-							});
-
-					}
-
+								NextloadArticles(count);
+								count++;
+							}
+						}
+					});
 					break;
 
 				case "scroll":
@@ -75,7 +74,7 @@
 		 *
 		 * Perform masonry operations.
 		 */
-		function NextloadArticles(pageNumber) {
+		const NextloadArticles = (pageNumber) => {
 			if( astShopLoadMore ){
 				astShopLoadMore.classList.remove('active');
 			}
@@ -108,8 +107,6 @@
 					for (var boxCount = 0; boxCount < boxes.length; boxCount++) {
 						productContainer.append(boxes[boxCount]);
 					}
-
-					var grid_layout 	= astra.grid_layout || '3';
 
 					// Add grid classes
 					var msg = astra.shop_no_more_post_message || '';

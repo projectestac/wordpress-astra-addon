@@ -312,7 +312,6 @@ if ( ! class_exists( 'Astra_Ext_Typography_Loader' ) ) {
 				Astra_Fonts::add_font( $footer_lang_switcher_font_family, $footer_lang_switcher_font_weight );
 
 			}
-
 		}
 
 		/**
@@ -323,7 +322,7 @@ if ( ! class_exists( 'Astra_Ext_Typography_Loader' ) ) {
 		 */
 		public function theme_defaults( $defaults ) {
 
-			$astra_options                       = is_callable( 'Astra_Theme_Options::get_astra_options' ) ? Astra_Theme_Options::get_astra_options() : get_option( ASTRA_THEME_SETTINGS );
+			$astra_options                       = astra_get_options();
 			$apply_new_default_color_typo_values = is_callable( 'Astra_Dynamic_CSS::astra_check_default_color_typo' ) ? Astra_Dynamic_CSS::astra_check_default_color_typo() : false;
 			$blog_improvements                   = astra_addon_4_6_0_compatibility();
 
@@ -694,8 +693,8 @@ if ( ! class_exists( 'Astra_Ext_Typography_Loader' ) ) {
 		/**
 		 * Prepare Social Icons Defaults.
 		 *
-		 * @param array   $defaults defaults.
-		 * @param integer $index index.
+		 * @param array $defaults defaults.
+		 * @param int   $index index.
 		 * @return array
 		 * @since 3.1.0
 		 */
@@ -805,6 +804,6 @@ if ( ! class_exists( 'Astra_Ext_Typography_Loader' ) ) {
 }
 
 /**
-* Kicking this off by calling 'get_instance()' method
-*/
+ * Kicking this off by calling 'get_instance()' method
+ */
 Astra_Ext_Typography_Loader::get_instance();

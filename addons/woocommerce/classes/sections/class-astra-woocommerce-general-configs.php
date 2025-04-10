@@ -37,9 +37,9 @@ if ( ! class_exists( 'Astra_Woocommerce_General_Configs' ) ) {
 		 */
 		public function register_configuration( $configurations, $wp_customize ) {
 
-			$_section = ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ? 'section-header-woo-cart' : 'section-woo-shop-cart';
+			$_section = true === astra_addon_builder_helper()->is_header_footer_builder_active ? 'section-header-woo-cart' : 'section-woo-shop-cart';
 
-			$context = ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) ? astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab;
+			$context = true === astra_addon_builder_helper()->is_header_footer_builder_active ? astra_addon_builder_helper()->design_tab : astra_addon_builder_helper()->general_tab;
 
 			$_configs = array(
 
@@ -603,8 +603,8 @@ if ( ! class_exists( 'Astra_Woocommerce_General_Configs' ) ) {
 				),
 
 				/**
-				* Option: Woo cart empty featured product
-				*/
+				 * Option: Woo cart empty featured product
+				 */
 				array(
 					'name'        => ASTRA_THEME_SETTINGS . '[woo-cart-empty-featured-product]',
 					'default'     => astra_get_option( 'woo-cart-empty-featured-product' ),
@@ -613,6 +613,20 @@ if ( ! class_exists( 'Astra_Woocommerce_General_Configs' ) ) {
 					'section'     => $_section,
 					'title'       => __( 'Show Featured Product', 'astra-addon' ),
 					'description' => __( 'Show featured product inside flyout cart when cart is empty', 'astra-addon' ),
+					'priority'    => 59,
+				),
+
+				/**
+				 * Option: Option to Disable Quantity input fields from the mini cart.
+				 */
+				array(
+					'name'        => ASTRA_THEME_SETTINGS . '[woo-mini-cart-input-field-disable]',
+					'default'     => astra_get_option( 'woo-mini-cart-input-field-disable' ),
+					'type'        => 'control',
+					'control'     => Astra_Theme_Extension::$switch_control,
+					'section'     => $_section,
+					'title'       => __( 'Disable Quantity Updater', 'astra-addon' ),
+					'description' => __( 'Disable quantity updater fields in mini cart', 'astra-addon' ),
 					'priority'    => 59,
 				),
 
@@ -789,18 +803,14 @@ if ( ! class_exists( 'Astra_Woocommerce_General_Configs' ) ) {
 						'priority'  => 55,
 						'control'   => Astra_Theme_Extension::$switch_control,
 						'context'   => astra_addon_builder_helper()->general_tab,
-						'divider'   => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? array( 'ast_class' => 'ast-bottom-divider' ) : array(),
+						'divider'   => true === Astra_Builder_Helper::$is_header_footer_builder_active ? array( 'ast_class' => 'ast-bottom-divider' ) : array(),
 					),
 				);
 			}
 
-			$configurations = array_merge( $configurations, $_configs );
-
-			return $configurations;
-
+			return array_merge( $configurations, $_configs );
 		}
 	}
 }
-
 
 new Astra_Woocommerce_General_Configs();

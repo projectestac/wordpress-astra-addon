@@ -18,7 +18,6 @@ if ( ! class_exists( 'Astra_Addon_Theme_Builder' ) ) {
 	 * @since 4.5.0
 	 */
 	class Astra_Addon_Theme_Builder extends WP_REST_Controller {
-
 		/**
 		 * Member Variable
 		 *
@@ -119,6 +118,7 @@ if ( ! class_exists( 'Astra_Addon_Theme_Builder' ) ) {
 			);
 
 			wp_localize_script( 'astra-theme-builder-script', 'astra_theme_builder', $localized_data );
+			wp_set_script_translations( 'astra-theme-builder-script', 'astra-addon' );
 
 			if ( ! get_post_type() ) {
 				/**
@@ -132,6 +132,7 @@ if ( ! class_exists( 'Astra_Addon_Theme_Builder' ) ) {
 						'displayRules'        => Astra_Target_Rules_Fields::get_location_selections(),
 						'singleDisplayRules'  => Astra_Target_Rules_Fields::get_location_selections( 'single' ),
 						'archiveDisplayRules' => Astra_Target_Rules_Fields::get_location_selections( 'archive' ),
+						'ajax_nonce'          => wp_create_nonce( 'astra-addon-get-posts-by-query' ),
 					)
 				);
 			}
@@ -149,7 +150,6 @@ if ( ! class_exists( 'Astra_Addon_Theme_Builder' ) ) {
 			$classes            .= ' ' . $theme_builder_class . ' ';
 
 			return $classes;
-
 		}
 
 		/**
@@ -260,9 +260,6 @@ if ( ! class_exists( 'Astra_Addon_Theme_Builder' ) ) {
 				// Get the author's avatar URL
 				$author_avatar_url = get_avatar_url( $author_id );
 
-				// Get the post link
-				$post_link = get_permalink( $post->ID );
-
 				// Generate the edit link manually
 				$edit_post_link = admin_url( 'post.php?post=' . $post->ID . '&action=edit' );
 
@@ -304,7 +301,7 @@ if ( ! class_exists( 'Astra_Addon_Theme_Builder' ) ) {
 		 *
 		 * @since 4.5.0
 		 * @param  WP_REST_Request $request Full details about the request.
-		 * @return WP_Error|boolean
+		 * @return WP_Error|bool
 		 */
 		public function get_permissions_check( $request ) {
 			if ( ! current_user_can( 'edit_theme_options' ) ) {
@@ -318,19 +315,19 @@ if ( ! class_exists( 'Astra_Addon_Theme_Builder' ) ) {
 		 *
 		 * @since 4.5.0
 		 * @param  WP_REST_Request $request Full details about the request.
-		 * @return WP_Error|boolean
+		 * @return WP_Error|bool
 		 */
 		public function delete_custom_layout( $request ) {
 			$post_id = $request['id'];
 			if ( get_post_status( $post_id ) ) {
 				if ( ! current_user_can( 'delete_post', $post_id ) ) {
-					wp_die( __( 'Sorry, you are not allowed to move this item to the Trash.', 'astra-addon' ) );
+					wp_die( esc_html__( 'Sorry, you are not allowed to move this item to the Trash.', 'astra-addon' ) );
 				}
 				wp_trash_post( $post_id );
 				return new WP_REST_Response( array( 'message' => 'Post deleted successfully' ), 200 );
-			} else {
-				return new WP_Error( 'post_not_found', 'Post not found', array( 'status' => 404 ) );
 			}
+
+			return new WP_Error( 'post_not_found', 'Post not found', array( 'status' => 404 ) );
 		}
 
 		/**
@@ -338,19 +335,19 @@ if ( ! class_exists( 'Astra_Addon_Theme_Builder' ) ) {
 		 *
 		 * @since 4.5.0
 		 * @param  WP_REST_Request $request Full details about the request.
-		 * @return WP_Error|boolean
+		 * @return WP_Error|bool
 		 */
 		public function delete_permissions_check( $request ) {
 			$post_id = $request['id'];
 			if ( current_user_can( 'delete_post', $post_id ) ) {
 				return true;
-			} else {
-				return new WP_Error(
-					'rest_forbidden',
-					__( 'You do not have permission to delete this item.', 'astra-addon' ),
-					array( 'status' => 403 )
-				);
 			}
+
+			return new WP_Error(
+				'rest_forbidden',
+				__( 'You do not have permission to delete this item.', 'astra-addon' ),
+				array( 'status' => 403 )
+			);
 		}
 
 		/**
@@ -367,11 +364,13 @@ if ( ! class_exists( 'Astra_Addon_Theme_Builder' ) ) {
 
 			if ( $is_uagb_installed && ! $is_spectra_pro ) {
 				return 'spectra';
-			} elseif ( $is_elementor_installed && ! $is_uael_installed ) {
-				return 'uae_pro';
-			} else {
-				return '';
 			}
+
+			if ( $is_elementor_installed && ! $is_uael_installed ) {
+				return 'uae_pro';
+			}
+
+			return '';
 		}
 
 		/**
@@ -388,7 +387,7 @@ if ( ! class_exists( 'Astra_Addon_Theme_Builder' ) ) {
 				if ( isset( $_GET['type'] ) ) {
 					return;
 				}
-				wp_redirect( admin_url( 'admin.php?page=theme-builder&path=create-new' ) );
+				wp_safe_redirect( admin_url( 'admin.php?page=theme-builder&path=create-new' ) );
 				exit;
 			}
 		}
@@ -466,7 +465,7 @@ if ( ! class_exists( 'Astra_Addon_Theme_Builder' ) ) {
 						}
 					}
 				} elseif ( 'archive' === $template_type ) {
-					$display_rule = $display_conditions['rule'];
+					$display_rule = isset( $display_conditions['rule'] ) ? $display_conditions['rule'] : array();
 					if ( isset( $display_rule ) && isset( $display_rule[0] ) ) {
 						$display_rule = $display_rule[0];
 

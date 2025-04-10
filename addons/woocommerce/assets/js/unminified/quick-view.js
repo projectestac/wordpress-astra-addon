@@ -57,6 +57,17 @@
 				on_img_click_els.forEach(element => {
 					element.removeEventListener('click', AstraProQuickView._open_quick_view );
 					element.addEventListener('click', AstraProQuickView._open_quick_view );
+
+					 // Added keyboard event handling.
+					 element.addEventListener('keydown', (event) => {
+						if (event.key === 'Enter' || event.key === ' ') {
+							event.preventDefault();
+							AstraProQuickView._open_quick_view(event);
+						}
+					});
+					
+					element.setAttribute('tabindex', '0');
+
 				});
 			}
 
@@ -115,7 +126,7 @@
 			xhrRequest.send( 'action=ast_load_product_quick_view&product_id= ' + product_id );
 			xhrRequest.responseType = 'text';
 			xhrRequest.onreadystatechange = function () {
-				const string = xhrRequest.responseText;
+				const string = DOMPurify.sanitize( xhrRequest.responseText );
 
 				if ( xhrRequest.readyState == XMLHttpRequest.DONE ) {   // XMLHttpRequest.DONE == 4
 					if ( 200 <= xhrRequest.status || 400 <= xhrRequest.status ) {
@@ -130,6 +141,13 @@
 						});
 						document.dispatchEvent(loadAstraQuickViewForModal);
 						AstraProQuickView._after_markup_append_process();
+
+						// Focus into the modal content.
+						setTimeout(
+							() =>
+								quick_view?.querySelector('#ast-quick-view-content')?.focus(),
+							500
+						);
 					}
 				}
 			}
@@ -193,9 +211,16 @@
 						image_slider_wrap.flexslider();
 
 						try {
-								productVariation(image_slider_wrap);
+							productVariation(image_slider_wrap);
+						} catch (err) {
+							console.error('Error initializing product variations with image slider:', err);
 						}
-						catch(err) {
+					} else {
+						try {
+							// Removed Image-Slider Dependency.
+							productVariation(quick_view_box);
+						} catch (err) {
+							console.error('Error initializing product variations without image slider:', err);
 						}
 
 					}
@@ -278,13 +303,24 @@
 						// Stick Class.
 						quick_view.querySelector('.cart').classList.add('stick');
 
+						// Wrap the quantity and add to cart button to stick them at bottom.
+						const quantityElement = quick_view?.querySelector( '.quantity' );
+						const addToCartButton = quick_view?.querySelector( '.button[type="submit"]' );
+						const wrapper = document.createElement( 'div' );
+						wrapper.classList.add( 'sticky-add-to-cart' );
+						quantityElement && wrapper.appendChild( quantityElement );
+						addToCartButton && wrapper.appendChild( addToCartButton );
+
+						quick_view?.querySelector( '.cart ')?.appendChild( wrapper );
+
 						// Recalculate the outer heights,
 						// Because, These are change after adding `stick` class to the form.
-						popup_height   = document.querySelector('#ast-quick-view-content').getBoundingClientRect().height;
-						cart_height    = quick_view.querySelector('.cart').getBoundingClientRect().height;
-						summery_height = parseFloat(popup_height) - parseFloat(cart_height);
+						popup_height   = document.querySelector( '#ast-quick-view-content' ).getBoundingClientRect().height;
+						cart_height    = quick_view.querySelector( '.sticky-add-to-cart' ).getBoundingClientRect().height;
+						summery_height = parseFloat( popup_height ) - parseFloat( cart_height );
 
 						summary.style.maxHeight = parseFloat(summery_height) + 'px';
+						summary.style.marginBottom = ( wrapper.getBoundingClientRect()?.height || 0 ) + 'px';
 
 					} else {
 

@@ -57,11 +57,20 @@ function onColorReady() {
 // Old code modified to work with current implementation.
 
 (function ($) {
+	const abortController = { current: null };
 	document.addEventListener("astra_mega_menu_loaded", function (event) {
 		renderSavedWidgets(event.detail.menu_id);
 		select2Init();
 		onColorReady();
 	});
+
+	// This event listener is triggered when the mega menu is unmounted.
+	// It checks if there's an ongoing request and aborts it if found.
+	document.addEventListener( 'astra_mega_menu_unmounted', () => {
+		if ( abortController.current ) {
+			abortController.current?.abort();
+		}
+	} );
 
 	document.addEventListener("astra_mega_menu_widget_event", function (event) {
 		dropWidget(event.detail.menu_id);
@@ -88,45 +97,78 @@ function onColorReady() {
 
 		$.post(ajaxurl, data, function (response) {
 			var widget_html = $(response.data);
-			container.find(".ast-widget-list").append(widget_html);
-			$(".widget-action").unbind();
+			widget_html?.each((_, element) => container.find(".ast-widget-list").append(DOMPurify.sanitize(element)));
+
+			$(".widget-action").off();
+
 			$(".widget-action").on("click", editWidget);
-			$("#mega-menu-submit").removeClass('ast-disabled')
+			$("#mega-menu-submit").removeClass('ast-disabled');
 		});
 	}
 
-	function renderSavedWidgets(menu_item_id) {
-		const container = $(".astra-mm-options-wrap");
+	function renderSavedWidgets( menu_item_id ) {
+		const container = $( '.astra-mm-options-wrap' );
 
-		var data = {
-			action: "ast_render_widgets",
+		// Abort any ongoing request before starting a new one.
+		if ( abortController.current ) {
+			abortController.current?.abort();
+		}
+
+		// Create a new AbortController for this request.
+		abortController.current = new AbortController();
+
+		const data = {
+			action: 'ast_render_widgets',
 			menu_item_id: menu_item_id,
 			security_nonce: AstraBuilderMegaMenu.nonceWidget,
 		};
 
-		$.post(ajaxurl, data, function (response) {
-			var widget_html = response.data.html;
-			var has_widgets = response.data.has_widgets;
+		// Convert data to URL-encoded format
+		const params = new URLSearchParams( data ).toString();
 
-			if (has_widgets) {
-				$(".ast-widget-list").show();
-			}
-
-			container.find(".ast-widget-list").html(widget_html);
-
-			$("#ast-widget-sortable").sortable({
-				change: function (event, ui) {
-					$("#mega-menu-submit").removeClass('ast-disabled');
+		// Using fetch instead of $.post() to make use of the AbortController.
+		fetch( ajaxurl, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			body: params,
+			signal: abortController.current?.signal,
+		} )
+			.then( ( response ) => {
+				if ( ! response.ok ) {
+					throw new Error( 'Network response was not ok!' );
 				}
-			});
+				return response.json();
+			} )
+			.then( ( response ) => {
+				const widgetHTML = response.data.html;
+				const hasWidgets = response.data.has_widgets;
 
-			$("#ast-widget-sortable").disableSelection();
+				if ( hasWidgets ) {
+					$( '.ast-widget-list' ).show();
+				}
 
-			$(".widget-action").unbind();
+				container.find( '.ast-widget-list' ).html( DOMPurify.sanitize( widgetHTML ) );
 
-			$(".widget-action").on("click", editWidget);
+				$( '#ast-widget-sortable' ).sortable( {
+					change: function ( event, ui ) {
+						$( '#mega-menu-submit' ).removeClass( 'ast-disabled' );
+					},
+				} );
 
-		});
+				$( '#ast-widget-sortable' ).disableSelection();
+
+				$( '.widget-action' ).off();
+
+				$( '.widget-action' ).on( 'click', editWidget );
+			} )
+			.catch( ( error ) => {
+				if ( error.name === 'AbortError' ) {
+					return;
+				}
+				console.error( 'Fetch error: ', error );
+			} );
 	}
 
 	function editWidget() {
@@ -144,7 +186,14 @@ function onColorReady() {
 
 		if (!widget.hasClass("open") && !widget.data("loaded")) {
 			$.post(ajaxurl, data, function (response) {
-				widget_inner.html(response.data);
+				// Configure DOMPurify to allow the name="action" attribute on input elements.
+				DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+					if (node.nodeName === 'INPUT' && node?.hasAttribute('value') && node?.getAttribute('value') === 'ast_save_widget') {
+						node?.setAttribute('name', 'action');
+					}
+				});
+
+				widget_inner.html(DOMPurify.sanitize(response.data));
 
 				widget.data("loaded", true).toggleClass("open");
 

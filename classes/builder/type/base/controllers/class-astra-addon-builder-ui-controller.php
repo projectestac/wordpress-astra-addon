@@ -16,7 +16,6 @@ if ( ! class_exists( 'Astra_Addon_Builder_UI_Controller' ) ) {
 	 * Class Astra_Addon_Builder_UI_Controller.
 	 */
 	final class Astra_Addon_Builder_UI_Controller {
-
 		/**
 		 * Astra Flags SVGs.
 		 *
@@ -82,7 +81,7 @@ if ( ! class_exists( 'Astra_Addon_Builder_UI_Controller' ) ) {
 						if ( ! empty( $languages ) ) {
 							?>
 
-							<nav class="ast-builder-language-switcher" aria-label="<?php _e( 'Language Switcher', 'astra-addon' ); ?>"><ul class="ast-builder-language-switcher-menu">
+							<nav class="ast-builder-language-switcher" aria-label="<?php esc_html_e( 'Language Switcher', 'astra-addon' ); ?>"><ul class="ast-builder-language-switcher-menu">
 							<?php foreach ( $languages as $language ) { ?>
 								<li class="ast-builder-language-switcher-menu-item-<?php echo esc_attr( $builder_type ); ?>">
 
@@ -108,24 +107,57 @@ if ( ! class_exists( 'Astra_Addon_Builder_UI_Controller' ) ) {
 										<?php } ?>
 									</a>
 								</li>
-								<?php } ?>
+							<?php } ?>
 							</ul></nav>
+							<?php
+						}
+					} elseif ( 'polylang' === $lang_type && is_callable( 'pll_the_languages' ) ) {
+						// Polylang languages items.
+						$languages = pll_the_languages( array( 'raw' => true ) );
+						$show_code = astra_get_option( $index . '-show-code' );
+
+						if ( ! empty( $languages ) ) {
+							?>
+							<nav class="ast-builder-language-switcher" aria-label="<?php esc_html_e( 'Language Switcher', 'astra-addon' ); ?>">
+								<ul class="ast-builder-language-switcher-menu">
+									<?php foreach ( $languages as $language ) { ?>
+										<li class="ast-builder-language-switcher-menu-item-<?php echo esc_attr( $builder_type ); ?>">
+											<?php $current_class = isset( $language['current_lang'] ) && '1' === $language['current_lang'] ? 'ast-builder-language-switcher-item__active' : ''; ?>
+
+											<a href="<?php echo esc_url( $language['url'] ); ?>" class="ast-builder-language-switcher-item <?php echo esc_attr( $current_class ); ?>">
+												<?php if ( $show_flag ) { ?>
+													<span class="ast-lswitcher-item-<?php echo esc_attr( $builder_type ); ?>">
+														<img src="<?php echo esc_url( $language['flag'] ); ?>" alt="<?php echo esc_attr( $language['slug'] ); ?>" width="18" height="12" />
+													</span>
+												<?php } ?>
+
+												<?php if ( $show_label ) { ?>
+													<span class="ast-lswitcher-item-<?php echo esc_attr( $builder_type ); ?> ast-builder-language-switcher-native-name"><?php echo esc_html( $language['name'] ); ?></span>
+												<?php } ?>
+
+												<?php if ( $show_code ) { ?>
+													<span class="ast-lswitcher-item-<?php echo esc_attr( $builder_type ); ?> ast-builder-language-switcher-language-code"><?php echo '('; ?><?php echo esc_html( $language['slug'] ); ?><?php echo ')'; ?></span>
+												<?php } ?>
+											</a>
+										</li>
+									<?php } ?>
+								</ul>
+							</nav>
 							<?php
 						}
 					} else {
 
-						$items      = astra_get_option( $index . '-options' );
-						$items      = isset( $items['items'] ) ? $items['items'] : array();
-						$image_link = '';
+						$items = astra_get_option( $index . '-options' );
+						$items = isset( $items['items'] ) ? $items['items'] : array();
 
 						if ( is_array( $items ) && ! empty( $items ) ) {
 							?>
-							<nav class="ast-builder-language-switcher" aria-label="<?php _e( 'Language Switcher', 'astra-addon' ); ?>"><ul class="ast-builder-language-switcher-menu">
+							<nav class="ast-builder-language-switcher" aria-label="<?php esc_html_e( 'Language Switcher', 'astra-addon' ); ?>"><ul class="ast-builder-language-switcher-menu">
 								<?php
 								foreach ( $items as $item ) {
 									if ( $item['enabled'] ) {
 
-										$link = ( '' !== $item['url'] ) ? $item['url'] : '';
+										$link = '' !== $item['url'] ? $item['url'] : '';
 										?>
 										<li class="ast-builder-language-switcher-menu-item-<?php echo esc_attr( $builder_type ); ?>">
 											<a href="<?php echo esc_url( $link ); ?>" aria-label="<?php echo esc_attr( $item['label'] ); ?>" class="ast-builder-language-switcher-item">

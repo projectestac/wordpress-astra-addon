@@ -112,7 +112,7 @@ body #ast-quick-view-modal div.product .flex-viewport {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80%;
+  width: max(80%, 800px);
 }
 
 #ast-quick-view-modal .ast-content-main-wrapper:before {
@@ -145,7 +145,7 @@ body #ast-quick-view-modal div.product .flex-viewport {
 #ast-quick-view-modal .ast-lightbox-content {
   display: table;
   pointer-events: auto;
-  background-color: #fff;
+  background-color: var(--ast-global-color-5);
   margin: 0 auto;
   box-shadow: 3px 3px 20px 0 rgba(0, 0, 0, 0.15);
   position: relative;
@@ -367,6 +367,7 @@ body #ast-quick-view-modal div.product .flex-viewport {
 
 .woocommerce #ast-quick-view-modal div.product form.cart .button.single_add_to_cart_button {
   padding: 10px 20px;
+  height: 40px;
 }
 
 .woocommerce #ast-quick-view-modal div.product form.cart .button.single_add_to_cart_button.loading {

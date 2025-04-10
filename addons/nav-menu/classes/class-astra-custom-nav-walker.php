@@ -127,16 +127,16 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 				if ( isset( $this->megamenu_heading_color_group ) && '' != $this->megamenu_heading_color_group ) {
 
 					$this->megamenu_heading_color_group = maybe_unserialize( $this->megamenu_heading_color_group );
-					
+
 					if ( isset( $this->megamenu_heading_color_group['normal'] ) && $this->megamenu_heading_color_group['normal'] ) {
 
-						$style[ '.ast-desktop li.astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .menu-item-heading > .menu-link' ] = array(
+						$style[ '.ast-desktop .ast-mega-menu-enabled li.astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-megamenu .menu-item-heading.menu-item-has-children > .menu-link' ] = array(
 							'color' => $this->megamenu_heading_color_group['normal'],
 						);
 					}
 
 					if ( isset( $this->megamenu_heading_color_group['hover'] ) && $this->megamenu_heading_color_group['hover'] ) {
-						$style[ '.ast-desktop li.astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .menu-item-heading > .menu-link:hover' ] = array(
+						$style[ '.ast-desktop .ast-mega-menu-enabled li.astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-megamenu .menu-item-heading.menu-item-has-children > .menu-link:hover' ] = array(
 							'color' => $this->megamenu_heading_color_group['hover'],
 						);
 					}
@@ -166,7 +166,7 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 
 					$megamenu_custom_width = $this->megamenu_custom_width;
 
-					$megamenu_custom_width = ( isset( $megamenu_custom_width ) && ! empty( $megamenu_custom_width ) ) ? $megamenu_custom_width : 1200;
+					$megamenu_custom_width = isset( $megamenu_custom_width ) && ! empty( $megamenu_custom_width ) ? $megamenu_custom_width : 1200;
 
 					$style[ '.ast-desktop .astra-megamenu-li.menu-item-' . $this->menu_megamenu_item_id . ' .astra-mega-menu-width-custom:before' ] = array(
 						'content' => '"' . $megamenu_custom_width . '"',
@@ -197,7 +197,7 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 
 				if ( 'full' === $this->megamenu_width || 'full-stretched' === $this->megamenu_width ) {
 					// Adding "hidden" class to fix the visibility issue during page load.
-					$output .= "\n$indent<div " . astra_attr(
+					$output .= "\n{$indent}<div " . astra_attr(
 						'ast-megamenu-full-attr',
 						array(
 							'class' => 'astra-full-megamenu-wrapper ast-hidden' . esc_attr( $megamenu_divider_class ),
@@ -205,7 +205,7 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 					) . ">\n";
 				}
 				// Adding "hidden" class to fix the visibility issue during page load.
-				$output .= "\n$indent<ul " . astra_attr(
+				$output .= "\n{$indent}<ul " . astra_attr(
 					'ast-megamenu-attr',
 					array(
 						'class' => "astra-megamenu sub-menu astra-mega-menu-width-{$this->megamenu_width}" . esc_attr( $megamenu_divider_class ) . ' ast-hidden',
@@ -213,9 +213,9 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 				) . ">\n";
 
 			} elseif ( 2 <= $depth && '' != $this->megamenu ) {
-				$output .= "\n$indent<ul class='astra-nested-sub-menu sub-menu'\">\n";
+				$output .= "\n{$indent}<ul class='astra-nested-sub-menu sub-menu'\">\n";
 			} else {
-				$output .= "\n$indent<ul class=\"sub-menu\">\n";
+				$output .= "\n{$indent}<ul class=\"sub-menu\">\n";
 			}
 		}
 
@@ -243,7 +243,7 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 		 */
 		public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
 
-			$indent    = ( $depth ) ? str_repeat( "\t", $depth ) : '';
+			$indent    = $depth ? str_repeat( "\t", $depth ) : '';
 			$post_meta = get_post_meta( $item->ID );
 
 			if ( 0 === $depth ) {
@@ -401,11 +401,11 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 			$item_output  = $args->before;
 			$link_classes = array();
 
-			if ( 'disable-link' === $item->megamenu_disable_link ) {
+			if ( isset( $item->megamenu_disable_link ) && 'disable-link' === $item->megamenu_disable_link ) {
 				$link_classes[] = 'ast-disable-link';
 			}
 
-			if ( 'disable-title' === $item->megamenu_disable_title ) {
+			if ( isset( $item->megamenu_disable_title ) && 'disable-title' === $item->megamenu_disable_title ) {
 				$link_classes[] = 'ast-hide-menu-item';
 			}
 
@@ -435,9 +435,9 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 			$attributes = '';
 			foreach ( $atts as $attr => $value ) {
 				if ( ! empty( $value ) ) {
-					$value = ( 'href' === $attr ) ? esc_url( $value ) : esc_attr( $value );
+					$value = 'href' === $attr ? esc_url( $value ) : esc_attr( $value );
 
-					if ( 'href' === $attr && 'disable-link' === $item->megamenu_disable_link ) {
+					if ( 'href' === $attr && isset( $item->megamenu_disable_link ) && 'disable-link' === $item->megamenu_disable_link ) {
 						$value = 'javascript:void(0)';
 					}
 					if ( 'class' !== $attr ) {
@@ -464,7 +464,7 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 			// Wrap menu text in a span tag.
 			$title = '<span class="menu-text">' . $title . '</span>';
 
-			$mega_menu_tag = 'disable-link' === $item->megamenu_disable_link ? 'span' : 'a';
+			$mega_menu_tag = isset( $item->megamenu_disable_link ) && 'disable-link' === $item->megamenu_disable_link ? 'span' : 'a';
 
 			$item_output .= '<' . $mega_menu_tag . $attributes . ' class="' . $atts['class'] . '">';
 
@@ -500,11 +500,12 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 				$mm_image                         = '';
 
 				if ( 'icon' === $mm_megamenu_icon_source ) {
-					$mm_image = ( class_exists( 'Astra_Builder_UI_Controller' ) && $mm_megamenu_icon ) ? Astra_Builder_UI_Controller::fetch_svg_icon( $mm_megamenu_icon, false ) : '';
+					$mm_image = class_exists( 'Astra_Builder_UI_Controller' ) && $mm_megamenu_icon ? Astra_Builder_UI_Controller::fetch_svg_icon( $mm_megamenu_icon, false ) : '';
 				}
 
 				if ( 'image' === $mm_megamenu_icon_source ) {
-					$mm_image = $mm_megamenu_image ? '<img src="' . $mm_megamenu_image . '" alt="mm-ast-icon">' : '';
+					$alt_text = 'mm-ast-icon-' . $item->ID;
+					$mm_image = $mm_megamenu_image ? '<img src="' . $mm_megamenu_image . '" alt="' . esc_attr( $alt_text ) . '">' : '';
 				}
 
 				$icon_array_slug        = '.ast-desktop .menu-item-' . $item->ID . ' .astra-mm-icon-label.icon-item-' . $item->ID;
@@ -574,6 +575,12 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 				if ( $mm_megamenu_icon_primary_color ) {
 					$icon_style[ $icon_array_slug_svg ]['color'] = $mm_megamenu_icon_primary_color;
 					$icon_style[ $icon_array_slug_svg ]['fill']  = $mm_megamenu_icon_primary_color;
+
+					// Allowing uploaded Images/SVG icons to inherit color settings.
+					if ( 'unset' !== $mm_megamenu_icon_primary_color && isset( $mm_megamenu_image ) ) {
+						$icon_style[ $icon_array_slug_image ]['filter'] = 'url(#ast-mm-item' . $item->ID . '-color-filter)';
+						astra_render_svg_mask( 'ast-mm-item' . $item->ID . '-color-filter', 'megamenu_item_image_color', $mm_megamenu_icon_primary_color );
+					}
 				}
 
 				if ( 'stacked' === $mm_megamenu_icon_view || 'framed' === $mm_megamenu_icon_view ) {
@@ -743,7 +750,6 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 			 * @param stdClass $args        An object of wp_nav_menu() arguments.
 			 */
 			$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
-
 		}
 
 		/**
@@ -770,7 +776,7 @@ if ( ! class_exists( 'Astra_Custom_Nav_Walker' ) ) {
 		public function end_lvl( &$output, $depth = 0, $args = array() ) {
 
 			$indent  = str_repeat( "\t", $depth );
-			$output .= "$indent</ul>\n";
+			$output .= "{$indent}</ul>\n";
 		}
 	}
 }

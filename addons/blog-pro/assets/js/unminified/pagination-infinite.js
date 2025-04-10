@@ -7,7 +7,7 @@
 		infinite_event 	= astra.infinite_scroll_event || '';
 
 	//	Is 'infinite' pagination?
-	if( typeof pagination != '' && pagination == 'infinite' ) {
+	if ( typeof pagination === 'string' && pagination == 'infinite' ) {
 
 		var in_customizer = false;
 
@@ -21,7 +21,7 @@
 			}
 		}
 
-		if(	typeof infinite_event != '' ) {
+		if ( typeof infinite_event === 'string' ) {
 			switch( infinite_event ) {
 				case 'click':
 				document.addEventListener('click',function(event) {
@@ -84,7 +84,7 @@
 		 *
 		 * Perform masonry operations.
 		 */
-		function NextloadArticles(pageNumber) {
+		const NextloadArticles = (pageNumber) => {
 			const loader 			= document.querySelector('.ast-pagination-infinite .ast-loader');
 			const astLoadMore		= document.querySelector('.ast-load-more');
 			if( astLoadMore ){
@@ -112,10 +112,10 @@
 						document.querySelector('#main > .ast-row').append(boxes[boxCount]);
 					}
 
-					var grid_layout 	= astra.grid_layout || '3';
+					const gridLayout = astra.grid_layout;
 
 					//	Append articles
-					if( 1 == masonryEnabled && grid_layout > 1 ) {
+					if( 1 == masonryEnabled && ( gridLayout.desktop > 1 || gridLayout.tablet > 1 || gridLayout.mobile > 1 ) ) {
 						var grid = document.querySelector('#main > .ast-row');
 						var msnry = new Masonry( grid, {});
 

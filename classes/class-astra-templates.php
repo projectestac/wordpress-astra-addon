@@ -37,7 +37,10 @@ if ( ! function_exists( 'astra_addon_get_template' ) ) {
 		do_action( 'astra_addon_before_template_part', $template_name, $template_path, $located, $args );
 
 		if ( file_exists( $located ) ) {
-			include $located; // phpcs:ignore audit.php.lang.security.file.inclusion-arg
+			// @codingStandardsIgnoreStart
+			// nosemgrep audit.php.lang.security.file.inclusion-arg
+			include $located; // phpcs:ignore
+			// @codingStandardsIgnoreEnd
 		}
 
 		do_action( 'astra_addon_after_template_part', $template_name, $template_path, $located, $args );

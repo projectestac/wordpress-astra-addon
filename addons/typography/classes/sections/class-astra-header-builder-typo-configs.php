@@ -38,7 +38,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 		 * @since 4.0.0
 		 */
 		private function get_font_extras_default( $font_extras_key, $line_height_key, $text_transform_key ) {
-			$astra_options = is_callable( 'Astra_Theme_Options::get_astra_options' ) ? Astra_Theme_Options::get_astra_options() : get_option( ASTRA_THEME_SETTINGS );
+			$astra_options = astra_get_options();
 
 			return array(
 				'line-height'         => ! isset( $astra_options[ $font_extras_key ] ) && isset( $astra_options[ $line_height_key ] ) ? $astra_options[ $line_height_key ] : '',
@@ -254,8 +254,8 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 				$html_config[] = $this->get_typo_configs( 'section-hb-social-icons-' . $index, ASTRA_THEME_SETTINGS . '[section-hb-social-icons-' . $index . '-typography]' );
 				$html_config[] = $this->get_typo_configs( 'section-fb-social-icons-' . $index, ASTRA_THEME_SETTINGS . '[section-fb-social-icons-' . $index . '-typography]' );
 
-				$header_section = ( ! $astra_has_widgets_block_editor ) ? 'sidebar-widgets-header-widget-' . $index : 'astra-sidebar-widgets-header-widget-' . $index;
-				$footer_section = ( ! $astra_has_widgets_block_editor ) ? 'sidebar-widgets-footer-widget-' . $index : 'astra-sidebar-widgets-footer-widget-' . $index;
+				$header_section = ! $astra_has_widgets_block_editor ? 'sidebar-widgets-header-widget-' . $index : 'astra-sidebar-widgets-header-widget-' . $index;
+				$footer_section = ! $astra_has_widgets_block_editor ? 'sidebar-widgets-footer-widget-' . $index : 'astra-sidebar-widgets-footer-widget-' . $index;
 				$html_config[]  = $this->get_widget_typo_configs_by_builder_type( $header_section, 'header-widget-' . $index );
 				$html_config[]  = $this->get_widget_typo_configs_by_builder_type( $footer_section, 'footer-widget-' . $index );
 			}
@@ -384,6 +384,26 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 
 			$html_config[] = array(
 
+				// Font heading.
+				array(
+					'name'     => ASTRA_THEME_SETTINGS . '[' . $_section . '-font-label]',
+					'type'     => 'control',
+					'control'  => 'ast-heading',
+					'section'  => $_section,
+					'title'    => __( 'Font', 'astra-addon' ),
+					'priority' => 21,
+					'settings' => array(),
+					'context'  => array(
+						astra_addon_builder_helper()->design_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[header-account-logout-action]',
+							'operator' => '==',
+							'value'    => 'login',
+						),
+					),
+					'divider'  => array(),
+				),
+
 				// Option Group: Menu Typography.
 				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[' . $_section . '-menu-typography]',
@@ -500,7 +520,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'default'   => astra_get_option( $_section . '-popup-typography' ),
 					'type'      => 'control',
 					'control'   => 'ast-settings-group',
-					'title'     => __( 'Login Popup Font', 'astra-addon' ),
+					'title'     => __( 'Login Popup Font Size', 'astra-addon' ),
 					'section'   => $_section,
 					'transport' => 'postMessage',
 					'context'   => array(
@@ -514,7 +534,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'priority'  => 22,
 				),
 
-				// Option: Menu Font Size.
+				// Option: Login Popup Label / Input Font Size.
 				array(
 					'name'        => $_section . '-popup-font-size',
 					'default'     => astra_get_option( $_section . '-popup-font-size' ),
@@ -522,7 +542,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'section'     => $_section,
 					'type'        => 'sub-control',
 					'priority'    => 1,
-					'title'       => __( 'Label / Input Text Size', 'astra-addon' ),
+					'title'       => __( 'Label / Input ', 'astra-addon' ),
 					'transport'   => 'postMessage',
 					'control'     => 'ast-responsive-slider',
 					'suffix'      => array( 'px', 'em', 'vw', 'rem' ),
@@ -551,7 +571,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'context'     => astra_addon_builder_helper()->general_tab,
 				),
 
-				// Option: Menu Font Size.
+				// Option: Login Popup Button Font Size.
 				array(
 					'name'        => $_section . '-popup-button-font-size',
 					'default'     => astra_get_option( $_section . '-popup-button-font-size' ),
@@ -559,7 +579,7 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 					'section'     => $_section,
 					'type'        => 'sub-control',
 					'priority'    => 2,
-					'title'       => __( 'Button Font Size', 'astra-addon' ),
+					'title'       => __( 'Button', 'astra-addon' ),
 					'transport'   => 'postMessage',
 					'control'     => 'ast-responsive-slider',
 					'suffix'      => array( 'px', 'em', 'vw', 'rem' ),
@@ -653,8 +673,8 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 				),
 
 				/**
-				* Option: Font Size
-				*/
+				 * Option: Font Size
+				 */
 				array(
 					'name'              => 'font-size-' . $hb_lswitcher_section,
 					'type'              => 'sub-control',
@@ -771,8 +791,8 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 				),
 
 				/**
-				* Option: Font Size
-				*/
+				 * Option: Font Size
+				 */
 
 				array(
 					'name'              => 'font-size-' . $fb_lswitcher_section,
@@ -825,10 +845,8 @@ if ( ! class_exists( 'Astra_Header_Builder_Typo_Configs' ) ) {
 				),
 			);
 
-			$html_config    = call_user_func_array( 'array_merge', $html_config + array( array() ) );
-			$configurations = array_merge( $configurations, $html_config );
-
-			return $configurations;
+			$html_config = call_user_func_array( 'array_merge', $html_config + array( array() ) );
+			return array_merge( $configurations, $html_config );
 		}
 	}
 }

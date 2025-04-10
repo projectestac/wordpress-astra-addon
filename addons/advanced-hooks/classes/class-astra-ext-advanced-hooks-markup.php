@@ -75,6 +75,17 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 		}
 
 		/**
+		 * Checks if the banner layout 2 compatibility is enabled.
+		 *
+		 * @return bool True if banner layout 2 compatibility is enabled, false otherwise.
+		 * @since 4.9.2
+		 */
+		public static function banner_layout_2_compatibility() {
+			$options = astra_get_options();
+			return apply_filters( 'astra_addon_site_builder_banner_layout_2_compatibility', ! isset( $options['v4-9-2-comp'] ) );
+		}
+
+		/**
 		 * Overriding default template by Custom Layout.
 		 *
 		 * @since 4.3.0
@@ -85,6 +96,11 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 			$post_content = get_post( $post_id );
 			if ( empty( $post_content ) ) {
 				return;
+			}
+
+			if ( self::banner_layout_2_compatibility() ) {
+				// If the custom layout is set then hide the banner title area of layout-2.
+				add_filter( 'astra_apply_hero_header_banner', '__return_false' );
 			}
 
 			get_header();
@@ -125,12 +141,12 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 
 				if ( empty( $ids ) || is_embed() ) {
 					return $template;
-				} else {
-					// Get all the template layouts.
-					foreach ( $ids as $index => $post_id ) {
-						if ( 'template' === get_post_meta( $post_id, 'ast-advanced-hook-layout', true ) ) {
-							$template_layouts[] = $post_id;
-						}
+				}
+
+				// Get all the template layouts.
+				foreach ( $ids as $index => $post_id ) {
+					if ( 'template' === get_post_meta( $post_id, 'ast-advanced-hook-layout', true ) ) {
+						$template_layouts[] = $post_id;
 					}
 				}
 
@@ -265,7 +281,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 			if ( $filter ) {
 				add_filter(
 					$filter,
-					function ( $classes ) use ( $hide_classes, $layout ) {
+					static function ( $classes ) use ( $hide_classes, $layout ) {
 						if ( '404-page' === $layout ) {
 							$hide_classes     = implode( ' ', $hide_classes );
 							$classes['class'] = isset( $classes['class'] ) ? $classes['class'] . ' ' . $hide_classes : $hide_classes;
@@ -275,7 +291,6 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 					}
 				);
 			}
-
 		}
 
 		/**
@@ -326,6 +341,32 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 			return $template;
 		}
 
+		/**
+		 * Filters the hooks list that should be excluded from the excluded wrapper hooks for advanced hooks layouts.
+		 *
+		 * @return array List of hooks to exclude from the advanced hook wrapper.
+		 *
+		 * @since 4.8.3
+		 */
+		public function get_exclude_wrapper_hooks() {
+			// Default list of hooks to exclude.
+			$exclude_wrapper_hooks = array(
+				'astra_html_before',
+				'astra_body_top',
+				'astra_head_top',
+				'astra_head_bottom',
+				'wp_head',
+				'astra_body_bottom',
+				'wp_footer',
+			);
+
+			/**
+			 * Filter the hooks that should be excluded from the excluded wrapper hooks for advanced hooks layouts.
+			 *
+			 * @param array $exclude_wrapper_hooks List of hooks to exclude.
+			 */
+			return apply_filters( 'astra_advanced_hook_exclude_wrapper_hooks', $exclude_wrapper_hooks );
+		}
 
 		/**
 		 * Load Advanced hook markup.
@@ -340,8 +381,8 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 				$layout   = get_post_meta( $post_id, 'ast-advanced-hook-layout', true );
 				$priority = get_post_meta( $post_id, 'ast-advanced-hook-priority', true );
 
-				// Exclude default p tag wrapper from the content if selected hook is from below list.
-				$exclude_wrapper_hooks = array( 'astra_html_before', 'astra_body_top', 'astra_head_top', 'astra_head_bottom', 'wp_head', 'astra_body_bottom', 'wp_footer' );
+				// Exclude default p tag wrapper from the content if selected hook is from exclude hooks list.
+				$exclude_wrapper_hooks = $this->get_exclude_wrapper_hooks();
 				$with_wrapper          = in_array( $action, $exclude_wrapper_hooks );
 				if ( $with_wrapper ) {
 					remove_filter( 'the_content', 'wpautop' );
@@ -372,7 +413,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 
 					add_action(
 						$action,
-						function() use ( $post_id ) {
+						static function() {
 							echo '<header class="ast-custom-header" itemscope="itemscope" itemtype="https://schema.org/WPHeader">';
 
 								Astra_Ext_Advanced_Hooks_Markup::get_instance()->get_the_hook_content();
@@ -394,7 +435,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 					// Add Action for custom header advanced-hooks.
 					add_action(
 						$action,
-						function() use ( $post_id ) {
+						static function() {
 							echo '<footer class="ast-custom-footer" itemscope="itemscope" itemtype="https://schema.org/WPFooter">';
 
 								Astra_Ext_Advanced_Hooks_Markup::get_instance()->get_the_hook_content();
@@ -409,10 +450,9 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 					}
 					add_action(
 						$action,
-						function() use ( $post_id ) {
+						static function() {
 
 							Astra_Ext_Advanced_Hooks_Markup::get_instance()->get_the_hook_content();
-
 						},
 						$priority
 					);
@@ -424,10 +464,10 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 		 * Get the content of the hook
 		 */
 		public function get_the_hook_content() {
-			while ( have_posts() ) :
+			while ( have_posts() ) {
 				the_post();
 				the_content();
-			endwhile;
+			}
 		}
 
 		/**
@@ -454,8 +494,8 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 				$display_device_classes = $this->get_display_device( $post_id );
 
 				$action = get_post_meta( $post_id, 'ast-advanced-hook-action', true );
-				// Exclude div wrapper if selected hook is from below list.
-				$exclude_wrapper_hooks = array( 'astra_html_before', 'astra_body_top', 'astra_head_top', 'astra_head_bottom', 'wp_head', 'astra_body_bottom', 'wp_footer' );
+				// Exclude default parent div wrapper from the content if selected hook is from exclude hooks list.
+				$exclude_wrapper_hooks = $this->get_exclude_wrapper_hooks();
 				$with_wrapper          = ! in_array( $action, $exclude_wrapper_hooks );
 				if ( $with_wrapper ) {
 					$content = '<div class="astra-advanced-hook-' . esc_attr( $post_id ) . ' ' . esc_attr( $display_device_classes ) . '">' . $content . '</div>';
@@ -584,6 +624,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 				'location'  => 'ast-advanced-hook-location',
 				'exclusion' => 'ast-advanced-hook-exclusion',
 				'users'     => 'ast-advanced-hook-users',
+				'enabled'   => 'ast-advanced-hook-enabled', // to prevent irrelevant parent container markup.
 			);
 
 			$result             = Astra_Target_Rules_Fields::get_instance()->get_posts_by_conditions( ASTRA_ADVANCED_HOOKS_POST_TYPE, $option );
@@ -594,13 +635,13 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 			foreach ( $result as $post_id => $post_data ) {
 				$post_type = get_post_type();
 
-				if ( ASTRA_ADVANCED_HOOKS_POST_TYPE != $post_type ) {
+				if ( ASTRA_ADVANCED_HOOKS_POST_TYPE !== $post_type ) {
 					$action   = get_post_meta( $post_id, 'ast-advanced-hook-action', true );
 					$layout   = get_post_meta( $post_id, 'ast-advanced-hook-layout', false );
 					$priority = get_post_meta( $post_id, 'ast-advanced-hook-priority', true );
 					add_action(
 						'wp_enqueue_scripts',
-						function() use ( $post_id ) {
+						static function() use ( $post_id ) {
 
 							$styles = '';
 
@@ -652,13 +693,13 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 
 						add_action(
 							'astra_entry_content_404_page',
-							function() use ( $post_id ) {
+							static function() use ( $post_id ) {
 								Astra_Ext_Advanced_Hooks_Markup::get_instance()->get_action_content( $post_id );
 							},
 							$priority
 						);
 
-						$layout_404_counter ++;
+						$layout_404_counter++;
 					} elseif ( isset( $layout[0] ) && 'header' == $layout[0] && 0 == $header_counter ) {
 
 						$this->prepare_astra_header_filter( $post_id, 'header' );
@@ -666,8 +707,6 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 						if ( true === astra_addon_builder_helper()->is_header_footer_builder_active ) {
 							remove_action( 'astra_header', array( Astra_Builder_Header::get_instance(), 'prepare_header_builder_markup' ) );
 						}
-						// remove default site's fixed header if sticky header is activated.
-						add_filter( 'astra_fixed_header_markup_enabled', '__return_false' );
 
 						$action = 'astra_custom_header';
 						// if astra_custom_header not exist then call astra_header.
@@ -676,7 +715,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 						}
 						add_action(
 							$action,
-							function() use ( $post_id ) {
+							static function() use ( $post_id ) {
 								echo '<header class="ast-custom-header" itemscope="itemscope" itemtype="https://schema.org/WPHeader">';
 									Astra_Ext_Advanced_Hooks_Markup::get_instance()->get_action_content( $post_id );
 								echo '</header>';
@@ -701,7 +740,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 						// Add Action for custom header advanced-hooks.
 						add_action(
 							$action,
-							function() use ( $post_id ) {
+							static function() use ( $post_id ) {
 								echo '<footer class="ast-custom-footer" itemscope="itemscope" itemtype="https://schema.org/WPFooter">';
 
 								Astra_Ext_Advanced_Hooks_Markup::get_instance()->get_action_content( $post_id );
@@ -715,7 +754,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 
 						add_filter(
 							'render_block',
-							function ( $content, $parsed_block ) use ( $post_id ) {
+							static function ( $content, $parsed_block ) use ( $post_id ) {
 								return Astra_Ext_Advanced_Hooks_Markup::get_instance()->render_inside_content( $post_id, $content, $parsed_block );
 							},
 							10,
@@ -730,10 +769,9 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 						// Add Action for advanced-hooks.
 						add_action(
 							$action,
-							function() use ( $post_id ) {
+							static function() use ( $post_id ) {
 
 								Astra_Ext_Advanced_Hooks_Markup::get_instance()->get_action_content( $post_id );
-
 							},
 							$priority
 						);
@@ -749,13 +787,11 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 		 * @since 3.2.0
 		 */
 		public function generate_blocks( $post_id ) {
-
-			$blocks = array();
 			ob_start();
 			self::get_instance()->get_action_content( $post_id );
 			$content = ob_get_clean();
 
-			$blocks = array(
+			return array(
 				array(
 					'blockName'    => 'core/html',
 					'attrs'        => array(),
@@ -764,8 +800,6 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 					'innerContent' => array( $content ),
 				),
 			);
-
-			return $blocks;
 		}
 
 		/**
@@ -781,7 +815,6 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 			$array       = array_merge( $first_array, $insert_array, $array );
 		}
 
-
 		/**
 		 * Prepare a class to hide custom layout as per selected device.
 		 *
@@ -790,6 +823,11 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 		 * @return string
 		 */
 		public function get_display_device( $post_id, $hide_classes = true ) {
+			// bail early if the custom layout or hook is disabled.
+			if ( 'no' === get_post_meta( $post_id, 'ast-advanced-hook-enabled', true ) ) {
+				return '';
+			}
+
 			$classes        = '';
 			$display_device = get_post_meta( $post_id, 'ast-advanced-display-device', true );
 			$devices        = array( 'desktop', 'tablet', 'mobile' );
@@ -862,8 +900,8 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 			$action                 = get_post_meta( $post_id, 'ast-advanced-hook-action', true );
 			$display_device_classes = $this->get_display_device( $post_id );
 
-			// Exclude div wrapper if selected hook is from below list.
-			$exclude_wrapper_hooks = array( 'astra_html_before', 'astra_body_top', 'astra_head_top', 'astra_head_bottom', 'wp_head', 'astra_body_bottom', 'wp_footer' );
+			// Exclude default parent div wrapper from the content if selected hook is from exclude hooks list.
+			$exclude_wrapper_hooks = $this->get_exclude_wrapper_hooks();
 			$with_wrapper          = ! in_array( $action, $exclude_wrapper_hooks );
 			if ( $with_wrapper ) {
 				?>
@@ -897,7 +935,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 		 */
 		public function add_front_styles() {
 			/**
-			* Start Path Logic */
+			 * Start Path Logic */
 			/* Define Variables */
 			$uri  = ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/css/';
 			$path = ASTRA_ADDON_EXT_ADVANCED_HOOKS_DIR . 'assets/css/';
@@ -925,7 +963,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 				$gen_path = $css_dir;
 			}
 
-			/*** End Path Logic */
+			/* End Path Logic */
 			Astra_Minify::add_css( $gen_path . 'astra-hooks-sticky-header-footer' . $file_prefix . '.css' );
 			Astra_Minify::add_css( $gen_path . 'style' . $file_prefix . '.css' );
 		}
@@ -934,7 +972,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 		 * Add Scripts Callback
 		 */
 		public function add_scripts() {
-			/*** Start Path Logic */
+			/* Start Path Logic */
 
 			/* Define Variables */
 			$uri  = ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/js/';
@@ -958,7 +996,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 				$gen_path = $js_dir;
 			}
 
-			/*** End Path Logic */
+			/* End Path Logic */
 			Astra_Minify::add_dependent_js( 'jquery' );
 
 			Astra_Minify::add_js( $gen_path . 'advanced-hooks-sticky-header-footer' . $file_prefix . '.js' );
@@ -1077,7 +1115,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 			}
 
 			/* Box Layout CSS */
-			if ( 'ast-box-layout' == $layout ) :
+			if ( 'ast-box-layout' == $layout ) {
 				$box_css    = array(
 					'.ast-custom-header, .ast-custom-footer' => array(
 						'max-width'    => $page_width,
@@ -1086,7 +1124,8 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 					),
 				);
 				$parse_css .= astra_parse_css( $box_css );
-			endif;
+			}
+
 			return $dynamic_css . $parse_css;
 		}
 
@@ -1094,21 +1133,20 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 		 * Check is elementor activated.
 		 *
 		 * @param int $id Post/Page Id.
-		 * @return boolean
+		 * @return bool
 		 */
 		public static function is_elementor_activated( $id ) {
 			if ( ! class_exists( '\Elementor\Plugin' ) ) {
 				return false;
 			}
+
 			if ( version_compare( ELEMENTOR_VERSION, '1.5.0', '<' ) ) {
-				return ( 'builder' === Elementor\Plugin::$instance->db->get_edit_mode( $id ) );
-			} else {
-				$elementor_document = Elementor\Plugin::$instance->documents->get( $id );
-				if ( $elementor_document ) {
-					return $elementor_document->is_built_with_elementor();
-				} else {
-					return false;
-				}
+				return 'builder' === Elementor\Plugin::$instance->db->get_edit_mode( $id );
+			}
+
+			$elementor_document = Elementor\Plugin::$instance->documents->get( $id );
+			if ( $elementor_document ) {
+				return $elementor_document->is_built_with_elementor();
 			}
 
 			return false;
@@ -1162,7 +1200,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 					self::get_instance()->get_action_content( $post_id );
 					$layout_content = ob_get_clean();
 
-					$layout_content_hash = md5( $layout_content );
+					$layout_content_hash = hash( 'sha256', $layout_content );
 
 					if ( ! in_array( $layout_content_hash, self::$duplicate_content_hash, true ) ) {
 						/**
@@ -1193,7 +1231,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Markup' ) ) {
 					self::get_instance()->get_action_content( $post_id );
 					$layout_content = ob_get_clean();
 
-					$layout_content_hash = md5( $layout_content );
+					$layout_content_hash = hash( 'sha256', $layout_content );
 
 					if ( ! in_array( $layout_content_hash, self::$duplicate_content_hash, true ) ) {
 						/**

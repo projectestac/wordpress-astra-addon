@@ -104,20 +104,25 @@
 				gutter = gutter - 10;
 			}
 
-			var aboveHeaderSelector = document.querySelector('.ast-above-header-bar');
-			if ( 1 == astraAddon.header_above_stick && null !== aboveHeaderSelector ) {
-				aboveHeaderSelectorValue = aboveHeaderSelector.getBoundingClientRect().height + parseInt( aboveHeaderSelector.parentNode.getAttribute( 'data-stick-gutter' ) );
+			const aboveHeaderBar = document.querySelector( '.ast-above-header-bar' );
+			if ( astraAddon.header_above_stick === '1' && aboveHeaderBar !== null ) {
+				const aboveHeaderBarHeight = aboveHeaderBar.getBoundingClientRect().height + parseInt( aboveHeaderBar.parentNode.getAttribute( 'data-stick-gutter' ) );
+				if ( ( selector.hasClass( 'ast-stick-primary-below-wrapper' ) || ( selector.hasClass( 'ast-primary-header' ) ) ) && gutter > 0  ) {
+					gutter = aboveHeaderBarHeight;
+				}
 			}
 		}
 
 		/**
 		 * Check window width
 		 */
-		if ( 'desktop' == self.options.sticky_on_device && jQuery( 'body' ).hasClass( 'ast-header-break-point' ) ) {
-			self.stickRelease( self );
-		} else if ( 'mobile' == self.options.sticky_on_device && ! jQuery( 'body' ).hasClass( 'ast-header-break-point' ) ) {
-			self.stickRelease( self );
-		} else {
+		if (
+			(self.options.sticky_on_device === 'desktop' && jQuery('body').hasClass('ast-header-break-point')) ||
+			(self.options.sticky_on_device === 'mobile' && !jQuery('body').hasClass('ast-header-break-point'))
+		) {
+			self.stickRelease(self);
+		}
+		else {
 
 			// stick_upto_scroll with negative value enables a sticky by default so rounding up to zero.
 			if ( stick_upto_scroll < 0 ) {
@@ -173,11 +178,6 @@
 						'padding-bottom' : self.options.shrink.padding_bottom,
 					});
 					if ( ( selector.hasClass( 'ast-stick-primary-below-wrapper' ) || selector.hasClass( 'ast-primary-header' ) ) && 1 == astraAddon.header_above_stick && 70 > selector.closest('#ast-desktop-header').find('.ast-above-header-bar').outerHeight() ) {
-
-						selector.addClass( 'ast-sticky-active' ).stop().css({
-							'top'            : stickyHeaderFlag ? aboveHeaderSelectorValue : 'unset',
-						});
-
 						selector.parent().css("min-height", selector.outerHeight());
 					}
 
@@ -484,6 +484,7 @@
 
 			jQuery( document ).ready(function($) {
 				self.stick_me( self );
+				setTimeout( () => self.stick_me( self ), 0 );
 			} );
 		}
 	};

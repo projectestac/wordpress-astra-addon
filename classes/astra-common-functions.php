@@ -6,6 +6,132 @@
  */
 
 /**
+ * Return theme options from astra-settings option key.
+ *
+ * This function exists in theme v4.8.9 though included here to prevent errors caused by version mismatches with the theme.
+ */
+if ( ! function_exists( 'astra_get_options' ) ) {
+
+	/**
+	 * Retrieve Astra theme options array.
+	 *
+	 * @return array The theme options array.
+	 *
+	 * @since 4.8.9
+	 */
+	function astra_get_options() {
+		// Ensure we're not interfering during WordPress installation.
+		if ( wp_installing() ) {
+			return array();
+		}
+
+		/**
+		 * Filter to bypass the cached Astra options.
+		 *
+		 * Example usage:
+		 *     add_filter( 'astra_get_options_nocache', '__return_true' );
+		 *
+		 * @since 4.8.9
+		 * @return bool Whether to bypass the cache. Default is false.
+		 */
+		if ( apply_filters( 'astra_get_options_nocache', false ) ) {
+			$astra_options = get_option( ASTRA_THEME_SETTINGS, array() );
+		} else {
+			// Use a static variable to cache the options for this request.
+			static $cached_astra_options = null;
+
+			// Fetch the options once and cache them in the static variable.
+			if ( is_null( $cached_astra_options ) || is_customize_preview() ) {
+				$cached_astra_options = is_callable( 'Astra_Theme_Options::get_astra_options' )
+					? Astra_Theme_Options::get_astra_options() :
+					get_option( ASTRA_THEME_SETTINGS );
+			}
+
+			$astra_options = $cached_astra_options;
+		}
+
+		/**
+		 * Filter the options array for Astra Settings.
+		 *
+		 * @since 4.8.9
+		 * @return array The theme options array.
+		 */
+		return apply_filters( 'astra_get_options', $astra_options );
+	}
+}
+
+/**
+ * Return translated theme option.
+ *
+ * This function exists in theme v.4.7.4 though included here to prevent errors caused by version mismatches with the theme.
+ */
+if ( ! function_exists( 'astra_get_i18n_option' ) ) {
+
+	/**
+	 * Returns translated string for strings saved in Astra settings.
+	 *
+	 * This function retrieves a theme option value and checks if it needs translation.
+	 * If the option's translation is needed, it looks it up based on the provided context.
+	 * If the translation is not available, it returns the default value.
+	 *
+	 * Usage examples:
+	 * - Retrieve translated theme option with a context description:
+	 *      $value = astra_get_i18n_option( 'astra-option-key', esc_html_x( '%astra%', 'Context Description', 'astra-addon' ) );
+	 *
+	 * - Retrieve translated theme option with a different context:
+	 *      $value = astra_get_i18n_option( 'astra-option-key', _x( '%astra%', 'Context Description', 'astra-addon' ) );
+	 *
+	 * @param  string $option       Option key.
+	 * @param  string $translated   Default translation flag.
+	 * @param  mixed  $default      Option default value.
+	 * @param  string $deprecated   Option default value.
+	 *
+	 * @return string Return option value.
+	 *
+	 * @since 4.8.1
+	 */
+	function astra_get_i18n_option( $option, $translated, $default = '', $deprecated = '' ) {
+		// #%astra%# is for TranslatePress compatibility.
+		$is_translated = '%astra%' !== $translated && ! strpos( $translated, '#%astra%#' );
+		return $is_translated ? $translated : astra_get_option( $option, $default, $deprecated );
+	}
+}
+
+/**
+ * Return translated string.
+ *
+ * This function exists in theme v.4.7.4 though included here to prevent errors caused by version mismatches with the theme.
+ */
+if ( ! function_exists( 'astra_get_i18n_string' ) ) {
+
+	/**
+	 * Returns translated string.
+	 *
+	 * This function checks if string has translation.
+	 * If the translation is not available, it returns the default value.
+	 *
+	 * Usage examples:
+	 * - Retrieve translated theme option with a context description:
+	 *      $value = astra_get_i18n_string( $default, esc_html_x( '%astra%', 'Context Description', 'astra-addon' ) );
+	 *
+	 * - Retrieve translated theme option with a different context:
+	 *      $value = astra_get_i18n_string( $default, _x( '%astra%', 'Context Description', 'astra-addon' ) );
+	 *
+	 * @param  string $default      Default string value.
+	 * @param  string $translated   Default translation flag.
+	 *
+	 * @return string Return string value.
+	 *
+	 * @since 4.8.1
+	 */
+	function astra_get_i18n_string( $default, $translated ) {
+		// #%astra%# is for TranslatePress compatibility.
+		$is_translated = '%astra%' !== $translated && ! strpos( $translated, '#%astra%#' );
+		return $is_translated ? $translated : $default;
+	}
+}
+
+/**
  * Apply CSS for the element
  */
 if ( ! function_exists( 'astra_color_responsive_css' ) ) {
@@ -47,7 +173,6 @@ if ( ! function_exists( 'astra_responsive_font' ) ) {
 	 * @return mixed
 	 */
 	function astra_responsive_font( $font, $device = 'desktop', $default = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
-		$css_val = '';
 
 		if ( isset( $font[ $device ] ) && isset( $font[ $device . '-unit' ] ) ) {
 			if ( '' != $default ) {
@@ -58,7 +183,7 @@ if ( ! function_exists( 'astra_responsive_font' ) ) {
 		} elseif ( is_numeric( $font ) ) {
 			$font_size = astra_get_css_value( $font );
 		} else {
-			$font_size = ( ! is_array( $font ) ) ? $font : '';
+			$font_size = ! is_array( $font ) ? $font : '';
 		}
 
 		return $font_size;
@@ -103,13 +228,41 @@ if ( ! function_exists( 'astra_responsive_spacing' ) ) {
 		} elseif ( is_numeric( $option ) ) {
 			$spacing = astra_get_css_value( $option );
 		} else {
-			$spacing = ( ! is_array( $option ) ) ? $option : '';
+			$spacing = ! is_array( $option ) ? $option : '';
 		}
 
 		if ( '' !== $prefix && '' !== $spacing ) {
 			return $prefix . $spacing;
 		}
 		return $spacing;
+	}
+}
+
+/**
+ * Check Elementor widgets.
+ */
+if ( ! function_exists( 'astra_check_elementor_widget' ) ) {
+
+	/**
+	 * Added Check if the cart widget exists in the Elementor meta data.
+	 *
+	 * @since 4.8.2
+	 * @param array  $elements_data
+	 * @param string $widget_name
+	 * @return bool
+	 */
+	function astra_check_elementor_widget( $elements_data, $widget_name ) {
+		foreach ( $elements_data as $element ) {
+			if ( isset( $element['widgetType'] ) && $element['widgetType'] === $widget_name ) {
+				return true;
+			}
+			if ( isset( $element['elements'] ) && is_array( $element['elements'] ) ) {
+				if ( astra_check_elementor_widget( $element['elements'], $widget_name ) ) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
 
@@ -257,10 +410,10 @@ if ( ! function_exists( 'astra_get_responsive_background_obj' ) ) {
 		$bg_tab_img  = isset( $bg_obj_res['tablet']['background-image'] ) ? $bg_obj_res['tablet']['background-image'] : '';
 		$bg_desk_img = isset( $bg_obj_res['desktop']['background-image'] ) ? $bg_obj_res['desktop']['background-image'] : '';
 		$bg_color    = isset( $bg_obj['background-color'] ) ? $bg_obj['background-color'] : '';
-		$tablet_css  = ( isset( $bg_obj_res['tablet']['background-image'] ) && $bg_obj_res['tablet']['background-image'] ) ? true : false;
-		$desktop_css = ( isset( $bg_obj_res['desktop']['background-image'] ) && $bg_obj_res['desktop']['background-image'] ) ? true : false;
+		$tablet_css  = isset( $bg_obj_res['tablet']['background-image'] ) && $bg_obj_res['tablet']['background-image'] ? true : false;
+		$desktop_css = isset( $bg_obj_res['desktop']['background-image'] ) && $bg_obj_res['desktop']['background-image'] ? true : false;
 
-		$bg_type = ( isset( $bg_obj['background-type'] ) && $bg_obj['background-type'] ) ? $bg_obj['background-type'] : '';
+		$bg_type = isset( $bg_obj['background-type'] ) && $bg_obj['background-type'] ? $bg_obj['background-type'] : '';
 
 		if ( '' !== $bg_type ) {
 			switch ( $bg_type ) {
@@ -351,7 +504,7 @@ if ( ! function_exists( 'astra_get_responsive_background_obj' ) ) {
 /**
  * Search Form
  */
-if ( ! function_exists( 'astra_addon_get_search_form' ) ) :
+if ( ! function_exists( 'astra_addon_get_search_form' ) ) {
 	/**
 	 * Display search form.
 	 *
@@ -372,7 +525,7 @@ if ( ! function_exists( 'astra_addon_get_search_form' ) ) :
 				<span class="screen-reader-text">' . _x( 'Search for:', 'label', 'astra-addon' ) . '</span>
 				<input type="search" class="search-field" placeholder="' . esc_attr( $astra_search_input_placeholder ) . '" value="' . get_search_query() . '" name="s" ' . $autocomplete_attr . ' />
 			</label>
-			<button type="submit" class="search-submit normal-search" value="' . esc_attr__( 'Search', 'astra-addon' ) . '" aria-label= "' . esc_attr__( 'Search', 'astra-addon' ) . '"><i class="astra-search-icon"> ' . Astra_Icons::get_icons( 'search' ) . ' </i></button>
+			<button type="submit" class="search-submit normal-search" value="' . esc_attr__( 'Search', 'astra-addon' ) . '" aria-label= "' . esc_attr__( 'Search', 'astra-addon' ) . '"><i class="astra-search-icon"> ' . Astra_Ext_Adv_Search_Markup::search_icon() . ' </i></button>
 		</form>';
 
 		/**
@@ -392,7 +545,7 @@ if ( ! function_exists( 'astra_addon_get_search_form' ) ) :
 			return $result;
 		}
 	}
-endif;
+}
 
 /**
  * Get instance of WP_Filesystem.

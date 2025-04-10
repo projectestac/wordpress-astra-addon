@@ -127,9 +127,9 @@ class Astra_Cache_Base {
 	private function asset_slug() {
 		if ( 'home' === $this->asset_type || 'frontpage' === $this->asset_type ) {
 			return $this->asset_type;
-		} else {
-			return $this->asset_type . $this->cache_key_suffix();
 		}
+
+		return $this->asset_type . $this->cache_key_suffix();
 	}
 
 	/**
@@ -184,7 +184,8 @@ class Astra_Cache_Base {
 				$title = 'chats';
 			}
 		} elseif ( is_post_type_archive() ) {
-			$title = 'archives';
+			// Allowing paths for custom post type archives.
+			$title = get_query_var( 'post_type' ) . '-archives';
 		} elseif ( is_tax() ) {
 			$queried_object = get_queried_object();
 			if ( $queried_object && is_a( $queried_object, 'WP_Term' ) ) {
@@ -219,7 +220,8 @@ class Astra_Cache_Base {
 	 * @param array $file file path.
 	 * @return void
 	 */
-	public static function add_css_file( $file ) {}
+	public static function add_css_file( $file ) {
+	}
 
 	/**
 	 * Append CSS style to the theme dynamic css.
@@ -231,7 +233,7 @@ class Astra_Cache_Base {
 	public function get_css_from_files( $dynamic_css_files ) {
 		$dynamic_css_data = '';
 
-		foreach ( $dynamic_css_files as $key => $value ) {
+		foreach ( $dynamic_css_files as $value ) {
 			// Get file contents.
 			$get_contents = astra_addon_filesystem()->get_contents( $value );
 			if ( $get_contents ) {
@@ -315,7 +317,8 @@ class Astra_Cache_Base {
 	 * @since 2.1.0
 	 * @return void
 	 */
-	public function setup_cache() {}
+	public function setup_cache() {
+	}
 
 	/**
 	 * Write dynamic asset files.
@@ -346,7 +349,8 @@ class Astra_Cache_Base {
 	 * @since 2.1.0
 	 * @return void
 	 */
-	protected function get_dynamic_css() { }
+	protected function get_dynamic_css() {
+	}
 
 	/**
 	 * Enqueue CSS files.
@@ -372,7 +376,7 @@ class Astra_Cache_Base {
 	 * Enqueue the assets inline.
 	 *
 	 * @since 2.1.0
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function inline_assets() {
 		$inline                = false;
@@ -401,9 +405,7 @@ class Astra_Cache_Base {
 			$post_timestamp = get_option( 'astra_get_dynamic_css' );
 		}
 
-		$timestamp_data = $this->maybe_get_new_timestamp( $post_timestamp, $assets_info );
-
-		return $timestamp_data;
+		return $this->maybe_get_new_timestamp( $post_timestamp, $assets_info );
 	}
 
 	/**
@@ -413,10 +415,8 @@ class Astra_Cache_Base {
 	 * @return string $timestamp Timestamp.
 	 */
 	private function get_current_timestamp() {
-		$date      = new DateTime();
-		$timestamp = $date->getTimestamp();
-
-		return $timestamp;
+		$date = new DateTime();
+		return $date->getTimestamp();
 	}
 
 	/**
@@ -458,7 +458,6 @@ class Astra_Cache_Base {
 	 * @return array
 	 */
 	public function get_asset_info( $type ) {
-		$css_suffix = 'astra-' . $type . '-dynamic-css';
 		$css_suffix = 'astra-' . $type . '-dynamic-css';
 		$info       = array();
 

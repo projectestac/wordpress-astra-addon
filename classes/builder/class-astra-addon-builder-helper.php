@@ -12,7 +12,6 @@
  * @since 3.0.0
  */
 final class Astra_Addon_Builder_Helper {
-
 	/**
 	 * Member Variable
 	 *
@@ -20,7 +19,6 @@ final class Astra_Addon_Builder_Helper {
 	 * @var instance
 	 */
 	private static $instance = null;
-
 
 	/**
 	 * Cached Helper Variable.
@@ -81,7 +79,7 @@ final class Astra_Addon_Builder_Helper {
 	 */
 	public function __construct() {
 
-		add_filter( 'astra_builder_elements_count', __CLASS__ . '::elements_count', 10 );
+		add_filter( 'astra_builder_elements_count', self::class . '::elements_count', 10 );
 
 		$component_count_by_key = self::elements_count();
 
@@ -227,7 +225,7 @@ final class Astra_Addon_Builder_Helper {
 	 */
 	public static function __callStatic( $function_name, $function_agrs ) {
 
-		$key = md5( $function_name ) . md5( maybe_serialize( $function_agrs ) );
+		$key = hash( 'sha256', $function_name ) . hash( 'sha256', maybe_serialize( $function_agrs ) );
 		if ( isset( self::$cached_properties[ $key ] ) ) {
 			return self::$cached_properties[ $key ];
 		}

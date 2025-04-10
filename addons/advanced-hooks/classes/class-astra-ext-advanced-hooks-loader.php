@@ -252,7 +252,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 
 			add_filter(
 				'block_parser_class',
-				function( $content ) {
+				static function( $content ) {
 					// Check if we're inside the main post content.
 					if ( is_singular() && in_the_loop() && is_main_query() ) {
 						return 'Astra_WP_Block_Parser';
@@ -338,7 +338,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 			unset( $columns['date'] );
 
 			$columns['advanced_hook_action']     = __( 'Placement', 'astra-addon' );
-			$columns['advanced_hook_shortcode']  = __( 'Shortcode', 'astra-addon' ) . '<i class="ast-advanced-hook-heading-help dashicons dashicons-editor-help" title="' . esc_attr__( 'Make sure to set display rule to post/page where you will be adding the Shortcode.', 'astra-addon' ) . '"></i>';
+			$columns['advanced_hook_shortcode']  = __( 'Shortcode', 'astra-addon' ) . '<i class="ast-advanced-hook-heading-help dashicons dashicons-editor-help" title="' . esc_attr__( 'The shortcode is designed to include the custom layout wherever it is used, regardless of the display conditions. Ensure you add the shortcode to the desired post or page.', 'astra-addon' ) . '"></i>';
 			$columns['advanced_hook_quick_view'] = __( 'Quick View', 'astra-addon' );
 			$columns['enable_disable']           = __( 'Enable/Disable', 'astra-addon' );
 
@@ -538,9 +538,11 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 				if ( SCRIPT_DEBUG ) {
 					wp_enqueue_style( 'advanced-hook-admin-edit', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/css/unminified/astra-advanced-hooks-admin-edit.css', null, ASTRA_EXT_VER );
 					wp_enqueue_script( 'advanced-hook-admin-edit', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/js/unminified/advanced-hooks.js', array( 'jquery', 'jquery-ui-tooltip' ), ASTRA_EXT_VER, false );
+					wp_enqueue_script( 'astra-hook-cf-compatibility', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/js/unminified/advanced-hooks-custom-fields-priority.js', null, ASTRA_EXT_VER );
 				} else {
 					wp_enqueue_style( 'advanced-hook-admin-edit', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/css/minified/astra-advanced-hooks-admin-edit.min.css', null, ASTRA_EXT_VER );
 					wp_enqueue_script( 'advanced-hook-admin-edit', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/js/minified/advanced-hooks.min.js', array( 'jquery', 'jquery-ui-tooltip' ), ASTRA_EXT_VER, false );
+					wp_enqueue_script( 'astra-hook-cf-compatibility', ASTRA_ADDON_EXT_ADVANCED_HOOKS_URL . 'assets/js/minified/advanced-hooks-custom-fields-priority.min.js', null, ASTRA_EXT_VER );
 				}
 
 				$white_labelled_icon = Astra_Ext_White_Label_Markup::get_whitelabel_string( 'astra', 'icon' );
@@ -686,6 +688,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 				ASTRA_EXT_VER,
 				true
 			);
+			wp_set_script_translations( 'astra-custom-layout', 'astra-addon' );
 		}
 
 		/**
@@ -701,7 +704,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 				return;
 			}
 
-			$responsive_visibility_status = ( 'array' == gettype( get_post_meta( get_the_ID(), 'ast-advanced-display-device', true ) ) ) ? true : false;
+			$responsive_visibility_status = 'array' == gettype( get_post_meta( get_the_ID(), 'ast-advanced-display-device', true ) ) ? true : false;
 
 			// UAG plugin slug.
 			$plugin_slug = 'ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php';
@@ -731,7 +734,6 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 					'ResponsiveVisibilityStatus' => $responsive_visibility_status,
 					'siteurl'                    => get_option( 'siteurl' ),
 					'isWhitelabelled'            => Astra_Ext_White_Label_Markup::show_branding(),
-					'randomPreviewPost'          => $this->get_random_preview_post(),
 					'logo_url'                   => apply_filters( 'astra_admin_menu_icon', '' ),
 				)
 			);
@@ -784,38 +786,6 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 							),
 						),
 					),
-				)
-			);
-		}
-
-		/**
-		 * Get random preview post.
-		 *
-		 * @since 4.3.1
-		 */
-		public function get_random_preview_post() {
-			$args           = apply_filters(
-				'astra_addon_default_preview_post_query',
-				array(
-					'posts_per_page'      => 1,
-					'post_type'           => 'post',
-					'post_status'         => 'publish',
-					'ignore_sticky_posts' => 1,
-					'no_found_rows'       => 1,
-					'orderby'             => 'rand',
-				)
-			);
-			$single_product = new WP_Query( $args );
-			if ( ! $single_product->have_posts() ) {
-				return false;
-			}
-
-			$post_id = absint( isset( $single_product->posts[0]->ID ) ? $single_product->posts[0]->ID : '' );
-			return(
-				array(
-					'post_id'    => $post_id,
-					'post_type'  => 'post',
-					'post_title' => get_the_title( $post_id ),
 				)
 			);
 		}
@@ -1358,7 +1328,7 @@ if ( ! class_exists( 'Astra_Ext_Advanced_Hooks_Loader' ) ) {
 				$title       = __( 'Site Builder', 'astra-addon' );
 				$tabs        = true;
 				$button_url  = '/post-new.php?post_type=astra-advanced-hook';
-				$kb_docs_url = 'https://wpastra.com/docs-category/astra-pro-modules/custom-layouts-module/?utm_source=wp&utm_medium=dashboard';
+				$kb_docs_url = 'https://wpastra.com/docs-category/site-builder/';
 				Astra_Addon_Admin_Loader::admin_dashboard_header( $title, $tabs, $button_url, $kb_docs_url );
 			}
 		}

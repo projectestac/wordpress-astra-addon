@@ -40,9 +40,11 @@ var isEdge = false;
 			}
 		} else{
 			blogMasonryBp = blogMasonryBp.replace( /[^0-9]/g, '' );
-			blogMasonryBp = parseInt( blogMasonryBp );
+			blogMasonryBp = parseInt( blogMasonryBp < blogMasonryBreakPoint ? blogMasonryBp : blogMasonryBreakPoint );
 		}
 
+		// Check if RTL is enabled.
+		var isRTL = document.documentElement.dir === 'rtl';
 		var container = jQuery( '.search.blog-masonry #main > div, .blog.blog-masonry #main > div, .archive.blog-masonry #main > div' );
 
 		if ( blogMasonryBp == blogMasonryBreakPoint ) {
@@ -58,6 +60,7 @@ var isEdge = false;
 						container.imagesLoaded(container, function () {
 							container.masonry({
 								itemSelector: '#primary article',
+								isOriginLeft: !isRTL,
 							});
 						});
 					}

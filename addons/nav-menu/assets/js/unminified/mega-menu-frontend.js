@@ -104,7 +104,7 @@ function display_mega_menu_on_load() {
 var items = document.getElementsByClassName("astra-megamenu-li");
 
 function apply_megamenu_width_styles() {
-	[].slice.call(items).forEach(function (container) {
+	[].slice.call(items).forEach(container => {
 		jQuery(container).hover(function () {
 			var ast_container = jQuery(container).parents(".ast-container"),
 				$main_container = ast_container.children(),
@@ -214,7 +214,7 @@ function apply_megamenu_width_styles() {
 						$this
 							.find(".astra-mega-menu-width-custom")
 							.css({
-								right: "-" + customWithPositionRight + "px",
+								// right: "-" + customWithPositionRight + "px",
 								width: customMegaMenuWidth + "px",
 							});
 					} else {
@@ -225,7 +225,8 @@ function apply_megamenu_width_styles() {
 								width: customMegaMenuWidth + "px",
 							});
 					}
-				} else {
+				}
+				else {
 					if (astra.isRtl) {
 						$this
 							.find(".astra-megamenu")

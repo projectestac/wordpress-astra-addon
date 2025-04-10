@@ -17,6 +17,7 @@
   border: 1px solid var(--ast-border-color) !important;
   border-radius: 4px;
   z-index: 90 !important;
+  background: var(--ast-global-color-5) !important;
 }
 
 .ast-modern-checkout .woocommerce .woocommerce-checkout-review-order-table .blockUI.blockOverlay::before, .ast-modern-checkout .woocommerce #payment .blockUI.blockOverlay::before {
@@ -43,6 +44,7 @@
 .ast-modern-checkout .woocommerce form.woocommerce-checkout .form-row {
   padding: 7px;
   position: relative;
+  width: 100%;
 }
 
 .ast-modern-checkout .woocommerce form.woocommerce-checkout .form-row.form-row-first, .ast-modern-checkout .woocommerce form.woocommerce-checkout .form-row.form-row-last {
@@ -266,7 +268,7 @@
 .ast-modern-checkout .woocommerce #payment ul.payment_methods div.payment_box {
   margin: 15px 0 0 -15px;
   border-top: 1px solid var(--ast-border-color);
-  background-color: var(--ast-global-color-4);
+  background-color: var(--ast-global-color-secondary, --ast-global-color-4);
   padding: 1.5em;
   width: calc( 100% + 30px);
   border-radius: 0 0 4px 4px;
@@ -290,7 +292,7 @@
 
 .ast-modern-checkout .woocommerce .ast-mobile-order-review-wrap {
   display: block;
-  background-color: var(--ast-global-color-4);
+  background-color: var(--ast-global-color-secondary, --ast-global-color-4);
   margin-bottom: 1em;
 }
 

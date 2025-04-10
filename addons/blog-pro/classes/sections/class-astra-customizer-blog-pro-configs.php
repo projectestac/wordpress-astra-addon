@@ -67,15 +67,15 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Pro_Configs' ) ) {
 				 * Option: No of Columns
 				 */
 				array(
-					'name'         => ASTRA_THEME_SETTINGS . '[blog-grid]',
-					'default'      => astra_get_option( 'blog-grid' ),
+					'name'         => ASTRA_THEME_SETTINGS . '[blog-grid-resp]',
+					'default'      => astra_addon_get_blog_grid_columns(),
 					'type'         => 'control',
 					'control'      => 'ast-number',
 					'qty_selector' => true,
 					'section'      => 'section-blog',
 					'title'        => __( 'No of Columns', 'astra-addon' ),
 					'priority'     => 15,
-					'responsive'   => false,
+					'responsive'   => true,
 					'input_attrs'  => array(
 						'min'  => 1,
 						'step' => 1,
@@ -122,20 +122,20 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Pro_Configs' ) ) {
 					),
 				),
 
-
 				/**
 				 * Option: Masonry Effect
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[blog-masonry]',
-					'default'  => astra_get_option( 'blog-masonry' ),
-					'type'     => 'control',
-					'control'  => Astra_Theme_Extension::$switch_control,
-					'section'  => 'section-blog',
-					'title'    => __( 'Masonry Layout', 'astra-addon' ),
-					'priority' => 20,
-					'divider'  => array( 'ast_class' => 'ast-top-section-spacing' ),
-					'context'  => array(
+					'name'        => ASTRA_THEME_SETTINGS . '[blog-masonry]',
+					'default'     => astra_get_option( 'blog-masonry' ),
+					'type'        => 'control',
+					'control'     => Astra_Theme_Extension::$switch_control,
+					'section'     => 'section-blog',
+					'title'       => __( 'Masonry Layout', 'astra-addon' ),
+					'description' => __( 'This will not work if the number of columns is set to 1.', 'astra-addon' ),
+					'priority'    => 20,
+					'divider'     => array( 'ast_class' => 'ast-top-section-spacing' ),
+					'context'     => array(
 						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'relation' => 'OR',
@@ -155,11 +155,6 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Pro_Configs' ) ) {
 								'value'    => 'blog-layout-6',
 							),
 						),
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[blog-grid]',
-							'operator' => '!=',
-							'value'    => 1,
-						),
 					),
 				),
 
@@ -173,7 +168,7 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Pro_Configs' ) ) {
 					'control'     => Astra_Theme_Extension::$switch_control,
 					'section'     => 'section-blog',
 					'title'       => __( 'Highlight First Post', 'astra-addon' ),
-					'description' => __( 'This will not work if Masonry Layout is enabled.', 'astra-addon' ),
+					'description' => __( 'This will not work if the number of columns is set to 1 or Masonry Layout is enabled.', 'astra-addon' ),
 					'divider'     => array( 'ast_class' => 'ast-top-section-spacing' ),
 					'priority'    => 25,
 					'context'     => array(
@@ -196,11 +191,6 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Pro_Configs' ) ) {
 								'value'    => 'blog-layout-6',
 							),
 						),
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[blog-grid]',
-							'operator' => '!=',
-							'value'    => 1,
-						),
 					),
 				),
 
@@ -208,15 +198,16 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Pro_Configs' ) ) {
 				 * Option: Blog Equal Grids.
 				 */
 				array(
-					'name'     => ASTRA_THEME_SETTINGS . '[blog-equal-grid]',
-					'default'  => astra_get_option( 'blog-equal-grid' ),
-					'type'     => 'control',
-					'control'  => Astra_Theme_Extension::$switch_control,
-					'section'  => 'section-blog',
-					'title'    => __( 'Equal Grids', 'astra-addon' ),
-					'divider'  => array( 'ast_class' => 'ast-top-section-spacing' ),
-					'priority' => 25,
-					'context'  => array(
+					'name'        => ASTRA_THEME_SETTINGS . '[blog-equal-grid]',
+					'default'     => astra_get_option( 'blog-equal-grid' ),
+					'type'        => 'control',
+					'control'     => Astra_Theme_Extension::$switch_control,
+					'section'     => 'section-blog',
+					'title'       => __( 'Equal Grids', 'astra-addon' ),
+					'description' => __( 'This will not work if the number of columns is set to 1.', 'astra-addon' ),
+					'divider'     => array( 'ast_class' => 'ast-top-section-spacing' ),
+					'priority'    => 25,
+					'context'     => array(
 						astra_addon_builder_helper()->general_tab_config,
 						array(
 							'relation' => 'OR',
@@ -230,11 +221,6 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Pro_Configs' ) ) {
 								'operator' => '===',
 								'value'    => 'blog-layout-6',
 							),
-						),
-						array(
-							'setting'  => ASTRA_THEME_SETTINGS . '[blog-grid]',
-							'operator' => '!=',
-							'value'    => 1,
 						),
 					),
 				),
@@ -445,8 +431,8 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Pro_Configs' ) ) {
 				),
 
 				/**
-				* Option: Excerpt Count
-				*/
+				 * Option: Excerpt Count
+				 */
 				array(
 					'name'         => 'blog-excerpt-count',
 					'parent'       => ASTRA_THEME_SETTINGS . '[blog-post-structure]',
@@ -721,11 +707,11 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Pro_Configs' ) ) {
 					'choices'           => array(
 						'blog-filter-layout-1' => array(
 							'label' => __( 'Style 1', 'astra-addon' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'blog-filter-layout-1', false ) : '',
+							'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'blog-filter-layout-1', false ) : '',
 						),
 						'blog-filter-layout-2' => array(
 							'label' => __( 'Style 2', 'astra-addon' ),
-							'path'  => ( class_exists( 'Astra_Builder_UI_Controller' ) ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'blog-filter-layout-2', false ) : '',
+							'path'  => class_exists( 'Astra_Builder_UI_Controller' ) ? Astra_Builder_UI_Controller::fetch_svg_icon( 'blog-filter-layout-2', false ) : '',
 						),
 					),
 					'divider'           => array( 'ast_class' => 'ast-top-section-spacing' ),
@@ -740,8 +726,8 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Pro_Configs' ) ) {
 				),
 
 				/**
-				* Option: Blog Filter by
-				*/
+				 * Option: Blog Filter by
+				 */
 				array(
 					'name'       => ASTRA_THEME_SETTINGS . '[blog-filter-by]',
 					'default'    => astra_get_option( 'blog-filter-by' ),
@@ -768,8 +754,8 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Pro_Configs' ) ) {
 				),
 
 				/**
-				* Option: Blog filter category to include
-				*/
+				 * Option: Blog filter category to include
+				 */
 				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[blog-filter-category-exclude]',
 					'default'   => astra_get_option( 'blog-filter-category-exclude' ),
@@ -797,8 +783,8 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Pro_Configs' ) ) {
 				),
 
 				/**
-				* Option: Blog filter tags to include
-				*/
+				 * Option: Blog filter tags to include
+				 */
 				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[blog-filter-tag-exclude]',
 					'default'   => astra_get_option( 'blog-filter-tag-exclude' ),
@@ -826,8 +812,8 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Pro_Configs' ) ) {
 				),
 
 				/**
-				* Option: Blog Filter alignment
-				*/
+				 * Option: Blog Filter alignment
+				 */
 				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[blog-filter-alignment]',
 					'default'   => astra_get_option( 'blog-filter-alignment' ),
@@ -855,8 +841,8 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Pro_Configs' ) ) {
 				),
 
 				/**
-				* Option: Blog Filter visibility
-				*/
+				 * Option: Blog Filter visibility
+				 */
 				array(
 					'name'      => ASTRA_THEME_SETTINGS . '[responsive-blog-filter-visibility]',
 					'default'   => astra_get_option( 'responsive-blog-filter-visibility' ),
@@ -995,31 +981,31 @@ if ( ! class_exists( 'Astra_Customizer_Blog_Pro_Configs' ) ) {
 				),
 
 				/**
-				* Option: Blog Filter taxonomy background color group.
-			*/
-			array(
-				'name'       => ASTRA_THEME_SETTINGS . '[blog-filter-taxonomy-bg-colors]',
-				'default'    => astra_get_option( 'blog-filter-taxonomy-bg-colors' ),
-				'type'       => 'control',
-				'section'    => 'ast-sub-section-post-filter',
-				'title'      => __( 'Background Color', 'astra-addon' ),
-				'control'    => 'ast-color-group',
-				'priority'   => 163,
-				'responsive' => false,
-				'context'    => array(
-					astra_addon_builder_helper()->design_tab_config,
-					array(
-						'setting'  => ASTRA_THEME_SETTINGS . '[blog-filter]',
-						'operator' => '===',
-						'value'    => true,
-					),
-					array(
-						'setting'  => ASTRA_THEME_SETTINGS . '[blog-filter-layout]',
-						'operator' => '===',
-						'value'    => 'blog-filter-layout-2',
+				 * Option: Blog Filter taxonomy background color group.
+				 */
+				array(
+					'name'       => ASTRA_THEME_SETTINGS . '[blog-filter-taxonomy-bg-colors]',
+					'default'    => astra_get_option( 'blog-filter-taxonomy-bg-colors' ),
+					'type'       => 'control',
+					'section'    => 'ast-sub-section-post-filter',
+					'title'      => __( 'Background Color', 'astra-addon' ),
+					'control'    => 'ast-color-group',
+					'priority'   => 163,
+					'responsive' => false,
+					'context'    => array(
+						astra_addon_builder_helper()->design_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[blog-filter]',
+							'operator' => '===',
+							'value'    => true,
+						),
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[blog-filter-layout]',
+							'operator' => '===',
+							'value'    => 'blog-filter-layout-2',
+						),
 					),
 				),
-			),
 
 				/**
 				 * Option: Blog Filter taxonomy background normal color.

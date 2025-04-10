@@ -47,6 +47,7 @@
 
 				if (!menu_click_listeners[i]) {
 					menu_click_listeners[i] = menu_toggle_all[i];
+					menu_toggle_all[i].removeEventListener('click', astraNavMenuToggle);
 					menu_toggle_all[i].addEventListener('click', astraNavMenuToggle, false);
 				}
 			}
@@ -65,7 +66,7 @@
                     if (astra_menu_toggle.length > 0) {
 
                         for (var j = 0; j < astra_menu_toggle.length; j++) {
-
+                            astra_menu_toggle[j].removeEventListener('click', AstraToggleSubMenu);
                             astra_menu_toggle[j].addEventListener('click', AstraToggleSubMenu, false);
                         }
                     }
@@ -177,7 +178,7 @@ const accountMenuToggle = function () {
                 const condition = ( accountMenuClickCondition ) || ( checkAccountActionTypeCondition && document.querySelector('body').classList.contains('ast-header-break-point'));
                 if( condition ) {
                     // if the target of the click isn't the container nor a descendant of the container
-                    if (!element.contains(e.target)) {
+                    if ( accountMenu && !element.contains( e.target ) ) {
                         accountMenu.style.right = '';
                         accountMenu.style.left = '';
                     }

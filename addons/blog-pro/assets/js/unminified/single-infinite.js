@@ -43,7 +43,7 @@
 		}
 
 		// Add a post divider.
-		temp_content_container.prepend( '<hr style="height: 0" class="post-divider" data-title="' + window.document.title + '" data-url="' + window.location.href + '" data-post-id="' + post_ID + '"/>' );
+		temp_content_container.prepend( DOMPurify.sanitize( '<hr style="height: 0" class="post-divider" data-title="' + window.document.title + '" data-url="' + window.location.href + '" data-post-id="' + post_ID + '"/>' ) );
 
 		// Initialise scrollSpy
 		initialise_scrollspy();
@@ -276,8 +276,17 @@
 				post_ID = post_ID.replace('post-', ''); // Make sure that only the post ID remains.
 			}
 
-			$( content_container ).append( post_html ); // Add next post.
-
+			const purifyConfig = {
+				ADD_TAGS: ['iframe'], // We can Add other tags as needed.
+				ADD_ATTR: ['src', 'width', 'height', 'frameborder', 'allow', 'allowfullscreen'], // Added required iframe attributes.
+				ALLOW_DATA_ATTR: false,
+			};
+			
+			post_html?.each( ( _, element ) => {
+				const sanitizedElement = DOMPurify.sanitize(element, purifyConfig);
+				$(content_container).append(sanitizedElement);
+			});
+			
 			// Remove Comments.
 			if ( remove_comments === 'yes' ) {
 				initialise_comment( comments_container );
