@@ -24,9 +24,8 @@ function astra_ext_blog_pro_dynamic_css( $dynamic_css, $dynamic_css_filtered = '
 	$ltr_left    = $is_site_rtl ? 'right' : 'left';
 	$ltr_right   = $is_site_rtl ? 'left' : 'right';
 
-	$body_font_family = astra_body_font_family();
-	$link_color       = astra_get_option( 'link-color' );
-	$text_color       = astra_get_option( 'text-color' );
+	$link_color = astra_get_option( 'link-color' );
+	$text_color = astra_get_option( 'text-color' );
 
 	$blog_layout           = astra_addon_get_blog_layout();
 	$blog_pagination       = astra_get_option( 'blog-pagination' );
@@ -211,8 +210,7 @@ function astra_ext_blog_pro_dynamic_css( $dynamic_css, $dynamic_css_filtered = '
 		$heading_letter_spacing  = astra_addon_get_font_extras( astra_get_option( 'single-post-social-sharing-heading-font-extras' ), 'letter-spacing', 'letter-spacing-unit' );
 		$heading_text_decoration = astra_addon_get_font_extras( astra_get_option( 'single-post-social-sharing-heading-font-extras' ), 'text-decoration' );
 
-		$fixed_social        = array();
-		$fixed_social_single = array();
+		$fixed_social = array();
 
 		$is_social_fixed = 'left-content' === $icon_sharing_position || 'right-content' === $icon_sharing_position;
 
@@ -643,7 +641,6 @@ function astra_ext_blog_pro_dynamic_css( $dynamic_css, $dynamic_css_filtered = '
 
 	if ( astra_get_option( 'ast-author-info' ) ) {
 		$author_box_bg_obj = astra_get_option( 'author-box-background' );
-		$bg_css            = astra_get_background_obj( $author_box_bg_obj );
 
 		$author_box_dynamic_arr = array(
 			'.single .ast-single-author-box .ast-author-meta, .single.ast-separate-container .site-main .ast-author-meta'  => astra_get_background_obj( $author_box_bg_obj ),
@@ -770,7 +767,7 @@ function astra_ext_blog_pro_dynamic_css( $dynamic_css, $dynamic_css_filtered = '
 		$blog_filter_class      = '.ast-post-filter';
 		$blog_filter_static_css = '';
 		$blog_filter            = astra_get_option( 'blog-filter' );
-		$blog_filter_target     = 'li.ast-post-filter-single';
+		$blog_filter_target     = 'a.ast-post-filter-single';
 
 		// Blog filter text color.
 		$blog_filter_text_normal_color = astra_get_option( 'blog-filter-taxonomy-text-normal-color' );
@@ -823,6 +820,8 @@ function astra_ext_blog_pro_dynamic_css( $dynamic_css, $dynamic_css_filtered = '
 				line-height: normal;
 				border-radius: 4px;
 				border: 0;
+				display: inline-block;
+				text-decoration: none;
 			}
 		';
 

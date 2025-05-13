@@ -59,12 +59,8 @@ class Astra_Addon_Admin_Ajax {
 	 * @since 4.0.0
 	 */
 	public function __construct() {
-		$this->errors = array(
-			'permission' => __( 'Sorry, you are not allowed to do this operation.', 'astra-addon' ),
-			'nonce'      => __( 'Nonce validation failed', 'astra-addon' ),
-			'default'    => __( 'Sorry, something went wrong.', 'astra-addon' ),
-			'invalid'    => __( 'No post data found!', 'astra-addon' ),
-		);
+		// Delay translation loading.
+		add_action( 'init', array( $this, 'load_translations' ) );
 
 		// Ajax requests.
 		add_action( 'wp_ajax_astra_addon_update_module_status', array( $this, 'update_module_status' ) );
@@ -82,6 +78,20 @@ class Astra_Addon_Admin_Ajax {
 
 		// Enable/Disable file generation.
 		add_action( 'wp_ajax_astra_addon_update_whitelabel', array( $this, 'astra_addon_update_whitelabel' ) );
+	}
+
+	/**
+	 * Load translation strings after 'init'.
+	 *
+	 * @since 4.10.0
+	 */
+	public function load_translations() {
+		$this->errors = array(
+			'permission' => __( 'Sorry, you are not allowed to do this operation.', 'astra-addon' ),
+			'nonce'      => __( 'Nonce validation failed', 'astra-addon' ),
+			'default'    => __( 'Sorry, something went wrong.', 'astra-addon' ),
+			'invalid'    => __( 'No post data found!', 'astra-addon' ),
+		);
 	}
 
 	/**
@@ -129,7 +139,7 @@ class Astra_Addon_Admin_Ajax {
 		$extensions               = array_map( 'esc_attr', $extensions );
 		Astra_Admin_Helper::update_admin_settings_option( '_astra_ext_enabled_extensions', $extensions );
 
-		if ( 'http2' == $module_id ) {
+		if ( 'http2' === $module_id ) {
 			Astra_Admin_Helper::update_admin_settings_option( '_astra_ext_http2', true );
 		}
 
