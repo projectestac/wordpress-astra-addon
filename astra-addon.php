@@ -144,3 +144,8 @@ require_once ASTRA_EXT_DIR . 'classes/deprecated/deprecated-functions.php';
 if ( ASTRA_ADDON_BSF_PACKAGE ) {
 	require_once ASTRA_EXT_DIR . 'class-brainstorm-update-astra-addon.php';
 }
+
+// XTEC ************ AFEGITAT - Force loading the translation to catalan of astra-addon plugin.
+// 2025.07.21 @aginard
+load_textdomain('astra-addon', WP_PLUGIN_DIR . '/astra-addon/languages/astra-addon-ca.mo');
+// ************ FI
