@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Astra Pro 4.11.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/astra-addon\n"
 "POT-Creation-Date: 2025-05-02 11:26:18+00:00\n"
-"PO-Revision-Date: 2025-07-21 18:57+0200\n"
+"PO-Revision-Date: 2025-07-25 10:22+0200\n"
 "Last-Translator: Toni Ginard <toni.ginard@gmail.com>\n"
 "Language-Team: Equip Àgora\n"
 "Language: ca\n"
@@ -4066,7 +4066,7 @@ msgstr "Pinterest"
 
 #: addons/blog-pro/classes/class-astra-ext-blog-pro-markup.php:102
 msgid "No more posts to show."
-msgstr "No hi ha més entrades per mostrar."
+msgstr "No hi ha més articles per mostrar."
 
 #: addons/blog-pro/classes/class-astra-ext-blog-pro-markup.php:107
 #: addons/woocommerce/classes/class-astra-ext-woocommerce-markup.php:523
@@ -4092,7 +4092,7 @@ msgstr[1] "%1$s %3$s"
 
 #: addons/blog-pro/classes/class-astra-ext-blog-pro-markup.php:1146
 msgid "Post Filters"
-msgstr "Filtres d'entrada"
+msgstr "Filtres d'articles"
 
 #: addons/blog-pro/classes/class-astra-ext-blog-pro-markup.php:1147
 msgid "Filter posts by category"
@@ -4114,7 +4114,7 @@ msgstr "Afegeix un espai entre entrades"
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:134
 msgid "Masonry Layout"
-msgstr "Disposició de la maçoneria"
+msgstr "Disposició estil maçoneria"
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:135
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:207
@@ -4123,7 +4123,7 @@ msgstr "Això no funcionarà si el nombre de columnes s'estableix a 1."
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:170
 msgid "Highlight First Post"
-msgstr "Ressalta la primera entrada"
+msgstr "Ressalta el primer article"
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:171
 msgid ""
@@ -4135,7 +4135,7 @@ msgstr ""
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:206
 msgid "Equal Grids"
-msgstr "Mateixes graelles"
+msgstr "Iguala les graelles"
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:238
 msgid "This will not work if Masonry Layout is enabled."
@@ -4144,7 +4144,7 @@ msgstr "Això no funcionarà si la disposició de la maçoneria està activada."
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:239
 #: addons/woocommerce/classes/sections/class-astra-woocommerce-shop-configs.php:570
 msgid "Reveal Effect"
-msgstr "Revela l'efecte"
+msgstr "Efecte de revelació"
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:255
 msgid "Row Reverse"
@@ -4153,7 +4153,8 @@ msgstr "Fila inversa"
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:256
 msgid "This option reverses the position of post-content and featured image."
 msgstr ""
-"Aquesta opció inverteix la posició del post-contingut i la imatge destacada."
+"Aquesta opció inverteix la posició del contingut de l'article i la imatge "
+"destacada."
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:278
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-single-configs.php:118
@@ -4246,7 +4247,7 @@ msgstr "Paginació"
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:510
 msgid "Post Pagination"
-msgstr "Pantalla de l'entrada"
+msgstr "Paginació dels articles"
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:512
 #: addons/woocommerce/classes/sections/class-astra-woocommerce-shop-configs.php:368
@@ -4281,7 +4282,7 @@ msgstr "Clica"
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:558
 msgid "Post Pagination Style"
-msgstr "Estil de paginació de l'entrada"
+msgstr "Estil de paginació dels articles"
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:585
 #: addons/woocommerce/classes/sections/class-astra-woocommerce-shop-configs.php:459
@@ -4304,7 +4305,7 @@ msgstr "Mida de la imatge"
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:676
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:691
 msgid "Post Filter"
-msgstr "Filtre d'entrada"
+msgstr "Filtre d'articles"
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-configs.php:706
 #: addons/edd/classes/sections/class-astra-edd-general-configs.php:151
@@ -4786,7 +4787,7 @@ msgstr ""
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-single-configs.php:138
 msgid "Post Navigation"
-msgstr "Navegació posterior"
+msgstr "Navegació pels articles"
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-single-configs.php:151
 msgid "Disable Navigation"
@@ -4896,11 +4897,11 @@ msgstr ""
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-single-configs.php:535
 msgid "Below Post Title"
-msgstr "Títol de l'entrada següent"
+msgstr "Davall el títol de l'article"
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-single-configs.php:536
 msgid "Below Post"
-msgstr "A sota de la publicació"
+msgstr "Davall l'article"
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-single-configs.php:537
 msgid "Left Content"
@@ -4916,7 +4917,7 @@ msgid ""
 "within the parent Single Post section."
 msgstr ""
 "Nota: Exploreu la configuració del disseny d'icones socials navegant a la "
-"pestanya Disseny dins de la secció d'entrada única pare."
+"pestanya Disseny dins de la secció d'entrada única del pare."
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-single-configs.php:583
 msgid ""
@@ -4924,7 +4925,7 @@ msgid ""
 "Sharing elements."
 msgstr ""
 "Aquestes opcions de disseny són aplicables tant a la caixa d'autor com als "
-"elements de post-Compartir Social."
+"elements de compartició d'articles"
 
 #: addons/blog-pro/classes/sections/class-astra-customizer-blog-pro-single-configs.php:596
 msgid "Color Type"
